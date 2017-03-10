@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/alexward1981/component-gen/issues"
   },
-  "homepage": "https://github.com/alexward1981/component-gen#readme"
+  "homepage": "https://github.com/alexward1981/component-gen#readme",
+  "devDependencies": {
+    "chalk": "^1.1.3"
+  }
 }
