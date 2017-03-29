@@ -3,8 +3,6 @@ var chalk = require('chalk')
 var inquirer = require('inquirer')
 var argv = require('yargs').argv
 var exec = require('child_process').exec
-var http = require('http')
-var request = require('request')
 var fs = require('fs')
 
 // 1: User types 'ctgen' the welecome message is immediately displayed
@@ -31,37 +29,38 @@ var questions = [
     message: 'What is your component called?',
     default: 'My New Component',
     validate: function (value) {
-      if (value.length <= 0) return 'Name cannot be empty'
+      var pass = value.length > 0
+      if (pass) return true
+      return 'Component name cannot be empty'
     }
   },
   {
     type: 'input',
     name: 'componentDesc',
     message: 'Please describe your component',
-    default: '',
     validate: function (value) {
-      if (value.length <= 0) return 'Description cannot be empty'
+      var pass = value.length > 0
+      if (pass) return true
+      return 'Description cannot be empty'
     }
   },
   {
     type: 'input',
     name: 'userName',
     message: 'What is your full name?',
-    default: '',
     validate: function (value) {
-      if (value.length <= 0) return 'Name cannot be empty'
+      var pass = value.length > 0
+      if (pass) return true
+      return 'Your name cannot be empty'
     }
   },
   {
     type: 'input',
     name: 'componentDesc',
-    message: 'What is your VCS address (github, bitbucket, gitlab etc...)?',
-    default: 'http://github.com/usernamehere',
+    message: 'What is your github username?',
     validate: function (value) {
-      request(value, function (error, response, body) {
-        if (error) return console.error(chalk.red('An error has occured', error))
-        if (response === 404) return 'That username does not exist'
-      })
+      if (!value.length) return 'Github username field cannot be empty'
+      return true
     }
   },
   {
@@ -90,7 +89,6 @@ var questionTime = function () {
   inquirer.prompt(questions).then(function (answers) {
     console.log(JSON.stringify(answers, null, '  '))
   })
-  folderGen()
 }
 
 var folderGen = function () {
