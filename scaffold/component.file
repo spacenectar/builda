@@ -1,0 +1,23 @@
+{
+  "name" : "[[cname]]",
+  "version" : "1.0.0",
+  "creator" : {
+    "name" : "[[aname]]",
+    "github_username" : "[[agithub]]"
+  },
+  "description" : "[[adesc]]",
+  "standard_or_universal" : "standard",
+  "parents" : "",
+  "children" : "",
+  "notes" : {
+    "backend" : "",
+    "frontend" : ""
+  },
+  "changelog" : [
+    {
+      "date" : "[[ccdate]]",
+      "author" : "[[aname]]",
+      "description" : "Created component"
+    }
+  ]
+}

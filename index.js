@@ -14,7 +14,7 @@ console.log(chalk.magenta('=============================================\n\n'))
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
 fs.stat('clarity.js', function (err, stat) {
   if (err == null) {
-    console.log(chalk.green('Clarity toolkit detected!\nContinuing process...'))
+    console.log(chalk.green('Clarity toolkit detected!\nLoading questions...\n\n'))
     questionTime()
   } else if (err.code === 'ENOENT') {
     console.error(chalk.red('Clarity toolkit is not installed or clarity.js is missing.\nProcess aborted with errors'))
@@ -86,12 +86,14 @@ var questionTime = function () {
   // // 4. What is your Github username?
   // // 5. Does your component use JavaScript?
   // // 6. Do you want to create ie and print stylesheets?
+  console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
-    console.log(JSON.stringify(answers, null, '  '))
+    folderGen(answers)
   })
 }
 
-var folderGen = function () {
+var folderGen = function (answers) {
+  console.log(chalk.blue('\n\nCreating folders for', answers.componentName, 'component'))
   // 4: A folder is created in /src/components with the component name
   // 5: The following files are created in that folder
 
