@@ -1,6 +1,6 @@
 {
   "name": "ctgen",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "engines": {
     "node": "4.4.5",
     "npm": "2.15.5"
@@ -16,8 +16,8 @@
     "url": "git+https://github.com/alexward1981/component-gen.git"
   },
   "author": {
-    "name" : "Alex Foxleigh",
-    "url" : "http://www.alexfoxleigh.com"
+    "name": "Alex Foxleigh",
+    "url": "http://www.alexfoxleigh.com"
   },
   "license": "MIT",
   "bugs": {
