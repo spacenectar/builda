@@ -8,13 +8,14 @@
   "description": "A component generator for the clarity toolkit",
   "main": "index.js",
   "scripts": {
+    "start" : "index.js",
     "test": "test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexward1981/component-gen.git"
   },
-  "author": "Alex Ward",
+  "author": "Alex Foxleigh",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alexward1981/component-gen/issues"
