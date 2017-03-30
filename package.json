@@ -15,7 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/alexward1981/component-gen.git"
   },
-  "author": "Alex Foxleigh",
+  "author": {
+    "name" : "Alex Foxleigh",
+    "url" : "http://www.alexfoxleigh.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alexward1981/component-gen/issues"
