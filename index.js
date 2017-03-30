@@ -55,7 +55,7 @@ var questions = [
   },
   {
     type: 'input',
-    name: 'componentDesc',
+    name: 'userGithub',
     message: 'What is your github username?',
     validate: function (value) {
       if (!value.length) return 'Github username field cannot be empty'
@@ -94,18 +94,26 @@ var questionTime = function () {
   // // 7. Do you want to create ie stylesheets?
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
-    folderGen(answers)
+    fileGen(answers)
   })
 }
 
-var createFile = function (fileName, componentName) {
+var createFile = function (fileName, componentName, doc) {
   // Tell the user what is happening
   console.log(chalk.blue('\nCreating', fileName, '...'))
-  // Bring in the view.php scaffold file
+  // Bring in the scaffold file
   var scaffold = './scaffold/' + fileName
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
-    var result = data.replace(/%replace%/g, componentName)
+    var result = data.replace(/%cname%/g, componentName)
+    if (doc) {
+      var d = new Date()
+      result = result.replace(/%cfname%/g, doc.componentName)
+      result = result.replace(/%cdesc%/g, doc.componentDesc)
+      result = result.replace(/%cauthor%/g, doc.userName)
+      result = result.replace(/%cagithub%/g, doc.userGithub)
+      result = result.replace(/%creationdate%/g, d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear())
+    }
 
     fs.writeFile('./src/components/' + componentName + '/' + fileName, result, function (err) {
       if (err) return console.log(chalk.red(err))
@@ -114,7 +122,7 @@ var createFile = function (fileName, componentName) {
   })
 }
 
-var folderGen = function (answers) {
+var fileGen = function (answers) {
   console.log(chalk.blue('\n\nCreating folders for', answers.componentName, 'component'))
   var componentName = 'c-' + answers.componentName.toLowerCase().split(' ').join('-')
   var componentFolder = './src/components/' + componentName
@@ -131,21 +139,13 @@ var folderGen = function (answers) {
   if (answers.createPrintSheets) createFile('style.print.styl', componentName)
   // - style.ie.styl (if the user answered yes to Q7)
   if (answers.createIESheets) createFile('style.ie.styl', componentName)
-
   // - component.json
-  fs.writeFile(componentFolder + '/component.json', 'File contents', function (err) {
-    if (err) return console.log(chalk.red(err))
-    console.log(chalk.green('Component documentation created!'))
-  })
-  // component.json will contain a generated document which is pulled from the input the user gave earlier
-  // view.php will contain <!-- [component name] starts here --> and a closing comment
-  // script.js will be a namespaced file
-  // style.styl will contain a require to the toolkit and will have an empty class with the correct component name.
-  // style.*.styl will contain stylesheets specifically made to display content differently based on how it is being viewed.
-  finishUp()
+  createFile('component.json', componentName, answers)
+
+  finishUp(componentName)
 }
 
-var finishUp = function () {
+var finishUp = function (componentName) {
   // 6. The component register is automatically updated with the new component
   fs.stat('genreg.js', function (err, stat) {
     if (err == null) {
@@ -156,7 +156,8 @@ var finishUp = function () {
     }
   })
   // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
-  console.log(chalk.green('Component [] has been created'))
+  console.log(chalk.green('Component "', componentName, '" has been created'))
   console.warn(chalk.yellow('Please note: This has generated most of the documentation required in component.json but please ensure you keep it up to date and add any additional information to it.'))
 }
 
+// TODO: Make all of this work sequentially.

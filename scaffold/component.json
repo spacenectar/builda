@@ -1,0 +1,26 @@
+{
+  "name" : "%cfname%",
+  "class" : "%cname%",
+  "version" : "1.0.0",
+  "creator" : {
+    "name" : "%cauthor%",
+    "github_username" : "%cagithub%"
+  },
+  "description" : "%cdesc%",
+  "standard_or_universal" : "standard",
+  "parents" : "",
+  "children" : "",
+  "notes" : {
+    "backend" : "",
+    "frontend" : ""
+  },
+  "backend_classes" : {},
+  "creation_ticket" : "",
+  "changelog" : [
+    {
+      "date" : "%creationdate%",
+      "author" : "%cauthor%",
+      "description" : "Created component"
+    }
+  ]
+}
