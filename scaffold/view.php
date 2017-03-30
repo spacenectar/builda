@@ -1,2 +1,2 @@
-<section class="c-[[cname]]">
+<section class="%replace%">
 </section>

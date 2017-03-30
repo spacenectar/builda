@@ -1,8 +1,6 @@
 
 var chalk = require('chalk')
 var inquirer = require('inquirer')
-var path = require('path')
-var argv = require('yargs').argv
 var exec = require('child_process').exec
 var fs = require('fs')
 
@@ -100,53 +98,45 @@ var questionTime = function () {
   })
 }
 
+var createFile = function (fileName, componentName) {
+  // Tell the user what is happening
+  console.log(chalk.blue('\nCreating', fileName, '...'))
+  // Bring in the view.php scaffold file
+  var scaffold = './scaffold/' + fileName
+  fs.readFile(scaffold, 'utf8', function (err, data) {
+    if (err) return console.log(chalk.red(err))
+    var result = data.replace(/%replace%/g, componentName)
+
+    fs.writeFile('./src/components/' + componentName + '/' + fileName, result, function (err) {
+      if (err) return console.log(chalk.red(err))
+      console.log(chalk.green(fileName, 'created!'))
+    })
+  })
+}
+
 var folderGen = function (answers) {
   console.log(chalk.blue('\n\nCreating folders for', answers.componentName, 'component'))
-  var componentName = 'c-' + answers.componentName.replace(' ', '-').toLowerCase()
+  var componentName = 'c-' + answers.componentName.toLowerCase().split(' ').join('-')
   var componentFolder = './src/components/' + componentName
   // 4: A folder is created in /src/components with the component name
-  if (!path.existsSync(componentFolder)) {
-    fs.mkdirSync(componentFolder, 744)
-  }
+  if (!fs.existsSync(componentFolder)) fs.mkdirSync(componentFolder)
   // 5: The following files are created in that folder
   // - view.php
-  fs.writeFile(componentFolder + '/view.php', 'File contents', function (err) {
-    if (err) return console.log(chalk.red(err))
-    console.log(chalk.green('View file created!'))
-  })
+  createFile('view.php', componentName)
   // - style.styl
-  fs.writeFile(componentFolder + '/style.styl', 'File contents', function (err) {
-    if (err) return console.log(chalk.red(err))
-    console.log(chalk.green('Stylesheet created!'))
-  })
+  createFile('style.styl', componentName)
+  // - script.js (if the user answered yes to Q5)
+  if (answers.usesJavaScript) createFile('script.js', componentName)
+  // - style.print.styl (if the user answered yes to Q6)
+  if (answers.createPrintSheets) createFile('style.print.styl', componentName)
+  // - style.ie.styl (if the user answered yes to Q7)
+  if (answers.createIESheets) createFile('style.ie.styl', componentName)
+
   // - component.json
   fs.writeFile(componentFolder + '/component.json', 'File contents', function (err) {
     if (err) return console.log(chalk.red(err))
     console.log(chalk.green('Component documentation created!'))
   })
-  // - script.js (if the user answered yes to Q5)
-  if (answers.usesJavaScript) {
-    fs.writeFile(componentFolder + '/script.js', 'File contents', function (err) {
-      if (err) return console.log(chalk.red(err))
-      console.log(chalk.green('Script file created!'))
-    })
-  }
-  // - style.print.styl (if the user answered yes to Q6)
-  if (answers.createPrintSheets) {
-    fs.writeFile(componentFolder + '/style.print.styl', 'File contents', function (err) {
-      if (err) return console.log(chalk.red(err))
-      console.log(chalk.green('Print stylesheet created!'))
-    })
-  }
-
-  // - style.ie.styl (if the user answered yes to Q7)
-  if (answers.createIESheets) {
-    fs.writeFile(componentFolder + '/style.ie.styl', 'File contents', function (err) {
-      if (err) return console.log(chalk.red(err))
-      console.log(chalk.green('IE stylesheet created!'))
-    })
-  }
-
   // component.json will contain a generated document which is pulled from the input the user gave earlier
   // view.php will contain <!-- [component name] starts here --> and a closing comment
   // script.js will be a namespaced file
