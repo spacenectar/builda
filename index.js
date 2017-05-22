@@ -5,6 +5,14 @@ var inquirer = require('inquirer')
 var exec = require('child_process').exec
 var fs = require('fs')
 
+// Later on we'll need to convert a string to camel case. This function will do that nicely.
+function camelize (str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+    if (+match === 0) return '' // or if (/\s+/.test(match)) for white spaces
+    return index == 0 ? match.toLowerCase() : match.toUpperCase()
+  })
+}
+
 // 1: User types 'ctgen' the welecome message is immediately displayed
 
 console.log(chalk.magenta('============================================='))
@@ -99,14 +107,18 @@ var questionTime = function () {
   })
 }
 
-var createFile = function (fileName, componentName, doc) {
+// TODO: Allow a filename to be specified
+var createFile = function (fileName, componentMeta, doc) {
   // Tell the user what is happening
   console.log(chalk.blue('\nCreating', fileName, '...'))
-  // Bring in the scaffold file (note this should point to the scaffold file in node modules)
+  // Bring in the scaffold file
   var scaffold = __dirname + '/scaffold/' + fileName
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
-    var result = data.replace(/%cname%/g, componentName)
+    // Replace %cname% with component name in dashed format
+    var result = data.replace(/%cname%/g, componentMeta.name)
+    // Replace %ccname% with component name in camelCase format
+    result = result.replace(/%namecc%/g, componentMeta.namecc)
     if (doc) {
       var d = new Date()
       result = result.replace(/%cfname%/g, doc.componentName)
@@ -116,7 +128,7 @@ var createFile = function (fileName, componentName, doc) {
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear())
     }
 
-    fs.writeFile('./src/components/' + componentName + '/' + fileName, result, function (err) {
+    fs.writeFile('./src/components/' + componentMeta.name + '/' + fileName, result, function (err) {
       if (err) return console.log(chalk.red(err))
       console.log(chalk.green(fileName, 'created!'))
     })
@@ -126,22 +138,30 @@ var createFile = function (fileName, componentName, doc) {
 var fileGen = function (answers) {
   console.log(chalk.blue('\n\nCreating folders for', answers.componentName, 'component'))
   var componentName = 'c-' + answers.componentName.toLowerCase().split(' ').join('-')
+  var componentNameCamel = camelize(answers.componentName)
+  var componentMeta = {
+    name: componentName,
+    namecc: componentNameCamel
+  }
   var componentFolder = './src/components/' + componentName
   // 4: A folder is created in /src/components with the component name
   if (!fs.existsSync(componentFolder)) fs.mkdirSync(componentFolder)
   // 5: The following files are created in that folder
   // - view.php
-  createFile('view.php', componentName)
+  createFile('view.php', componentMeta)
   // - style.styl
-  createFile('style.styl', componentName)
+  createFile('style.styl', componentMeta)
   // - script.js (if the user answered yes to Q5)
-  if (answers.usesJavaScript) createFile('script.js', componentName)
+  if (answers.usesJavaScript) {
+    createFile('function.js', componentMeta)
+    createFile('script.js', componentMeta)
+  }
   // - style.print.styl (if the user answered yes to Q6)
-  if (answers.createPrintSheets) createFile('style.print.styl', componentName)
+  if (answers.createPrintSheets) createFile('style.print.styl', componentMeta)
   // - style.ie.styl (if the user answered yes to Q7)
-  if (answers.createIESheets) createFile('style.ie.styl', componentName)
-  // - component.json
-  createFile('component.json', componentName, answers)
+  if (answers.createIESheets) createFile('style.ie.styl', componentMeta)
+  // - component.json (This works a little differently and takes the answers as well as the componentMeta data)
+  createFile('component.json', componentMeta, answers)
 
   finishUp(componentName)
 }
