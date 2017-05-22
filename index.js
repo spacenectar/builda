@@ -125,6 +125,7 @@ var createFile = function (fileName, componentMeta, doc) {
       result = result.replace(/%cdesc%/g, doc.componentDesc)
       result = result.replace(/%cauthor%/g, doc.userName)
       result = result.replace(/%cagithub%/g, doc.userGithub)
+      // BUG: getMonth() has returned the wrong month.
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear())
     }
 
