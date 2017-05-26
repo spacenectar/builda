@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/foxleigh81/component-gen.git"
+    "url": "git+https://github.com/foxleigh81/ctgen.git"
   },
   "author": {
     "name": "Alex Foxleigh",

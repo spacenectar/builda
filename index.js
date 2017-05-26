@@ -9,7 +9,7 @@ var fs = require('fs')
 function camelize (str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
     if (+match === 0) return '' // or if (/\s+/.test(match)) for white spaces
-    return index == 0 ? match.toLowerCase() : match.toUpperCase()
+    return index === 0 ? match.toLowerCase() : match.toUpperCase()
   })
 }
 
@@ -21,7 +21,7 @@ console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
 fs.stat('clarity.js', function (err, stat) {
-  if (err == null) {
+  if (err === null) {
     console.log(chalk.green('Clarity toolkit detected!\nLoading questions...\n\n'))
     questionTime()
   } else if (err.code === 'ENOENT') {
@@ -110,7 +110,7 @@ var questionTime = function () {
 // TODO: Allow a filename to be specified
 var createFile = function (fileName, componentMeta, doc) {
   // Tell the user what is happening
-  console.log(chalk.blue('\nCreating', fileName, '...'))
+  console.log(chalk.blue('\rCreating', fileName, '...'))
   // Bring in the scaffold file
   var scaffold = __dirname + '/scaffold/' + fileName
   fs.readFile(scaffold, 'utf8', function (err, data) {
@@ -119,12 +119,16 @@ var createFile = function (fileName, componentMeta, doc) {
     var result = data.replace(/%cname%/g, componentMeta.name)
     // Replace %ccname% with component name in camelCase format
     result = result.replace(/%namecc%/g, componentMeta.namecc)
+    // Replace %classes% with the correct classes string
+    result = result.replace(/%classes%/g, componentMeta.classes)
+
     if (doc) {
       var d = new Date()
       result = result.replace(/%cfname%/g, doc.componentName)
       result = result.replace(/%cdesc%/g, doc.componentDesc)
       result = result.replace(/%cauthor%/g, doc.userName)
       result = result.replace(/%cagithub%/g, doc.userGithub)
+      result = (doc.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
       // BUG: getMonth() has returned the wrong month.
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear())
     }
@@ -140,9 +144,12 @@ var fileGen = function (answers) {
   console.log(chalk.blue('\n\nCreating folders for', answers.componentName, 'component'))
   var componentName = 'c-' + answers.componentName.toLowerCase().split(' ').join('-')
   var componentNameCamel = camelize(answers.componentName)
+  var jsCname = componentName.replace('c-', 'js-')
+  var classList = (answers.usesJavaScript) ? componentName + ' ' + jsCname : componentName
   var componentMeta = {
     name: componentName,
-    namecc: componentNameCamel
+    namecc: componentNameCamel,
+    classes: classList
   }
   var componentFolder = './src/components/' + componentName
   // 4: A folder is created in /src/components with the component name
@@ -153,10 +160,7 @@ var fileGen = function (answers) {
   // - style.styl
   createFile('style.styl', componentMeta)
   // - script.js (if the user answered yes to Q5)
-  if (answers.usesJavaScript) {
-    createFile('function.js', componentMeta)
-    createFile('script.js', componentMeta)
-  }
+  if (answers.usesJavaScript) createFile('rename_me.js', componentMeta)
   // - style.print.styl (if the user answered yes to Q6)
   if (answers.createPrintSheets) createFile('style.print.styl', componentMeta)
   // - style.ie.styl (if the user answered yes to Q7)
@@ -164,22 +168,24 @@ var fileGen = function (answers) {
   // - component.json (This works a little differently and takes the answers as well as the componentMeta data)
   createFile('component.json', componentMeta, answers)
 
-  finishUp(componentName)
+  finishUp(componentName, answers)
 }
 
-var finishUp = function (componentName) {
+// FIXME: This fires before all files have been generated. That needs fixing.
+var finishUp = function (componentName, answers) {
   // 6. The component register is automatically updated with the new component
   fs.stat('genreg.js', function (err, stat) {
-    if (err == null) {
-      console.log(chalk.green('Genreg detected!\nUpdating component register...'))
+    console.log(chalk.blue('Looking for genreg.js...\r'))
+    if (err === null) {
+      console.log(chalk.green('Genreg detected! - Updating component register...'))
       exec('node genreg')
     } else if (err.code === 'ENOENT') {
-      console.error(chalk.grey('Genreg not detected.\nSkipping registry update.'))
+      console.warn(chalk.red('Genreg not detected - Skipping register update.'))
     }
   })
   // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
   console.log(chalk.green('Component "', componentName, '" has been created'))
-  console.warn(chalk.yellow('Please note: This has generated most of the documentation required in component.json but please ensure you keep it up to date and add any additional information to it.'))
+  console.log(chalk.white.bgRed('\n  ** Please note: **  '))
+  console.warn(chalk.white('\nThis has generated most of the documentation required in component.json but please ensure you keep it up to date and add any additional information to it.'))
+  if (answers.usesJavaScript) console.warn(chalk.white('\nAs you have specified JavaScript is being used, an example plugin has been created for you. Please ensure you rename this file to the name of your function and keep to the "one function per file" principle\n'))
 }
-
-// TODO: Make all of this work sequentially.

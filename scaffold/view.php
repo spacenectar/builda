@@ -1,4 +1,4 @@
 <!-- %cname% starts here -->
-<section class="%cname%">
+<section class="%classes%">
 </section>
 <!-- %cname% ends here -->
