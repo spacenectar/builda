@@ -130,7 +130,7 @@ var createFile = function (fileName, componentMeta, doc) {
       result = result.replace(/%cagithub%/g, doc.userGithub)
       result = (doc.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
       // BUG: getMonth() has returned the wrong month.
-      result = result.replace(/%creationdate%/g, d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear())
+      result = result.replace(/%creationdate%/g, d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear())
     }
 
     fs.writeFile('./src/components/' + componentMeta.name + '/' + fileName, result, function (err) {
