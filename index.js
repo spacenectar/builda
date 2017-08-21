@@ -5,6 +5,9 @@ var inquirer = require('inquirer')
 var exec = require('child_process').exec
 var fs = require('fs')
 
+// TODO: Make the clarity.json file into a config file which sets default values
+// TODO: Add site generator as well as componennt generator to project
+
 // Later on we'll need to convert a string to camel case. This function will do that nicely.
 function camelize (str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
@@ -20,7 +23,7 @@ console.log(chalk.magenta(' Clarity Toolkit Component Generator (ctgen) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
-fs.stat('clarity.js', function (err, stat) {
+fs.stat('clarity.json', function (err, stat) {
   if (err === null) {
     console.log(chalk.green('Clarity toolkit detected!\nLoading questions...\n\n'))
     questionTime()
@@ -88,6 +91,13 @@ var questions = [
     name: 'createIESheets',
     message: 'Do you want to add IE specifc stylesheets?',
     default: false
+  },
+  {
+    type: 'list',
+    choices: [ 'Nunjucks', 'PHP', 'Express templates', 'React JSX' ],
+    name: 'chooseView',
+    message: 'What will you be building your project in??',
+    default: 'false'
   }
 ]
 
@@ -101,16 +111,16 @@ var questionTime = function () {
   // // 5. Does your component use JavaScript?
   // // 6. Do you want to create print stylesheets?
   // // 7. Do you want to create ie stylesheets?
+  // // 8. What will you be building your project in (default: Nunjucks)?
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
     fileGen(answers)
   })
 }
 
-// TODO: Allow a filename to be specified
-var createFile = function (fileName, componentMeta, doc) {
+var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
-  console.log(chalk.blue('\rCreating', fileName, '...'))
+  console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
   var scaffold = __dirname + '/scaffold/' + fileName
   fs.readFile(scaffold, 'utf8', function (err, data) {
@@ -122,18 +132,39 @@ var createFile = function (fileName, componentMeta, doc) {
     // Replace %classes% with the correct classes string
     result = result.replace(/%classes%/g, componentMeta.classes)
 
-    if (doc) {
+    if (type === 'doc') {
       var d = new Date()
-      result = result.replace(/%cfname%/g, doc.componentName)
-      result = result.replace(/%cdesc%/g, doc.componentDesc)
-      result = result.replace(/%cauthor%/g, doc.userName)
-      result = result.replace(/%cagithub%/g, doc.userGithub)
-      result = (doc.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
+      result = result.replace(/%cfname%/g, answers.componentName)
+      result = result.replace(/%cdesc%/g, answers.componentDesc)
+      result = result.replace(/%cauthor%/g, answers.userName)
+      result = result.replace(/%cagithub%/g, answers.userGithub)
+      result = (answers.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
       // BUG: getMonth() has returned the wrong month.
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear())
     }
+    var compiledFileName = fileName
 
-    fs.writeFile('./src/components/' + componentMeta.name + '/' + fileName, result, function (err) {
+    if (type === 'view') {
+      // View files should have a different extention based on which system the user is creating
+      var fileType
+      switch (answers.chooseView) {
+        case ('Nunjucks') :
+          fileType = 'njk'
+          break
+        case ('Express templates') :
+          fileType = 'ejs'
+          break
+        case ('React JSX') :
+          fileType = 'jsx'
+          break
+        default :
+          fileType = answers.chooseView.toLowerCase()
+          break
+      }
+      compiledFileName = fileName.replace('ext', fileType)
+    }
+
+    fs.writeFile('./src/components/' + componentMeta.name + '/' + compiledFileName, result, function (err) {
       if (err) return console.log(chalk.red(err))
       console.log(chalk.green(fileName, 'created!'))
     })
@@ -152,11 +183,12 @@ var fileGen = function (answers) {
     classes: classList
   }
   var componentFolder = './src/components/' + componentName
+
   // 4: A folder is created in /src/components with the component name
   if (!fs.existsSync(componentFolder)) fs.mkdirSync(componentFolder)
   // 5: The following files are created in that folder
-  // - view.php
-  createFile('view.php', componentMeta)
+  // - view.ext
+  createFile('view.ext', componentMeta, 'view', answers)
   // - style.styl
   createFile('style.styl', componentMeta)
   // - script.js (if the user answered yes to Q5)
@@ -166,7 +198,7 @@ var fileGen = function (answers) {
   // - style.ie.styl (if the user answered yes to Q7)
   if (answers.createIESheets) createFile('style.ie.styl', componentMeta)
   // - component.json (This works a little differently and takes the answers as well as the componentMeta data)
-  createFile('component.json', componentMeta, answers)
+  createFile('component.json', componentMeta, 'doc', answers)
 
   finishUp(componentName, answers)
 }
@@ -183,6 +215,7 @@ var finishUp = function (componentName, answers) {
       console.warn(chalk.red('Genreg not detected - Skipping register update.'))
     }
   })
+
   // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
   console.log(chalk.green('Component "', componentName, '" has been created'))
   console.log(chalk.white.bgRed('\n  ** Please note: **  '))
