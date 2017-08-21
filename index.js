@@ -4,6 +4,7 @@ var chalk = require('chalk')
 var inquirer = require('inquirer')
 var exec = require('child_process').exec
 var fs = require('fs')
+var path = require('path')
 
 // TODO: Make the clarity.json file into a config file which sets default values
 // TODO: Add site generator as well as componennt generator to project
@@ -111,7 +112,7 @@ var questionTime = function () {
   // // 5. Does your component use JavaScript?
   // // 6. Do you want to create print stylesheets?
   // // 7. Do you want to create ie stylesheets?
-  // // 8. What will you be building your project in (default: Nunjucks)?
+  // // 8. What will you use for your view layer?
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
     fileGen(answers)
@@ -122,7 +123,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
   console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
-  var scaffold = __dirname + '/scaffold/' + fileName
+  var scaffold = path.resolve(__dirname, '/scaffold/' + fileName)
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
