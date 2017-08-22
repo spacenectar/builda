@@ -5,8 +5,11 @@ var inquirer = require('inquirer')
 var exec = require('child_process').exec
 var fs = require('fs')
 var path = require('path')
+var yml = require('js-yaml')
 
-// TODO: Make the clarity.json file into a config file which sets default values
+// Initialise a config variable
+var config
+
 // TODO: Add site generator as well as componennt generator to project
 
 // Later on we'll need to convert a string to camel case. This function will do that nicely.
@@ -20,16 +23,17 @@ function camelize (str) {
 // 1: User types 'ctgen' the welecome message is immediately displayed
 
 console.log(chalk.magenta('============================================='))
-console.log(chalk.magenta(' Clarity Toolkit Component Generator (ctgen) '))
+console.log(chalk.white(' Clarity Toolkit Component Generator (ctgen) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
-fs.stat('clarity.json', function (err, stat) {
+fs.stat('clarity.yml', function (err, stat) {
   if (err === null) {
-    console.log(chalk.green('Clarity toolkit detected!\nLoading questions...\n\n'))
+    console.log(chalk.green('clarity.yml detected!\nLoading your preferences...\n\n'))
+    config = yml.safeLoad(fs.readFileSync('clarity.yml', 'utf8'))
     questionTime()
   } else if (err.code === 'ENOENT') {
-    console.error(chalk.red('Clarity toolkit is not installed or clarity.js is missing.\nProcess aborted with errors'))
+    console.error(chalk.red('clarity.yml not found. Please add one to the root of your project. A template can be found at https://git.io/v5Tt2 \nProcess aborted with errors'))
     process.exit(1)
   }
 })
@@ -57,25 +61,6 @@ var questions = [
     }
   },
   {
-    type: 'input',
-    name: 'userName',
-    message: 'What is your full name?',
-    validate: function (value) {
-      var pass = value.length > 0
-      if (pass) return true
-      return 'Your name cannot be empty'
-    }
-  },
-  {
-    type: 'input',
-    name: 'userGithub',
-    message: 'What is your github username?',
-    validate: function (value) {
-      if (!value.length) return 'Github username field cannot be empty'
-      return true
-    }
-  },
-  {
     type: 'confirm',
     name: 'usesJavaScript',
     message: 'Does your component use JavaScript?',
@@ -92,27 +77,11 @@ var questions = [
     name: 'createIESheets',
     message: 'Do you want to add IE specifc stylesheets?',
     default: false
-  },
-  {
-    type: 'list',
-    choices: [ 'Nunjucks', 'PHP', 'Express templates', 'React JSX' ],
-    name: 'chooseView',
-    message: 'What will you be building your project in??',
-    default: 'false'
   }
 ]
 
+// Ask the user the predefined questions
 var questionTime = function () {
-  // 3: User is asked the following quetsions:
-
-  // // 1. What is your component called?
-  // // 2. Please describe the component
-  // // 3. What is your full name?
-  // // 4. What is your Github username?
-  // // 5. Does your component use JavaScript?
-  // // 6. Do you want to create print stylesheets?
-  // // 7. Do you want to create ie stylesheets?
-  // // 8. What will you use for your view layer?
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
     fileGen(answers)
@@ -123,7 +92,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
   console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
-  var scaffold = path.resolve(__dirname, '/scaffold/' + fileName)
+  var scaffold = path.join(__dirname, '/scaffold/', fileName)
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
@@ -137,32 +106,17 @@ var createFile = function (fileName, componentMeta, type, answers) {
       var d = new Date()
       result = result.replace(/%cfname%/g, answers.componentName)
       result = result.replace(/%cdesc%/g, answers.componentDesc)
-      result = result.replace(/%cauthor%/g, answers.userName)
-      result = result.replace(/%cagithub%/g, answers.userGithub)
+      result = result.replace(/%cauthor%/g, config.author.name)
+      result = result.replace(/%cagithub%/g, config.author.giturl)
       result = (answers.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
       // BUG: getMonth() has returned the wrong month.
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear())
     }
+
     var compiledFileName = fileName
 
     if (type === 'view') {
-      // View files should have a different extention based on which system the user is creating
-      var fileType
-      switch (answers.chooseView) {
-        case ('Nunjucks') :
-          fileType = 'njk'
-          break
-        case ('Express templates') :
-          fileType = 'ejs'
-          break
-        case ('React JSX') :
-          fileType = 'jsx'
-          break
-        default :
-          fileType = answers.chooseView.toLowerCase()
-          break
-      }
-      compiledFileName = fileName.replace('ext', fileType)
+      compiledFileName = fileName.replace('ext', config.defaults.viewType)
     }
 
     fs.writeFile('./src/components/' + componentMeta.name + '/' + compiledFileName, result, function (err) {
