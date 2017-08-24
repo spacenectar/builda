@@ -18,7 +18,6 @@ Nice to have: [NTH]
 ## Tasks
 
 1. AF: [LP] Rename project (Name TBD)
-2. AF: Add genReg to project
 3. AF: Add init (creates config file) to project
 4. AF: [NTH] Add basic scaffolding tool to project
 
