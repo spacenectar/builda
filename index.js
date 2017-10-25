@@ -4,6 +4,13 @@ var chalk = require('chalk')
 var inquirer = require('inquirer')
 var exec = require('child_process').exec
 var fs = require('fs')
+var path = require('path')
+var yml = require('js-yaml')
+
+// Initialise a config variable
+var config
+
+// TODO: Add basic project generator as well as component generator to project
 
 // Later on we'll need to convert a string to camel case. This function will do that nicely.
 function camelize (str) {
@@ -16,16 +23,17 @@ function camelize (str) {
 // 1: User types 'ctgen' the welecome message is immediately displayed
 
 console.log(chalk.magenta('============================================='))
-console.log(chalk.magenta(' Clarity Toolkit Component Generator (ctgen) '))
+console.log(chalk.white(' Clarity Toolkit Component Generator (ctgen) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
-fs.stat('clarity.js', function (err, stat) {
+fs.stat(path.join(__dirname, '/clarity.yml'), function (err, stat) {
   if (err === null) {
-    console.log(chalk.green('Clarity toolkit detected!\nLoading questions...\n\n'))
+    console.log(chalk.green('clarity.yml detected!\nLoading your preferences...\n\n'))
+    config = yml.safeLoad(fs.readFileSync(path.join(__dirname, '/clarity.yml'), 'utf8'))
     questionTime()
   } else if (err.code === 'ENOENT') {
-    console.error(chalk.red('Clarity toolkit is not installed or clarity.js is missing.\nProcess aborted with errors'))
+    console.error(chalk.red('clarity.yml not found. Please add one to the root of your project. A template can be found at https://git.io/v5Tt2 \nProcess aborted with errors'))
     process.exit(1)
   }
 })
@@ -53,25 +61,6 @@ var questions = [
     }
   },
   {
-    type: 'input',
-    name: 'userName',
-    message: 'What is your full name?',
-    validate: function (value) {
-      var pass = value.length > 0
-      if (pass) return true
-      return 'Your name cannot be empty'
-    }
-  },
-  {
-    type: 'input',
-    name: 'userGithub',
-    message: 'What is your github username?',
-    validate: function (value) {
-      if (!value.length) return 'Github username field cannot be empty'
-      return true
-    }
-  },
-  {
     type: 'confirm',
     name: 'usesJavaScript',
     message: 'Does your component use JavaScript?',
@@ -91,29 +80,20 @@ var questions = [
   }
 ]
 
+// Ask the user the predefined questions
 var questionTime = function () {
-  // 3: User is asked the following quetsions:
-
-  // // 1. What is your component called?
-  // // 2. Please describe the component
-  // // 3. What is your full name?
-  // // 4. What is your Github username?
-  // // 5. Does your component use JavaScript?
-  // // 6. Do you want to create print stylesheets?
-  // // 7. Do you want to create ie stylesheets?
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
     fileGen(answers)
   })
 }
 
-// TODO: Allow a filename to be specified
-var createFile = function (fileName, componentMeta, doc) {
+var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
-  console.log(chalk.blue('\rCreating', fileName, '...'))
+  console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
-  var scaffold = __dirname + '/scaffold/' + fileName
-  fs.readFile(scaffold, 'utf8', function (err, data) {
+  var scaffold = path.join(__dirname, '/scaffold/', fileName)
+  var processed = fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
     var result = data.replace(/%cname%/g, componentMeta.name)
@@ -122,22 +102,24 @@ var createFile = function (fileName, componentMeta, doc) {
     // Replace %classes% with the correct classes string
     result = result.replace(/%classes%/g, componentMeta.classes)
 
-    if (doc) {
+    if (type === 'doc') {
       var d = new Date()
-      result = result.replace(/%cfname%/g, doc.componentName)
-      result = result.replace(/%cdesc%/g, doc.componentDesc)
-      result = result.replace(/%cauthor%/g, doc.userName)
-      result = result.replace(/%cagithub%/g, doc.userGithub)
-      result = (doc.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
+      result = result.replace(/%cfname%/g, answers.componentName)
+      result = result.replace(/%cdesc%/g, answers.componentDesc)
+      result = result.replace(/%cauthor%/g, config.author.name)
+      result = result.replace(/%cagithub%/g, config.author.giturl)
+      result = (answers.usesJavaScript) ? result.replace(/%has_js%/g, true) : result.replace(/%has_js%/g, false)
       // BUG: getMonth() has returned the wrong month.
       result = result.replace(/%creationdate%/g, d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear())
     }
 
-    fs.writeFile('./src/components/' + componentMeta.name + '/' + fileName, result, function (err) {
+    var compiledFileName = (type === 'view') ? fileName.replace('ext', config.defaults.viewType) : fileName
+
+    fs.writeFile(path.join(__dirname, '/src/components/' + componentMeta.name + '/' + compiledFileName), result, function (err) {
       if (err) return console.log(chalk.red(err))
-      console.log(chalk.green(fileName, 'created!'))
     })
   })
+  return console.log(chalk.green('Done'))
 }
 
 var fileGen = function (answers) {
@@ -151,7 +133,8 @@ var fileGen = function (answers) {
     namecc: componentNameCamel,
     classes: classList
   }
-  var componentFolder = './src/components/' + componentName
+  var componentFolder = path.join(__dirname, '/src/components/', componentName)
+
   // 4: A folder is created in /src/components with the component name
   if (!fs.existsSync(componentFolder)) {
     try {
@@ -161,8 +144,8 @@ var fileGen = function (answers) {
     }
   }
   // 5: The following files are created in that folder
-  // - view.php
-  createFile('view.php', componentMeta)
+  // - view.ext
+  createFile('view.ext', componentMeta, 'view', answers)
   // - style.styl
   createFile('style.styl', componentMeta)
   // - script.js (if the user answered yes to Q5)
@@ -172,26 +155,61 @@ var fileGen = function (answers) {
   // - style.ie.styl (if the user answered yes to Q7)
   if (answers.createIESheets) createFile('style.ie.styl', componentMeta)
   // - component.json (This works a little differently and takes the answers as well as the componentMeta data)
-  createFile('component.json', componentMeta, answers)
-
-  finishUp(componentName, answers)
+  createFile('component.json', componentMeta, 'doc', answers)
+  // - finish up
+  setTimeout(function () {
+    finishUp(componentName, answers, genReg())
+  }, 500)
 }
 
-// FIXME: This fires before all files have been generated. That needs fixing.
-var finishUp = function (componentName, answers) {
-  // 6. The component register is automatically updated with the new component
-  fs.stat('genreg.js', function (err, stat) {
-    console.log(chalk.blue('Looking for genreg.js...\r'))
-    if (err === null) {
-      console.log(chalk.green('Genreg detected! - Updating component register...'))
-      exec('node genreg')
-    } else if (err.code === 'ENOENT') {
-      console.warn(chalk.red('Genreg not detected - Skipping register update.'))
-    }
+var genReg = function () {
+  console.log(chalk.blue('Updating component register...'))
+// A string containing the header for the component register
+  var regHeader = '<!DOCTYPE html><html lang=en><head><meta charset=UTF-8><title>Clarity component register</title><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css><style>body{padding:10px 10%}table{width:100%;margin-bottom:20px;border:1px solid #ccc;margin-top:20px}thead th{background-color:#ccc;padding:10px}tr:nth-child(even){background-color:#f4f4f4}td,th{padding:5px 10px}h1{margin-bottom:20px}</style></head> <body> <h1>Component Register</h1> <p>This document is a list of all of the components that the clarity theme currently has available. Please do not edit this file, it is generated automatically. To regenerate it type `node genreg` in the project root.</p> <table> <thead> <tr> <th>Component Name</th> <th>Latest version</th> <th>Creation ticket</th> <th>Author</th> <th>Description</th> <th>JS?</th> </tr> </thead> <tbody>'
+ // A string containing the footer for the component register
+  var regFooter = '<p>Please note: This file relies on a component being correctly documented and may not be 100% accurate</p></tbody></table></body></html>'
+
+ // Loop through all the files in the component folder
+  var getFiles = function () {
+    console.log(chalk.blue('Searching for components...'))
+    var components = fs.readdirSync(path.join(__dirname, 'src/components'))
+    var string = ''
+    console.log(chalk.white(components.length, 'components found'))
+    components.forEach(function (dir) {
+      var file = path.join(__dirname, '/src/components/', dir, '/component.json')
+      string = string + readFiles(file)
+    }, this)
+    return string
+  }
+ // Reach each file and pass the contents to createRows()
+  var readFiles = function (file) {
+    var obj = JSON.parse(fs.readFileSync(file, 'utf8'))
+    return createRows(obj)
+  }
+
+ // Generate a HMTL table row with all the component data
+  var createRows = function (obj) {
+    var jsStat = (obj.has_js) ? 'yes' : 'no'
+    var hasTicket = (obj.creation_ticket) ? '<a href="https://dsdmoj.atlassian.net/browse/' + obj.creation_ticket + '">Jira Link</a>' : 'No ticket specified'
+    return ('<tr><td>' + obj.name + '</td><td>' + obj.version + '</td><td>' + hasTicket + '</td><td><a href="http://github.com/' + obj.creator.github_username + '">' + obj.creator.name + '</a></td><td>' + obj.description + '</td><td>' + jsStat + '</td></tr>')
+  }
+
+ // merge the header and footer with the data from getFiles()
+  var createRegister = function () {
+    return regHeader + getFiles() + regFooter
+  }
+
+ // Create the component-register file
+  fs.writeFile(path.join(__dirname, '/component-register.html'), createRegister(), function (err) {
+    if (err) return console.log(chalk.red(err))
+    console.log(chalk.green('Component register updated!'))
   })
-  // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
+}
+
+var finishUp = function (componentName, answers) {
   console.log(chalk.green('Component "', componentName, '" has been created'))
+  // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
   console.log(chalk.white.bgRed('\n  ** Please note: **  '))
   console.warn(chalk.white('\nThis has generated most of the documentation required in component.json but please ensure you keep it up to date and add any additional information to it.'))
-  if (answers.usesJavaScript) console.warn(chalk.white('\nAs you have specified JavaScript is being used, an example plugin has been created for you. Please ensure you rename this file to the name of your function and keep to the "one function per file" principle\n'))
+  if (answers.usesJavaScript) console.warn(chalk.white('\nAs you have specified JavaScript is being used, an example plugin has been created for you. Please ensure you rename this file to the name of your function and keep to the "one function per file" principle\n'))  
 }
