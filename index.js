@@ -153,7 +153,13 @@ var fileGen = function (answers) {
   }
   var componentFolder = './src/components/' + componentName
   // 4: A folder is created in /src/components with the component name
-  if (!fs.existsSync(componentFolder)) fs.mkdirSync(componentFolder)
+  if (!fs.existsSync(componentFolder)) {
+    try {
+      fs.mkdirSync(componentFolder)
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
   // 5: The following files are created in that folder
   // - view.php
   createFile('view.php', componentMeta)
