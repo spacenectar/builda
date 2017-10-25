@@ -10,6 +10,9 @@ var yml = require('js-yaml')
 // Initialise a config variable
 var config
 
+// Set the project root
+var projectRoot = path.dirname(require.main.filename)
+
 // TODO: Add basic project generator as well as component generator to project
 
 // Later on we'll need to convert a string to camel case. This function will do that nicely.
@@ -20,6 +23,8 @@ function camelize (str) {
   })
 }
 
+
+
 // 1: User types 'ctgen' the welecome message is immediately displayed
 
 console.log(chalk.magenta('============================================='))
@@ -27,10 +32,10 @@ console.log(chalk.white(' Clarity Toolkit Component Generator (ctgen) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
-fs.stat(path.join(__dirname, '/clarity.yml'), function (err, stat) {
+fs.stat(path.join(projectRoot, '/clarity.yml'), function (err, stat) {
   if (err === null) {
     console.log(chalk.green('clarity.yml detected!\nLoading your preferences...\n\n'))
-    config = yml.safeLoad(fs.readFileSync(path.join(__dirname, '/clarity.yml'), 'utf8'))
+    config = yml.safeLoad(fs.readFileSync(path.join(projectRoot, '/clarity.yml'), 'utf8'))
     questionTime()
   } else if (err.code === 'ENOENT') {
     console.error(chalk.red('clarity.yml not found. Please add one to the root of your project. A template can be found at https://git.io/v5Tt2 \nProcess aborted with errors'))
@@ -92,7 +97,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
   console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
-  var scaffold = path.join(__dirname, '/scaffold/', fileName)
+  var scaffold = path.join(projectRoot, '/scaffold/', fileName)
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
@@ -115,7 +120,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
 
     var compiledFileName = (type === 'view') ? fileName.replace('ext', config.defaults.viewType) : fileName
 
-    fs.writeFile(path.join(__dirname, '/src/components/' + componentMeta.name + '/' + compiledFileName), result, function (err) {
+    fs.writeFile(path.join(projectRoot, '/src/components/' + componentMeta.name + '/' + compiledFileName), result, function (err) {
       if (err) return console.log(chalk.red(err))
     })
   })
@@ -133,7 +138,7 @@ var fileGen = function (answers) {
     namecc: componentNameCamel,
     classes: classList
   }
-  var componentFolder = path.join(__dirname, '/src/components/', componentName)
+  var componentFolder = path.join(projectRoot, '/src/components/', componentName)
 
   // 4: A folder is created in /src/components with the component name
   if (!fs.existsSync(componentFolder)) {
@@ -172,11 +177,11 @@ var genReg = function () {
  // Loop through all the files in the component folder
   var getFiles = function () {
     console.log(chalk.blue('Searching for components...'))
-    var components = fs.readdirSync(path.join(__dirname, 'src/components'))
+    var components = fs.readdirSync(path.join(projectRoot, 'src/components'))
     var string = ''
     console.log(chalk.white(components.length, 'components found'))
     components.forEach(function (dir) {
-      var file = path.join(__dirname, '/src/components/', dir, '/component.json')
+      var file = path.join(projectRoot, '/src/components/', dir, '/component.json')
       string = string + readFiles(file)
     }, this)
     return string
@@ -200,7 +205,7 @@ var genReg = function () {
   }
 
  // Create the component-register file
-  fs.writeFile(path.join(__dirname, '/component-register.html'), createRegister(), function (err) {
+  fs.writeFile(path.join(projectRoot, '/component-register.html'), createRegister(), function (err) {
     if (err) return console.log(chalk.red(err))
     console.log(chalk.green('Component register updated!'))
   })
