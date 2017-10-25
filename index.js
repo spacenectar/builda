@@ -93,7 +93,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
   console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
   var scaffold = path.join(__dirname, '/scaffold/', fileName)
-  var processed = fs.readFile(scaffold, 'utf8', function (err, data) {
+  fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
     var result = data.replace(/%cname%/g, componentMeta.name)
