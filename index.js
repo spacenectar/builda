@@ -32,7 +32,7 @@ console.log(chalk.white(' Clarity Toolkit Component Generator (ctgen) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
 // 2: ctgen checks that it is being called in the root folder and displays an error otherwise
-fs.stat(path.join(projectRoot, '/clarity.yml'), function (err, stat) {
+fs.stat('clarity.yml', function (err, stat) {
   if (err === null) {
     console.log(chalk.green('clarity.yml detected!\nLoading your preferences...\n\n'))
     config = yml.safeLoad(fs.readFileSync(path.join(projectRoot, '/clarity.yml'), 'utf8'))
