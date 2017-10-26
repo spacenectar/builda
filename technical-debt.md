@@ -7,7 +7,7 @@ Use this file to track the tech debt that is too small to go into a ticket. Plea
 
 e.g.
 
-`1. AW: Add print stylesheet`
+`1. AF: Add print stylesheet`
 
 You can tag items with priorities if you want. Normal priority should remain untagged, others should be tagged as follows:
 
@@ -18,6 +18,7 @@ Nice to have: [NTH]
 ## Tasks
 
 1. AF: [LP] Rename project (Name TBD)
+2. Add duplicate check
 3. AF: Add init (creates config file) to project
 4. AF: [NTH] Add basic scaffolding tool to project
 
