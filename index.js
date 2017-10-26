@@ -97,7 +97,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
   // Tell the user what is happening
   console.log(chalk.blue('\rGenerating file from', fileName, '...'))
   // Bring in the scaffold file
-  var scaffold = path.join(projectRoot, '/scaffold/', fileName)
+  var scaffold = path.join('./scaffold/', fileName)
   fs.readFile(scaffold, 'utf8', function (err, data) {
     if (err) return console.log(chalk.red(err))
     // Replace %cname% with component name in dashed format
@@ -120,7 +120,7 @@ var createFile = function (fileName, componentMeta, type, answers) {
 
     var compiledFileName = (type === 'view') ? fileName.replace('ext', config.defaults.viewType) : fileName
 
-    fs.writeFile(path.join(projectRoot, '/src/components/' + componentMeta.name + '/' + compiledFileName), result, function (err) {
+    fs.writeFile(path.join('./src/components/' + componentMeta.name + '/' + compiledFileName), result, function (err) {
       if (err) return console.log(chalk.red(err))
     })
   })
@@ -138,7 +138,7 @@ var fileGen = function (answers) {
     namecc: componentNameCamel,
     classes: classList
   }
-  var componentFolder = path.join(projectRoot, '/src/components/', componentName)
+  var componentFolder = path.join('./src/components/', componentName)
 
   // 4: A folder is created in /src/components with the component name
   if (!fs.existsSync(componentFolder)) {
@@ -163,10 +163,12 @@ var fileGen = function (answers) {
   createFile('component.json', componentMeta, 'doc', answers)
   // - finish up
   setTimeout(function () {
-    finishUp(componentName, answers, genReg())
+    // finishUp(componentName, answers, genReg())
+    finishUp(componentName, answers)
   }, 500)
 }
 
+// FIXME: This isn't working, possibly replace fs.readdir with glob
 var genReg = function () {
   console.log(chalk.blue('Updating component register...'))
 // A string containing the header for the component register
@@ -177,13 +179,15 @@ var genReg = function () {
  // Loop through all the files in the component folder
   var getFiles = function () {
     console.log(chalk.blue('Searching for components...'))
-    var components = fs.readdirSync(path.join(projectRoot, 'src/components'))
     var string = ''
-    console.log(chalk.white(components.length, 'components found'))
-    components.forEach(function (dir) {
-      var file = path.join(projectRoot, '/src/components/', dir, '/component.json')
-      string = string + readFiles(file)
-    }, this)
+    fs.readdir(path.join('./src/components'), function (err, list) {
+      if (err) console.log(err)
+      console.log(chalk.white(this.length, 'components found'))
+      this.forEach(function (dir) {
+        var file = path.join('./src/components/', dir, '/component.json')
+        string = string + readFiles(file)
+      }, this)
+    })
     return string
   }
  // Reach each file and pass the contents to createRows()
@@ -205,7 +209,7 @@ var genReg = function () {
   }
 
  // Create the component-register file
-  fs.writeFile(path.join(projectRoot, '/component-register.html'), createRegister(), function (err) {
+  fs.writeFile(path.join('component-register.html'), createRegister(), function (err) {
     if (err) return console.log(chalk.red(err))
     console.log(chalk.green('Component register updated!'))
   })
@@ -216,5 +220,5 @@ var finishUp = function (componentName, answers) {
   // 7. A message is displayed to the user that component [component name] has been created and is ready to edit
   console.log(chalk.white.bgRed('\n  ** Please note: **  '))
   console.warn(chalk.white('\nThis has generated most of the documentation required in component.json but please ensure you keep it up to date and add any additional information to it.'))
-  if (answers.usesJavaScript) console.warn(chalk.white('\nAs you have specified JavaScript is being used, an example plugin has been created for you. Please ensure you rename this file to the name of your function and keep to the "one function per file" principle\n'))  
+  if (answers.usesJavaScript) console.warn(chalk.white('\nAs you have specified JavaScript is being used, an example plugin has been created for you. Please ensure you rename this file to the name of your function and keep to the "one function per file" principle\n'))
 }
