@@ -23,8 +23,6 @@ function camelize (str) {
   })
 }
 
-
-
 // 1: User types 'ctgen' the welecome message is immediately displayed
 
 console.log(chalk.magenta('============================================='))
