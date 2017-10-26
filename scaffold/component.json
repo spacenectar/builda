@@ -16,7 +16,7 @@
   },
   "backend_classes" : {},
   "has_js" : %has_js%,
-  "creation_ticket" : "",
+  "integrated" : false,
   "changelog" : [
     {
       "date" : "%creationdate%",
