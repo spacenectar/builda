@@ -1,10 +1,10 @@
 {
-  "name": "ctgen",
-  "version": "1.6.6",
+  "name": "buildcom",
+  "version": "0.1.1",
   "bin": {
     "ctgen": "index.js"
   },
-  "description": "A component generator for the clarity toolkit",
+  "description": "A component generator for react",
   "main": "index.js",
   "scripts": {
     "start": "index.js",
@@ -13,7 +13,7 @@
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/foxleigh81/ctgen.git"
+    "url": "git+https://github.com/foxleigh81/buildcom.git"
   },
   "author": {
     "name": "Alex Foxleigh",
@@ -21,9 +21,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/foxleigh81/component-gen/issues"
+    "url": "https://github.com/foxleigh81/buildcom/issues"
   },
-  "homepage": "https://github.com/foxleigh81/component-gen#readme",
+  "homepage": "https://github.com/foxleigh81/buildcom/#readme",
   "dependencies": {
     "chalk": "^1.1.3",
     "inquirer": "^3.0.6",
