@@ -31,6 +31,18 @@ const questions = [
     default: false
   },
   {
+    type: 'confirm',
+    name: 'createStories',
+    message: 'Do you want to include Storybook stories?',
+    default: true
+  },
+  {
+    type: 'confirm',
+    name: 'createSpec',
+    message: 'Do you want to include Jest tests?',
+    default: true
+  },
+  {
     type: 'input',
     name: 'createDirectories',
     message: 'If you want extra directories, type them here separated by commas. If not, leave it blank',
@@ -56,25 +68,45 @@ const generateFile = (name, k, s) => {
   })
 }
 
+const generateDirectory = (name, dir) => {
+  const output = dir ? path.join(dir, name) : name
+  if (!fs.existsSync(output)) {
+    try {
+      fs.mkdirSync(output)
+    } catch (exception) {
+      throw new Error(exception)
+    }
+  }
+}
+
+const skip = type => console.log(chalk.blue(`Skipping generation of ${type} due to user selection`))
+
 var fileGen = function (answers) {
-  const {componentName, useTS, createStyleSheet, createDirectories} = answers
+  const {componentName, useTS, createStyleSheet, createDirectories, createSpec, createStories} = answers
   console.log(chalk.blue('\n\nCreating folders for', componentName, 'component'))
   var componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
   var componentNameKebab = _.kebabCase(componentName)
 
-  
-  // Create the directory
-  if (!fs.existsSync(componentNameKebab)) {
-    try {
-      fs.mkdirSync(componentNameKebab)
-    } catch (exception) {
-      console.error(exception)
-    }
-  }
-  
+  // Create the component directory
+  generateDirectory(componentNameKebab)
+
   // Generate the index file
   generateFile('index.tsx', componentNameKebab, componentNameSentenceCase)
+
+  // Generate the stories file
+  createStories ? generateFile('index.stories.mdx', componentNameKebab, componentNameSentenceCase) : skip('story files')
   
+  // Generate the sass file
+  createStyleSheet ? generateFile('styles.module.scss', componentNameKebab, componentNameSentenceCase) : skip('stylesheets')
+  
+  // Generate the spec file
+  createSpec ? generateFile('index.spec.tsx', componentNameKebab, componentNameSentenceCase) : skip('spec files')
+  
+  const dirArray = createDirectories.split(',')
+
+  dirArray.length 
+    ? dirArray.map(dirName => generateDirectory(dirName, componentNameKebab))
+    : skip('custom directories')
 
   // finish up
   setTimeout(function () {

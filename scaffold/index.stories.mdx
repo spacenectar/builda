@@ -1,0 +1,29 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import %ComponentExample% from './index'
+
+export default { title: '%ComponentExample%'}
+
+<Meta
+  title="Custom/%ComponentExample%"
+  component={%ComponentExample%}
+/>
+
+# %ComponentExample%
+
+The description for the %ComponentExample% component
+
+<Preview>
+  <Story name="Default">
+    <%ComponentExample% name="Test Name" color="blue">
+      Hello World
+    </%ComponentExample% >
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Default">
+    <%ComponentExample% name="Test Name" color="red">
+      Hello World
+    </%ComponentExample% >
+  </Story>
+</Preview>
