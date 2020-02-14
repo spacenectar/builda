@@ -47,6 +47,12 @@ const questions = [
     name: 'createDirectories',
     message: 'If you want extra directories, type them here separated by commas. If not, leave it blank',
     default: ''
+  },
+  {
+    type: 'confirm',
+    name: 'createReadme',
+    message: 'Do you want to generate a basic README.md file?',
+    default: false
   }
 ]
 
@@ -62,9 +68,12 @@ var appDir = path.dirname(require.main.filename)
 
 
 const generateFile = (name, k, s) => {
-  // Generates the files
+  // Generates the files and replaces any found strings
   const src = fs.readFileSync(`${appDir}/scaffold/${name}`, 'utf8')
               .replace(/%ComponentExample%/g, s)
+              .replace(/%ComponentExampleKebab%/g, k)
+              // A few extra bits need doing if it should be use in a sentence
+              .replace(/%ComponentExampleSentence%/g, _.startCase(s))
   fs.writeFile(path.join(k, name), src, err => {
     err && console.error(err)
   })
@@ -84,16 +93,28 @@ const generateDirectory = (name, dir) => {
 const skip = type => console.log(chalk.blue(`Skipping generation of ${type} due to user selection`))
 
 var fileGen = function (answers) {
-  const {componentName, useTS, createStyleSheet, createDirectories, createSpec, createStories} = answers
+  const {
+    componentName, 
+    useTS, 
+    createStyleSheet, 
+    createDirectories, 
+    createSpec, 
+    createStories, 
+    createReadme
+  } = answers
+
   console.log(chalk.blue('\n\nCreating folders for', componentName, 'component'))
+  
   var componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
   var componentNameKebab = _.kebabCase(componentName)
+
+  var ext = useTS ? 'ts' : 'js'
 
   // Create the component directory
   generateDirectory(componentNameKebab)
 
   // Generate the index file
-  generateFile('index.tsx', componentNameKebab, componentNameSentenceCase)
+  generateFile(`index.${ext}x`, componentNameKebab, componentNameSentenceCase)
 
   // Generate the stories file
   createStories ? generateFile('index.stories.mdx', componentNameKebab, componentNameSentenceCase) : skip('story files')
@@ -102,7 +123,10 @@ var fileGen = function (answers) {
   createStyleSheet ? generateFile('styles.module.scss', componentNameKebab, componentNameSentenceCase) : skip('stylesheets')
   
   // Generate the spec file
-  createSpec ? generateFile('index.spec.tsx', componentNameKebab, componentNameSentenceCase) : skip('spec files')
+  createSpec ? generateFile(`index.spec.${ext}x`, componentNameKebab, componentNameSentenceCase) : skip('spec files')
+  
+  // Generate the readme file
+  createReadme ? generateFile('README.md', componentNameKebab, componentNameSentenceCase) : skip('README file')
   
   const dirArray = createDirectories.split(',')
 

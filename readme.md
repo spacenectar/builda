@@ -1,7 +1,6 @@
-# A component generator for react
+![Logo](./logo.png)
 
-[![Build Status](https://travis-ci.org/foxleigh81/ctgen.svg?branch=master)](https://travis-ci.org/foxleigh81/ctgen)
-
+# A component generator for React
 
 ## Getting Started
 
@@ -19,7 +18,13 @@ npm install -g buildcon
 
 Then you can run it by typing `buildcon`
 
-## Options (NOT YET IMPLEMENTED)
+This will generate a react component in your current working directory.
+
+## Screenshot
+
+![How buildcom runs](./example.gif)
+
+<!-- ## Options (NOT YET IMPLEMENTED)
 
 If you call buildcom without any arguments, the component folder will be created in your current working directory, it will also ask you some questions in order to build the component out properly.
 
@@ -42,4 +47,15 @@ Argument | Description | default
 `-j`  | Shorter alias for `--use-test`
 `-c`  | Shorter alias for `--use-sass`
 `-t`  | Shorter alias for `--use-ts`
-`-b` | Shorter alias for `--blank`
+`-b` | Shorter alias for `--blank` -->
+
+## Roadmap
+
+- Add the ability to use command line arguments
+- Make the TypeScript selection do more than just change the file extension
+- Add the ability to generate blank files
+- Add the abiltiy to choose the directory to generate the components
+- Add support for stylesheets which are not SASS modules
+
+## Possible future developments
+- Add the ability to generate for frameworks other than React
