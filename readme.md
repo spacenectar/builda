@@ -56,6 +56,7 @@ Argument | Description | default
 - Add the ability to generate blank files
 - Add the abiltiy to choose the directory to generate the components
 - Add support for stylesheets which are not SASS modules
+- Add support for non-MDX storybook files
 
 ## Possible future developments
 - Add the ability to generate for frameworks other than React
