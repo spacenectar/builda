@@ -13,10 +13,10 @@ npx buildcom
 If you wish to use it without an internet connection then you can install and use it locally:
 
 ```bash
-npm install -g buildcon
+npm install -g buildcom
 ```
 
-Then you can run it by typing `buildcon`
+Then you can run it by typing `buildcom`
 
 This will generate a react component in your current working directory.
 
