@@ -5,67 +5,80 @@ const inquirer = require('inquirer')
 const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
+const questions = require('./questions')
 
-const questions = [
-  {
-    type: 'input',
-    name: 'componentName',
-    message: 'What is your component called?',
-    default: 'My New Component',
-    validate: function (value) {
-      var pass = value.length > 0
-      if (pass) return true
-      return 'Component name cannot be empty'
+const argv = require('yargs')
+  .usage('Usage: $0 [options]')
+  .options({
+    'output' : {
+      description: 'Specifies an output directory',
+      required: false,
+      alias: 'o',
+      type: 'string'
+    },
+    'name' : {
+      description: 'Specifies a component name',
+      required: false,
+      alias: 'n',
+      type: 'string'
+    },
+    'dirs' : {
+      description: 'A comma-separated list of directory names to generate',
+      required: false,
+      alias: 'd',
+      type: 'string'
+    },
+    'storybook' : {
+      description: 'Generate storybook files?',
+      required: false,
+      alias: 's',
+      boolean: true
+    },
+    'jest' : {
+      description: 'Generate jest files?',
+      required: false,
+      alias: 'j',
+      boolean: true
+    },
+    'css' : {
+      description: 'Generate CSS files (currently only SASS modules are supported)?',
+      required: false,
+      alias: 'c',
+      boolean: true
+    },
+    'typescript' : {
+      description: 'Use TypeScript?',
+      required: false,
+      alias: 't',
+      boolean: true
+    },
+    'blank' : {
+      description: 'Only generate blank files?',
+      required: false,
+      alias: 'b',
+      boolean: true
+    },
+    'readme' : {
+      description: 'Generate a README file?',
+      required: false,
+      alias: 'r',
+      boolean: true
     }
-  },
-  {
-    type: 'confirm',
-    name: 'useTS',
-    message: 'Do you want to use TypeScript?',
-    default: true
-  },
-  {
-    type: 'confirm',
-    name: 'createStyleSheet',
-    message: 'Do you want to add a Stylesheet?',
-    default: false
-  },
-  {
-    type: 'confirm',
-    name: 'createStories',
-    message: 'Do you want to include Storybook stories?',
-    default: true
-  },
-  {
-    type: 'confirm',
-    name: 'createSpec',
-    message: 'Do you want to include Jest tests?',
-    default: true
-  },
-  {
-    type: 'input',
-    name: 'createDirectories',
-    message: 'If you want extra directories, type them here separated by commas. If not, leave it blank',
-    default: ''
-  },
-  {
-    type: 'confirm',
-    name: 'createReadme',
-    message: 'Do you want to generate a basic README.md file?',
-    default: false
-  }
-]
+  })
+  .help('h')
+  .alias('h', 'help')
+  .argv
+
+const args = process.argv.slice(2)
+const appDir = path.dirname(require.main.filename)
 
 // Ask the user the predefined questions
-var questionTime = function () {
+const questionTime = () => {
   console.log(chalk.yellow('Please answer the following:\n\n'))
   inquirer.prompt(questions).then(function (answers) {
     fileGen(answers)
   })
 }
-
-var appDir = path.dirname(require.main.filename)
-
 
 const generateFile = (name, k, s) => {
   // Generates the files and replaces any found strings
@@ -140,14 +153,36 @@ var fileGen = function (answers) {
   }, 500)
 }
 
-var finishUp = function (componentName, answers) {
+const finishUp = function (componentName, answers) {
   console.log(chalk.green('Component "', componentName, '" has been created'))
 }
 
-
-
+const throwError = (msg) => {
+  console.error(chalk.red.bold('Fatal error:'), msg)
+  process.exit(1)
+}
+  
 console.log(chalk.magenta('============================================='))
 console.log(chalk.white(' React component builder (buildcom) '))
 console.log(chalk.magenta('=============================================\n\n'))
 
-questionTime()
+if (args.length === 0 ) {
+  questionTime() 
+} else {
+  console.log(chalk.yellow('Argument mode, skipping questionnaire'))
+  let answers = {}
+
+  const {output, name, dirs, storybook, jest, css, typescript, readme, blank} = argv
+
+  output ? answers.outputDirectory = output: throwError('Output parameter is required')
+  name ? answers.componentName = name : throwError('Name parameter is required')
+  answers.createDirectories = dirs ? dirs : ''
+  answers.createStories = storybook ? storybook : false
+  answers.createSpec = jest ? jest : false
+  answers.createStyleSheet = css ? css : false
+  answers.useTS = typescript ? typescript : false
+  answers.createReadme = readme ? readme : false
+  answers.createStories = blank ? blank : false
+  
+  fileGen(answers)
+}
