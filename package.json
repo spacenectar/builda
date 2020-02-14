@@ -2,7 +2,7 @@
   "name": "buildcom",
   "version": "0.1.1",
   "bin": {
-    "ctgen": "index.js"
+    "buildcom": "index.js"
   },
   "description": "A component generator for react",
   "main": "index.js",

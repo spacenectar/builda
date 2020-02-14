@@ -58,10 +58,12 @@ var questionTime = function () {
   })
 }
 
+var appDir = path.dirname(require.main.filename)
+
 
 const generateFile = (name, k, s) => {
   // Generates the files
-  const src = fs.readFileSync(`./scaffold/${name}`, 'utf8')
+  const src = fs.readFileSync(`${appDir}/scaffold/${name}`, 'utf8')
               .replace(/%ComponentExample%/g, s)
   fs.writeFile(path.join(k, name), src, err => {
     err && console.error(err)

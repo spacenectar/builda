@@ -38,8 +38,7 @@ Argument | Description | default
 `-o` | Shorter alias for `--output`
 `-n` | Shorter alias for `--name`
 `-i` | Shorter alias for `--use-images`
-`-h` | Shorter alias for `--use-helpers`
-`-s`  | Shorter alias for `--use-storybook`
+`-d` | Shorter alias for `--use-helpers`
 `-j`  | Shorter alias for `--use-test`
 `-c`  | Shorter alias for `--use-sass`
 `-t`  | Shorter alias for `--use-ts`
