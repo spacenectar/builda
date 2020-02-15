@@ -6,71 +6,11 @@ const fs = require('fs')
 const path = require('path')
 const _ = require('lodash')
 const questions = require('./questions')
+const arguments = require('./arguments')
 
 const argv = require('yargs')
   .usage('Usage: $0 [options]')
-  .options({
-    'output' : {
-      description: 'Specifies an output directory',
-      required: false,
-      alias: 'o',
-      type: 'string'
-    },
-    'name' : {
-      description: 'Specifies a component name',
-      required: false,
-      alias: 'n',
-      type: 'string'
-    },
-    'dirs' : {
-      description: 'A comma-separated list of directory names to generate',
-      required: false,
-      alias: 'd',
-      type: 'string'
-    },
-    'storybook' : {
-      description: 'Generate storybook files?',
-      required: false,
-      alias: 's',
-      boolean: true
-    },
-    'jest' : {
-      description: 'Generate jest files?',
-      required: false,
-      alias: 'j',
-      boolean: true
-    },
-    'css' : {
-      description: 'Generate CSS files (currently only SASS modules are supported)?',
-      required: false,
-      alias: 'c',
-      boolean: true
-    },
-    'typescript' : {
-      description: 'Use TypeScript?',
-      required: false,
-      alias: 't',
-      boolean: true
-    },
-    'blank' : {
-      description: 'Only generate blank files?',
-      required: false,
-      alias: 'b',
-      boolean: true
-    },
-    'readme' : {
-      description: 'Generate a README file?',
-      required: false,
-      alias: 'r',
-      boolean: true
-    },
-    'force' : {
-      description: 'Ignores existing directories and overwrites files anyway.',
-      required: false,
-      alias: 'f',
-      boolean: true
-    }
-  })
+  .options(arguments)
   .help('h')
   .alias('h', 'help')
   .argv
@@ -81,28 +21,59 @@ const appDir = path.dirname(require.main.filename)
 // Ask the user the predefined questions
 const questionTime = () => {
   console.log(chalk.yellow('Please answer the following:\n\n'))
-  inquirer.prompt(questions).then(function (answers) {
-    fileGen(answers)
+  inquirer.prompt(questions).then(answers => fileGen(answers))
+}
+
+const writeFile = (c, n, o) => {
+  fs.writeFile(path.join(c, n), o, err => {
+    err && throwError(err)
   })
 }
 
 const generateFile = (name, props) => {
-  const {componentNameSentenceCase, componentNameKebab, blank} = props
+  const {
+    componentNameSentenceCase, 
+    componentNameKebab, 
+    blank, 
+    useModules, 
+    chooseStyleSheet
+  } = props
+
+const srcName = name => {
+  if (chooseStyleSheet !== undefined) {
+    name = name.concat(`.${chooseStyleSheet.toLowerCase()}`)
+  }
+  return name
+}
+
+  const writeName = name => {
+    if (chooseStyleSheet !== undefined) {
+      if (useModules !== undefined && useModules ) {
+        name = srcName(name).replace('.', '.module.')
+      } else {
+        name = srcName(name)
+      }
+    } 
+    return name    
+  }
+
   if (!blank) {
     // Generates the files and replaces any found strings
-    const src = fs.readFileSync(`${appDir}/scaffold/${name}`, 'utf8')
-                .replace(/%ComponentExample%/g, componentNameSentenceCase)
-                .replace(/%ComponentExampleKebab%/g, componentNameKebab)
-                // A few extra bits need doing if it should be use in a sentence
-                .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
-    fs.writeFile(path.join(componentNameKebab, name), src, err => {
-      err && console.error(err)
-    })
+    const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`)
+    const str = src.toString()
+    let output = ''
+    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './${writeName(name)}'` : ''
+
+    output += str
+      .replace(/%ComponentExample%/g, componentNameSentenceCase)
+      .replace(/%ComponentExampleKebab%/g, componentNameKebab)
+      .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
+      .replace(/%styleimport%/g, cssString)
+
+    writeFile(componentNameKebab, writeName(name), output)
   } else {
     // Creates an empty file with the correct name
-    fs.writeFile(path.join(componentNameKebab, name), '', err => {
-      err && console.error(err)
-    })
+    writeFile(componentNameKebab, writeName(name), '')
   }
 }
 
@@ -112,11 +83,9 @@ const generateDirectory = (name, dir) => {
     try {
       fs.mkdirSync(output)
     } catch (err) {
-      throw new Error(err)
+      throwError(err)
     }
-  } else {
-    if (!argv.force) throwError('Directory exists, aborting.')
-  }
+  } 
 }
 
 const skip = type => console.log(chalk.blue(`Skipping generation of ${type} due to user selection`))
@@ -127,6 +96,8 @@ const fileGen = function (answers) {
     componentName, 
     useTS, 
     createStyleSheet, 
+    useModules,
+    chooseStyleSheet,
     createDirectories, 
     createSpec, 
     createStories, 
@@ -139,7 +110,7 @@ const fileGen = function (answers) {
   const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
   const componentNameKebab = _.kebabCase(componentName)
 
-  const ext = useTS ? 'ts' : 'js'
+  const jsext = useTS ? 'ts' : 'js'
 
   const props = {
     componentNameKebab,
@@ -147,20 +118,26 @@ const fileGen = function (answers) {
     blank
   }
 
+  const cssProps = {
+    ...props,
+    useModules,
+    chooseStyleSheet
+  }
+
   // Create the component directory
   generateDirectory(componentNameKebab)
 
   // Generate the index file
-  generateFile(`index.${ext}x`, props)
+  generateFile(`index.${jsext}x`, props)
 
   // Generate the stories file
   createStories ? generateFile('index.stories.mdx', props) : skip('story files')
   
-  // Generate the sass file
-  createStyleSheet ? generateFile('styles.module.scss', props) : skip('stylesheets')
+  // Generate the css file
+  createStyleSheet ? generateFile(`styles`, cssProps) : skip(`stylesheets`)
   
   // Generate the spec file
-  createSpec ? generateFile(`index.spec.${ext}x`, props) : skip('spec files')
+  createSpec ? generateFile(`index.spec.${jsext}x`, props) : skip('spec files')
   
   // Generate the readme file
   createReadme ? generateFile('README.md', props) : skip('README file')
@@ -172,16 +149,16 @@ const fileGen = function (answers) {
     : skip('custom directories')
 
   // finish up
-  setTimeout(function () {
+  setTimeout(() => {
     finishUp(componentName, answers)
   }, 500)
 }
 
-const finishUp = function (componentName, answers) {
-  console.log(chalk.green('Component "', componentName, '" has been created'))
-}
+const finishUp = componentName => 
+  console.log(chalk.green('Component"', componentName, '"has been created'))
 
-const throwError = (msg) => {
+
+const throwError = msg => {
   console.error(chalk.red.bold('Fatal error:'), msg)
   process.exit(1)
 }
