@@ -1,0 +1,27 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks';
+import ExampleComponent from './index'
+
+<Meta
+  title="Custom/ExampleComponent"
+  component={ExampleComponent}
+/>
+
+# ExampleComponent
+
+The description for the Example Component component
+
+<Preview>
+  <Story name="Default">
+    <ExampleComponent name="Test Name" color="blue">
+      Hello World
+    </ExampleComponent >
+  </Story>
+</Preview>
+
+<Preview>
+  <Story name="Default">
+    <ExampleComponent name="Test Name" color="red">
+      Hello World
+    </ExampleComponent >
+  </Story>
+</Preview>
