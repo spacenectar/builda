@@ -97,7 +97,7 @@ You can see an example output of this buildcom here: https://github.com/foxleigh
 The command used to generate that component was:
 
 ```bash
-node index --name "example component" -sjr -d 'images' --css "scss"
+buildcom --name "example component" -sjr -d 'images' --css "scss"
 ```
 
 ## Roadmap
