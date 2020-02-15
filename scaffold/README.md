@@ -1,4 +1,4 @@
-# %ComponentExample% documentation
+# %ComponentExampleSentence% documentation
 
 This is an example readme file for the '%ComponentExampleSentence%' component.
 
