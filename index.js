@@ -39,9 +39,10 @@ const generateFile = (name, props) => {
     chooseStyleSheet
   } = props
 
+  const stylesheet = chooseStyleSheet === 'stylus' ? 'styl' : chooseStyleSheet
+
   const srcName = name => {
     if (name === 'styles') {
-      const stylesheet = chooseStyleSheet === 'stylus' ? 'styl' : chooseStyleSheet
       name = name.concat(`.${stylesheet.toLowerCase()}`)
     }
     return name
@@ -60,15 +61,20 @@ const generateFile = (name, props) => {
 
   if (!blank) {
     // Generates the files and replaces any found strings
-    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './${writeName(name)}'\n\n` : ''
+    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './styles.${stylesheet}'\n\n` : ''
     
-    const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
+    try {
+      const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
       .replace(/%ComponentExample%/g, componentNameSentenceCase)
       .replace(/%ComponentExampleKebab%/g, componentNameKebab)
       .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
       .replace(/%styleimport%/g, cssString)
+      
+      writeFile(componentNameKebab, writeName(name), src)
+    } catch {
+      throwError(`'${srcName(name)}' is an invalid file name`)
+    }  
 
-    writeFile(componentNameKebab, writeName(name), src)
   } else {
     // Creates an empty file with the correct name
     writeFile(componentNameKebab, writeName(name), '')
