@@ -37,7 +37,8 @@ Argument | Description | default
 `--dirs`, `-d` | Add extra directories as comma separated values | empty
 `--storybook`, `-s` | Generate storybook file | false
 `--jest`, `-j` | Generate jest test file | false
-`--css`, `-c` | Generate sass module file | false
+`--css`, `-c` | Generate stylesheet file (see 'CSS Generation' for details) | 'css'
+`--modules`, `-m` | Usee CSS Modules (see 'CSS generation' for details) | false
 `--typescript`, `-t` | Generate files with TypeScript extensions | false
 `--readme`, `-r` | Generate files with TypeScript extensions | false
 `--blank`, `-b` | Don't add example code, just create empty files | false
@@ -45,12 +46,43 @@ Argument | Description | default
 `--help`, `-h` | Displays the help text
 `--version` | Displays version number
 
+## CSS Generation
+
+The following options exist for CSS usage:
+
+- CSS
+- SASS
+- SCSS
+- Stylus
+- LESS
+
+If you are using the questionnaire, this is covered in the questions. If using arguments then you can choose from the following options:
+
+Stylesheet type | option
+--- | ---
+CSS | `--css "css"`
+SCSS | `--css "scss"`
+SASS | `--css "sass"`
+Stylus | `--css "stylus"`
+LESS | `--css "less"`
+
+Each file is also available as a [css module](https://github.com/css-modules/css-modules) by adding an additional `--modules` or `-m` argument.
+
+e.g.
+
+The following will output a CSS Module file (`styles.modules.css`)
+
+```bash
+buildcom --name "My Component" --css "css" -m 
+```
+
 ## Roadmap
 
 - Make the TypeScript selection do more than just change the file extension
 - Add the abiltiy to choose the directory to generate the components
-- Add support for stylesheets which are not SASS modules
 - Add support for non-MDX storybook files
+- Some serious refactoring
+- Add unit tests
 
 ## Possible future developments
 - Add the ability to generate for frameworks other than React
