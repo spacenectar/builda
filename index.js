@@ -80,16 +80,24 @@ const questionTime = () => {
   })
 }
 
-const generateFile = (name, k, s) => {
-  // Generates the files and replaces any found strings
-  const src = fs.readFileSync(`${appDir}/scaffold/${name}`, 'utf8')
-              .replace(/%ComponentExample%/g, s)
-              .replace(/%ComponentExampleKebab%/g, k)
-              // A few extra bits need doing if it should be use in a sentence
-              .replace(/%ComponentExampleSentence%/g, _.startCase(s))
-  fs.writeFile(path.join(k, name), src, err => {
-    err && console.error(err)
-  })
+const generateFile = (name, props) => {
+  const {componentNameSentenceCase, componentNameKebab, blank} = props
+  if (!blank) {
+    // Generates the files and replaces any found strings
+    const src = fs.readFileSync(`${appDir}/scaffold/${name}`, 'utf8')
+                .replace(/%ComponentExample%/g, componentNameSentenceCase)
+                .replace(/%ComponentExampleKebab%/g, componentNameKebab)
+                // A few extra bits need doing if it should be use in a sentence
+                .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
+    fs.writeFile(path.join(componentNameKebab, name), src, err => {
+      err && console.error(err)
+    })
+  } else {
+    // Creates an empty file with the correct name
+    fs.writeFile(path.join(componentNameKebab, name), '', err => {
+      err && console.error(err)
+    })
+  }
 }
 
 const generateDirectory = (name, dir) => {
@@ -105,7 +113,8 @@ const generateDirectory = (name, dir) => {
 
 const skip = type => console.log(chalk.blue(`Skipping generation of ${type} due to user selection`))
 
-var fileGen = function (answers) {
+const fileGen = function (answers) {
+  
   const {
     componentName, 
     useTS, 
@@ -113,33 +122,40 @@ var fileGen = function (answers) {
     createDirectories, 
     createSpec, 
     createStories, 
-    createReadme
+    createReadme,
+    blank
   } = answers
 
   console.log(chalk.blue('\n\nCreating folders for', componentName, 'component'))
   
-  var componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
-  var componentNameKebab = _.kebabCase(componentName)
+  const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
+  const componentNameKebab = _.kebabCase(componentName)
 
-  var ext = useTS ? 'ts' : 'js'
+  const ext = useTS ? 'ts' : 'js'
+
+  const props = {
+    componentNameKebab,
+    componentNameSentenceCase,
+    blank
+  }
 
   // Create the component directory
   generateDirectory(componentNameKebab)
 
   // Generate the index file
-  generateFile(`index.${ext}x`, componentNameKebab, componentNameSentenceCase)
+  generateFile(`index.${ext}x`, props)
 
   // Generate the stories file
-  createStories ? generateFile('index.stories.mdx', componentNameKebab, componentNameSentenceCase) : skip('story files')
+  createStories ? generateFile('index.stories.mdx', props) : skip('story files')
   
   // Generate the sass file
-  createStyleSheet ? generateFile('styles.module.scss', componentNameKebab, componentNameSentenceCase) : skip('stylesheets')
+  createStyleSheet ? generateFile('styles.module.scss', props) : skip('stylesheets')
   
   // Generate the spec file
-  createSpec ? generateFile(`index.spec.${ext}x`, componentNameKebab, componentNameSentenceCase) : skip('spec files')
+  createSpec ? generateFile(`index.spec.${ext}x`, props) : skip('spec files')
   
   // Generate the readme file
-  createReadme ? generateFile('README.md', componentNameKebab, componentNameSentenceCase) : skip('README file')
+  createReadme ? generateFile('README.md', props) : skip('README file')
   
   const dirArray = createDirectories.split(',')
 
@@ -182,7 +198,7 @@ if (args.length === 0 ) {
   answers.createStyleSheet = css ? css : false
   answers.useTS = typescript ? typescript : false
   answers.createReadme = readme ? readme : false
-  answers.createStories = blank ? blank : false
+  answers.blank = blank ? blank : false
   
   fileGen(answers)
 }
