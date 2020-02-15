@@ -48,7 +48,6 @@ Argument | Description | default
 ## Roadmap
 
 - Make the TypeScript selection do more than just change the file extension
-- Add the ability to generate blank files
 - Add the abiltiy to choose the directory to generate the components
 - Add support for stylesheets which are not SASS modules
 - Add support for non-MDX storybook files
