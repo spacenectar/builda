@@ -41,6 +41,7 @@ Argument | Description | default
 `--typescript`, `-t` | Generate files with TypeScript extensions | false
 `--readme`, `-r` | Generate files with TypeScript extensions | false
 `--blank`, `-b` | Don't add example code, just create empty files | false
+`--force`, `-f` | Ignore existing folders and overwrite/create component files anyway | false
 `--help`, `-h` | Displays the help text
 `--version` | Displays version number
 
