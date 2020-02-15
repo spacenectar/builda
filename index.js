@@ -40,14 +40,14 @@ const generateFile = (name, props) => {
   } = props
 
 const srcName = name => {
-  if (chooseStyleSheet !== undefined) {
+  if (name === 'styles') {
     name = name.concat(`.${chooseStyleSheet.toLowerCase()}`)
   }
   return name
 }
 
   const writeName = name => {
-    if (chooseStyleSheet !== undefined) {
+    if (name === 'styles') {
       if (useModules !== undefined && useModules ) {
         name = srcName(name).replace('.', '.module.')
       } else {
@@ -59,18 +59,15 @@ const srcName = name => {
 
   if (!blank) {
     // Generates the files and replaces any found strings
-    const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`)
-    const str = src.toString()
-    let output = ''
-    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './${writeName(name)}'` : ''
-
-    output += str
+    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './${writeName(name)}'\n\n` : ''
+    
+    const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
       .replace(/%ComponentExample%/g, componentNameSentenceCase)
       .replace(/%ComponentExampleKebab%/g, componentNameKebab)
       .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
       .replace(/%styleimport%/g, cssString)
 
-    writeFile(componentNameKebab, writeName(name), output)
+    writeFile(componentNameKebab, writeName(name), src)
   } else {
     // Creates an empty file with the correct name
     writeFile(componentNameKebab, writeName(name), '')
@@ -115,11 +112,7 @@ const fileGen = function (answers) {
   const props = {
     componentNameKebab,
     componentNameSentenceCase,
-    blank
-  }
-
-  const cssProps = {
-    ...props,
+    blank,
     useModules,
     chooseStyleSheet
   }
@@ -134,7 +127,7 @@ const fileGen = function (answers) {
   createStories ? generateFile('index.stories.mdx', props) : skip('story files')
   
   // Generate the css file
-  createStyleSheet ? generateFile(`styles`, cssProps) : skip(`stylesheets`)
+  createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)
   
   // Generate the spec file
   createSpec ? generateFile(`index.spec.${jsext}x`, props) : skip('spec files')
