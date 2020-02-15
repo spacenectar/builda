@@ -63,6 +63,12 @@ const argv = require('yargs')
       required: false,
       alias: 'r',
       boolean: true
+    },
+    'force' : {
+      description: 'Ignores existing directories and overwrites files anyway.',
+      required: false,
+      alias: 'f',
+      boolean: true
     }
   })
   .help('h')
@@ -105,9 +111,11 @@ const generateDirectory = (name, dir) => {
   if (!fs.existsSync(output)) {
     try {
       fs.mkdirSync(output)
-    } catch (exception) {
-      throw new Error(exception)
+    } catch (err) {
+      throw new Error(err)
     }
+  } else {
+    if (!argv.force) throwError('Directory exists, aborting.')
   }
 }
 
@@ -190,7 +198,7 @@ if (args.length === 0 ) {
 
   const {output, name, dirs, storybook, jest, css, typescript, readme, blank} = argv
 
-  output ? answers.outputDirectory = output: throwError('Output parameter is required')
+  output ? answers.outputDirectory = output: '.'
   name ? answers.componentName = name : throwError('Name parameter is required')
   answers.createDirectories = dirs ? dirs : ''
   answers.createStories = storybook ? storybook : false
