@@ -2,6 +2,9 @@
 
 # A component generator for React
 
+![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)
+
 ## Getting Started
 
 The easiest way to use this is with npx:
@@ -78,7 +81,7 @@ buildcom --name "My Component" --css "css" -m
 
 ## Project Assumptions
 
-Buildcon makes the following assumptions about your dependencies:
+Buildcom makes the following assumptions about your dependencies:
 
 - That you are using [React](https://reactjs.org/)
 - If you generate a CSS file for a particular pre-processor, that you already have that pre-processor configured for use in your project
@@ -86,6 +89,16 @@ Buildcon makes the following assumptions about your dependencies:
 - If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the [MDX documenting](https://www.npmjs.com/package/@storybook/addon-docs#mdx) method using the '[docs](https://www.npmjs.com/package/@storybook/addon-docs)' addon.
 - If you opt to use any variation of [CSS modules](https://github.com/css-modules/css-modules) that your project is already configured to make use of them.
 - If you generate TypeScript files, that your project is already configured to use them
+
+## Example 
+
+You can see an example output of this buildcom here: https://github.com/foxleigh81/buildcom/tree/master/example-component
+
+The command used to generate that component was:
+
+```bash
+node index --name "example component" -sjr -d 'images' --css "scss"
+```
 
 ## Roadmap
 
