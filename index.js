@@ -83,7 +83,7 @@ const generateFile = (name, props) => {
 }
 
 const generateDirectory = (name, dir) => {
-  const output = dir ? path.join(dir, name) : name
+  const output = dir ? path.join(dir, name.trim()) : name
   if (!fs.existsSync(output)) {
     try {
       fs.mkdirSync(output)
@@ -111,7 +111,7 @@ const fileGen = function (answers) {
     blank
   } = answers
 
-  console.log(chalk.blue('\n\nCreating folders for', componentName, 'component'))
+  console.log(chalk.blue(`\nCreating folder for ${componentName}' component`))
   
   const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
   const componentNameKebab = _.kebabCase(componentName)
@@ -161,8 +161,7 @@ const fileGen = function (answers) {
 }
 
 const finishUp = componentName => 
-  console.log(chalk.green('Component"', componentName, '"has been created'))
-
+  console.log(chalk.green(`Component '${componentName}' has been created`))
 
 const throwError = msg => {
   console.error(chalk.red.bold('Fatal error:'), msg)
@@ -170,7 +169,7 @@ const throwError = msg => {
 }
   
 console.log(chalk.magenta('============================================='))
-console.log(chalk.white(' React component builder (buildcom) '))
+console.log(chalk.white(`${chalk.magenta('BuildCom_')} : Component builder`))
 console.log(chalk.magenta('=============================================\n\n'))
 
 if (args.length === 0 ) {
