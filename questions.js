@@ -20,7 +20,22 @@ module.exports = [
       type: 'confirm',
       name: 'createStyleSheet',
       message: 'Do you want to add a Stylesheet?',
+      default: true
+    },
+    {
+      type: 'confirm',
+      name: 'useModules',
+      message: 'Do you want to use CSS Modules?',
+      when: answers => answers.createStyleSheet,
       default: false
+    },
+    {
+      type: 'list',
+      name: 'chooseStyleSheet',
+      message: 'What type of Stylesheet do you want to generate?',
+      choices: ['CSS', 'SCSS', 'SASS', 'LESS', 'Stylus'],
+      when: answers => answers.createStyleSheet,
+      default: 'CSS'
     },
     {
       type: 'confirm',
