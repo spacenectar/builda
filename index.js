@@ -39,12 +39,13 @@ const generateFile = (name, props) => {
     chooseStyleSheet
   } = props
 
-const srcName = name => {
-  if (name === 'styles') {
-    name = name.concat(`.${chooseStyleSheet.toLowerCase()}`)
+  const srcName = name => {
+    if (name === 'styles') {
+      const stylesheet = chooseStyleSheet === 'stylus' ? 'styl' : chooseStyleSheet
+      name = name.concat(`.${stylesheet.toLowerCase()}`)
+    }
+    return name
   }
-  return name
-}
 
   const writeName = name => {
     if (name === 'styles') {
@@ -166,17 +167,35 @@ if (args.length === 0 ) {
   console.log(chalk.yellow('Argument mode, skipping questionnaire'))
   let answers = {}
 
-  const {output, name, dirs, storybook, jest, css, typescript, readme, blank} = argv
+  const {
+    output, 
+    name, 
+    dirs, 
+    storybook, 
+    jest, 
+    css, 
+    modules, 
+    typescript, 
+    readme, 
+    blank
+  } = argv
 
   output ? answers.outputDirectory = output: '.'
   name ? answers.componentName = name : throwError('Name parameter is required')
   answers.createDirectories = dirs ? dirs : ''
   answers.createStories = storybook ? storybook : false
   answers.createSpec = jest ? jest : false
-  answers.createStyleSheet = css ? css : false
+  answers.useModules = modules ? modules : false
   answers.useTS = typescript ? typescript : false
   answers.createReadme = readme ? readme : false
   answers.blank = blank ? blank : false
+
+  if (css) {
+    answers.createStyleSheet = true
+    answers.chooseStyleSheet = css
+  } else {
+    answers.createStyleSheet = false
+  }
   
   fileGen(answers)
 }
