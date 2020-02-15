@@ -1,14 +1,21 @@
+const directoryRegex = RegExp(/^([A-Za-z0-9-_. ])+$/)
+
 module.exports = [
     {
       type: 'input',
       name: 'componentName',
       message: 'What is your component called?',
       default: 'My New Component',
-      validate: function (value) {
-        var pass = value.length > 0
-        if (pass) return true
-        return 'Component name cannot be empty'
-      }
+      validate: value => 
+      directoryRegex.test(value) ? true : 'Component name is invalid'
+    },
+    {
+      type: 'input',
+      name: 'outputDirectory',
+      message: 'Choose an output directory relative to your current working directory',
+      default: '.',
+      validate: value => 
+        directoryRegex.test(value) ? true : 'That is not a valid directory'
     },
     {
       type: 'confirm',

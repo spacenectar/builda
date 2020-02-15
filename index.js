@@ -32,6 +32,7 @@ const writeFile = (c, n, o) => {
 
 const generateFile = (name, props) => {
   const {
+    componentDir,
     componentNameSentenceCase, 
     componentNameKebab, 
     blank, 
@@ -61,7 +62,7 @@ const generateFile = (name, props) => {
 
   if (!blank) {
     // Generates the files and replaces any found strings
-    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './styles.${stylesheet}'\n\n` : ''
+    const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './styles.${stylesheet.toLowerCase()}'\n\n` : ''
     
     try {
       const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
@@ -70,14 +71,14 @@ const generateFile = (name, props) => {
       .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
       .replace(/%styleimport%/g, cssString)
       
-      writeFile(componentNameKebab, writeName(name), src)
+      writeFile(componentDir, writeName(name), src)
     } catch {
       throwError(`'${srcName(name)}' is an invalid file name`)
     }  
 
   } else {
     // Creates an empty file with the correct name
-    writeFile(componentNameKebab, writeName(name), '')
+    writeFile(componentDir, writeName(name), '')
   }
 }
 
@@ -87,7 +88,7 @@ const generateDirectory = (name, dir) => {
     try {
       fs.mkdirSync(output)
     } catch (err) {
-      throwError(err)
+      throwError(`'${name.split('/')[0]}' is not writable or does not exist`)
     }
   } 
 }
@@ -98,6 +99,7 @@ const fileGen = function (answers) {
   
   const {
     componentName, 
+    outputDirectory,
     useTS, 
     createStyleSheet, 
     useModules,
@@ -115,8 +117,11 @@ const fileGen = function (answers) {
   const componentNameKebab = _.kebabCase(componentName)
 
   const jsext = useTS ? 'ts' : 'js'
+  
+  const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
 
   const props = {
+    componentDir,
     componentNameKebab,
     componentNameSentenceCase,
     blank,
@@ -124,8 +129,9 @@ const fileGen = function (answers) {
     chooseStyleSheet
   }
 
+
   // Create the component directory
-  generateDirectory(componentNameKebab)
+  generateDirectory(componentDir)
 
   // Generate the index file
   generateFile(`index.${jsext}x`, props)
@@ -145,7 +151,7 @@ const fileGen = function (answers) {
   const dirArray = createDirectories.split(',')
 
   dirArray.length 
-    ? dirArray.map(dirName => generateDirectory(dirName, componentNameKebab))
+    ? dirArray.map(dirName => generateDirectory(dirName, componentDir))
     : skip('custom directories')
 
   // finish up

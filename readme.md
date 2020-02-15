@@ -79,7 +79,6 @@ buildcom --name "My Component" --css "css" -m
 ## Roadmap
 
 - Make the TypeScript selection do more than just change the file extension
-- Add the abiltiy to choose the directory to generate the components
 - Add support for non-MDX storybook files
 - Some serious refactoring
 - Add unit tests

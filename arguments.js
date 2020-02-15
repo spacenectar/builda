@@ -3,7 +3,8 @@ module.exports = {
       description: 'Specifies an output directory',
       required: false,
       alias: 'o',
-      type: 'string'
+      type: 'string',
+      default: '.'
     },
     'name' : {
       description: 'Specifies a component name',
