@@ -76,6 +76,17 @@ The following will output a CSS Module file (`styles.modules.css`)
 buildcom --name "My Component" --css "css" -m 
 ```
 
+## Project Assumptions
+
+Buildcon makes the following assumptions about your dependencies:
+
+- That you are using [React](https://reactjs.org/)
+- If you generate a CSS file for a particular pre-processor, that you already have that pre-processor configured for use in your project
+- If you generate a test file, that you are using Jest for unit tests, that you have '[react-test-renderer](https://www.npmjs.com/package/react-test-renderer)' installed for DOM tests and that you are using `.spec.*` as your file extension
+- If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the [MDX documenting](https://www.npmjs.com/package/@storybook/addon-docs#mdx) method using the '[docs](https://www.npmjs.com/package/@storybook/addon-docs)' addon.
+- If you opt to use any variation of [CSS modules](https://github.com/css-modules/css-modules) that your project is already configured to make use of them.
+- If you generate TypeScript files, that your project is already configured to use them
+
 ## Roadmap
 
 - Make the TypeScript selection do more than just change the file extension
