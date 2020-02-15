@@ -30,10 +30,11 @@ module.exports = {
       boolean: true
     },
     'css' : {
-      description: 'Choose a CSS file type (css, sass/scss, less, stylus)',
+      description: 'Choose a CSS file type (css (default), sass/scss, less, stylus)',
       required: false,
       alias: 'c',
-      type: 'string'
+      type: 'string',
+      default: 'css'
     },
     'modules' : {
       description: 'Use CSS modules',
