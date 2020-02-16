@@ -38,7 +38,9 @@ module.exports = generateFile = (name, props) => {
   
     if (!blank) {
       // Generates the files and replaces any found strings
-      const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) ? `import './styles.${stylesheet.toLowerCase()}'\n\n` : ''
+      const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) 
+        ? `import './styles.${stylesheet.toLowerCase()}'\n\n` 
+        : ''
       
       try {
         const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
@@ -48,7 +50,10 @@ module.exports = generateFile = (name, props) => {
         .replace(/%styleimport%/g, cssString)
         
         writeFile(componentDir, writeName(name), src)
-      } catch {
+      } catch (err) {
+        // The throwError function outputs a friendly error for users, if you are debugging this app
+        // you will need to comment it out and replace it with the line below.
+        // throw new Error(err)
         throwError(`'${srcName(name)}' is an invalid file name`)
       }  
   
