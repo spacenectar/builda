@@ -22,7 +22,7 @@ module.exports = comGen = answers => {
       blank
     } = answers
   
-    console.log(chalk.blue(`\nCreating folder for ${componentName}' component`))
+    returnMessage(`\nCreating folder for ${componentName}' component`, {color: 'blue'})
     
     const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
     const componentNameKebab = _.kebabCase(componentName)
