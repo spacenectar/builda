@@ -48,9 +48,8 @@ module.exports = generateFile = (name, props) => {
         .replace(/%styleimport%/g, cssString)
         
         writeFile(componentDir, writeName(name), src)
-      } catch (err) {
-        throw new Error(err)
-        // throwError(`'${srcName(name)}' is an invalid file name`)
+      } catch {
+        throwError(`'${srcName(name)}' is an invalid file name`)
       }  
   
     } else {

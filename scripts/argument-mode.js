@@ -1,11 +1,10 @@
-const chalk = require('chalk')
 
-const comGen = require('./component-generator')
 const throwError = require('./throw-error')
+const returnMessage = require('./return-message')
 
 module.exports = argumentMode = argv => {
   
-  console.log(chalk.yellow('Argument mode, skipping questionnaire'))
+  returnMessage('Argument mode, skipping questionnaire', {color: 'yellow'})
   let answers = {}
 
   const {
@@ -38,5 +37,5 @@ module.exports = argumentMode = argv => {
     answers.createStyleSheet = false
   }
   
-  comGen(answers)
+  return answers
 }

@@ -10,5 +10,7 @@ module.exports = generateDirectory = (name, dir) => {
       } catch (err) {
         throwError(`'${name.split('/')[0]}' is not writable or does not exist`)
       }
-    } 
+    } else {
+      // TODO: Add the ability to prevent a folder being overwritten unless '--force' is in effect
+    }
   }

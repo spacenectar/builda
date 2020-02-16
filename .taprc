@@ -1,4 +1,8 @@
 color: true
 reporter: base
 check-coverage: true
+functions: 90
+lines: 70
+branches: 50
+statements: 80
 files: [ ./tests/**/*.spec.js ]
