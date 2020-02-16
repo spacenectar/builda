@@ -1,5 +1,6 @@
 version: "2"
 exclude_patterns:
   - "scaffold/**"
-  - "tests/scaffold/**"
+  - "tests/**"
+  - "data/**"
   - "**/node_modules/"
