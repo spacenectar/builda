@@ -1,10 +1,10 @@
 const _ = require('lodash')
 const path = require('path')
-const chalk = require('chalk')
 
 const generateDirectory = require('./generate-directory')
 const generateFile = require('./generate-file')
 const skip = require('./skip')
+const returnMessage = require('./return-message')
 
 module.exports = comGen = answers => {
   
@@ -22,7 +22,7 @@ module.exports = comGen = answers => {
       blank
     } = answers
   
-    console.log(chalk.blue(`\nCreating folder for ${componentName}' component`))
+    returnMessage(`\nCreating folder for ${componentName}' component`, {color: 'blue'})
     
     const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
     const componentNameKebab = _.kebabCase(componentName)
@@ -65,7 +65,5 @@ module.exports = comGen = answers => {
       : skip('custom directories')
   
     // finish up
-    setTimeout(() => {
-       console.log(chalk.green(`Component '${componentName}' has been created`))
-    }, 500)
+    setTimeout(() => returnMessage(`Component '${componentName}' has been created`, {color: 'green'}), 500)
   }

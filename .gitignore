@@ -6,3 +6,4 @@ npm-debug.log
 /src
 log.txt
 clarity.yml
+.nyc_output/

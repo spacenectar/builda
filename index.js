@@ -1,10 +1,10 @@
 #! /usr/bin/env node
-
-const chalk = require('chalk')
 const arguments = require('./data/arguments')
 
 const questionTime = require('./scripts/question-time')
 const argumentMode = require('./scripts/argument-mode')
+const returnMessage = require('./scripts/return-message')
+const comGen = require('./scripts/component-generator')
 
 const argv = require('yargs')
   .usage('Usage: $0 [options]')
@@ -15,12 +15,14 @@ const argv = require('yargs')
 
 const args = process.argv.slice(2)
   
-console.log(chalk.magenta('============================================='))
-console.log(chalk.white(`${chalk.magenta('BuildCom_')} : Component builder`))
-console.log(chalk.magenta('=============================================\n\n'))
+returnMessage('=============================================', {color: 'magenta'})
+returnMessage('BuildCom_\r', { color: 'magenta'})
+returnMessage(`Component builder`, { color: 'white'})
+returnMessage('=============================================\n', {color: 'magenta'})
+
 
 if (args.length === 0 ) {
-  questionTime() 
+  questionTime().then(answers => comGen(answers))
 } else {
-  argumentMode(argv)
+  comGen(argumentMode(argv))
 }

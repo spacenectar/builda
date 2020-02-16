@@ -1,3 +1,3 @@
-const chalk = require('chalk')
+const returnMessage = require('./return-message')
 
-module.exports = skip = type => console.log(chalk.blue(`Skipping generation of ${type} due to user selection`))
+module.exports = skip = type => returnMessage(`Skipping generation of ${type} due to user selection`, { color: 'blue'})

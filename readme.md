@@ -4,6 +4,10 @@
 
 ![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
+![Travis (.org)](https://img.shields.io/travis/foxleigh81/buildcom?style=for-the-badge)
+![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)
 
 ## Getting Started
 
@@ -104,7 +108,6 @@ buildcom --name "example component" -sjr -d 'images' --css "scss"
 
 - Make the TypeScript selection do more than just change the file extension
 - Add support for non-MDX storybook files
-- Add unit tests
 
 ## Possible future developments
 - Add the ability to generate for frameworks other than React
