@@ -4,6 +4,10 @@
 
 ![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
+![Travis (.org)](https://img.shields.io/travis/foxleigh81/buildcom?style=for-the-badge)
+![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)
 
 ## Getting Started
 
