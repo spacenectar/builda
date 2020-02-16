@@ -5,6 +5,7 @@
     "buildcom": "index.js"
   },
   "description": "A component generator for react",
+  "keywords": ["node", "components", "generator", "react", "sass", "stylus", "less", "css", "jest", "storybook", "typescript"],
   "main": "index.js",
   "scripts": {
     "start": "index.js",
@@ -17,7 +18,7 @@
   },
   "author": {
     "name": "Alex Foxleigh",
-    "url": "http://www.alexfoxleigh.com"
+    "url": "https://github.com/foxleigh81"
   },
   "license": "MIT",
   "bugs": {
