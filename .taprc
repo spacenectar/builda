@@ -1,0 +1,4 @@
+color: true
+reporter: base
+check-coverage: true
+files: [ ./tests/**/*.spec.js ]
