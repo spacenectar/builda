@@ -19,5 +19,5 @@ module.exports = generateDirectory = (name, dir, force) => {
     //   } else {
     //     returnMessage(`Ignoring existance of existing ${output} folder with --force`, {color: 'orange'})
     //   }
-    // }
-  }
+    }
+}
