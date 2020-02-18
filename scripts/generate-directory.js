@@ -12,10 +12,12 @@ module.exports = generateDirectory = (name, dir, force) => {
         throwError(`'${name.split('/')[0]}' is not writable or does not exist`)
       }
     } else {
-      if (!force) {
-        throwError(`${output} already exists, aborting`)
-      } else {
-        returnMessage(`Ignoring existance of existing ${output} folder with --force`, {color: 'orange'})
-      }
-    }
+    // FIXME: This should work but it doesn't it is causing a bug (https://github.com/foxleigh81/buildcom/issues/11)
+    // removing for now as I don't have time to fix it properly
+    //   if (!force) {
+    //     throwError(`${output} already exists, aborting`)
+    //   } else {
+    //     returnMessage(`Ignoring existance of existing ${output} folder with --force`, {color: 'orange'})
+    //   }
+    // }
   }
