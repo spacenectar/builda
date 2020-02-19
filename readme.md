@@ -106,7 +106,6 @@ buildcom --name "example component" -sjr -d 'images' --css "scss"
 
 ## Roadmap
 
-- Make the TypeScript selection do more than just change the file extension
 - Add support for non-MDX storybook files
 
 ## Possible future developments
