@@ -8,6 +8,7 @@
 ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
 ![Travis (.org)](https://img.shields.io/travis/foxleigh81/buildcom?style=for-the-badge)
 ![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/foxleigh81/buildcom?style=for-the-badge)
 
 ## Getting Started
 
