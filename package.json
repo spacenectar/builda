@@ -21,7 +21,7 @@
   "main": "index.js",
   "scripts": {
     "start": "index.js",
-    "test": "tap"
+    "test": "snyk test && tap"
   },
   "preferGlobal": true,
   "repository": {
@@ -43,6 +43,7 @@
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.15",
     "rimraf": "^3.0.2",
+    "snyk": "^1.294.0",
     "tap": "^14.10.6",
     "yargs": "^15.1.0"
   }
