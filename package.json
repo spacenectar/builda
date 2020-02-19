@@ -21,7 +21,7 @@
   "main": "index.js",
   "scripts": {
     "start": "index.js",
-    "test": "snyk test && nyc tap"
+    "test": "snyk test && nyc --reporter=lcov tap"
   },
   "preferGlobal": true,
   "repository": {

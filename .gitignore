@@ -7,3 +7,4 @@ npm-debug.log
 log.txt
 clarity.yml
 .nyc_output/
+coverage/
