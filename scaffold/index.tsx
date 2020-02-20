@@ -5,8 +5,10 @@ interface Props {
   colour: string
 }
 
-%styleimport%const %ComponentExample%: React.FunctionComponent<Props> = ({ name, colour }: Props) =>
-  <div className={`example style--${colour}`}>
+%styleimport%
+
+const %ComponentExample%: React.FunctionComponent<Props> = ({ name, colour }: Props) =>
+  <div className={%classes%}>
     This is an example component, the name provided to it was {name}
   </div>
 

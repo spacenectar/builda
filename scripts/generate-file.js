@@ -36,18 +36,30 @@ module.exports = generateFile = (name, props) => {
       return name    
     }
   
+    // If blank files are not being generated
     if (!blank) {
-      // Generates the files and replaces any found strings
-      const cssString = (chooseStyleSheet !== undefined && useModules !== undefined && !useModules) 
-        ? `import './styles.${stylesheet.toLowerCase()}'\n\n` 
-        : ''
       
+      // Check if CSS Modules has been requested
+      let cssString = ''
+      let classesString = ''
+      if (chooseStyleSheet !== undefined) {
+        if (useModules !== undefined && !useModules)  {
+          cssString = `import './styles.${stylesheet.toLowerCase()}'\n\n` 
+          classesString = 'example style-${colour}'
+        } else {
+          cssString = `import styles from './styles.module.${stylesheet.toLowerCase()}'\n\n` 
+          classesString = 'styles[colour]'
+        }
+      }
+      
+      // Generates the files and replaces any found strings
       try {
         const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
         .replace(/%ComponentExample%/g, componentNameSentenceCase)
         .replace(/%ComponentExampleKebab%/g, componentNameKebab)
         .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
         .replace(/%styleimport%/g, cssString)
+        .replace(/%classes%/g, classesString)
         
         writeFile(componentDir, writeName(name), src)
       } catch (err) {
