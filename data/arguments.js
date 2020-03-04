@@ -24,6 +24,13 @@ module.exports = {
       alias: 's',
       boolean: true
     },
+    'stories' : {
+      description: 'What type of storybook file?',
+      required: false,
+      alias: 'st',
+      default: 'csf',
+      boolean: true
+    },
     'jest' : {
       description: 'Generate jest files?',
       required: false,

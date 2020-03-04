@@ -19,6 +19,7 @@ module.exports = comGen = answers => {
       createDirectories, 
       createSpec, 
       createStories, 
+      chooseStorybook,
       createReadme,
       blank
     } = answers
@@ -30,6 +31,13 @@ module.exports = comGen = answers => {
   
     const jsext = useTS ? 'ts' : 'js'
     const cssext = chooseStyleSheet ? getCSSExt(chooseStyleSheet, useModules) : ''
+    const storyExt = st => {
+      if (st === 'mdx') {
+        return 'mdx'
+      } else {
+        return useTS ? 'tsx' : 'jsx'
+      }
+    }
 
     const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
   
@@ -49,7 +57,7 @@ module.exports = comGen = answers => {
     generateFile(`index.${jsext}x`, props)
   
     // Generate the stories file
-    createStories ? generateFile('index.stories.mdx', props) : skip('story files')
+    createStories ? generateFile(`index.stories.${storyExt(chooseStorybook)}`, props) : skip('story files')
     
     // Generate the css file
     createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)

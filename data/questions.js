@@ -51,6 +51,14 @@ module.exports = [
       default: true
     },
     {
+      type: 'list',
+      name: 'chooseStorybook',
+      message: 'What type of Storybook files do you want to generate?',
+      choices: ['CSF', 'MDX' ],
+      when: answers => answers.createStories,
+      default: 'CSF'
+    },
+    {
       type: 'confirm',
       name: 'createSpec',
       message: 'Do you want to include Jest tests?',

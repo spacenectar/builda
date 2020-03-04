@@ -44,6 +44,7 @@ Argument | Description | default
 `--name`, `-n` | The name you want to call your component | n/a (required field)
 `--dirs`, `-d` | Add extra directories as comma separated values | empty
 `--storybook`, `-s` | Generate storybook file | false
+`--stories`, `-st` | Choose your type of storybook file (either MDX or CSF) | 'CSF'
 `--jest`, `-j` | Generate jest test file | false
 `--css`, `-c` | Generate stylesheet file (see 'CSS Generation' for details) | 'css'
 `--modules`, `-m` | Usee CSS Modules (see 'CSS generation' for details) | false
@@ -91,9 +92,19 @@ Buildcom makes the following assumptions about your dependencies:
 - That you are using [React](https://reactjs.org/)
 - If you generate a CSS file for a particular pre-processor, that you already have that pre-processor configured for use in your project
 - If you generate a test file, that you are using Jest for unit tests, that you have '[react-test-renderer](https://www.npmjs.com/package/react-test-renderer)' installed for DOM tests and that you are using `.spec.*` as your file extension
-- If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the [MDX documenting](https://www.npmjs.com/package/@storybook/addon-docs#mdx) method using the '[docs](https://www.npmjs.com/package/@storybook/addon-docs)' addon.
+- If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the appropriate plugins for the type of stories you are generating.
 - If you opt to use any variation of [CSS modules](https://github.com/css-modules/css-modules) that your project is already configured to make use of them.
 - If you generate TypeScript files, that your project is already configured to use them
+
+If in doubt, feel free to look through our sample configs which can be found [here](examples/example-project-config)
+
+## Storybook
+
+This project can output Storybook files for each component, for those of you who don't know what storybook is, here is a breif introduction:
+
+[![Storybook intro video on YouTube](https://i.imgur.com/FDvR6zl.jpg)](https://www.youtube.com/watch?v=p-LFh5Y89eM)
+
+By default, buildcom outputs storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format but if you would prefer to use the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) syntax instead, you can do this by either selecting it in the buildcom form or adding the `--stories` flag to the command line and giving it a value of `mdx`. 
 
 ## Example 
 
@@ -104,10 +115,6 @@ The command used to generate that component was:
 ```bash
 buildcom --name "example component" -sjr -d 'images' --css "scss"
 ```
-
-## Roadmap
-
-- Add support for non-MDX storybook files
 
 ## Possible future developments
 - Add the ability to generate for frameworks other than React

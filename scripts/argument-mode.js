@@ -12,6 +12,7 @@ module.exports = argumentMode = argv => {
     name, 
     dirs, 
     storybook, 
+    stories, 
     jest, 
     css, 
     modules, 
@@ -24,6 +25,7 @@ module.exports = argumentMode = argv => {
   name ? answers.componentName = name : throwError('Name parameter is required')
   answers.createDirectories = dirs ? dirs : ''
   answers.createStories = storybook ? storybook : false
+  answers.chooseStorybook = stories ? stories : false
   answers.createSpec = jest ? jest : false
   answers.useModules = modules ? modules : false
   answers.useTS = typescript ? typescript : false
