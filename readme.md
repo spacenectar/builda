@@ -18,7 +18,7 @@ The easiest way to use this is with npx:
 npx buildcom
 ```
 
-If you wish to use it without an internet connection then you can install and use it locally:
+If you wish to use it without an internet connection or if you are planning to use it multiple times (NPX is slower) then you can install and use it locally:
 
 ```bash
 npm install -g buildcom
