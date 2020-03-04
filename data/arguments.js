@@ -24,12 +24,12 @@ module.exports = {
       alias: 's',
       boolean: true
     },
-    'stories' : {
-      description: 'What type of storybook file?',
+    'mdx' : {
+      description: 'Use MDX format for stories?',
       required: false,
-      alias: 'st',
-      default: 'csf',
-      boolean: true
+      boolean: true,
+      alias: 'mdx',
+      default: false,
     },
     'jest' : {
       description: 'Generate jest files?',

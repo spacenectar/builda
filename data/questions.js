@@ -74,6 +74,6 @@ module.exports = [
       type: 'confirm',
       name: 'createReadme',
       message: 'Do you want to generate a basic README.md file?',
-      default: false
+      default: true
     }
   ]

@@ -44,7 +44,7 @@ Argument | Description | default
 `--name`, `-n` | The name you want to call your component | n/a (required field)
 `--dirs`, `-d` | Add extra directories as comma separated values | empty
 `--storybook`, `-s` | Generate storybook file | false
-`--stories`, `-st` | Choose your type of storybook file (either MDX or CSF) | 'CSF'
+`--mdx`, `-mdx` | Override the default CSF format and us MDX format for Storybook stories | false
 `--jest`, `-j` | Generate jest test file | false
 `--css`, `-c` | Generate stylesheet file (see 'CSS Generation' for details) | 'css'
 `--modules`, `-m` | Usee CSS Modules (see 'CSS generation' for details) | false
@@ -104,7 +104,7 @@ This project can output Storybook files for each component, for those of you who
 
 [![Storybook intro video on YouTube](https://i.imgur.com/FDvR6zl.jpg)](https://www.youtube.com/watch?v=p-LFh5Y89eM)
 
-By default, buildcom outputs storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format but if you would prefer to use the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) syntax instead, you can do this by either selecting it in the buildcom form or adding the `--stories` flag to the command line and giving it a value of `mdx`. 
+By default, buildcom outputs storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format but if you would prefer to use the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) syntax instead, you can do this by either selecting it in the buildcom form or adding the `--mdx` flag to the command
 
 ## Example 
 

@@ -29,14 +29,17 @@ module.exports = comGen = answers => {
     const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
     const componentNameKebab = _.kebabCase(componentName)
   
-    const jsext = useTS ? 'ts' : 'js'
+    const jsext = x => useTS ? `ts${x}` : `js${x}`
     const cssext = chooseStyleSheet ? getCSSExt(chooseStyleSheet, useModules) : ''
+
     const storyExt = st => {
-      if (st === 'mdx') {
-        return 'mdx'
+      let val = ''
+      if (typeof(st) === 'boolean') {
+        val =  st ? 'mdx' : jsext('x')
       } else {
-        return useTS ? 'tsx' : 'jsx'
-      }
+        val = st.match(/mdx/i) ? 'mdx' : jsext('x')
+      }     
+      return val
     }
 
     const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
@@ -54,7 +57,7 @@ module.exports = comGen = answers => {
     generateDirectory(componentDir)
   
     // Generate the index file
-    generateFile(`index.${jsext}x`, props)
+    generateFile(`index.${jsext('x')}`, props)
   
     // Generate the stories file
     createStories ? generateFile(`index.stories.${storyExt(chooseStorybook)}`, props) : skip('story files')
@@ -63,7 +66,7 @@ module.exports = comGen = answers => {
     createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)
     
     // Generate the spec file
-    createSpec ? generateFile(`index.spec.${jsext}x`, props) : skip('spec files')
+    createSpec ? generateFile(`index.spec.${jsext('x')}`, props) : skip('spec files')
 
     // Generate the d.ts file
     useTS && createStyleSheet ? generateFile(`styles.${cssext}.d.ts`, props) : null
