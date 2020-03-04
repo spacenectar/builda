@@ -8,6 +8,7 @@
 exports[`tests/argument-mode.spec.js TAP Calls argument mode with css > Argument mode, skipping questionnaire 1`] = `
 Object {
   "blank": false,
+  "chooseStorybook": false,
   "chooseStyleSheet": "stylus",
   "componentName": "test name",
   "createDirectories": "",
@@ -24,6 +25,7 @@ Object {
 exports[`tests/argument-mode.spec.js TAP calls argument mode with almost everything else > Argument mode, skipping questionnaire 1`] = `
 Object {
   "blank": false,
+  "chooseStorybook": false,
   "chooseStyleSheet": "css",
   "componentName": "test name",
   "createDirectories": "one, two",
