@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const writeFile = require('./write-file')
 const throwError = require('./throw-error')
+const getCSSExt = require('./get-css-ext')
 
 const appDir = path.dirname(require.main.filename)
 
@@ -16,26 +17,15 @@ module.exports = generateFile = (name, props) => {
       chooseStyleSheet
     } = props
   
-    const stylesheet = chooseStyleSheet === 'stylus' ? 'styl' : chooseStyleSheet
+    const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
   
     const srcName = name => {
       if (name === 'styles') {
-        name = name.concat(`.${stylesheet.toLowerCase()}`)
+        name = name.concat(`.${stylesheet}`)
       }
       return name
     }
-  
-    const writeName = name => {
-      if (name === 'styles') {
-        if (useModules !== undefined && useModules ) {
-          name = srcName(name).replace('.', '.module.')
-        } else {
-          name = srcName(name)
-        }
-      } 
-      return name    
-    }
-  
+   
     // If blank files are not being generated
     if (!blank) {
       
@@ -44,10 +34,10 @@ module.exports = generateFile = (name, props) => {
       let classesString = ''
       if (chooseStyleSheet !== undefined) {
         if (useModules !== undefined && !useModules)  {
-          cssString = `import './styles.${stylesheet.toLowerCase()}'\n\n` 
+          cssString = `import './styles.${stylesheet}'\n\n` 
           classesString = 'example style-${colour}'
         } else {
-          cssString = `import styles from './styles.module.${stylesheet.toLowerCase()}'\n\n` 
+          cssString = `import styles from './styles.${stylesheet}'\n\n` 
           classesString = 'styles[colour]'
         }
       }
@@ -61,7 +51,7 @@ module.exports = generateFile = (name, props) => {
         .replace(/%styleimport%/g, cssString)
         .replace(/%classes%/g, classesString)
         
-        writeFile(componentDir, writeName(name), src)
+        writeFile(componentDir, name, src)
       } catch (err) {
         // The throwError function outputs a friendly error for users, if you are debugging this app
         // you will need to comment it out and replace it with the line below.
@@ -71,6 +61,6 @@ module.exports = generateFile = (name, props) => {
   
     } else {
       // Creates an empty file with the correct name
-      writeFile(componentDir, writeName(name), '')
+      writeFile(componentDir, name, '')
     }
   }

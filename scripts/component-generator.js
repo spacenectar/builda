@@ -5,6 +5,7 @@ const generateDirectory = require('./generate-directory')
 const generateFile = require('./generate-file')
 const skip = require('./skip')
 const returnMessage = require('./return-message')
+const getCSSExt = require('./get-css-ext')
 
 module.exports = comGen = answers => {
   
@@ -28,7 +29,8 @@ module.exports = comGen = answers => {
     const componentNameKebab = _.kebabCase(componentName)
   
     const jsext = useTS ? 'ts' : 'js'
-    
+    const cssext = chooseStyleSheet ? getCSSExt(chooseStyleSheet, useModules) : ''
+
     const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
   
     const props = {
@@ -54,6 +56,9 @@ module.exports = comGen = answers => {
     
     // Generate the spec file
     createSpec ? generateFile(`index.spec.${jsext}x`, props) : skip('spec files')
+
+    // Generate the d.ts file
+    useTS && createStyleSheet ? generateFile(`styles.${cssext}.d.ts`, props) : null
     
     // Generate the readme file
     createReadme ? generateFile('README.md', props) : skip('README file')
