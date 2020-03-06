@@ -1,16 +1,14 @@
 import React from 'react'
 
-interface Props {
-  name: string
-  colour: string
-}
+/* Import Types */
+import Props from './types/props.interface'
 
+/* Import Stylesheet */
 %styleimport%
-
-const %ComponentExample%: React.FunctionComponent<Props> = ({ name, colour }: Props) =>
+/* Render component */
+export const %ComponentExample%: React.FunctionComponent<Props> = ({ name, colour }: Props) =>
   <div className={%classes%}>
     This is an example component, the name provided to it was {name}
   </div>
-
 
 export default %ComponentExample%

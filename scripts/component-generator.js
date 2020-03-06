@@ -67,12 +67,27 @@ module.exports = comGen = answers => {
     
     // Generate the spec file
     createSpec ? generateFile(`index.spec.${jsext('x')}`, props) : skip('spec files')
+    
+    // Extra things are needed if TypeScript is enabled
+    if (useTS)  {
+      // Generate the d.ts file
+      createStyleSheet ? generateFile(`styles.${cssext}.d.ts`, props) : null
+      
+      // Create the types folder
+      generateDirectory(path.join(componentDir, 'types'))
 
-    // Generate the d.ts file
-    useTS && createStyleSheet ? generateFile(`styles.${cssext}.d.ts`, props) : null
+      const extraProps = {
+        ...props,
+        customDir: 'types'
+      }
+      
+      // Create the props interface
+      generateFile('props.interface.ts', extraProps)
+    }
+
     
     // Generate the readme file
-    createReadme ? generateFile('README.md', props) : skip('README file')
+    generateFile('README.md', props)
     
     const dirArray = createDirectories.split(',')
   

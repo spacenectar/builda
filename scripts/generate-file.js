@@ -14,10 +14,13 @@ module.exports = generateFile = (name, props) => {
       componentNameKebab, 
       blank, 
       useModules, 
-      chooseStyleSheet
+      chooseStyleSheet,
+      customDir
     } = props
+
+    const dir = customDir ? path.join(componentDir, customDir) : componentDir
   
-    const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
+        const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
   
     const srcName = name => {
       if (name === 'styles') {
@@ -34,10 +37,10 @@ module.exports = generateFile = (name, props) => {
       let classesString = ''
       if (chooseStyleSheet !== undefined) {
         if (useModules !== undefined && !useModules)  {
-          cssString = `import './styles.${stylesheet}'\n\n` 
+          cssString = `import './styles.${stylesheet}'\n` 
           classesString = 'example style-${colour}'
         } else {
-          cssString = `import styles from './styles.${stylesheet}'\n\n` 
+          cssString = `import styles from './styles.${stylesheet}'\n` 
           classesString = 'styles[colour]'
         }
       }
@@ -51,7 +54,7 @@ module.exports = generateFile = (name, props) => {
         .replace(/%styleimport%/g, cssString)
         .replace(/%classes%/g, classesString)
         
-        writeFile(componentDir, srcName(name), src)
+        writeFile(dir, srcName(name), src)
       } catch (err) {
         // The throwError function outputs a friendly error for users, if you are debugging this app
         // you will need to comment it out and replace it with the line below.
@@ -61,6 +64,6 @@ module.exports = generateFile = (name, props) => {
   
     } else {
       // Creates an empty file with the correct name
-      writeFile(componentDir, name, '')
+      writeFile(dir, name, '')
     }
   }
