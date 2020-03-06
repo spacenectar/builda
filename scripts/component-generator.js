@@ -82,7 +82,7 @@ module.exports = comGen = answers => {
       }
       
       // Create the props interface
-      generateFile('props.interface.ts', extraProps)
+      generateFile('props.d.ts', extraProps)
     }
 
     
