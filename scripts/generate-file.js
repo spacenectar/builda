@@ -51,7 +51,7 @@ module.exports = generateFile = (name, props) => {
         .replace(/%styleimport%/g, cssString)
         .replace(/%classes%/g, classesString)
         
-        writeFile(componentDir, name, src)
+        writeFile(componentDir, srcName(name), src)
       } catch (err) {
         // The throwError function outputs a friendly error for users, if you are debugging this app
         // you will need to comment it out and replace it with the line below.
