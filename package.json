@@ -2,7 +2,8 @@
   "name": "buildcom",
   "version": "0.4.3",
   "bin": {
-    "buildcom": "index.js"
+    "buildcom": "index.js",
+    "bcreg": "scripts/generate-register.js"
   },
   "description": "A component generator for react",
   "keywords": [
