@@ -17,5 +17,5 @@ export default {
   }
 }
 
-export const Default: React.FunctionComponent = () => <%ComponentExample% />
+export const Default: React.FC = () => <%ComponentExample% name="test" colour="green"/>
 

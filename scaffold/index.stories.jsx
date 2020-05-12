@@ -17,5 +17,5 @@ export default {
   }
 }
 
-export const Default = () => <%ComponentExample% />
+export const Default = () => <%ComponentExample% name="test" colour="red" />
 
