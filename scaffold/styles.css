@@ -1,12 +1,12 @@
-.example {
+.styles {
   color: #fff;
   font-weight: bold;
 }
 
-.style--blue {
+.styles--blue {
   background-color: #69C;
 }
 
-.style--red {
+.styles--red {
   background-color: #f00;
 }

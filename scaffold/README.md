@@ -1,6 +1,6 @@
 # %ComponentExampleSentence% documentation
 
-This is an example readme file for the '%ComponentExampleSentence%' component.
+The '%ComponentExampleSentence%' component.
 
 ## UI Example
 
@@ -17,6 +17,7 @@ This is an example readme file for the '%ComponentExampleSentence%' component.
 ## Usage
 
 ### ES6 Import
+
 ```js
 import %ComponentExample% from './%ComponentExampleKebab%'
 ```
@@ -25,3 +26,4 @@ import %ComponentExample% from './%ComponentExampleKebab%'
 
 ```js
 const %ComponentExample% = require('./%ComponentExampleKebab%')
+```

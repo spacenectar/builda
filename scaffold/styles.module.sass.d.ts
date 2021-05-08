@@ -2,7 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'blue': string;
-  'example': string;
   'red': string;
 }
 export const cssExports: CssExports;
