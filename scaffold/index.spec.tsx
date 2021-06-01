@@ -1,15 +1,17 @@
 /* global it expect */
 
 import React from 'react'
-import renderer from 'react-test-renderer'
+import { render } from '@testing-library/react';
 
 // Import component files
 import %ComponentExample% from './index'
 
 // Tests
-it('%ComponentExample% renders correctly', () => {
-  const tree = renderer
-    .create(<%ComponentExample% name="test" colour="blue" />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+describe('%ComponentExample% component', () => {
+  it('renders to match snapshot', () => {
+    const { baseElement } = render(
+      <%ComponentExample% name="test" colour="blue" />
+    );
+    expect(baseElement).toMatchSnapshot();
+  });
 });

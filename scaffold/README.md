@@ -14,7 +14,7 @@ The '%ComponentExampleSentence%' component.
 
 <!-- PROPS -->
 
-## Usage
+## Importing
 
 ### ES6 Import
 

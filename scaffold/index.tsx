@@ -1,7 +1,16 @@
 import React from 'react'
 
-/* Import Types */
-import Props from './types/props'
+/* Define Types */
+interface Props {
+  /**
+   * The name of the thing
+   */
+  name: string
+  /**
+   * The colour of the thing
+   */
+  colour: string
+}
 
 /* Import Stylesheet */
 %styleimport%
