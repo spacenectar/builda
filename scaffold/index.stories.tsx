@@ -4,9 +4,9 @@ import React from 'react'
 import %ComponentExample% from './index'
 import docs from './README.md'
 
-
+// Configure Story
 export default {
-  title: 'local/%ComponentExample%',
+  title: 'molecule/%ComponentExample%',
   component: %ComponentExample%,
   decorators: [],
   parameters: {
@@ -17,5 +17,6 @@ export default {
   }
 }
 
+// Stories
 export const Default: React.FC = () => <%ComponentExample% name="test" colour="green"/>
 

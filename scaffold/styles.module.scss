@@ -1,17 +1,15 @@
-$red: #f00;
-$white: #fff;
-$blue: #69C;
 
-.example {
-  color: $white;
+@mixin example() {
+  color:rgb(255, 255, 255);
   font-weight: bold;
 }
 
 .blue {
-  composes: example;
-  background-color: $blue;
+  @include example;
+  background-color: rgb(0, 0, 255);
 }
+
 .red {
-  composes: example;
-  background-color: $red;
+  @include example;
+  background-color: rgb(255, 0, 0);
 }
