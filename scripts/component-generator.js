@@ -69,10 +69,7 @@ module.exports = comGen = answers => {
     createSpec ? generateFile(`index.spec.${jsext('x')}`, props) : skip('spec files')
     
     // Extra things are needed if TypeScript is enabled
-    if (useTS)  {
-      // Generate the d.ts file
-      createStyleSheet ? generateFile(`styles.${cssext}.d.ts`, props) : null
-      
+    if (useTS)  {     
       // Create the types folder
       generateDirectory(path.join(componentDir, 'types'))
 
