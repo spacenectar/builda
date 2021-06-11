@@ -1,5 +1,8 @@
 import React from 'react'
 
+/* Import Types */
+import Props from './types/props'
+
 /* Import Stylesheet */
 %styleimport%
 
