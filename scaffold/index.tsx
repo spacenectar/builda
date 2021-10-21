@@ -1,19 +1,11 @@
 import React from 'react'
 
-/* Define Types */
-interface Props {
-  /**
-   * The name of the thing
-   */
-  name: string
-  /**
-   * The colour of the thing
-   */
-  colour: string
-}
+/* Import Types */
+import Props from './types/props'
 
 /* Import Stylesheet */
 %styleimport%
+
 /* Render component */
 export const %ComponentExample%: React.FC<Props> = ({ name, colour }: Props) =>
   <div className={%classes%}>
