@@ -1,4 +1,15 @@
 module.exports = getCSSExt = (ssheet, modules) => {
-  const out = ssheet === 'stylus' ? 'styl' : ssheet
-  return modules === undefined || !modules ? out.toLowerCase() : `module.${out.toLowerCase()}`
+  let ext = '';
+  switch (ssheet) {
+    case 'none':
+      ext = 'css';
+      break;
+    case 'stylus':
+      ext = 'styl';
+      break;
+    default:
+      ext = ssheet;
+      break;
+  }
+  return modules === undefined || !modules ? ext.toLowerCase() : `module.${ext.toLowerCase()}`
 }

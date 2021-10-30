@@ -32,6 +32,34 @@ This will generate a react component in your current working directory.
 
 ![How buildcom runs](./example.gif)
 
+## Config file
+
+You can specify some defaults by creating a `.buildcomrc` file in your home directory. It should look like this:
+
+```yaml
+    # The folder the components will be generated in. This is relative to the current working directory.
+    output: "./src/components"
+    # Output components in TypeScript format (outputs as regular JavaScript files if false).
+    use_typescript: true
+    # Generate storybook stories for each component.
+    use_storybook: true
+    # Use MDX for storybook stories (uses CSF if false).
+    story_format_mdx: false
+    # Generate Jest tests for each component.
+    use_jest: true
+    # Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext].
+    test_file_name: 'spec'
+    # Output a stylesheet?
+    output_stylesheets: true
+    # Specify the CSS preproccessor to use, e.g. 'sass', 'less', 'stylus', 'scss', or 'none'.
+    css_preprocessor: 'sass'
+    # use the CSS module format?
+    css_modules: false
+    # Generate a README.md file for each component.
+    generate_readme: true
+    # If true, example code will be added to the component files. If false, the files will be bare-bones.
+    output_example_code: true
+```
 ## Options 
 
 If you call buildcom without any arguments, the component folder will be created in your current working directory, it will also ask you some questions in order to build the component out properly.
@@ -55,6 +83,7 @@ Argument | Description | default
 `--help`, `-h` | Displays the help text
 `--version` | Displays version number
 
+> Please note, the argument mode is currently the least flexible option, we will add more options in the future but for now you can use the config file or the questionaire.
 ## CSS Generation
 
 The following options exist for CSS usage:
@@ -91,7 +120,7 @@ Buildcom makes the following assumptions about your dependencies:
 
 - That you are using [React](https://reactjs.org/)
 - If you generate a CSS file for a particular pre-processor, that you already have that pre-processor configured for use in your project
-- If you generate a test file, that you are using Jest for unit tests, that you have '[react-test-renderer](https://www.npmjs.com/package/react-test-renderer)' installed for DOM tests and that you are using `.spec.*` as your file extension
+- If you generate a test file, that you already have Jest or testing-library installed and configured for use in your project
 - If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the appropriate plugins for the type of stories you are generating.
 - If you opt to use any variation of [CSS modules](https://github.com/css-modules/css-modules) that your project is already configured to make use of them.
 - If you generate TypeScript files, that your project is already configured to use them
@@ -104,7 +133,7 @@ This project can output Storybook files for each component, for those of you who
 
 [![Storybook intro video on YouTube](https://i.imgur.com/FDvR6zl.jpg)](https://www.youtube.com/watch?v=p-LFh5Y89eM)
 
-By default, buildcom outputs storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format but if you would prefer to use the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) syntax instead, you can do this by either selecting it in the buildcom form or adding the `--mdx` flag to the command
+By default, buildcom outputs storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format but if you would prefer to use the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) syntax instead, you can do this by either selecting it in the buildcom form, specifying it in the config file or adding the `--mdx` flag to the command
 
 ## Example 
 
@@ -115,6 +144,10 @@ The command used to generate that component was:
 ```bash
 buildcom --name "example component" -sjr -d 'images' --css "scss"
 ```
-
 ## Possible future developments
-- Add the ability to generate for frameworks other than React
+- Add the ability to generate for frameworks other than React.
+- Renames files instead of needed an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
+- Add the ability to use inline Typescript types instead of requiring them to be in a subdirectory.
+- Will bring argument mode into parity with the config file mode and the questionaire mode.
+## Known issues
+- Currently buildcom does not check if the component name already exists in the current directory, if you try to generate a component with the same name as an existing component, it will overwrite the existing components files.
