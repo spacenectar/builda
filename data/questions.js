@@ -7,7 +7,7 @@ module.exports = [
       message: 'What is your component called?',
       default: 'My New Component',
       validate: value => 
-      directoryRegex.test(value) ? true : 'Component name is invalid'
+        directoryRegex.test(value) ? true : 'Component name is invalid'
     },
     {
       type: 'input',
@@ -21,6 +21,13 @@ module.exports = [
       type: 'confirm',
       name: 'useTS',
       message: 'Do you want to use TypeScript?',
+      default: true
+    },
+    {
+      type: 'confirm',
+      name: 'useTS',
+      message: 'Do you want your types to be in the index file or in their own \'types\' directory?',
+      when: answers => answers.useTS,
       default: true
     },
     {
@@ -61,8 +68,16 @@ module.exports = [
     {
       type: 'confirm',
       name: 'createSpec',
-      message: 'Do you want to include Jest tests?',
+      message: 'Do you want to create a test file?',
       default: true
+    },
+    {
+      type: 'confirm',
+      name: 'createSpec',
+      message: 'Do you want to generate \'spec\' or \'test\' files? (e.g. example.spec.js or example.test.js)',
+      choices: ['test', 'spec'],
+      when: answers => answers.createSpec,
+      default: 'test'
     },
     {
       type: 'input',
