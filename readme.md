@@ -55,6 +55,8 @@ You can specify some defaults by creating a `.buildcomrc` file in your home dire
     css_preprocessor: 'sass'
     # use the CSS module format?
     css_modules: false
+    # Output component types in their own subfolder (will output in the components index file if false).
+    create_types_subfolder: false
     # Generate a README.md file for each component.
     generate_readme: true
     # If true, example code will be added to the component files. If false, the files will be bare-bones.
@@ -147,7 +149,6 @@ buildcom --name "example component" -sjr -d 'images' --css "scss"
 ## Possible future developments
 - Add the ability to generate for frameworks other than React.
 - Renames files instead of needed an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
-- Add the ability to use inline Typescript types instead of requiring them to be in a subdirectory.
 - Will bring argument mode into parity with the config file mode and the questionaire mode.
 ## Known issues
 - Currently buildcom does not check if the component name already exists in the current directory, if you try to generate a component with the same name as an existing component, it will overwrite the existing components files.
