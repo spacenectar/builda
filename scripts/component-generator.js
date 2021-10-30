@@ -10,17 +10,19 @@ const getCSSExt = require('./get-css-ext')
 module.exports = comGen = answers => {
   
     const {
-      componentName, 
+      componentName,
       outputDirectory,
-      useTS, 
-      createStyleSheet, 
-      useModules,
-      chooseStyleSheet,
-      createDirectories, 
-      createSpec, 
-      createStories, 
+      createStories,
       chooseStorybook,
+      createSpec,
+      test_file_name,
+      createStyleSheet,
+      chooseStyleSheet,
+      createTypesFolder,
+      useModules,
+      useTS,
       createReadme,
+      createDirectories,
       blank
     } = answers
   
@@ -66,7 +68,7 @@ module.exports = comGen = answers => {
     createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)
     
     // Generate the spec file
-    createSpec ? generateFile(`index.spec.${jsext('x')}`, props) : skip('spec files')
+    createSpec ? generateFile(`index.${test_file_name}.${jsext('x')}`, props) : skip('test files')
     
     // Extra things are needed if TypeScript is enabled
     if (useTS)  {     
@@ -84,7 +86,7 @@ module.exports = comGen = answers => {
 
     
     // Generate the readme file
-    generateFile('README.md', props)
+    createReadme && generateFile('README.md', props)
     
     const dirArray = createDirectories.split(',')
   

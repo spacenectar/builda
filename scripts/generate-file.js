@@ -19,8 +19,7 @@ module.exports = generateFile = (name, props) => {
     } = props
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
-  
-        const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
+    const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
   
     const srcName = name => {
       if (name === 'styles') {
