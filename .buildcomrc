@@ -18,7 +18,7 @@ css_preprocessor: 'sass'
 css_modules: false
 # Generate a README.md file for each component.
 generate_readme: true
-# [COMING SOON] Output component types in their own subfolder (will output in the components index file if false).
+# Output component types in their own subfolder (will output in the components index file if false).
 create_types_subfolder: false
 # If true, example code will be added to the component files. If false, the files will be bare-bones.
 output_example_code: true
