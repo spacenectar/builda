@@ -1,11 +1,8 @@
 import React from 'react'
 
-/* Import Types */
-import Props from './types/props'
-
 /* Import Stylesheet */
 %styleimport%
-
+%TsString%
 /* Render component */
 export const %ComponentExample%: React.FC<Props> = ({ name, colour }: Props) =>
   <div className={%classes%}>
