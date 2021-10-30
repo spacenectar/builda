@@ -59,7 +59,7 @@ module.exports = comGen = answers => {
     generateDirectory(componentDir)
   
     // Generate the index file
-    generateFile(`index.${jsext('x')}`, props)
+    generateFile(`index.${jsext('x')}`, props, createTypesFolder)
   
     // Generate the stories file
     createStories ? generateFile(`index.stories.${storyExt(chooseStorybook)}`, props) : skip('story files')
@@ -70,20 +70,21 @@ module.exports = comGen = answers => {
     // Generate the spec file
     createSpec ? generateFile(`index.${test_file_name}.${jsext('x')}`, props) : skip('test files')
     
-    // Extra things are needed if TypeScript is enabled
+    // Extra things are needed if TypeScript is enabled and it is not inlined
     if (useTS)  {     
-      // Create the types folder
-      generateDirectory(path.join(componentDir, 'types'))
-
-      const extraProps = {
-        ...props,
-        customDir: 'types'
+      if (createTypesFolder) {
+        // Create the types folder
+        generateDirectory(path.join(componentDir, 'types'))
+  
+        const extraProps = {
+          ...props,
+          customDir: 'types'
+        }
+        
+        // Create the props interface
+        generateFile('props.d.ts', extraProps)
       }
-      
-      // Create the props interface
-      generateFile('props.d.ts', extraProps)
-    }
-
+    } 
     
     // Generate the readme file
     createReadme && generateFile('README.md', props)

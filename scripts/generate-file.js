@@ -7,7 +7,26 @@ const getCSSExt = require('./get-css-ext')
 
 const appDir = path.dirname(require.main.filename)
 
-module.exports = generateFile = (name, props) => {
+const inlineTypes = `
+/* Prop Types */
+interface Props {
+  /**
+   * The name of the thing
+   */
+  name: string
+  /**
+   * The colour of the thing
+   */
+  colour: string
+}
+`
+
+const importedTypes = `
+/* Import Types */
+import Props from './types/props'
+`
+
+module.exports = generateFile = (name, props, externalTS) => {
     const {
       componentDir,
       componentNameSentenceCase, 
@@ -17,6 +36,8 @@ module.exports = generateFile = (name, props) => {
       chooseStyleSheet,
       customDir
     } = props
+
+    externalTS = (typeof externalTS !== 'undefined') ? externalTS : false
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
     const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
@@ -36,13 +57,15 @@ module.exports = generateFile = (name, props) => {
       let classesString = ''
       if (chooseStyleSheet !== undefined) {
         if (useModules !== undefined && !useModules)  {
-          cssString = `import './styles.${stylesheet}'\n` 
+          cssString = `import './styles.${stylesheet}'` 
           classesString = 'example style-${colour}'
         } else {
-          cssString = `import styles from './styles.${stylesheet}'\n` 
+          cssString = `import styles from './styles.${stylesheet}'` 
           classesString = 'styles[colour]'
         }
       }
+
+      const typeString = (externalTS) ? inlineTypes : importedTypes;
       
       // Generates the files and replaces any found strings
       try {
@@ -52,7 +75,8 @@ module.exports = generateFile = (name, props) => {
         .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
         .replace(/%styleimport%/g, cssString)
         .replace(/%classes%/g, classesString)
-        
+        .replace(/%TsString%/g, typeString)
+      
         writeFile(dir, srcName(name), src)
       } catch (err) {
         // The throwError function outputs a friendly error for users, if you are debugging this app
