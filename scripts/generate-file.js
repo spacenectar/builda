@@ -65,7 +65,7 @@ module.exports = generateFile = (name, props, externalTS) => {
         }
       }
 
-      const typeString = (externalTS) ? inlineTypes : importedTypes;
+      const typeString = (externalTS) ? importedTypes : inlineTypes;
       
       // Generates the files and replaces any found strings
       try {
