@@ -1,6 +1,6 @@
 {
   "name": "buildcom",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "bin": {
     "buildcom": "index.js",
     "bcreg": "scripts/generate-register.js"
