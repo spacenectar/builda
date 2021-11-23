@@ -2,6 +2,8 @@ import React from 'react'
 
 // Import component files
 import %ComponentExample% from './index'
+
+// Import readme
 import docs from './README.md'
 
 // Configure Story

@@ -9,7 +9,7 @@ const appDir = path.dirname(require.main.filename)
 
 const inlineTypes = `
 /* Prop Types */
-interface Props {
+export interface Props {
   /**
    * The name of the thing
    */
