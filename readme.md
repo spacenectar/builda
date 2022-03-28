@@ -164,6 +164,13 @@ The command used to generate that component was:
 ```bash
 buildcom --name "example component" -sjr -d 'images' --css "scss"
 ```
+
+## 🚨 BREAKING CHANGES from v1.x.x 🚨
+
+If you were using MDX syntax in your components, you will find that file that is generated has now changed, this is to 
+bring it in line with the latest features available in Storybook. Your components should still generate fine, however
+the format of any newly generated Storybook files will be different to any existing ones.
+
 ## Possible future developments
 - Add the ability to generate for frameworks other than React.
 - Renames files instead of needing an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
