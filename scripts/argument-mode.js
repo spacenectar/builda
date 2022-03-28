@@ -1,28 +1,27 @@
 
-const throwError = require('./throw-error')
 const returnMessage = require('./return-message')
 
 module.exports = argumentMode = argv => {
-  
-  returnMessage('Argument mode, skipping questionnaire', {color: 'yellow'})
+
+  returnMessage('Argument mode, skipping questionnaire', 'notice')
   let answers = {}
 
   const {
-    output, 
-    name, 
-    dirs, 
-    storybook, 
-    mdx, 
-    jest, 
-    css, 
-    modules, 
-    typescript, 
-    readme, 
+    output,
+    name,
+    dirs,
+    storybook,
+    mdx,
+    jest,
+    css,
+    modules,
+    typescript,
+    readme,
     blank
   } = argv
 
   output ? answers.outputDirectory = output: '.'
-  name ? answers.componentName = name : throwError('Name parameter is required')
+  name ? answers.componentName = name : returnMessage('Name parameter is required', 'error')
   answers.createDirectories = dirs ? dirs : ''
   answers.createStories = storybook ? storybook : false
   answers.chooseStorybook = mdx ? mdx : false
@@ -38,6 +37,6 @@ module.exports = argumentMode = argv => {
   } else {
     answers.createStyleSheet = false
   }
-  
+
   return answers
 }

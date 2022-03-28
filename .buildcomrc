@@ -5,7 +5,7 @@ use_typescript: true
 # Generate storybook stories for each component.
 use_storybook: true
 # Use MDX for storybook stories (uses CSF if false).
-story_format_mdx: false
+story_format_mdx: true
 # Generate Jest tests for each component.
 use_jest: true
 # Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext].
@@ -17,7 +17,7 @@ css_preprocessor: 'sass'
 # use the CSS module format?
 css_modules: false
 # Generate a README.md file for each component.
-generate_readme: true
+generate_readme: false
 # Output component types in their own subfolder (will output in the components index file if false).
 create_types_subfolder: false
 # If true, example code will be added to the component files. If false, the files will be bare-bones.
