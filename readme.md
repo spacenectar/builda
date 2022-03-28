@@ -62,9 +62,27 @@ You can specify some defaults by creating a `.buildcomrc` file in your home dire
     # If true, example code will be added to the component files. If false, the files will be bare-bones.
     output_example_code: true
 ```
-## Options 
 
-If you call buildcom without any arguments, the component folder will be created in your current working directory, it will also ask you some questions in order to build the component out properly.
+If you are using the `.buildcomrc` file you can run the `buildcom` command by itself and it will only ask one what to name
+your component. You can also specify the name of the component in the command line:
+
+```bash
+buildcom my-component
+```
+
+This will generate a component called `my-component` in the directory specified in the `.buildcomrc` file.
+
+You can also use this method to create multiple components at once:
+
+```bash
+    buildcom my-component my-other-component
+```
+
+This is the only way to create multiple components at once, so this command is very useful, especially at the start of a new project.
+
+## Options
+
+If you call buildcom without any arguments, the component folder will be created in your current working directory (or the directory specified in your `.buildcomrc` file), it will also ask you some questions in order to build the component out properly.
 
 You can also supply it with the following arguments:
 
@@ -148,7 +166,6 @@ buildcom --name "example component" -sjr -d 'images' --css "scss"
 ```
 ## Possible future developments
 - Add the ability to generate for frameworks other than React.
-- Renames files instead of needed an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
-- Will bring argument mode into parity with the config file mode and the questionaire mode.
+- Renames files instead of needing an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
 ## Known issues
-- Currently buildcom does not check if the component name already exists in the current directory, if you try to generate a component with the same name as an existing component, it will overwrite the existing components files.
+- The latest release has rendered the old tests defunct, I don't have time to update them right now but this does not affect the functionality of the project.
