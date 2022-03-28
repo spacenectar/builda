@@ -1,23 +1,33 @@
 const fs = require('fs')
 const path = require('path')
-const throwError = require('./throw-error')
 const returnMessage = require('./return-message')
 
-module.exports = generateDirectory = (name, dir, force) => {
+const makeDir = (dir, name) => {
+  try {
+    fs.mkdirSync(dir)
+  } catch (err) {
+    returnMessage(`'${name.split('/')[0]}' is not writable or does not exist`, 'error')
+  }
+}
+
+module.exports = generateDirectory = ({
+  name,
+  dir,
+  checkExists,
+  force
+}) => {
     const output = dir ? path.join(dir, name.trim()) : name
-    if (!fs.existsSync(output)) {
-      try {
-        fs.mkdirSync(output)
-      } catch (err) {
-        throwError(`'${name.split('/')[0]}' is not writable or does not exist`)
+    if (checkExists) {
+      if (!fs.existsSync(output)) {
+        makeDir(output, name)
+      } else {
+        if (!force) {
+          returnMessage(`${output} already exists, aborting entire process, please run the command again`, 'error')
+        } else {
+          returnMessage(`Ignoring existance of existing ${output} folder with --force`, 'warning')
+        }
       }
     } else {
-    // FIXME: This should work but it doesn't it is causing a bug (https://github.com/foxleigh81/buildcom/issues/11)
-    // removing for now as I don't have time to fix it properly
-    //   if (!force) {
-    //     throwError(`${output} already exists, aborting`)
-    //   } else {
-    //     returnMessage(`Ignoring existance of existing ${output} folder with --force`, {color: 'orange'})
-    //   }
+      makeDir(output, name)
     }
 }

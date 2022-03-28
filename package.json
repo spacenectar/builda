@@ -1,6 +1,6 @@
 {
   "name": "buildcom",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "bin": {
     "buildcom": "index.js",
     "bcreg": "scripts/generate-register.js"
@@ -43,13 +43,14 @@
     "inquirer": "^7.0.4",
     "js-yaml": "^3.9.1",
     "lodash": "^4.17.15",
-    "nyc": "^15.0.0",
     "rimraf": "^3.0.2",
-    "tap": "^15.1.2",
     "yargs": "^15.1.0"
   },
+  "devDependencies": {
+    "nyc": "^15.1.0",
+    "tap": "^16.0.1"
+  },
   "resolutions": {
-    "ansi-regex": "5.0.1",
-    "json-schema": "^0.4.0"
+    "minimist": "1.2.6"
   }
 }

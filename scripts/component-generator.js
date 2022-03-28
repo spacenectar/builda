@@ -8,7 +8,7 @@ const returnMessage = require('./return-message')
 const getCSSExt = require('./get-css-ext')
 
 module.exports = comGen = answers => {
-  
+
     const {
       componentName,
       outputDirectory,
@@ -25,12 +25,12 @@ module.exports = comGen = answers => {
       createDirectories,
       blank
     } = answers
-  
+
     returnMessage(`\nCreating folder for ${componentName}' component`, {color: 'blue'})
-    
+
     const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
     const componentNameKebab = _.kebabCase(componentName)
-  
+
     const jsext = x => useTS ? `ts${x}` : `js${x}`
     const cssext = chooseStyleSheet ? getCSSExt(chooseStyleSheet, useModules) : ''
 
@@ -40,12 +40,12 @@ module.exports = comGen = answers => {
         val =  st ? 'mdx' : jsext('x')
       } else {
         val = st.match(/mdx/i) ? 'mdx' : jsext('x')
-      }     
+      }
       return val
     }
 
     const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
-  
+
     const props = {
       componentDir,
       componentNameKebab,
@@ -54,47 +54,50 @@ module.exports = comGen = answers => {
       useModules,
       chooseStyleSheet
     }
-  
+
     // Create the component directory
-    generateDirectory(componentDir)
-  
+    generateDirectory({name: componentDir, checkExists: true})
+
     // Generate the index file
     generateFile(`index.${jsext('x')}`, props, createTypesFolder)
-  
+
     // Generate the stories file
     createStories ? generateFile(`index.stories.${storyExt(chooseStorybook)}`, props) : skip('story files')
-    
+
     // Generate the css file
     createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)
-    
+
     // Generate the spec file
     createSpec ? generateFile(`index.${test_file_name}.${jsext('x')}`, props) : skip('test files')
-    
+
     // Extra things are needed if TypeScript is enabled and it is not inlined
-    if (useTS)  {     
+    if (useTS)  {
       if (createTypesFolder) {
         // Create the types folder
-        generateDirectory(path.join(componentDir, 'types'))
-  
+        generateDirectory({name: path.join(componentDir, 'types')})
+
         const extraProps = {
           ...props,
           customDir: 'types'
         }
-        
+
         // Create the props interface
         generateFile('props.d.ts', extraProps)
       }
-    } 
-    
+    }
+
     // Generate the readme file
     createReadme && generateFile('README.md', props)
-    
-    const dirArray = createDirectories.split(',')
-  
-    dirArray.length 
-      ? dirArray.map(dirName => generateDirectory(dirName, componentDir))
+
+    const dirArray = createDirectories ? createDirectories.split(',') : []
+
+    dirArray.length
+      ? dirArray.map(dirName => generateDirectory({
+        dir: dirName,
+        name: componentDir
+      }))
       : skip('custom directories')
-  
+
     // finish up
-    setTimeout(() => returnMessage(`Component '${componentName}' has been created`, {color: 'green'}), 500)
+    setTimeout(() => returnMessage(`✅ Component '${componentName}' has been created`, 'success'), 500)
   }
