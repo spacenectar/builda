@@ -26,21 +26,24 @@ const importedTypes = `
 import Props from './types/props'
 `
 
-module.exports = generateFile = (name, props, externalTS) => {
+module.exports = generateFile = (name, props) => {
     const {
       componentDir,
       componentNameSentenceCase,
       componentNameKebab,
-      blank,
+      prepopulate,
       useModules,
-      chooseStyleSheet,
+      preprocessor,
+      inlineTs,
+      storyParams,
+      use_mdx,
+      readme,
       customDir
     } = props
 
-    externalTS = (typeof externalTS !== 'undefined') ? externalTS : false
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
-    const stylesheet = chooseStyleSheet && getCSSExt(chooseStyleSheet, useModules)
+    const stylesheet = preprocessor && getCSSExt(preprocessor, useModules) || ''
 
     const srcName = name => {
       if (name === 'styles') {
@@ -49,37 +52,70 @@ module.exports = generateFile = (name, props, externalTS) => {
       return name
     }
 
-    // If blank files are not being generated
-    if (!blank) {
+    const cssString = useModules ? `import styles from './styles.${stylesheet}'` : `import './styles.${stylesheet}'`
+    const classesString = useModules ? 'styles[\'colour\']' : '"style-${colour}"'
 
-      // Check if CSS Modules has been requested
-      let cssString = ''
-      let classesString = ''
-      if (chooseStyleSheet !== undefined) {
-        if (useModules !== undefined && !useModules)  {
-          cssString = `import './styles.${stylesheet}'`
-          classesString = 'example style-${colour}'
-        } else {
-          cssString = `import styles from './styles.${stylesheet}'`
-          classesString = 'styles[colour]'
+    // Compnents are being prepopulated
+    if (prepopulate) {
+
+      const typeString = (inlineTs) ? inlineTypes : importedTypes;
+
+      const makeStoryParams = (mdx, readme, params)  => {
+        const storyParamsString = params ? params.join(', ') : ''
+
+        if (storyParamsString) {
+          if (mdx) {
+            return `parameters={{ ${storyParamsString} }}`
+          }
+
+          return `parameters: {
+            ${storyParamsString},
+            ${readme && `readme: {
+              // Show readme before story
+              content: docs
+            }`}
+          }`
         }
+
+        return ''
       }
 
-      const typeString = (externalTS) ? importedTypes : inlineTypes;
+      const extraParams = storyParams ? makeStoryParams(use_mdx, readme, storyParams) : ''
+
+      const replaceText = () => {
+        return fs.readFile(`${appDir}/scaffold/${srcName(name)}`, 'utf8', (err, data) => {
+          if (err) {
+            return returnMessage(`Error reading ${srcName(name)}`, 'error')
+          } else {
+            let newData =
+              data
+              .replace(/%ComponentExample%/g, componentNameSentenceCase)
+              .replace(/%ComponentExampleKebab%/g, componentNameKebab)
+              .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
+
+            if (name === 'index.tsx' || name === 'index.jsx') {
+              newData = newData
+                .replace(/%typeString%/g, typeString)
+                .replace(/%styleimport%/g, cssString)
+                .replace(/%classes%/g, classesString)
+            }
+
+            if (storyParams) {
+              newData = newData
+                .replace(/%extraParams%/g, extraParams)
+            }
+
+            return writeFile(dir, srcName(name), newData)
+          }
+        })
+      }
+
 
       // Generates the files and replaces any found strings
       try {
-        const src = fs.readFileSync(`${appDir}/scaffold/${srcName(name)}`, 'utf8')
-        .replace(/%ComponentExample%/g, componentNameSentenceCase)
-        .replace(/%ComponentExampleKebab%/g, componentNameKebab)
-        .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
-        .replace(/%styleimport%/g, cssString)
-        .replace(/%classes%/g, classesString)
-        .replace(/%TsString%/g, typeString)
-
-        writeFile(dir, srcName(name), src)
+        replaceText()
       } catch (err) {
-        // The throwError function outputs a friendly error for users, if you are debugging this app
+        // The returnMessage function outputs a friendly error for users, if you are debugging this app
         // you will need to comment it out and replace it with the line below.
         // throw new Error(err)
         returnMessage(`'${srcName(name)}' is an invalid file name`, 'error')

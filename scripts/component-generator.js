@@ -5,99 +5,109 @@ const generateDirectory = require('./generate-directory')
 const generateFile = require('./generate-file')
 const skip = require('./skip')
 const returnMessage = require('./return-message')
-const getCSSExt = require('./get-css-ext')
 
-module.exports = comGen = answers => {
+module.exports = comGen = config => {
 
     const {
-      componentName,
-      outputDirectory,
-      createStories,
-      chooseStorybook,
-      createSpec,
-      test_file_name,
-      createStyleSheet,
-      chooseStyleSheet,
-      createTypesFolder,
-      useModules,
-      useTS,
-      createReadme,
-      createDirectories,
-      blank
-    } = answers
+      name,
+      output,
+      storybook,
+      tests,
+      styles,
+      typescript,
+      readme,
+      directories,
+      prepopulate,
+      force
+    } = config
 
-    returnMessage(`\nCreating folder for ${componentName}' component`, {color: 'blue'})
+    returnMessage(`\nCreating folder for ${name}' component`, {color: 'blue'})
 
-    const componentNameSentenceCase = _.upperFirst(_.camelCase(componentName))
-    const componentNameKebab = _.kebabCase(componentName)
+    const componentNameSentenceCase = _.upperFirst(_.camelCase(name))
+    const componentNameKebab = _.kebabCase(name)
 
-    const jsext = x => useTS ? `ts${x}` : `js${x}`
-    const cssext = chooseStyleSheet ? getCSSExt(chooseStyleSheet, useModules) : ''
-
-    const storyExt = st => {
-      let val = ''
-      if (typeof(st) === 'boolean') {
-        val =  st ? 'mdx' : jsext('x')
-      } else {
-        val = st.match(/mdx/i) ? 'mdx' : jsext('x')
-      }
-      return val
-    }
-
-    const componentDir = path.join(outputDirectory, '/',  componentNameKebab)
+    const jsext = x => typescript ? `ts${x}` : `js${x}`
+    const componentDir = path.join(output, '/',  componentNameKebab)
 
     const props = {
       componentDir,
       componentNameKebab,
       componentNameSentenceCase,
-      blank,
-      useModules,
-      chooseStyleSheet
+      prepopulate
     }
 
-    // Create the component directory
-    generateDirectory({name: componentDir, checkExists: true})
+    // Create the component directory§
+    generateDirectory({name: componentDir, force}).then(() => {
+      // Generate the index file
+      generateFile(`index.${jsext('x')}`, {
+        ...props,
+        useModules: styles ? styles.modules : false,
+        preprocessor: styles ? styles.preprocessor : false,
+        inlineTs: typescript && typescript.inline
+      });
 
-    // Generate the index file
-    generateFile(`index.${jsext('x')}`, props, createTypesFolder)
-
-    // Generate the stories file
-    createStories ? generateFile(`index.stories.${storyExt(chooseStorybook)}`, props) : skip('story files')
-
-    // Generate the css file
-    createStyleSheet ? generateFile(`styles`, props) : skip(`stylesheets`)
-
-    // Generate the spec file
-    createSpec ? generateFile(`index.${test_file_name}.${jsext('x')}`, props) : skip('test files')
-
-    // Extra things are needed if TypeScript is enabled and it is not inlined
-    if (useTS)  {
-      if (createTypesFolder) {
-        // Create the types folder
-        generateDirectory({name: path.join(componentDir, 'types')})
-
-        const extraProps = {
+      // Generate the stories file
+      if (storybook) {
+        const ext = storybook.mdx ? 'mdx' : jsext('x');
+        generateFile(`index.stories.${ext}`, {
           ...props,
-          customDir: 'types'
-        }
-
-        // Create the props interface
-        generateFile('props.d.ts', extraProps)
+          storyParams: storybook.params,
+          use_mdx: storybook.mdx,
+          readme
+        })
+      } else {
+        skip('storybook stories')
       }
-    }
 
-    // Generate the readme file
-    createReadme && generateFile('README.md', props)
+      // Generate the css file
+      if (styles) {
+        generateFile(`styles`, {
+          ...props,
+          preprocessor: styles.preprocessor
+        })
+      } else {
+        skip(`stylesheets`)
+      }
 
-    const dirArray = createDirectories ? createDirectories.split(',') : []
+      // Generate the spec file
+      tests ? generateFile(`index.${tests.extension}.${jsext('x')}`, props) : skip('test files')
 
-    dirArray.length
-      ? dirArray.map(dirName => generateDirectory({
-        dir: dirName,
-        name: componentDir
-      }))
-      : skip('custom directories')
+      if (typescript)  {
+        // Extra things are needed if TypeScript is enabled and it is not inlined
+        if (!typescript.inline) {
+          // Create the types folder
+          generateDirectory({name: path.join(componentDir, 'types'), force: true}).then(() => {
+            return true;
+          }).catch(err => {
+            console.log(err)
+          })
 
-    // finish up
-    setTimeout(() => returnMessage(`✅ Component '${componentName}' has been created`, 'success'), 500)
+          // Create the props interface
+          generateFile('props.d.ts',
+            {
+              ...props,
+              customDir: 'types',
+            }
+          )
+        }
+      }
+
+      // Generate the readme file
+      readme && generateFile('README.md', props)
+
+      directories && directories.length
+        ? directories.map(dirName => generateDirectory({
+          dir: dirName,
+          name: componentDir,
+          force: true
+        })).then(() => {
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+        : skip('custom directories')
+
+      // finish up
+      setTimeout(() => returnMessage(`✅ Component '${name}' has been created`, 'success'), 500)
+    })
   }

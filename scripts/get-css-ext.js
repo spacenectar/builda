@@ -11,5 +11,5 @@ module.exports = getCSSExt = (ssheet, modules) => {
       ext = ssheet;
       break;
   }
-  return modules === undefined || !modules ? ext.toLowerCase() : `module.${ext.toLowerCase()}`
+  return !modules ? ext.toLowerCase() : `module.${ext.toLowerCase()}`
 }

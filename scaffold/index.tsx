@@ -2,7 +2,7 @@ import React from 'react'
 
 /* Import Stylesheet */
 %styleimport%
-%TsString%
+%typeString%
 /* Render component */
 export const %ComponentExample%: React.FC<Props> = ({ name, colour }: Props) =>
   <div className={%classes%}>

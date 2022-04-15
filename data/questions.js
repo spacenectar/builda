@@ -1,4 +1,4 @@
-const directoryRegex = RegExp(/^([A-Za-z0-9-_. ])+$/)
+const directoryRegex = RegExp(/^([A-Za-z0-9-_./ ])+$/)
 
 module.exports = [
     {
@@ -6,7 +6,7 @@ module.exports = [
       name: 'componentName',
       message: 'What is your component called?',
       default: 'My New Component',
-      validate: value => 
+      validate: value =>
         directoryRegex.test(value) ? true : 'Component name is invalid'
     },
     {
@@ -14,7 +14,7 @@ module.exports = [
       name: 'outputDirectory',
       message: 'Choose an output directory relative to your current working directory',
       default: '.',
-      validate: value => 
+      validate: value =>
         directoryRegex.test(value) ? true : 'That is not a valid directory'
     },
     {
@@ -25,10 +25,10 @@ module.exports = [
     },
     {
       type: 'confirm',
-      name: 'useTS',
-      message: 'Do you want your types to be in the index file or in their own \'types\' directory?',
+      name: 'useTSInline',
+      message: 'Use TypeScript inline? (default: false - creates a types folder)',
       when: answers => answers.useTS,
-      default: true
+      default: false
     },
     {
       type: 'confirm',
@@ -68,12 +68,12 @@ module.exports = [
     {
       type: 'confirm',
       name: 'createSpec',
-      message: 'Do you want to create a test file?',
+      message: 'Do you want to create a test file (pre-populated with a snapshot test)?',
       default: true
     },
     {
-      type: 'confirm',
-      name: 'createSpec',
+      type: 'list',
+      name: 'createSpecType',
       message: 'Do you want to generate \'spec\' or \'test\' files? (e.g. example.spec.js or example.test.js)',
       choices: ['test', 'spec'],
       when: answers => answers.createSpec,
@@ -88,7 +88,13 @@ module.exports = [
     {
       type: 'confirm',
       name: 'createReadme',
-      message: 'Do you want to generate a basic README.md file?',
+      message: 'Do you want to generate a basic README.md file? (Not needed for Storybook MDX but recommended for CSF) ',
+      default: true
+    },
+    {
+      type: 'confirm',
+      name: 'prepopulate',
+      message: 'Do you want to pre-populate the component with some example code?',
       default: true
     }
   ]

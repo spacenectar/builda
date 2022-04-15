@@ -10,13 +10,7 @@ import docs from './README.md'
 export default {
   title: 'molecule/%ComponentExample%',
   component: %ComponentExample%,
-  decorators: [],
-  parameters: {
-    readme: {
-      // Show readme before story
-      content: docs
-    }
-  }
+  %extraParams%
 }
 
 // Stories

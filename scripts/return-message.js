@@ -7,7 +7,7 @@ module.exports = returnMessage = (message, type) => {
     }
 
     if (type && type === 'warning') {
-      return console.log(chalk.keyword('orange')(`⚠️ ${message}`))
+      return console.log(chalk.keyword('orange')(`⚠️  ${message}`))
     }
 
     if (type && type === 'notice') {

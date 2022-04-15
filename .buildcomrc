@@ -1,24 +1,31 @@
 # The folder the components will be generated in. This is relative to the current working directory.
 output: "./src/components"
-# Output components in TypeScript format (outputs as regular JavaScript files if false).
-use_typescript: true
-# Generate storybook stories for each component.
-use_storybook: true
-# Use MDX for storybook stories (uses CSF if false).
-story_format_mdx: true
-# Generate Jest tests for each component.
-use_jest: true
-# Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext].
-test_file_name: 'spec'
-# Output a stylesheet?
-output_stylesheets: true
-# Specify the CSS preproccessor to use, e.g. 'sass', 'less', 'stylus', 'scss', or 'none'.
-css_preprocessor: 'sass'
-# use the CSS module format?
-css_modules: false
-# Generate a README.md file for each component.
+# Use TypeScript instead of JavaScript? Set to false or omit to disable.
+typescript:
+  # Where should the Prop Types be generated? Inline or separate file?
+  inline: true
+# Generate storybook stories for each component. Set to false or omit to disable.
+storybook:
+  # Use CSF or MDX to generate storybook stories
+  use_mdx: true
+  # Add parameters to the generated stories (one per line) (see https://storybook.js.org/docs/react/writing-stories/parameters#story-parameters for more info).
+  params:
+    # This is an example which will add a 'status' parameter to the story.
+    - "status: { type: 'alpha' }"
+# Generate tests for each component. (Only Jest is supported at the moment.) Set to false or omit to disable.
+tests:
+  # Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext], where [ext] is based on your answer to 'use_typescript'.
+  extension: 'test'
+# Generate a stylesheet for each component. Set to false or omit to disable.
+styles:
+  # Specify the CSS preprocessor to use, e.g. 'sass', 'less', 'stylus', 'scss', or 'none'.
+  preprocessor: 'scss'
+  # Use CSS modules?
+  modules: true
+# Generate a README.md file for each component (recommended unless using MDX for storybook stories).
 generate_readme: false
-# Output component types in their own subfolder (will output in the components index file if false).
-create_types_subfolder: false
+# Generate additional directories for each component (e.g. 'images', 'helpers', 'mocks') (one per line).
+# This isn't recommended unless you have a specific reason to do so, directories should be created on a per-component basis as needed.
+directories: []
 # If true, example code will be added to the component files. If false, the files will be bare-bones.
-output_example_code: true
+prepopulate: true
