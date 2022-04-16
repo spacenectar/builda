@@ -17,7 +17,7 @@ const argv = require('yargs')
   .alias('h', 'help')
   .argv
 
-const directoryRegex = RegExp(/^([A-Za-z0-9-_. ])+$/)
+const directoryRegex = RegExp(/^([A-Za-z0-9-@&_, ])+$/)
 
 const configFile = '.buildcomrc'
 
@@ -48,9 +48,13 @@ buildConfig = async () => {
       ]
     } else {
       return argv._.map(arg => {
-        return {
-          'componentName': arg,
-          ...config
+        if (directoryRegex.test(arg)) {
+          return {
+            'componentName': arg,
+            ...config
+          }
+        } else {
+          returnMessage(`${arg} is not a valid component name`, 'error')
         }
       })
     }
