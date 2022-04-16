@@ -1,1 +1,0 @@
-Please note: This folder is not supposed to duplicate the entire scaffold folder, it just has what it needs to run tests without me worrying about the tests failing if I update the scaffolding - AF.
