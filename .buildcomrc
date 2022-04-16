@@ -1,9 +1,9 @@
 # The folder the components will be generated in. This is relative to the current working directory.
-output: "./src/components"
+output: "./components"
 # Use TypeScript instead of JavaScript? Set to false or omit to disable.
 typescript:
   # Where should the Prop Types be generated? Inline or separate file?
-  inline: false
+  inline: true
 # Generate storybook stories for each component. Set to false or omit to disable.
 storybook:
   # Use CSF or MDX to generate storybook stories
@@ -28,4 +28,4 @@ generate_readme: false
 # This isn't recommended unless you have a specific reason to do so, directories should be created on a per-component basis as needed.
 directories: []
 # If true, example code will be added to the component files. If false, the files will be empty.
-prepopulate: false
+prepopulate: true
