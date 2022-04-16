@@ -24,24 +24,24 @@ module.exports = generateFile = (name, props) => {
     } = props
 
     const inlineTypes = `
-/* Prop Types */
+// Prop Types
 export interface Props {
-  ${
-    prepopulate ?
-`/**
-* The name of the thing
-*/
-name: string;
-` : ''
-  }
-}
-    `
+${
+prepopulate ?
+`  // The name of the component
+  name: string;
+` : ''}}
+`
 
     const importedTypes = `
-/* Import Types */
+// Import Types
 import Props from './types/props'
 `
 
+    const importedReadme = `
+// Import readme
+import docs from './README.md'
+`
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
     const stylesheet = preprocessor && getCSSExt(preprocessor, useModules) || ''
@@ -56,8 +56,8 @@ import Props from './types/props'
       const scaffoldPath = prepopulate ? path.join(appDir, 'scaffold', 'prepopulated') : path.join(appDir, 'scaffold', 'blank')
 
 
-      const cssString = useModules ? `/* Import Stylesheet */\nimport styles from './styles.${stylesheet}'` : `import './styles.${stylesheet}'`
-      const classesString = useModules ? 'styles[\'colour\']' : '"style-${colour}"'
+      const cssString = useModules ? `// Import Stylesheet \nimport styles from './styles.${stylesheet}'` : `import './styles.${stylesheet}'`
+      const classesString = useModules ? `styles['${componentNameKebab}']` : `"style-${componentNameKebab}"`
       const typeString = (inlineTs) ? inlineTypes : importedTypes;
 
       const makeStoryParams = (mdx, readme, params)  => {
@@ -90,15 +90,20 @@ import Props from './types/props'
           } else {
             let newData =
               data
-              .replace(/%Component%/g, componentNamePascal)
-              .replace(/%ComponentKebab%/g, componentNameKebab)
-              .replace(/%ComponentSentence%/g, componentNameSentenceCase)
+              .replace(/%ComponentName%/g, componentNamePascal)
+              .replace(/%ComponentNameKebab%/g, componentNameKebab)
+              .replace(/%ComponentNameSentence%/g, componentNameSentenceCase)
 
             if (name === 'index.tsx' || name === 'index.jsx') {
               newData = newData
                 .replace(/%typeString%/g, typeString)
                 .replace(/%styleimport%/g, cssString)
                 .replace(/%classes%/g, classesString)
+            }
+
+            if (name === 'index.stories.tsx' || name === 'index.stories.jsx') {
+              newData = newData
+                .replace(/%readmeimport%/g, importedReadme)
             }
 
             if (storyParams) {
