@@ -2,9 +2,9 @@ import React from 'react'
 
 %styleimport%
 %typeString%
-/* Render component */
+// Render component
 export const %ComponentName%: React.FC<Props> = ({ name }: Props) =>
-  <div className={%ComponentNameKebab%}>
+  <div className={%classes%}>
     This is an example component, the name provided to it was {name}
   </div>
 

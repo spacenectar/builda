@@ -3,8 +3,7 @@ import React from 'react'
 // Import component files
 import %ComponentName% from './index'
 
-// Import readme
-import docs from './README.md'
+%readmeimport%
 
 // Configure story
 export default {
