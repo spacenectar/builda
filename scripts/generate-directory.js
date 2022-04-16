@@ -34,8 +34,6 @@ module.exports = generateDirectory = async ({
       }
       returnMessage(`${name} already exists, aborting entire process, please run the command again`, 'error')
     }
-    return generateDirectory({
-      name
-    })
+    return makeDir(name)
   }
 }
