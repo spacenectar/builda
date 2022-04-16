@@ -1,10 +1,10 @@
-const _ = require('lodash')
 const path = require('path')
 
 const generateDirectory = require('./generate-directory')
 const generateFile = require('./generate-file')
 const skip = require('./skip')
 const returnMessage = require('./return-message')
+const changeCase = require('./change-case')
 
 module.exports = comGen = config => {
 
@@ -23,8 +23,9 @@ module.exports = comGen = config => {
 
     returnMessage(`\nCreating folder for ${name}' component`, {color: 'blue'})
 
-    const componentNameSentenceCase = _.upperFirst(_.camelCase(name))
-    const componentNameKebab = _.kebabCase(name)
+    const componentNameSentenceCase = changeCase(name, 'sentence')
+    const componentNameKebab = changeCase(name, 'kebab')
+    const componentNamePascal = changeCase(name, 'pascal')
 
     const jsext = x => typescript ? `ts${x}` : `js${x}`
     const componentDir = path.join(output, '/',  componentNameKebab)
@@ -33,6 +34,7 @@ module.exports = comGen = config => {
       componentDir,
       componentNameKebab,
       componentNameSentenceCase,
+      componentNamePascal,
       prepopulate
     }
 

@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const fs = require('fs')
 const path = require('path')
 const writeFile = require('./write-file')
@@ -13,6 +12,7 @@ module.exports = generateFile = (name, props) => {
       componentDir,
       componentNameSentenceCase,
       componentNameKebab,
+      componentNamePascal,
       prepopulate,
       useModules,
       preprocessor,
@@ -28,16 +28,11 @@ module.exports = generateFile = (name, props) => {
 export interface Props {
   ${
     prepopulate ?
-      `/**
-      * The name of the thing
-      */
-    name: string
-    /**
-     * The colour of the thing
-     */
-    colour: string`
-    :
-    ''
+`/**
+* The name of the thing
+*/
+name: string;
+` : ''
   }
 }
     `
@@ -45,7 +40,7 @@ export interface Props {
     const importedTypes = `
 /* Import Types */
 import Props from './types/props'
-    `
+`
 
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
@@ -85,6 +80,7 @@ import Props from './types/props'
         return ''
       }
 
+
       const extraParams = storyParams ? makeStoryParams(use_mdx, readme, storyParams) : ''
 
       const replaceText = () => {
@@ -94,9 +90,9 @@ import Props from './types/props'
           } else {
             let newData =
               data
-              .replace(/%ComponentExample%/g, componentNameSentenceCase)
-              .replace(/%ComponentExampleKebab%/g, componentNameKebab)
-              .replace(/%ComponentExampleSentence%/g, _.startCase(componentNameSentenceCase))
+              .replace(/%Component%/g, componentNamePascal)
+              .replace(/%ComponentKebab%/g, componentNameKebab)
+              .replace(/%ComponentSentence%/g, componentNameSentenceCase)
 
             if (name === 'index.tsx' || name === 'index.jsx') {
               newData = newData
