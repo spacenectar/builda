@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-const %ComponentExample% = () => <div></div>
+const %ComponentName% = () => <div></div>
 
 
-export default %ComponentExample%
+export default %ComponentName%

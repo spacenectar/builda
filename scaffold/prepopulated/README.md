@@ -1,6 +1,6 @@
-# %ComponentExampleSentence% documentation
+# %ComponentNameSentence% documentation
 
-The '%ComponentExampleSentence%' component.
+The '%ComponentNameSentence%' component.
 
 ## UI Example
 
@@ -19,11 +19,11 @@ The '%ComponentExampleSentence%' component.
 ### ES6 Import
 
 ```js
-import %ComponentExample% from './%ComponentExampleKebab%'
+import %ComponentName% from './%ComponentNameKebab%'
 ```
 
 ### CommonJS
 
 ```js
-const %ComponentExample% = require('./%ComponentExampleKebab%')
+const %ComponentName% = require('./%ComponentNameKebab%')
 ```

@@ -4,13 +4,13 @@ import React from 'react'
 import { render } from '@testing-library/react';
 
 // Import component files
-import %ComponentExample% from './index'
+import %ComponentName% from './index'
 
 // Tests
-describe('%ComponentExample% component', () => {
+describe('%ComponentName% component', () => {
   it('renders to match snapshot', () => {
     const { baseElement } = render(
-      <%ComponentExample% name="test" colour="blue" />
+      <%ComponentName% name="test" />
     );
     expect(baseElement).toMatchSnapshot();
   });

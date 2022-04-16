@@ -1,12 +1,12 @@
-.styles {
+.%ComponentNameKebab% {
   color: #fff;
   font-weight: bold;
 }
 
-.styles--blue {
+.%ComponentNameKebab%--blue {
   background-color: #69C;
 }
 
-.styles--red {
+.%ComponentNameKebab%--red {
   background-color: #f00;
 }

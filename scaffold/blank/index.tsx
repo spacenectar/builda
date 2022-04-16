@@ -6,6 +6,6 @@ import React from 'react'
 %typeString%
 
 /* Render component */
-export const %ComponentExample%: React.FC = () => <div></div>
+export const %ComponentName%: React.FC = () => <div></div>
 
-export default %ComponentExample%
+export default %ComponentName%

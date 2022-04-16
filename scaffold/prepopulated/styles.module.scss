@@ -1,15 +1,15 @@
 
-@mixin example() {
+@mixin %ComponentNameKebab%() {
   color:rgb(255, 255, 255);
   font-weight: bold;
 }
 
 .blue {
-  @include example;
+  @include %ComponentNameKebab%;
   background-color: rgb(0, 0, 255);
 }
 
 .red {
-  @include example;
+  @include %ComponentNameKebab%;
   background-color: rgb(255, 0, 0);
 }
