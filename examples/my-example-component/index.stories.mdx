@@ -1,0 +1,47 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
+import MyExampleComponent from './index'
+
+<Meta
+  title="atom/MyExampleComponent"
+  component={MyExampleComponent}
+  
+  args={
+    name: 'My Example Component name',
+    children: <>Hello world</>
+  }
+/>
+
+export const Template = (args) => <MyExampleComponent {...args} />
+
+# My Example Component
+
+The My Example Component component
+
+<Canvas withSource="open">
+  <Story name="Default">
+    { Template.bind({}) }
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Example 2"
+    args={{
+      colour: 'red'
+    }}
+  >
+    { Template.bind({}) }
+  </Story>
+  <Story
+    name="Example 2 variant"
+    args={{
+      colour: 'green'
+    }}
+  >
+    { Template.bind({}) }
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={MyExampleComponent} />
