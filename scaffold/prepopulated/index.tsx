@@ -1,6 +1,5 @@
 import React from 'react'
 
-/* Import Stylesheet */
 %styleimport%
 %typeString%
 /* Render component */
