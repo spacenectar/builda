@@ -36,8 +36,24 @@ module.exports = comGen = config => {
       prepopulate
     }
 
+
+
     // Create the component directory§
     generateDirectory({name: componentDir, force}).then(() => {
+
+      // generate subdirectories
+      const dirs = [
+        ...directories
+      ]
+
+      if (!typescript.inline) {
+        dirs.push('types')
+      }
+
+      if (dirs.length) {
+        generateDirectory({name: componentDir, dirs, force: false})
+      }
+
       // Generate the index file
       generateFile(`index.${jsext('x')}`, {
         ...props,
@@ -63,7 +79,8 @@ module.exports = comGen = config => {
       if (styles) {
         generateFile(`styles`, {
           ...props,
-          preprocessor: styles.preprocessor
+          preprocessor: styles.preprocessor,
+          useModules: styles.modules
         })
       } else {
         skip(`stylesheets`)
@@ -75,37 +92,18 @@ module.exports = comGen = config => {
       if (typescript)  {
         // Extra things are needed if TypeScript is enabled and it is not inlined
         if (!typescript.inline) {
-          // Create the types folder
-          generateDirectory({name: path.join(componentDir, 'types'), force: true}).then(() => {
-            return true;
-          }).catch(err => {
-            console.log(err)
-          })
-
-          // Create the props interface
-          generateFile('props.d.ts',
-            {
-              ...props,
-              customDir: 'types',
-            }
-          )
+            // Create the props interface
+          return  generateFile('props.d.ts',
+              {
+                ...props,
+                customDir: 'types',
+              }
+            )
+          }
         }
-      }
 
       // Generate the readme file
       readme && generateFile('README.md', props)
-
-      directories && directories.length
-        ? directories.map(dirName => generateDirectory({
-          dir: dirName,
-          name: componentDir,
-          force: true
-        })).then(() => {
-          return true
-        }).catch(err => {
-          console.log(err)
-        })
-        : skip('custom directories')
 
       // finish up
       setTimeout(() => returnMessage(`✅ Component '${name}' has been created`, 'success'), 500)

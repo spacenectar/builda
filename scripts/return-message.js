@@ -18,6 +18,10 @@ module.exports = returnMessage = (message, type) => {
       return console.log(chalk.keyword('green')(`${message}`))
     }
 
+    if (type && type === 'primary') {
+      return console.log(chalk.keyword('magenta')(`${message}`))
+    }
+
     if (!type) {
       return console.log(message)
     }

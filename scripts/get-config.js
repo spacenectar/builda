@@ -124,7 +124,6 @@ module.exports = getConfig = async () => {
       if (answer.createStories) {
         // This is from the CLI
         return {
-          generate: true,
           mdx: answer.chooseStorybook || false,
           params: answer.storyParams || []
         }
@@ -132,7 +131,6 @@ module.exports = getConfig = async () => {
       if (answer.storybook) {
         // This is from the config file
         return {
-          generate: true,
           mdx: answer.storybook.use_mdx || false,
           params: answer.storybook.params || []
         }
@@ -145,7 +143,6 @@ module.exports = getConfig = async () => {
       if (answer.createSpec) {
         // This is from the CLI
         return {
-          generate: true,
           extension: answer.createSpecType || 'test'
         }
       }

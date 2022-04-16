@@ -7,24 +7,6 @@ const returnMessage = require('./return-message')
 
 const appDir = path.dirname(require.main.filename)
 
-const inlineTypes = `
-/* Prop Types */
-export interface Props {
-  /**
-   * The name of the thing
-   */
-  name: string
-  /**
-   * The colour of the thing
-   */
-  colour: string
-}
-`
-
-const importedTypes = `
-/* Import Types */
-import Props from './types/props'
-`
 
 module.exports = generateFile = (name, props) => {
     const {
@@ -41,6 +23,30 @@ module.exports = generateFile = (name, props) => {
       customDir
     } = props
 
+    const inlineTypes = `
+/* Prop Types */
+export interface Props {
+  ${
+    prepopulate ?
+      `/**
+      * The name of the thing
+      */
+    name: string
+    /**
+     * The colour of the thing
+     */
+    colour: string`
+    :
+    ''
+  }
+}
+    `
+
+    const importedTypes = `
+/* Import Types */
+import Props from './types/props'
+    `
+
 
     const dir = customDir ? path.join(componentDir, customDir) : componentDir
     const stylesheet = preprocessor && getCSSExt(preprocessor, useModules) || ''
@@ -52,12 +58,11 @@ module.exports = generateFile = (name, props) => {
       return name
     }
 
-    const cssString = useModules ? `import styles from './styles.${stylesheet}'` : `import './styles.${stylesheet}'`
-    const classesString = useModules ? 'styles[\'colour\']' : '"style-${colour}"'
+      const scaffoldPath = prepopulate ? path.join(appDir, 'scaffold', 'prepopulated') : path.join(appDir, 'scaffold', 'blank')
 
-    // Compnents are being prepopulated
-    if (prepopulate) {
 
+      const cssString = useModules ? `/* Import Stylesheet */\nimport styles from './styles.${stylesheet}'` : `import './styles.${stylesheet}'`
+      const classesString = useModules ? 'styles[\'colour\']' : '"style-${colour}"'
       const typeString = (inlineTs) ? inlineTypes : importedTypes;
 
       const makeStoryParams = (mdx, readme, params)  => {
@@ -83,7 +88,7 @@ module.exports = generateFile = (name, props) => {
       const extraParams = storyParams ? makeStoryParams(use_mdx, readme, storyParams) : ''
 
       const replaceText = () => {
-        return fs.readFile(`${appDir}/scaffold/${srcName(name)}`, 'utf8', (err, data) => {
+        return fs.readFile(`${scaffoldPath}/${srcName(name)}`, 'utf8', (err, data) => {
           if (err) {
             return returnMessage(`Error reading ${srcName(name)}`, 'error')
           } else {
@@ -120,9 +125,4 @@ module.exports = generateFile = (name, props) => {
         // throw new Error(err)
         returnMessage(`'${srcName(name)}' is an invalid file name`, 'error')
       }
-
-    } else {
-      // Creates an empty file with the correct name
-      writeFile(dir, name, '')
-    }
   }

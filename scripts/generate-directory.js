@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const rimraf = require('rimraf')
 const returnMessage = require('./return-message')
 
 
@@ -15,21 +14,28 @@ const makeDir = (dir, name) => {
 
 module.exports = generateDirectory = async ({
   name,
-  dir,
-  force
+  dirs,
+  force,
 }) => {
-  const output = dir ? path.resolve(dir, name.trim()) : name
-  if (!fs.existsSync(output)) {
-    makeDir(output, name)
-  } else {
-    if (force) {
-      rimraf(output, () => {
-        returnMessage(`Existing ${output} folder overwritten with --force. This can cause issues.`, 'warning')
-        makeDir(output, name)
-      })
-    } else {
-      returnMessage(`${output} already exists, aborting entire process, please run the command again`, 'error')
-    }
 
+  const rootDir = name.trim();
+
+  if (dirs) {
+    dirs.forEach(dir => {
+      const dirPath = path.join(rootDir, dir)
+      makeDir(dirPath, rootDir)
+    })
+  } else {
+    if (fs.existsSync(rootDir)) {
+      if (force) {
+        returnMessage(`Existing ${name} folder overwritten with --force. I hope you know what you're doing!.`, 'warning')
+        rootDir && fs.rmSync(rootDir, { recursive: true, force: true })
+        return makeDir(rootDir, name)
+      }
+      returnMessage(`${name} already exists, aborting entire process, please run the command again`, 'error')
+    }
+    return generateDirectory({
+      name
+    })
   }
 }
