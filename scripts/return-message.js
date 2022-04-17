@@ -1,29 +1,40 @@
 const chalk = require('chalk')
 
 module.exports = returnMessage = (message, type) => {
-    if (type && type === 'error') {
-      console.log(chalk.keyword('red')(`🚨 ${message}`))
-      return process.exit(1);
-    }
 
-    if (type && type === 'warning') {
-      return console.log(chalk.keyword('orange')(`⚠️  ${message}`))
-    }
+  let prefix = '';
+  let colour = '';
 
-    if (type && type === 'notice') {
-      return console.log(chalk.keyword('blue')(message))
-    }
+  switch (type) {
+    case 'primary':
+      colour = 'magenta'
+      break;
+    case 'launch':
+      prefix = '🚀 '
+      colour = 'green'
+      break;
+    case 'error':
+      prefix = '🚨  '
+      colour = 'red'
+      break;
+    case 'success':
+      prefix = '✅ '
+      colour = 'green'
+      break;
+    case 'warning':
+      prefix = `⚠️  `
+      colour = 'orange'
+      break;
+    case 'notice':
+      prefix = `💬 `
+      colour = 'cyan'
+      break;
+    default:
+      colour = 'white'
+      break;
+  }
 
-    if (type && type === 'success') {
-      return console.log(chalk.keyword('green')(`${message}`))
-    }
+  const output = type ? chalk.keyword(colour)(`${prefix} ${message}`) : message
 
-    if (type && type === 'primary') {
-      return console.log(chalk.keyword('magenta')(`${message}`))
-    }
-
-    if (!type) {
-      return console.log(message)
-    }
-
+  return console.log(output)
 }
