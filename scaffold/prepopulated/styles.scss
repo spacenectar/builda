@@ -1,0 +1,14 @@
+$red: #f00;
+$white: #fff;
+$blue: #69C;
+
+.%ComponentNameKebab% {
+  color: $white;
+  font-weight: bold;
+  &--blue {
+    background-color: $blue;
+  }
+  &--red {
+    background-color: $red;
+  }
+}

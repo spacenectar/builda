@@ -28,13 +28,12 @@ module.exports = {
       description: 'Use MDX format for stories?',
       required: false,
       boolean: true,
-      alias: 'mdx',
-      default: false,
+      default: true,
     },
-    'jest' : {
-      description: 'Generate jest files?',
+    'test' : {
+      description: 'Generate test snapshot files? (Only Jest is supported right now)',
       required: false,
-      alias: 'j',
+      alias: 't',
       boolean: true
     },
     'css' : {
@@ -53,13 +52,13 @@ module.exports = {
     'typescript' : {
       description: 'Use TypeScript?',
       required: false,
-      alias: 't',
+      alias: 'T',
       boolean: true
     },
-    'blank' : {
-      description: 'Only generate blank files?',
+    'prepopulate' : {
+      description: 'Generate components with example code?',
       required: false,
-      alias: 'b',
+      alias: 'p',
       boolean: true
     },
     'readme' : {

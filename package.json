@@ -1,9 +1,8 @@
 {
   "name": "buildcom",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "bin": {
-    "buildcom": "index.js",
-    "bcreg": "scripts/generate-register.js"
+    "buildcom": "index.js"
   },
   "description": "A component generator for react",
   "keywords": [
@@ -22,7 +21,7 @@
   "main": "index.js",
   "scripts": {
     "start": "index.js",
-    "test": "nyc --reporter=lcov tap"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "preferGlobal": true,
   "repository": {
@@ -42,15 +41,6 @@
     "chalk": "^3.0.0",
     "inquirer": "^7.0.4",
     "js-yaml": "^3.9.1",
-    "lodash": "^4.17.15",
-    "rimraf": "^3.0.2",
     "yargs": "^15.1.0"
-  },
-  "devDependencies": {
-    "nyc": "^15.1.0",
-    "tap": "^16.0.1"
-  },
-  "resolutions": {
-    "minimist": "1.2.6"
   }
 }

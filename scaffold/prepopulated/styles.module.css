@@ -1,0 +1,16 @@
+.%ComponentNameKebab% {
+  color: #fff;
+  font-weight: bold;
+}
+
+.%ComponentNameKebab%--blue {
+  color: #fff;
+  font-weight: bold;
+  background-color: #69c;
+}
+
+.%ComponentNameKebab%--red {
+  color: #fff;
+  font-weight: bold;
+  background-color: #f00;
+}
