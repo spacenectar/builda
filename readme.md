@@ -2,12 +2,12 @@
 
 # A component generator for React
 
-![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)
-![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/buildcom?style=for-the-badge)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
-![Travis (.org)](https://img.shields.io/travis/foxleigh81/buildcom?style=for-the-badge)
-![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)
+[![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)](https://www.npmjs.com/package/buildcom)
+[![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)](https://www.npmjs.com/package/buildcom)
+[![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)](https://github.com/foxleigh81/buildcom/issues)
+[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
+](https://codeclimate.com/github/foxleigh81/buildcom/maintainability)
+
 
 ## Getting Started
 
@@ -203,3 +203,9 @@ The main change is that the `.buildcomrc` file is in a different format, this is
 
 - File output formats have now changed, most of this is only cosmetic, however storybook files can now include parameters.
 - The `--prepopulate` flag has replaced the `--blank` flag, which means blank files are now the default. If you want to keep the old behaviour, add `--prepopulate` or `-p` to the command line or add `prepopulate: true` to the config file.
+
+## Support me
+
+I made this with love and of course it is free for you to use and modify however you see fit, however if you would like to buy me a coffee to say thanks, I certainly won't complain :)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I21FRCN)
