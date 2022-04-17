@@ -21,7 +21,7 @@ module.exports = comGen = config => {
       force
     } = config
 
-    returnMessage(`\nCreating folder for ${name}' component`, {color: 'blue'})
+    returnMessage(`Creating folder for ${name}' component`,'notice')
 
     const componentNameSentenceCase = changeCase(name, 'sentence')
     const componentNameKebab = changeCase(name, 'kebab')
@@ -108,6 +108,6 @@ module.exports = comGen = config => {
       readme && generateFile('README.md', props)
 
       // finish up
-      setTimeout(() => returnMessage(`✅ Component '${name}' has been created`, 'success'), 500)
+      setTimeout(() => returnMessage(`Component '${name}' has been created`, 'success'), 500)
     })
   }

@@ -4,8 +4,9 @@ const returnMessage = require('./scripts/return-message')
 const comGen = require('./scripts/component-generator')
 const getConfig = require('./scripts/get-config');
 
-returnMessage('\n=============================================', 'primary')
-returnMessage('BuildCom_\r', 'primary')
+returnMessage(`\n`)
+returnMessage('=============================================', 'primary')
+returnMessage('BuildCom_', 'primary')
 returnMessage(`Component builder`, 'primary')
 returnMessage('=============================================\n', 'primary')
 

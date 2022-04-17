@@ -29,7 +29,7 @@ const force = argv.force ? argv.force : false
 
 buildConfig = async () => {
   if (fs.existsSync(path.join('.', configFile))) {
-    returnMessage('🚀 .buildcomrc file detected.\r', 'success')
+    returnMessage('.buildcomrc file detected.\r', 'launch')
     const config = yaml.load(fs.readFileSync(path.join('.', configFile), 'utf8'));
     if (args.length === 0 || args[0] === '--force' || args[0] === '-f') {
       const name = await inquirer.prompt({
