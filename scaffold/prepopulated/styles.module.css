@@ -1,6 +1,7 @@
 .%ComponentNameKebab% {
   color: #fff;
   font-weight: bold;
+  background-color: #111;
 }
 
 .%ComponentNameKebab%--blue {

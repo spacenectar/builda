@@ -28,7 +28,9 @@ module.exports = generateFile = (name, props) => {
 export interface Props {
 ${
 prepopulate ?
-`  // The name of the component
+`  /**
+    * The name of the component
+    */
   name: string;
 ` : ''}}
 `
