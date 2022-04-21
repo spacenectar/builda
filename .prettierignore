@@ -1,0 +1,24 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/out/
+
+# misc
+.DS_Store
+.babelrc
+.travis.yml
+tsconfig.json
+next-env.d.ts
+next.config.js
+jest.config.js
+*.yml
+*.yaml
+
+#Auto-generated files
+/scaffold/**/*

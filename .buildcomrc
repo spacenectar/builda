@@ -1,4 +1,4 @@
-# The folder the components will be generated in. This is relative to the current working directory.
+# The folder the components will be generated in. This is relative to the buildcomrc file.
 output: "./components"
 # Use TypeScript instead of JavaScript? Set to false or omit to disable.
 typescript:
@@ -18,8 +18,12 @@ tests:
   extension: 'test'
 # Generate a stylesheet for each component. Set to false or omit to disable.
 styles:
-  # Specify the CSS preprocessor to use, e.g. 'sass', 'less', 'stylus', 'scss', or 'none'.
-  preprocessor: 'scss'
+  # Use SCSS for stylesheets? (Sass is also supported, use 'sass' instead of true)
+  use_scss: true
+  # Note: If you are still using 'stylus' or 'less', you should uncomment the line below and change it to your preferred preprocessor then comment out the line above.
+  # preprocessor: 'less'
+  # 'stylus' and 'less' are now deprecated and we will only support 'sass' and 'scss' in the future.
+
   # Use CSS modules?
   modules: true
 # Generate a README.md file for each component (recommended unless using MDX for storybook stories).

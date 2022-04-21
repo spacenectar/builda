@@ -1,0 +1,50 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": [
+      "es5", "es6"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "useUnknownInCatchVariables": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@scaffold/*": [
+        "scaffold/*"
+      ],
+      "@scripts/*": [
+        "scripts/*"
+      ],
+      "@typedefs/*": [
+        "types/*"
+      ],
+      "@data/*": [
+        "data/*"
+      ],
+      "@helpers/*": [
+        "helpers/*"
+      ],
+      "@helpers": [
+        "helpers/index.ts"
+      ],
+    },
+    "incremental": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ],
+  "exclude": [
+    "node_modules",
+    "examples",
+    "coverage"
+  ]
+}
