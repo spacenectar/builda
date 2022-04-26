@@ -203,3 +203,5 @@ The main change is that the `.buildcomrc` file is in a different format, this is
 
 - File output formats have now changed, most of this is only cosmetic, however storybook files can now include parameters.
 - The `--prepopulate` flag has replaced the `--blank` flag, which means blank files are now the default. If you want to keep the old behaviour, add `--prepopulate` or `-p` to the command line or add `prepopulate: true` to the config file.
+- Support for Stylus has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
+- Support for LESS has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
