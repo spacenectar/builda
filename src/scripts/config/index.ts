@@ -1,6 +1,11 @@
 import yargs from 'yargs';
 
-import { printMessage, askQuestion, directoryRegex } from '@helpers';
+import {
+  printMessage,
+  askQuestion,
+  directoryRegex,
+  randomWordGenerator
+} from '@helpers';
 import arguments from '@data/arguments.json';
 import { QuestionType } from '@typedefs/question-type';
 
@@ -24,7 +29,7 @@ export default async () => {
   const NAME_COMPONENT_QUESTION = {
     message: 'What would you like to name your component?',
     name: 'componentName',
-    defaultValue: `Component C${Math.floor(Math.random() * 10000 + 1)}`,
+    defaultValue: randomWordGenerator(),
     validate: (value: string) =>
       directoryRegex.test(value) ? true : 'Component name is invalid'
   };

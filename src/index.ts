@@ -20,4 +20,5 @@ console.log(
 );
 printMessage('==========================================\n', 'primary');
 
+// Get the config object to pass to the generator
 config().then((config) => console.log(config));
