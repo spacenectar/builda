@@ -1,8 +1,7 @@
-// import fs from 'fs';
-// import path from 'path';
 import { printMessage, askQuestion } from '@helpers';
 
-import getConfigFile from './configFileMode';
+import getConfigFile from './config-file-mode';
+import getConfigFromArguments from './get-config-from-arguments';
 
 const args = process.argv.slice(2);
 const config = getConfigFile();
@@ -14,12 +13,14 @@ export default async () => {
       // The config file exists
       printMessage('🚀 .buildcomrc file detected.\r', 'success');
       // Ask user what they want to call their component
-      askQuestion({
+      return askQuestion({
         message: 'What would you like to name your component?',
         name: 'componentName'
       }).then(({ componentName }) => {
-        // TODO: We have a complete component config now, send user to the generator function
-        console.log('created componenent called ', componentName);
+        return {
+          component_name: componentName,
+          ...config
+        };
       });
     } else {
       // The config file does not exist
@@ -27,7 +28,7 @@ export default async () => {
         'No arguments were passed and no .buildcomrc file was found.\r',
         'warning'
       );
-      askQuestion({
+      return askQuestion({
         message: 'Would you like to create a .buildcomrc file?',
         name: 'createConfig',
         type: 'confirm'
@@ -39,7 +40,7 @@ export default async () => {
       });
     }
   } else {
-    // TODO: Send user to argument function
     printMessage('Arguments were passed', 'success');
+    return getConfigFromArguments(args);
   }
 };
