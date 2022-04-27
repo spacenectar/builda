@@ -2,18 +2,23 @@
 
 import printMessage from '@helpers/print-message';
 import version from './version';
-import config from '@scripts/config';
-import { Config } from '@typedefs/config';
+import chalk from 'chalk';
+// import config from '@scripts/config';
+// import { Config } from '@typedefs/config';
 
-printMessage('\n=============================================', 'primary');
-printMessage(`    ___      _ _    _                 `, 'primary');
+printMessage('\n==========================================', 'primary');
+console.log(
+  chalk.magenta(`    ___      _ _    _               `) +
+    chalk.white(`v${version}`)
+);
 printMessage(`   | _ )_  _(_) |__| |__ ___ _ __     `, 'primary');
 printMessage(`   | _ \\ || | | / _\` / _/ _ \\ '  \\    `, 'primary');
 printMessage(`   |___/\\_,_|_|_\\__,_\\__\\___/_|_|_|__ `, 'primary');
-printMessage(`                                 |___|\n`, 'primary');
-printMessage(`    By Alex Foxleigh            v${version}\n`, 'secondary');
-printMessage('=============================================\n', 'primary');
-
-config().then((configs) =>
-  configs.forEach((config: Config) => console.log(config))
+console.log(
+  chalk.white(`   A component generator         `) + chalk.magenta(`|___|`)
 );
+printMessage('==========================================\n', 'primary');
+
+// config().then((configs) =>
+//   configs.forEach((config: Config) => console.log(config))
+// );
