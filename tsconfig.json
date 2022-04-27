@@ -8,13 +8,14 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "noEmit": false,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
+    "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
       "@scaffold/*": [
@@ -40,11 +41,13 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
-  ],
+    "src/**/*.tsx" ],
   "exclude": [
     "node_modules",
     "examples",
-    "coverage"
+    "coverage",
+    "src/scaffold",
+    "src/data",
+    "v3"
   ]
 }

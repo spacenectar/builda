@@ -2,7 +2,7 @@
   "name": "buildcom",
   "version": "3.0.3",
   "bin": {
-    "buildcom": "index.js"
+    "buildcom": "dist/index.js"
   },
   "description": "A component generator for react",
   "keywords": [
@@ -18,15 +18,22 @@
     "storybook",
     "typescript"
   ],
-  "main": "src/scripts/index.ts",
+  "main": "dist/index.ts",
+  "files": [
+    "dist",
+    "scaffold",
+    "data"
+  ],
   "scripts": {
-    "start": "index.js",
+    "dev": "tsc --watch & tsc-alias -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build",
+    "build": "rm -rf ./dist && tsc --build",
+    "copyfiles": "cp -r ./src/scaffold ./src/data ./dist",
     "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",
-    "prettier-write": "prettier --write ."
+    "prettier-write": "prettier --write .",
+    "postbuild": "tsc-alias -p tsconfig.json && yarn copyfiles"
   },
   "preferGlobal": true,
   "repository": {
@@ -59,6 +66,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
+    "tsc-alias": "^1.6.7",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"
   },

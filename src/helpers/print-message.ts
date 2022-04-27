@@ -2,11 +2,10 @@ import chalk from 'chalk';
 
 type Types = 'error' | 'warning' | 'notice' | 'success' | 'primary';
 
-const returnMessage = (message: string, type: Types) => {
+const printMessage = (message: string, type: Types) => {
   let newMessage = null;
   if (type && type === 'error') {
     newMessage = chalk.keyword('red')(`🚨 ${message}`);
-    return process.exit(1);
   }
 
   if (type && type === 'warning') {
@@ -31,4 +30,4 @@ const returnMessage = (message: string, type: Types) => {
   return console.log(newMessage);
 };
 
-export default returnMessage;
+export default printMessage;

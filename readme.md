@@ -39,7 +39,7 @@ You can specify some defaults by creating a `.buildcomrc` file in your home dire
 
 ```yaml
 # The folder the components will be generated in. This is relative to the current working directory.
-output: "./components"
+output: './components'
 # Use TypeScript instead of JavaScript? Set to false or omit to disable.
 typescript:
   # Where should the Prop Types be generated? Inline or separate file?
@@ -94,22 +94,22 @@ If you call buildcom without any arguments and you are not using a config file t
 
 You can also supply it with the following arguments:
 
-Argument | Description | default
----- | ---- | ----
-`--output` , `-o` | where to generate your new component (relative to your current working directory) | current directory
-`--name`, `-n` | The name you want to call your component | n/a (required field)
-`--dirs`, `-d` | Add extra directories as comma separated values | empty
-`--storybook`, `-s` | Generate storybook file | false
-`--mdx`, `-mdx` | Override the default CSF format and us MDX format for Storybook stories | false
-`--test`, `-t` | Generate test file (only jest supported at the moment) | false
-`--css`, `-c` | Generate stylesheet file (see 'CSS Generation' for details) | 'css'
-`--modules`, `-m` | Usee CSS Modules (see 'CSS generation' for details) | false
-`--typescript`, `-T` | Generate files with TypeScript extensions | false
-`--readme`, `-r` | Generate files with TypeScript extensions | false
-`--prepopulate`, `-p` | Don't add example code, just create empty files | false
-`--force`, `-f` | Ignore existing folders and delete/recreate component files anyway | false
-`--help`, `-h` | Displays the help text
-`--version` | Displays version number
+| Argument              | Description                                                                       | default              |
+| --------------------- | --------------------------------------------------------------------------------- | -------------------- |
+| `--output` , `-o`     | where to generate your new component (relative to your current working directory) | current directory    |
+| `--name`, `-n`        | The name you want to call your component                                          | n/a (required field) |
+| `--dirs`, `-d`        | Add extra directories as comma separated values                                   | empty                |
+| `--storybook`, `-s`   | Generate storybook file                                                           | false                |
+| `--mdx`, `-mdx`       | Override the default CSF format and us MDX format for Storybook stories           | false                |
+| `--test`, `-t`        | Generate test file (only jest supported at the moment)                            | false                |
+| `--css`, `-c`         | Generate stylesheet file (see 'CSS Generation' for details)                       | 'css'                |
+| `--modules`, `-m`     | Usee CSS Modules (see 'CSS generation' for details)                               | false                |
+| `--typescript`, `-T`  | Generate files with TypeScript extensions                                         | false                |
+| `--readme`, `-r`      | Generate files with TypeScript extensions                                         | false                |
+| `--prepopulate`, `-p` | Don't add example code, just create empty files                                   | false                |
+| `--force`, `-f`       | Ignore existing folders and delete/recreate component files anyway                | false                |
+| `--help`, `-h`        | Displays the help text                                                            |
+| `--version`           | Displays version number                                                           |
 
 > Please note, the argument mode and question mode are the least flexible options. Using the .buildcomrc file is strongly recommended.
 
@@ -125,13 +125,13 @@ The following options exist for CSS usage:
 
 If you are using the questionnaire, this is covered in the questions. If using arguments then you can choose from the following options:
 
-Stylesheet type | option
---- | ---
-CSS | `--css "css"`
-SCSS | `--css "scss"`
-SASS | `--css "sass"`
-Stylus | `--css "stylus"`
-LESS | `--css "less"`
+| Stylesheet type | option           |
+| --------------- | ---------------- |
+| CSS             | `--css "css"`    |
+| SCSS            | `--css "scss"`   |
+| SASS            | `--css "sass"`   |
+| Stylus          | `--css "stylus"` |
+| LESS            | `--css "less"`   |
 
 Each file is also available as a [css module](https://github.com/css-modules/css-modules) by adding an additional `--modules` or `-m` argument.
 
@@ -140,7 +140,7 @@ e.g.
 The following will output a CSS Module file (`styles.modules.css`)
 
 ```bash
-buildcom --name "My Component" --css "css" -m 
+buildcom --name "My Component" --css "css" -m
 ```
 
 ## Project Assumptions
@@ -162,7 +162,7 @@ This project can output Storybook files for each component, for those of you who
 
 You can output storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format or the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) format instead, you can do this by either selecting it in the buildcom form, specifying it in the config file or adding the `--mdx` flag to the command (CSF format is default).
 
-## Example 
+## Example
 
 You can see an example output of this buildcom here: https://github.com/foxleigh81/buildcom/tree/master/examples/example
 
@@ -175,20 +175,20 @@ buildcom example
 ```
 
 ### If you are using the argument mode
-  
+
 ```bash
   buildcom --name "Example" --storybook --mdx --css="scss" --modules --typescript --prepopulate --test
 ```
 
 or the shorthand version of the above:
 
-  ```bash
-  buildcom -n "Example" -c "scss" -mTpts -mdx
-  ```
+```bash
+buildcom -n "Example" -c "scss" -mTpts -mdx
+```
 
 ## 🚨 BREAKING CHANGES from v1.x.x 🚨
 
-If you were using MDX syntax in your components, you will find that file that is generated has now changed, this is to 
+If you were using MDX syntax in your components, you will find that file that is generated has now changed, this is to
 bring it in line with the latest features available in Storybook. Your components should still generate fine, however
 the format of any newly generated Storybook files will be different to any existing ones.
 
@@ -205,3 +205,8 @@ The main change is that the `.buildcomrc` file is in a different format, this is
 - The `--prepopulate` flag has replaced the `--blank` flag, which means blank files are now the default. If you want to keep the old behaviour, add `--prepopulate` or `-p` to the command line or add `prepopulate: true` to the config file.
 - Support for Stylus has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
 - Support for LESS has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
+
+## 🚨 BREAKING CHANGES from v3.x.x 🚨
+
+- Components can no longer be generated via the questionnaire, the questionnaire now only exists to generate the config file.
+- Stylus and LESS support has been removed. Do not upgrade to this version if you are using these pre-processors.
