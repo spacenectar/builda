@@ -1,5 +1,5 @@
 .vscode/
-/build
+/dist
 .DS_Store
 /node_modules
 npm-debug.log
@@ -8,3 +8,4 @@ log.txt
 clarity.yml
 .nyc_output/
 coverage/
+src/version.ts
