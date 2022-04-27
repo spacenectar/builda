@@ -1,6 +1,12 @@
 import chalk from 'chalk';
 
-type Types = 'error' | 'warning' | 'notice' | 'success' | 'primary';
+type Types =
+  | 'error'
+  | 'warning'
+  | 'notice'
+  | 'success'
+  | 'primary'
+  | 'secondary';
 
 const printMessage = (message: string, type: Types) => {
   let newMessage = null;
@@ -22,6 +28,10 @@ const printMessage = (message: string, type: Types) => {
 
   if (type && type === 'primary') {
     newMessage = chalk.keyword('magenta')(`${message}`);
+  }
+
+  if (type && type === 'secondary') {
+    newMessage = chalk.keyword('white')(`${message}`);
   }
 
   if (!type) {
