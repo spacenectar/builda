@@ -12,13 +12,23 @@ interface Props {
     | 'checkbox'
     | 'password';
   name: string;
+  defaultValue?: string;
+  validate?: (value: string) => boolean | string;
 }
 
-const askQuestion = ({ message, type, name }: Props) => {
+const askQuestion = ({
+  message,
+  type,
+  name,
+  defaultValue,
+  validate
+}: Props) => {
   return inquirer.prompt({
     type: type || 'input',
     name,
-    message
+    message,
+    default: defaultValue,
+    validate
   });
 };
 
