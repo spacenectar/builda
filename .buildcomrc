@@ -20,16 +20,11 @@ tests:
 styles:
   # Use SCSS for stylesheets? (Sass is also supported, use 'sass' instead of true)
   use_scss: true
-  # Note: If you are still using 'stylus' or 'less', you should uncomment the line below and change it to your preferred preprocessor then comment out the line above.
-  # preprocessor: 'less'
-  # 'stylus' and 'less' are now deprecated and we will only support 'sass' and 'scss' in the future.
-
   # Use CSS modules?
   modules: true
 # Generate a README.md file for each component (recommended unless using MDX for storybook stories).
 generate_readme: false
 # Generate additional directories for each component (e.g. 'images', 'helpers', 'mocks') (one per line).
-# This isn't recommended unless you have a specific reason to do so, directories should be created on a per-component basis as needed.
 directories: []
 # If true, example code will be added to the component files. If false, the files will be empty.
 prepopulate: true

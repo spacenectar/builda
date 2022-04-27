@@ -1,16 +1,9 @@
+import { QuestionType } from '@typedefs/question-type';
 import inquirer from 'inquirer';
 
 interface Props {
   message: string;
-  type?:
-    | 'input'
-    | 'number'
-    | 'list'
-    | 'confirm'
-    | 'rawlist'
-    | 'expand'
-    | 'checkbox'
-    | 'password';
+  type?: QuestionType;
   name: string;
   defaultValue?: string;
   validate?: (value: string) => boolean | string;

@@ -1,19 +1,18 @@
-import yargs from 'yargs';
-
-import arguments from '@data/arguments.json';
-
-// TODO: Add option to allow for multiple components to be created at once
-
-const getConfigFromArguments = async (args: readonly string[]) => {
-  const parser = yargs(args)
-    .usage('Usage: $0 [options]')
-    .options(arguments as { [key: string]: yargs.Options })
-    .help('h')
-    .version()
-    .alias('h', 'help');
-
-  const argv = await parser.argv;
-
+const getConfigFromArguments = (
+  argv:
+    | {
+        [x: string]: unknown;
+        help: unknown;
+        _: (string | number)[];
+        $0: string;
+      }
+    | {
+        [x: string]: unknown;
+        help: unknown;
+        _: (string | number)[];
+        $0: string;
+      }
+) => {
   const typescript = argv.typescript
     ? {
         inline: true
@@ -35,13 +34,13 @@ const getConfigFromArguments = async (args: readonly string[]) => {
 
   const styles = argv.css
     ? {
-        use_scss: argv.css,
+        use_scss: argv.css === 'css' ? false : argv.css,
         modules: argv.modules
       }
     : false;
 
-  const config = {
-    component_name: argv.name,
+  return {
+    component_names: argv._,
     output: argv.output,
     typescript,
     storybook,
@@ -52,8 +51,6 @@ const getConfigFromArguments = async (args: readonly string[]) => {
     directories: argv.dirs,
     force: argv.force
   };
-
-  return config;
 };
 
 export default getConfigFromArguments;

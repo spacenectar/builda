@@ -2,7 +2,7 @@ export interface Config {
   /**
    * The name of the component
    */
-  name: string;
+  component_name: string;
   /**
    * The output directory (relative buildcomrc file)
    */

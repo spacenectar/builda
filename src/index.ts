@@ -1,10 +1,11 @@
 #! /usr/bin/env node
 
-import printMessage from '@helpers/print-message';
-import version from './version';
 import chalk from 'chalk';
-// import config from '@scripts/config';
-// import { Config } from '@typedefs/config';
+
+import printMessage from '@helpers/print-message';
+import config from '@scripts/config';
+
+import version from './version';
 
 printMessage('\n==========================================', 'primary');
 console.log(
@@ -19,6 +20,4 @@ console.log(
 );
 printMessage('==========================================\n', 'primary');
 
-// config().then((configs) =>
-//   configs.forEach((config: Config) => console.log(config))
-// );
+config().then((config) => console.log(config));

@@ -6,16 +6,11 @@
     "type": "string",
     "default": "."
   },
-  "name": {
-    "description": "Specifies a component name",
-    "required": false,
-    "alias": "n",
-    "type": "string"
-  },
   "dirs": {
     "description": "A comma-separated list of directory names to generate",
     "required": false,
     "alias": "d",
+    "default": "",
     "type": "string"
   },
   "storybook": {
@@ -58,6 +53,7 @@
     "description": "Use CSS modules",
     "required": false,
     "alias": "m",
+    "default": false,
     "boolean": true
   },
   "typescript": {
@@ -70,18 +66,21 @@
     "description": "Generate components with example code?",
     "required": false,
     "alias": "p",
+    "default": false,
     "boolean": true
   },
   "readme": {
     "description": "Generate a README file?",
     "required": false,
     "alias": "r",
+    "default": false,
     "boolean": true
   },
   "force": {
     "description": "Ignores existing directories and overwrites files anyway.",
     "required": false,
     "alias": "f",
+    "default": false,
     "boolean": true
   }
 }
