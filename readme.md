@@ -56,6 +56,9 @@ You can specify some defaults by creating a `.builda.yml` file in your home dire
 
 You can create this file manually or by running `builda --init`
 
+> 🚨 **WARNING** : If you're coming from the `buildcom` project, you might want
+> to migrate instead of initialising. See [Migrating](#migrating-from-buildcom) below.
+
 ### It should look like this
 
 ```yaml
@@ -69,13 +72,16 @@ typescript:
 storybook:
   # Use CSF or MDX to generate storybook stories
   use_mdx: true
-  # Add parameters to the generated stories (one per line) (see https://storybook.js.org/docs/react/writing-stories/parameters#story-parameters for more info).
+  # Add parameters to the generated stories (one per line)
+  # (see https://storybook.js.org/docs/react/writing-stories/parameters#story-parameters for more info).
   params:
     # This is an example which will add a 'status' parameter to the story.
     - "status: { type: 'alpha' }"
-# Generate tests for each component. (Only Jest is supported at the moment.) Set to false or omit to disable.
+# Generate tests for each component. (Only Jest is supported at the moment.)
+# Set to false or omit to disable.
 tests:
-  # Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext], where [ext] is based on your answer to 'use_typescript'.
+  # Filename format for test files can be either 'spec' or 'test', outputs as
+  # index.[choice].[ext], where [ext] is based on your answer to 'use_typescript'.
   extension: 'test'
 # Generate a stylesheet for each component. Set to false or omit to disable.
 styles:
@@ -86,7 +92,8 @@ styles:
 # Generate a README.md file for each component (recommended unless using MDX for storybook stories).
 generate_readme: false
 # Generate additional directories for each component (e.g. 'images', 'helpers', 'mocks') (one per line).
-# This isn't recommended unless you have a specific reason to do so, directories should be created on a per-component basis as needed.
+# This isn't recommended unless you have a specific reason to do so, directories should be created
+# on a per-component basis as needed.
 directories: []
 # If true, example code will be added to the component files. If false, the files will be empty.
 prepopulate: true
