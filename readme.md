@@ -150,19 +150,19 @@ Buildcom makes the following assumptions about your dependencies:
 - That you are using [React](https://reactjs.org/)
 - If you generate a CSS file for a particular pre-processor, that you already have that pre-processor configured for use in your project
 - If you generate a test file, that you already have Jest or testing-library installed and configured for use in your project
-- If you generate a storybook file, that you have [Storybook](https://storybook.js.org/) installed and configured to use the appropriate plugins for the type of stories you are generating.
+- If you generate a storybook file, that you have [Storybook] installed and configured to use the appropriate plugins for the type of stories you are generating.
 - If you opt to use any variation of [CSS modules](https://github.com/css-modules/css-modules) that your project is already configured to make use of them.
 - If you generate TypeScript files, that your project is already configured to use them
 
 ## Storybook
 
-This project can output Storybook files for each component, for those of you who don't know what storybook is, here is a brief introduction:
+This project can output [Storybook] files for each component, for those of you who don't know what storybook is, here is a brief introduction:
 
 [![Storybook intro video on YouTube](https://i.imgur.com/FDvR6zl.jpg)](https://www.youtube.com/watch?v=p-LFh5Y89eM)
 
 You can output storybook files in the [CSF](https://storybook.js.org/docs/formats/component-story-format/) format or the [MDX](https://github.com/storybookjs/storybook/blob/next/addons/docs/docs/mdx.md) format instead, you can do this by either selecting it in the buildcom form, specifying it in the config file or adding the `--mdx` flag to the command (CSF format is default).
 
-## Example 
+## Example
 
 You can see an example output of this buildcom here: https://github.com/foxleigh81/buildcom/tree/master/examples/example
 
@@ -208,22 +208,35 @@ and will be preserved in the `buildcom` npm package - however it will receive no
 
 ### Notable changes coming in v4
 
-- Support for LESS and Stylus has been removed
+- Support for `LESS` and `Stylus` has been removed - this is based on user feedback suggesting that literally none of my users use these pre-processors. If you are still using them, please let me know, if there is enough interest I will restore support for them.
 - The `.buildcomrc` config file has been renamed to `.buildarc.yml`
 - The 'questionnaire' mode has been removed for component generation, opting to use arguments along with the config file is now the recommended method.
 - The `Questionaire` will still exist but will now be used to generate the config file.
-- The struture of the scaffold files will be unified between formats (e.g. css, scss, js and ts will all output similar files with the only difference being the extension and their own file type features)
+- The struture of the scaffold files will be unified between formats (e.g. `css`/`scss`/`sass`, `js`/`ts` and `jsx`/`tsx` will all output similar files with the only difference being the extension and their own file type features)
 - The default component styling will be a little more attractive and consistent.
 - The `--name` argument will be dropped in favour of it being a positional argument, this will make it easier to use the command line and the config file.
 - The package is being rewritten using TypeScript, this will make it easier to use and will make it easier to add new features in the future. The package output will still be compiled to regular JavaScript, so this will not affect the functionality of the package.
 
 ### Roadmap
 
-I personally use buildcom to generate components for my projects and over the years I've developed a very robust and reusable file structure, based on next.js and storybook, so I plan to create a few tools to make generating items for that boilerplate easier as well
+This project has gained some traction in the recent months and as this was just a project I built for the use of myself and my team many years ago, I have not had much time to work on it - so I find the codebase a bit embarrassing now. I have been working on it for the past few months and have a few ideas for future features.
+
+I personally use buildcom to generate components for my projects and over the years I've developed a very robust and reusable file structure, based on [next.js] and [storybook], so I plan to create a few tools to make generating items for that boilerplate easier as well
 as a tool to generate the entire boilerplate itself. These will likely be namespaced packages under the `@builda` scope which I have recently bagsied. I have no idea about timescales for these but I'm hoping to do at least a few alpha releases of each package in the next couple of months.
 
 ## Support me
 
+### Donate
+
 I made this with love and of course it is free for you to use and modify however you see fit, however if you would like to buy me a coffee to say thanks, I certainly won't complain :)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I21FRCN)
+
+### Patreon
+
+I have a [Patreon](https://www.patreon.com/stelmosfire) where you can support me and help me keep this project alive. At the moment I only have a single 'Offer Support' tier but I'm sure I'll be adding more tiers in the future when I get around to fleshing out my page.
+
+[![Patreon](https://img.shields.io/badge/patreon-support-brightgreen.svg)](https://patreon.com/buildcom)
+
+[next.js](https://nextjs.org/)
+[storybook](https://storybook.js.org/)
