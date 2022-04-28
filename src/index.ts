@@ -1,38 +1,9 @@
 #! /usr/bin/env node
 
-import chalk from 'chalk';
-
 import config from '@scripts/config';
+import printLogo from '@scripts/print-logo';
 
-import version from './version';
-
-// printMessage('\n==========================================', 'primary');
-// console.log(
-//   chalk.magenta(`    ___      _ _    _               `) +
-//     chalk.white(`v${version}`)
-// );
-// printMessage(`   | _ )_  _(_) |__| |__ ___ _ __     `, 'primary');
-// printMessage(`   | _ \\ || | | / _\` / _/ _ \\ '  \\    `, 'primary');
-// printMessage(`   |___/\\_,_|_|_\\__,_\\__\\___/_|_|_|__ `, 'primary');
-// console.log(
-//   chalk.white(`   A component generator         `) + chalk.magenta(`|___|`)
-// );
-// printMessage('==========================================\n', 'primary');
-
-console.log(
-  chalk.magenta(` ${chalk.white(
-    `                                                       v${version}`
-  )}
-▀█████████▄  ███    █▄   ▄█   ▄█       ████████▄     ▄████████
-  ███    ███ ███    ███ ███  ███       ███   ▀███   ███    ███
-  ███    ███ ███    ███ ███▌ ███       ███    ███   ███    ███
- ▄███▄▄▄██▀  ███    ███ ███▌ ███       ███    ███   ███    ███
-▀▀███▀▀▀██▄  ███    ███ ███▌ ███       ███    ███ ▀███████████
-  ███    ██▄ ███    ███ ███  ███       ███    ███   ███    ███
-  ███    ███ ███    ███ ███  ███▌    ▄ ███   ▄███   ███    ███
-▄█████████▀  ████████▀  █▀   █████▄▄██ ████████▀    ███    █▀
-${chalk.white('Component generator\n')}`)
-);
+printLogo();
 
 // Get the config object to pass to the generator
 config().then((config) => console.log(config));

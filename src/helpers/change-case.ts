@@ -1,3 +1,7 @@
+// TODO: If would be good if no matter what the type is, the output would always be the same
+// e.g. 'my-component', 'MyComponent', 'My Component' or 'my_component' would all output as
+// 'my-component if the type is kebab, but 'MyComponent' if the type is pascal, etc.
+
 const changeCase = (input: string, type: string) => {
   const str = input
     .replace(/[,_]/g, ' ')

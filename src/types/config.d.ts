@@ -19,9 +19,14 @@ export interface Config {
         params: string;
         /**
          * Use MDX format for stories? Will generate CSF files if false
+         * @default csf
+         */
+        story_format: 'mdx' | 'csf';
+        /**
+         * Do you want to add a namespace to each component's story?
          * @default false
          */
-        mdx: boolean;
+        namespace: string | false;
       }
     | false;
   /**
@@ -45,14 +50,9 @@ export interface Config {
         /**
          * The preprocessor to use (one of 'sass', 'scss', 'less', 'stylus')
          * This will soon be deprecated in favor of the 'scss' option
-         * @default 'css'
-         */
-        preprocessor?: string | false;
-        /**
-         * Use SCSS as the preprocessor? (if 'true' will use 'scss' but you can also specify 'sass')
          * @default false
          */
-        scss?: boolean | 'scss' | 'sass';
+        preprocessor?: 'scss' | 'sass' | false;
         /**
          * Use CSS modules? (aslo works with preprocessors)
          * @default false

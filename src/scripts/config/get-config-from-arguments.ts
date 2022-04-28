@@ -21,8 +21,9 @@ const getConfigFromArguments = (
 
   const storybook = argv.storybook
     ? {
-        use_mdx: argv.mdx,
-        params: undefined
+        story_format: argv.story_format,
+        params: undefined,
+        namespace: undefined
       }
     : false;
 
@@ -34,7 +35,7 @@ const getConfigFromArguments = (
 
   const styles = argv.css
     ? {
-        use_scss: argv.css === 'css' ? false : argv.css,
+        preprocessor: argv.css === 'css' ? false : argv.css,
         modules: argv.modules
       }
     : false;

@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-const configFile = path.join('.', '.buildcomrc');
+const configFile = path.join('.', '.builda.yml');
 
 const getConfigFile = () => {
   if (fs.existsSync(configFile)) {

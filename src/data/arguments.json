@@ -19,11 +19,11 @@
     "alias": "s",
     "boolean": true
   },
-  "mdx": {
-    "description": "Use MDX format for stories?",
+  "story_format": {
+    "description": "Use MDX or CSF format for stories?",
     "required": false,
-    "boolean": true,
-    "default": true
+    "default": "csf",
+    "choices": ["csf", "mdx", "CSF", "MDX"]
   },
   "test": {
     "description":
@@ -47,7 +47,7 @@
     "alias": "c",
     "type": "string",
     "default": "css",
-    "choices": ["css", "sass", "scss"]
+    "choices": ["css", "sass", "scss", "SASS", "SCSS", "CSS"]
   },
   "modules": {
     "description": "Use CSS modules",
