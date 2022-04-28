@@ -2,12 +2,12 @@
 
 # A component generator for React
 
-[![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)](https://www.npmjs.com/package/buildcom)
-[![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)](https://www.npmjs.com/package/buildcom)
-[![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)](https://github.com/foxleigh81/buildcom/issues)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
-](https://codeclimate.com/github/foxleigh81/buildcom/maintainability)
-
+![NPM Version](https://img.shields.io/npm/v/buildcom?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/buildcom?style=for-the-badge)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/buildcom?style=for-the-badge)
+![Travis (.org)](https://img.shields.io/travis/foxleigh81/buildcom?style=for-the-badge)
+![npm](https://img.shields.io/npm/dt/buildcom?style=for-the-badge)
 
 ## Getting Started
 
@@ -192,17 +192,35 @@ If you were using MDX syntax in your components, you will find that file that is
 bring it in line with the latest features available in Storybook. Your components should still generate fine, however
 the format of any newly generated Storybook files will be different to any existing ones.
 
-## Possible future developments
-
-- Add the ability to generate for frameworks other than React.
-- Renames files instead of needing an exact copy to exist in the scaffold folder, will allow for more flexibility of naming choices.
-
 ## 🚨 BREAKING CHANGES from v2.x.x 🚨
 
 The main change is that the `.buildcomrc` file is in a different format, this is to make it easier to understand and extend. If you upgrade to this version but keep your old config file, buildcom WILL fail.
 
 - File output formats have now changed, most of this is only cosmetic, however storybook files can now include parameters.
 - The `--prepopulate` flag has replaced the `--blank` flag, which means blank files are now the default. If you want to keep the old behaviour, add `--prepopulate` or `-p` to the command line or add `prepopulate: true` to the config file.
+- Support for Stylus has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
+- Support for LESS has now been deprecated and will be removed in a future version. Scaffold files will no longer receive updates.
+
+## FUTURE RELEASE NOTES
+
+Buildcom is about to be renamed to `builda` in the next major release, this is to prepare it for some future additions I have planned, which make no sense with the current name. When this happens, the `buildcom` npm package will be deprecated and the `builda` npm package will be the new package. Whilst v4 will be a breaking change (it's a ground-up rewrite!) the current version will continue to work as it is
+and will be preserved in the `buildcom` npm package - however it will receive no further updates.
+
+### Notable changes coming in v4
+
+- Support for LESS and Stylus has been removed
+- The `.buildcomrc` config file has been renamed to `.buildarc.yml`
+- The 'questionnaire' mode has been removed for component generation, opting to use arguments along with the config file is now the recommended method.
+- The `Questionaire` will still exist but will now be used to generate the config file.
+- The struture of the scaffold files will be unified between formats (e.g. css, scss, js and ts will all output similar files with the only difference being the extension and their own file type features)
+- The default component styling will be a little more attractive and consistent.
+- The `--name` argument will be dropped in favour of it being a positional argument, this will make it easier to use the command line and the config file.
+- The package is being rewritten using TypeScript, this will make it easier to use and will make it easier to add new features in the future. The package output will still be compiled to regular JavaScript, so this will not affect the functionality of the package.
+
+### Roadmap
+
+I personally use buildcom to generate components for my projects and over the years I've developed a very robust and reusable file structure, based on next.js and storybook, so I plan to create a few tools to make generating items for that boilerplate easier as well
+as a tool to generate the entire boilerplate itself. These will likely be namespaced packages under the `@builda` scope which I have recently bagsied. I have no idea about timescales for these but I'm hoping to do at least a few alpha releases of each package in the next couple of months.
 
 ## Support me
 
