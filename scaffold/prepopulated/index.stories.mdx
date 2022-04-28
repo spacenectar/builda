@@ -5,10 +5,10 @@ import %ComponentName% from './index'
   title="atom/%ComponentName%"
   component={%ComponentName%}
   %extraParams%
-  args={
+  args={{
     name: '%ComponentNameSentence% name',
     children: <>Hello world</>
-  }
+  }}
 />
 
 export const Template = (args) => <%ComponentName% {...args} />
