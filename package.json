@@ -1,8 +1,8 @@
 {
-  "name": "buildcom",
+  "name": "builda",
   "version": "3.0.3",
   "bin": {
-    "buildcom": "dist/index.js"
+    "builda": "dist/index.js"
   },
   "description": "A component generator for react",
   "keywords": [
@@ -19,9 +19,7 @@
     "typescript"
   ],
   "files": [
-    "dist",
-    "scaffold",
-    "data"
+    "dist"
   ],
   "scripts": {
     "start": "node dist/index.js",
@@ -38,7 +36,7 @@
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/foxleigh81/buildcom.git"
+    "url": "git+https://github.com/st-elmos-fire/builda"
   },
   "author": {
     "name": "Alex Foxleigh",
@@ -46,9 +44,9 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/foxleigh81/buildcom/issues"
+    "url": "https://github.com/st-elmos-fire/builda/issues"
   },
-  "homepage": "https://github.com/foxleigh81/buildcom/#readme",
+  "homepage": "https://github.com/st-elmos-fire/builda/#readme",
   "dependencies": {
     "chalk": "^3.0.0",
     "inquirer": "^7.0.4",

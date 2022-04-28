@@ -18,8 +18,8 @@ tests:
   extension: 'test'
 # Generate a stylesheet for each component. Set to false or omit to disable.
 styles:
-  # Use SCSS for stylesheets? (Sass is also supported, use 'sass' instead of true)
-  use_scss: true
+  # Use preprocessor for stylesheets? (can be 'sass', 'scss' or false)
+  preprocessor: scss
   # Use CSS modules?
   modules: true
 # Generate a README.md file for each component (recommended unless using MDX for storybook stories).
