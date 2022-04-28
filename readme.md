@@ -1,34 +1,39 @@
 # ![Logo](./builda-logo.png)
 
-![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/foxleigh81/builda?style=for-the-badge)
-![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/builda?style=for-the-badge)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/builda?style=for-the-badge)
-![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge)
+[![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
+[![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
+[![GitHub issues](https://img.shields.io/github/issues/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
+[![GitHub stars](https://img.shields.io/github/stars/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/builda?style=for-the-badge&logo=codeclimate)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/builda?style=for-the-badge&logo=codeclimate)
+[![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://patreon.com/buildcom?style=for-the-badge)
 
 ## Setup
 
-### Install globally with
+You can either install `builda` as a global module or install it locally into your
+project, if you are using the `.builda.yml` file, installing locally is recommended.
+
+![NPM](https://img.shields.io/badge/npm-install_globally-red?style=for-the-badge&logo=npm)
 
 ```bash
-# NPM
 npm i -g builda
 ```
 
+![Yarn](https://img.shields.io/badge/yarn-install_globally-yellow?style=for-the-badge&logo=yarn)
+
 ```bash
-# Yarn
 yarn global add builda
 ```
 
-### Or install it as a package dependency (recommended)
+![NPM](https://img.shields.io/badge/npm-install_locally-red?style=for-the-badge&logo=npm)
 
 ```bash
-# NPM
 npm i --dev builda
 ```
 
+![Yarn](https://img.shields.io/badge/yarn-install_locally-yellow?style=for-the-badge&logo=yarn)
+
 ```bash
-# Yarn
 yarn add -d builda
 ```
 
@@ -255,3 +260,39 @@ settings from your old .buildcomrc file to the new .builda.yml file.
   you wish to preserve the old behaviour or if you have a namespace you wish
   to use for every component, you can add it to the config file in the `storybook`
   section, e.g. `namespace: "atom"`.
+
+### Roadmap
+
+This project has gained some traction in the recent months and as this was just
+a project I built for the use of myself and my team many years ago, I have not
+had much time to work on it - so I find the codebase a bit embarrassing now. I h
+ave been working on it for the past few months and have a few ideas for future features.
+
+I personally use buildcom to generate components for my projects and over the years
+I've developed a very robust and reusable file structure, based on [next.js] and
+[storybook], so I plan to create a few tools to make generating items for that
+boilerplate easier as well
+as a tool to generate the entire boilerplate itself. These will likely be
+namespaced packages under the `@builda` scope which I have recently bagsied. I
+have no idea about timescales for these but I'm hoping to do at least a few alpha
+releases of each package in the next couple of months.
+
+## Support me
+
+### Donate
+
+I made this with love and of course it is free for you to use and modify however
+you see fit, however if you would like to buy me a coffee to say thanks, I
+certainly won't complain :)
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I21FRCN)
+
+### Patreon
+
+I have a [Patreon](https://www.patreon.com/stelmosfire) where you can support me
+and help me keep this project alive. At the moment I only have a single 'Offer
+Support' tier but I'm sure I'll be adding more tiers in the future when I get
+around to fleshing out my page.
+
+[next.js](https://nextjs.org/)
+[storybook](https://storybook.js.org/)
