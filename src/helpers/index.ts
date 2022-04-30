@@ -5,5 +5,6 @@ export { default as changeCase } from './change-case';
 export { default as printMessage } from './print-message';
 export { default as nameError } from './throw-error';
 export { default as askQuestion } from './ask-question';
+export { default as questions } from './questions';
 export { default as throwError } from './throw-error';
 export { default as randomWordGenerator } from './random-word-generator';

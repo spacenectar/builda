@@ -6,9 +6,11 @@ import {
   directoryRegex,
   randomWordGenerator
 } from '@helpers';
+
 import arguments from '@data/arguments.json';
 import { QuestionType } from '@typedefs/question-type';
 
+import init from './init';
 import getConfigFile from './config-file-mode';
 import getConfigFromArguments from './get-config-from-arguments';
 
@@ -69,8 +71,7 @@ export default async () => {
   if (argv.init) {
     // The user wants to create a config file
     // Go to init function
-    console.log('init mode');
-    return;
+    return init();
   }
 
   if (argv.migrate) {

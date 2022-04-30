@@ -7,11 +7,13 @@ typescript:
 # Generate storybook stories for each component. Set to false or omit to disable.
 storybook:
   # Use CSF or MDX to generate storybook stories
-  use_mdx: true
+  story_format: "csf"
   # Add parameters to the generated stories (one per line) (see https://storybook.js.org/docs/react/writing-stories/parameters#story-parameters for more info).
   params:
     # This is an example which will add a 'status' parameter to the story.
     - "status: { type: 'alpha' }"
+  # Add a namespace to the stories (This is better to do manually each time unless you have a single namespace for all components).
+  namespace: "components"
 # Generate tests for each component. (Only Jest is supported at the moment.) Set to false or omit to disable.
 tests:
   # Filename format for test files can be either 'spec' or 'test', outputs as index.[choice].[ext], where [ext] is based on your answer to 'use_typescript'.
