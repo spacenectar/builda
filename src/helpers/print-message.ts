@@ -11,27 +11,27 @@ type Types =
 const printMessage = (message: string, type: Types) => {
   let newMessage = null;
   if (type && type === 'error') {
-    newMessage = chalk.keyword('red')(`🚨 ${message}`);
+    newMessage = chalk.red(`🚨 ${message}`);
   }
 
   if (type && type === 'warning') {
-    newMessage = chalk.keyword('orange')(`⚠️  ${message}`);
+    newMessage = chalk.yellow(`⚠️  ${message}`);
   }
 
   if (type && type === 'notice') {
-    newMessage = chalk.keyword('blue')(message);
+    newMessage = chalk.blue(message);
   }
 
   if (type && type === 'success') {
-    newMessage = chalk.keyword('green')(`${message}`);
+    newMessage = chalk.green(`${message}`);
   }
 
   if (type && type === 'primary') {
-    newMessage = chalk.keyword('magenta')(`${message}`);
+    newMessage = chalk.magenta(`${message}`);
   }
 
   if (type && type === 'secondary') {
-    newMessage = chalk.keyword('white')(`${message}`);
+    newMessage = chalk.white(`${message}`);
   }
 
   if (!type) {

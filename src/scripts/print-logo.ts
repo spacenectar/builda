@@ -1,10 +1,10 @@
 import chalk from 'chalk';
-import version from '../version';
+import { globals } from '@helpers';
 
 export default () => {
   return console.log(
     chalk.magenta(`\n  █████████████████████████████████████████████████ ${chalk.white(
-      `v${version}\n`
+      `v${globals.version}\n`
     )}
   ████████▄  ███    ███ ███ ███      ████████▄   ▄████████
   ███    ███ ███    ███ ███ ███      ███   ▀███ ███▀   ███

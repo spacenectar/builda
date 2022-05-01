@@ -2,13 +2,22 @@ import fs from 'fs';
 import { Question } from 'inquirer';
 import yaml from 'js-yaml';
 
-import { askQuestion, printMessage, questions } from '@helpers';
+import {
+  globals,
+  askQuestion,
+  printMessage,
+  questions,
+  addConfigComments
+} from '@helpers';
 
-const fileName = '.buildatest.yml';
+const fileName = globals.configFileName;
 
 const init = () => {
   if (fs.existsSync(fileName)) {
-    printMessage('You already have a config file. Aborting...\n\n', 'error');
+    printMessage(
+      `You already have a ${fileName} file. Aborting...\n\n`,
+      'error'
+    );
     process.exit(1);
   }
   askQuestion({
@@ -46,11 +55,13 @@ const init = () => {
       tests,
       styles,
       generate_readme: answers.createReadme || false,
-      directories: answers.createDirectories || false,
+      extra_directories: answers.createDirectories || false,
       prepopulate: answers.prepopulate || true
     };
 
-    fs.writeFileSync(fileName, yaml.dump(config), 'utf8');
+    const configWithComments = addConfigComments(yaml.dump(config));
+
+    fs.writeFileSync(fileName, configWithComments, 'utf8');
   });
 };
 

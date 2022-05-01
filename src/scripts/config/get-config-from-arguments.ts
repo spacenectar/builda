@@ -49,7 +49,7 @@ const getConfigFromArguments = (
     styles,
     generate_readme: argv.readme,
     prepopulate: argv.prepopulate,
-    directories: argv.dirs,
+    extra_directories: argv.dirs,
     force: argv.force
   };
 };

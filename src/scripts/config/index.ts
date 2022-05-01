@@ -11,6 +11,7 @@ import arguments from '@data/arguments.json';
 import { QuestionType } from '@typedefs/question-type';
 
 import init from './init';
+import migrate from './migrate';
 import getConfigFile from './config-file-mode';
 import getConfigFromArguments from './get-config-from-arguments';
 
@@ -77,8 +78,7 @@ export default async () => {
   if (argv.migrate) {
     // The user wants to migrate an old buildcom config file
     // Go to migrate function
-    console.log('migrate mode');
-    return;
+    return migrate();
   }
 
   // Arguments were passed

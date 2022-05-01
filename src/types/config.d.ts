@@ -2,7 +2,7 @@ export interface Config {
   /**
    * The name of the component
    */
-  component_name: string;
+  component_name?: string;
   /**
    * The output directory (relative buildcomrc file)
    */
@@ -16,7 +16,7 @@ export interface Config {
         /**
          * The parameters to add to the storybook file
          */
-        params: string;
+        params: string | string[] | undefined;
         /**
          * Use MDX format for stories? Will generate CSF files if false
          * @default csf
@@ -78,12 +78,12 @@ export interface Config {
    * Generate a README file? (Recommended for CSF Storybook, but kind of redundant for MDX)
    * @default false
    */
-  readme?: boolean;
+  generate_readme?: boolean;
   /**
    * Any additional directories to generate
    * @default []
    */
-  directories?: string[];
+  extra_directories?: string[];
   /**
    * Prepopulate the component with example code?
    * @default false
