@@ -25,7 +25,7 @@
     "start": "node dist/index.js",
     "dev": "tsc --watch & tsc-alias -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf ./dist && node ./copy-version && tsc --build",
+    "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
     "copyfiles": "cp -r ./src/scaffold ./src/data ./dist",
     "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
     "lint:json": "eslint **/*.json --fix",
@@ -48,11 +48,11 @@
   },
   "homepage": "https://github.com/st-elmos-fire/builda/#readme",
   "dependencies": {
-    "chalk": "^3.0.0",
-    "inquirer": "^7.0.4",
-    "js-yaml": "^3.9.1",
+    "chalk": "4.1.2",
+    "inquirer": "^8.2.4",
+    "js-yaml": "^4.1.0",
     "markdownlint": "^0.25.1",
-    "yargs": "^15.1.0"
+    "yargs": "^17.4.1"
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
