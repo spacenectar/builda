@@ -1,5 +1,5 @@
-import { addConfigComments, globals, printMessage } from '@helpers';
-import { Config } from '@typedefs/config';
+import { configContents, globals, printMessage } from '@helpers';
+import { ComponentConfig } from '@typedefs/config';
 import { LegacyConfig } from '@typedefs/legacy-config';
 import fs from 'fs';
 import yaml from 'js-yaml';
@@ -51,14 +51,9 @@ const migrate = () => {
     generate_readme: legacyConfig.generate_readme || false,
     extra_directories: legacyConfig.directories || [],
     prepopulate: legacyConfig.prepopulate || true
-  } as Config;
+  } as ComponentConfig;
 
-  const configWithComments = addConfigComments(
-    yaml.dump(config, {
-      quotingType: '"',
-      forceQuotes: true
-    })
-  );
+  const configWithComments = configContents(yaml.dump(config));
 
   fs.writeFileSync(configFileName, configWithComments, 'utf8');
 };

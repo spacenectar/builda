@@ -29,7 +29,7 @@ const comments = {
     '# If true, example code will be added to the component files. If false, the files will be empty.'
 };
 
-const addConfigComments = (config: string) => {
+const configContents = (config: string) => {
   const lines = config.split('\n');
 
   const newLines = lines.map((line) => {
@@ -40,14 +40,14 @@ const addConfigComments = (config: string) => {
     /* @ts-ignore -- Don't know what is causing this - will debug later*/
     if (comments[key]) {
       /* @ts-ignore */
-      return `${comments[key]}\n${line}`;
+      return `  ${comments[key]}\n  ${line}`;
     }
     return line;
   });
 
-  return newLines.join('\n');
+  const firstLine = `# @builda/components config\ncomponents:\n`;
 
-  return config;
+  return `${firstLine}${newLines.join('\n')}`;
 };
 
-export default addConfigComments;
+export default configContents;

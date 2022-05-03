@@ -1,4 +1,8 @@
 export interface Config {
+  components?: ComponentConfig;
+}
+
+export interface ComponentConfig {
   /**
    * The name of the component
    */

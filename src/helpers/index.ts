@@ -9,4 +9,4 @@ export { default as askQuestion } from './ask-question';
 export { default as questions } from './questions';
 export { default as throwError } from './throw-error';
 export { default as randomWordGenerator } from './random-word-generator';
-export { default as addConfigComments } from './add-config-comments';
+export { default as configContents } from './config-contents';

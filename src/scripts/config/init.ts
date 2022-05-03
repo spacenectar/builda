@@ -7,7 +7,7 @@ import {
   askQuestion,
   printMessage,
   questions,
-  addConfigComments
+  configContents
 } from '@helpers';
 
 const fileName = globals.configFileName;
@@ -25,7 +25,7 @@ const init = () => {
   }).then((answers) => {
     const typescript = answers.useTS
       ? {
-          inline: answers.useTSInline
+          inline: answers.useTSInline === 'inline'
         }
       : false;
 
@@ -59,7 +59,7 @@ const init = () => {
       prepopulate: answers.prepopulate || true
     };
 
-    const configWithComments = addConfigComments(yaml.dump(config));
+    const configWithComments = configContents(yaml.dump(config));
 
     fs.writeFileSync(fileName, configWithComments, 'utf8');
   });

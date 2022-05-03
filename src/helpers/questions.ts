@@ -17,7 +17,7 @@ export default [
     name: 'useTSInline',
     message:
       'Would you prefer to have your types in a separate file or have them inline with the component file?',
-    choices: ['Inline', 'Separate'],
+    choices: ['inline', 'separate'],
     when: (answers: { useTS: boolean }) => answers.useTS,
     default: false
   },

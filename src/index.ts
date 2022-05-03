@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 
 import config from '@scripts/config';
-import printLogo from '@scripts/print-logo';
+import { printLogo, componentBuilda } from '@scripts';
+import { Config } from '@typedefs/config';
 
 printLogo();
 
 // Get the config object to pass to the generator
-config().then((config) => console.log(config));
+config().then((config) => componentBuilda(config as Config));

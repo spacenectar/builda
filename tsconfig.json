@@ -24,6 +24,9 @@
       "@scripts/*": [
         "scripts/*"
       ],
+      "@scripts": [
+        "scripts/index.ts"
+      ],
       "@typedefs/*": [
         "types/*"
       ],
