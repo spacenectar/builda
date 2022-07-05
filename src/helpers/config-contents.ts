@@ -45,7 +45,7 @@ const configContents = (config: string) => {
     return line;
   });
 
-  const firstLine = `# @builda/components config\ncomponents:\n`;
+  const firstLine = `# Builda config. See [url goes here] for instructions.\\n`;
 
   return `${firstLine}${newLines.join('\n')}`;
 };

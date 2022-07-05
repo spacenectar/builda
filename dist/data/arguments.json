@@ -1,0 +1,12 @@
+{
+    "init": {
+        "description": "Initialises a new project",
+        "required": false,
+        "boolean": true
+    },
+    "migrate": {
+        "description": "Migrates a project to the latest version",
+        "required": false,
+        "boolean": true
+    }
+}
