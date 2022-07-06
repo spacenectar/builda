@@ -41,8 +41,10 @@ const init = () => {
             },
             scaffolds
         };
-        fs_1.default.writeFileSync(configFileName, js_yaml_1.default.dump(config), 'utf8');
-        return (0, _helpers_1.printMessage)('Created config in project root', 'success');
+        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit www.builda.app/setup for more information.`;
+        fs_1.default.writeFileSync(configFileName, `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
+        (0, _helpers_1.printMessage)('Created config in project root', 'success');
+        return (0, _helpers_1.printMessage)('Visit www.builda.app/setup for instructions on what to do next', 'notice');
     });
 };
 exports.default = init;
