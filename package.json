@@ -24,7 +24,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsc --watch & tsc-alias -w",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx cypress run",
+    "cypress:open": "npx cypress open",
     "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
     "copyfiles": "cp -r ./src/scaffold ./src/data ./dist",
     "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
@@ -59,6 +60,7 @@
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.25",
     "@types/yargs": "^17.0.10",
+    "cypress": "^10.3.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-output": "^3.0.1",
