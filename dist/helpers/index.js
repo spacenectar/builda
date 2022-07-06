@@ -3,13 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomWordGenerator = exports.throwError = exports.questions = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.changeCase = exports.skip = exports.directoryRegex = exports.configContents = exports.getConfigFile = exports.globals = void 0;
+exports.randomWordGenerator = exports.throwError = exports.questions = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.changeCase = exports.skip = exports.directoryRegex = exports.getConfigFile = exports.globals = void 0;
 var globals_1 = require("./globals");
 Object.defineProperty(exports, "globals", { enumerable: true, get: function () { return __importDefault(globals_1).default; } });
 var get_config_file_1 = require("./get-config-file");
 Object.defineProperty(exports, "getConfigFile", { enumerable: true, get: function () { return __importDefault(get_config_file_1).default; } });
-var config_contents_1 = require("./config-contents");
-Object.defineProperty(exports, "configContents", { enumerable: true, get: function () { return __importDefault(config_contents_1).default; } });
 var directory_regex_1 = require("./directory-regex");
 Object.defineProperty(exports, "directoryRegex", { enumerable: true, get: function () { return __importDefault(directory_regex_1).default; } });
 var skip_1 = require("./skip");
