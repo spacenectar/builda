@@ -4,10 +4,10 @@ import yaml from 'js-yaml';
 
 import { globals, askQuestion, printMessage, questions } from '@helpers';
 
-const { configFileName, configFileNameLegacy } = globals;
+const { configFileName, configFileNameLegacy, docSiteUrl } = globals;
 
-const init = () => {
-  if (fs.existsSync(configFileName)) {
+const init = (force?: boolean) => {
+  if (fs.existsSync(configFileName) && !force) {
     printMessage(
       `You already have a ${configFileName} file. Aborting...\n\n`,
       'error'
@@ -40,7 +40,7 @@ const init = () => {
     const scaffolds = Object.fromEntries(
       scaffoldList.map((scaffoldType: string) => [
         scaffoldType,
-        { path: '', scaffoldUrl: '' }
+        { outputDirectory: '', scaffoldUrl: '' }
       ])
     );
 
@@ -53,7 +53,7 @@ const init = () => {
       scaffolds
     };
 
-    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit www.builda.app/setup for more information.`;
+    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
 
     fs.writeFileSync(
       configFileName,
@@ -63,7 +63,7 @@ const init = () => {
 
     printMessage('Created config in project root', 'success');
     return printMessage(
-      'Visit www.builda.app/setup for instructions on what to do next',
+      `Visit ${docSiteUrl}/setup for instructions on what to do next`,
       'notice'
     );
   });
