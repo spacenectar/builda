@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const _helpers_1 = require("../helpers/index.js");
-const { configFileName, configFileNameLegacy } = _helpers_1.globals;
-const init = () => {
-    if (fs_1.default.existsSync(configFileName)) {
+const { configFileName, configFileNameLegacy, docSiteUrl } = _helpers_1.globals;
+const init = (force) => {
+    if (fs_1.default.existsSync(configFileName) && !force) {
         (0, _helpers_1.printMessage)(`You already have a ${configFileName} file. Aborting...\n\n`, 'error');
         process.exit(1);
     }
@@ -31,7 +31,7 @@ const init = () => {
         }
         const scaffolds = Object.fromEntries(scaffoldList.map((scaffoldType) => [
             scaffoldType,
-            { path: '', scaffoldUrl: '' }
+            { outputDirectory: '', scaffoldUrl: '' }
         ]));
         const config = {
             app: {
@@ -41,10 +41,10 @@ const init = () => {
             },
             scaffolds
         };
-        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit www.builda.app/setup for more information.`;
+        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
         fs_1.default.writeFileSync(configFileName, `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
         (0, _helpers_1.printMessage)('Created config in project root', 'success');
-        return (0, _helpers_1.printMessage)('Visit www.builda.app/setup for instructions on what to do next', 'notice');
+        return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
     });
 };
 exports.default = init;

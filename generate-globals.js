@@ -7,7 +7,8 @@ const version = require('./package.json').version;
 const globals = {
   version,
   configFileName: '.builda.yml',
-  configFileNameLegacy: '.buildcomrc'
+  configFileNameLegacy: '.buildcomrc',
+  docSiteUrl: 'https://www.builda.app'
 };
 
 const output = `export default ${JSON.stringify(globals, null, 2)};`;

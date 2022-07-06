@@ -54,10 +54,11 @@ const CREATE_CONFIG_QUESTION = {
       'warning'
     );
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
-      createConfig
-        ? init()
-        : printMessage('Process terminated due to user selection', 'error');
-      process.exit(1);
+      if (createConfig) {
+        return init();
+      }
+      printMessage('Process terminated due to user selection', 'error');
+      return process.exit(1);
     });
   }
 
@@ -66,10 +67,11 @@ const CREATE_CONFIG_QUESTION = {
       printMessage('.builda.yml file detected.\r', 'warning');
       return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
         ({ replaceConfig }) => {
-          replaceConfig
-            ? printMessage('Replaced config in project root', 'success')
-            : printMessage('Process terminated due to user selection', 'error');
-          process.exit(0);
+          if (replaceConfig) {
+            return init(true);
+          }
+          printMessage('Process terminated due to user selection', 'error');
+          return process.exit(1);
         }
       );
     }

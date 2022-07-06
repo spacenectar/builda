@@ -41,20 +41,22 @@ const CREATE_CONFIG_QUESTION = {
         // No arguments were passed but a config file does not exist
         (0, _helpers_1.printMessage)('No arguments were passed and no .builda.yml was found.\r', 'warning');
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
-            createConfig
-                ? (0, init_1.default)()
-                : (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
-            process.exit(1);
+            if (createConfig) {
+                return (0, init_1.default)();
+            }
+            (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
+            return process.exit(1);
         });
     }
     if (argv.init) {
         if (config) {
             (0, _helpers_1.printMessage)('.builda.yml file detected.\r', 'warning');
             return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
-                replaceConfig
-                    ? (0, _helpers_1.printMessage)('Replaced config in project root', 'success')
-                    : (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
-                process.exit(0);
+                if (replaceConfig) {
+                    return (0, init_1.default)(true);
+                }
+                (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
+                return process.exit(1);
             });
         }
         (0, _helpers_1.printMessage)('No .builda.yml file detected. Starting initialisation...\r', 'notice');

@@ -26,7 +26,7 @@
     "dev": "tsc --watch & tsc-alias -w",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
-    "copyfiles": "cp -r ./src/scaffold ./src/data ./dist",
+    "copyfiles": "cp -r ./src/data ./dist",
     "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",

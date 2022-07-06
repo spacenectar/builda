@@ -5,6 +5,12 @@ app:
   outputDirectory: ./src
   scaffoldUrl: https://github.com/st-elmos-fire/builda/scaffolds/project/default
 scaffolds:
-  porn:
+  atom:
+    path: ''
+    scaffoldUrl: ''
+  molecule:
+    path: ''
+    scaffoldUrl: ''
+  organism:
     path: ''
     scaffoldUrl: ''
