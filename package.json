@@ -4,6 +4,7 @@
   "bin": {
     "builda": "dist/index.js"
   },
+  "main": "dist/index.js",
   "description": "A component generator for react",
   "keywords": [
     "node",
@@ -24,7 +25,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsc --watch & tsc-alias -w",
-    "test": "npx cypress run",
+    "debug" : "node dist/scripts/debug.js",
+    "test": "jest",
     "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
     "copyfiles": "cp -r ./src/data ./dist",
     "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
@@ -56,6 +58,7 @@
   },
   "devDependencies": {
     "@types/inquirer": "^8.2.1",
+    "@types/jest": "^28.1.4",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.25",
     "@types/yargs": "^17.0.10",
@@ -64,8 +67,10 @@
     "eslint-output": "^3.0.1",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.2",
+    "mock-stdin": "^1.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
+    "ts-jest": "^28.0.5",
     "tsc-alias": "^1.6.7",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"

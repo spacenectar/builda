@@ -55,7 +55,7 @@ const CREATE_CONFIG_QUESTION = {
     );
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
-        return init();
+        return init({});
       }
       printMessage('Process terminated due to user selection', 'error');
       return process.exit(1);
@@ -68,7 +68,7 @@ const CREATE_CONFIG_QUESTION = {
       return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
         ({ replaceConfig }) => {
           if (replaceConfig) {
-            return init(true);
+            return init({ force: true });
           }
           printMessage('Process terminated due to user selection', 'error');
           return process.exit(1);
@@ -77,9 +77,9 @@ const CREATE_CONFIG_QUESTION = {
     }
     printMessage(
       'No .builda.yml file detected. Starting initialisation...\r',
-      'notice'
+      'success'
     );
-    init();
+    init({});
   }
 
   if (argv.migrate) {

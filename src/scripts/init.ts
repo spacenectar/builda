@@ -2,71 +2,102 @@ import fs from 'fs';
 import { Question } from 'inquirer';
 import yaml from 'js-yaml';
 
-import { globals, askQuestion, printMessage, questions } from '@helpers';
+import {
+  globals,
+  askQuestion,
+  printMessage,
+  questions,
+  throwError
+} from '@helpers';
 
-const { configFileName, configFileNameLegacy, docSiteUrl } = globals;
+const { configFileName, docSiteUrl } = globals;
+interface Answers {
+  appName: string;
+  outputDirectory: string;
+  scaffoldUrl: string;
+  scaffoldSelection: string[];
+  customScaffoldList: string;
+}
 
-const init = (force?: boolean) => {
-  if (fs.existsSync(configFileName) && !force) {
-    printMessage(
-      `You already have a ${configFileName} file. Aborting...\n\n`,
-      'error'
-    );
-    process.exit(1);
+const getAnswers = async () => {
+  let answers = {} as Answers;
+  try {
+    await askQuestion({
+      questionList: questions as Array<Question>
+    }).then((res) => {
+      answers = res as Answers;
+    });
+  } catch (error) {
+    printMessage(error.message, 'error');
+  } finally {
+    return answers;
+  }
+};
+
+const init = async ({
+  force,
+  fileName = configFileName,
+  presetAnswers
+}: {
+  force?: boolean;
+  fileName?: string;
+  presetAnswers?: Answers;
+}) => {
+  if (fs.existsSync(fileName) && !force) {
+    throwError(`You already have a ${fileName} file. Process Aborted.`);
   }
 
-  if (fs.existsSync(configFileNameLegacy)) {
+  if (fs.existsSync('.buildcomrc')) {
+    printMessage('.buildcomrc file detected.', 'error');
+    printMessage('Please note:', 'notice');
     printMessage(
-      `${configFileNameLegacy} file detected.\n Please note: Builda and Buildcom are very different programs. It is advised you either delete the ${configFileNameLegacy} file or continue to use the legacy buildcom package.\n\n`,
-      'error'
+      '   Builda and Buildcom are very different packages.\n   It is advised you either delete the file or continue to use the legacy buildcom package.\n',
+      'secondary'
     );
-    process.exit(1);
+    throwError(
+      'Please delete the .buildcomrc file and try again. Process Aborted.'
+    );
   }
-  askQuestion({
-    questionList: questions as Array<Question>
-  }).then((answers) => {
-    const scaffoldList = [];
 
-    if (answers.scaffoldSelection?.length) {
-      scaffoldList.push(...answers.scaffoldSelection);
-    }
+  const answers = presetAnswers || (await getAnswers());
 
-    if (answers.customScaffoldList) {
-      answers.customScaffoldList.split(',').forEach((scaffoldType: string) => {
-        scaffoldList.push(scaffoldType.trim());
-      });
-    }
+  const scaffoldList = [];
 
-    const scaffolds = Object.fromEntries(
-      scaffoldList.map((scaffoldType: string) => [
-        scaffoldType,
-        { outputDirectory: '', scaffoldUrl: '' }
-      ])
-    );
+  if (answers.scaffoldSelection?.length) {
+    scaffoldList.push(...answers.scaffoldSelection);
+  }
 
-    const config = {
-      app: {
-        name: answers.appName,
-        outputDirectory: answers.outputDirectory,
-        scaffoldUrl: answers.scaffoldUrl
-      },
-      scaffolds
-    };
+  if (answers.customScaffoldList) {
+    answers.customScaffoldList.split(',').forEach((scaffoldType: string) => {
+      scaffoldList.push(scaffoldType.trim());
+    });
+  }
 
-    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
+  const scaffolds = Object.fromEntries(
+    scaffoldList.map((scaffoldType: string) => [
+      scaffoldType,
+      { outputDirectory: '', scaffoldUrl: '' }
+    ])
+  );
 
-    fs.writeFileSync(
-      configFileName,
-      `${topText}\n\n${yaml.dump(config)}`,
-      'utf8'
-    );
+  const config = {
+    app: {
+      name: answers.appName,
+      outputDirectory: answers.outputDirectory,
+      scaffoldUrl: answers.scaffoldUrl
+    },
+    scaffolds
+  };
 
-    printMessage('Created config in project root', 'success');
-    return printMessage(
-      `Visit ${docSiteUrl}/setup for instructions on what to do next`,
-      'notice'
-    );
-  });
+  const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
+
+  fs.writeFileSync(fileName, `${topText}\n\n${yaml.dump(config)}`, 'utf8');
+
+  printMessage('Created config in project root', 'success');
+  return printMessage(
+    `Visit ${docSiteUrl}/setup for instructions on what to do next`,
+    'notice'
+  );
 };
 
 export default init;

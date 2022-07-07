@@ -42,7 +42,7 @@ const CREATE_CONFIG_QUESTION = {
         (0, _helpers_1.printMessage)('No arguments were passed and no .builda.yml was found.\r', 'warning');
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
-                return (0, init_1.default)();
+                return (0, init_1.default)({});
             }
             (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
             return process.exit(1);
@@ -53,14 +53,14 @@ const CREATE_CONFIG_QUESTION = {
             (0, _helpers_1.printMessage)('.builda.yml file detected.\r', 'warning');
             return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
                 if (replaceConfig) {
-                    return (0, init_1.default)(true);
+                    return (0, init_1.default)({ force: true });
                 }
                 (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
                 return process.exit(1);
             });
         }
-        (0, _helpers_1.printMessage)('No .builda.yml file detected. Starting initialisation...\r', 'notice');
-        (0, init_1.default)();
+        (0, _helpers_1.printMessage)('No .builda.yml file detected. Starting initialisation...\r', 'success');
+        (0, init_1.default)({});
     }
     if (argv.migrate) {
         // The user wants to migrate an old buildcom config file
