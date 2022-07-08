@@ -7,6 +7,11 @@ const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const _helpers_1 = require("../helpers/index.js");
 const { configFileName, docSiteUrl } = _helpers_1.globals;
+const OVERWRITE_CONFIG_QUESTION = {
+    message: 'Do you really want to replace your .builda.yml file?',
+    name: 'replaceConfig',
+    type: 'confirm'
+};
 const getAnswers = async () => {
     let answers = {};
     try {
@@ -23,42 +28,58 @@ const getAnswers = async () => {
         return answers;
     }
 };
-const init = async ({ force, fileName = configFileName, presetAnswers }) => {
-    var _a;
-    if (fs_1.default.existsSync(fileName) && !force) {
-        (0, _helpers_1.throwError)(`You already have a ${fileName} file. Process Aborted.`);
-    }
-    if (fs_1.default.existsSync('.buildcomrc')) {
-        (0, _helpers_1.printMessage)('.buildcomrc file detected.', 'error');
-        (0, _helpers_1.printMessage)('Please note:', 'notice');
-        (0, _helpers_1.printMessage)('   Builda and Buildcom are very different packages.\n   It is advised you either delete the file or continue to use the legacy buildcom package.\n', 'secondary');
-        (0, _helpers_1.throwError)('Please delete the .buildcomrc file and try again. Process Aborted.');
-    }
-    const answers = presetAnswers || (await getAnswers());
-    const scaffoldList = [];
-    if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
-        scaffoldList.push(...answers.scaffoldSelection);
-    }
-    if (answers.customScaffoldList) {
-        answers.customScaffoldList.split(',').forEach((scaffoldType) => {
-            scaffoldList.push(scaffoldType.trim());
+const checkExistingConfig = async (fileName, debug) => {
+    if (fs_1.default.existsSync(fileName)) {
+        if (debug) {
+            // Preset answers were passed so we are in debug/test mode
+            return `You already have a ${fileName} file. Process Aborted.`;
+        }
+        return await (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
+            if (replaceConfig) {
+                return 'yes';
+            }
+            return 'Process terminated due to user selection';
         });
     }
-    const scaffolds = Object.fromEntries(scaffoldList.map((scaffoldType) => [
-        scaffoldType,
-        { outputDirectory: '', scaffoldUrl: '' }
-    ]));
-    const config = {
-        app: {
-            name: answers.appName,
-            outputDirectory: answers.outputDirectory,
-            scaffoldUrl: answers.scaffoldUrl
-        },
-        scaffolds
-    };
-    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
-    fs_1.default.writeFileSync(fileName, `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
-    (0, _helpers_1.printMessage)('Created config in project root', 'success');
-    return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
+    (0, _helpers_1.printMessage)('No .builda.yml file detected. Starting initialisation...\r', 'success');
+    return 'yes';
+};
+const init = async ({ fileName = configFileName, presetAnswers, force = false }) => {
+    var _a;
+    // Check if a config file already exists unless presetAnswers is passed
+    const continueProcess = !force
+        ? await checkExistingConfig(fileName, !!presetAnswers)
+        : 'yes';
+    if (continueProcess === 'yes') {
+        const answers = presetAnswers || (await getAnswers());
+        const scaffoldList = [];
+        if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
+            scaffoldList.push(...answers.scaffoldSelection);
+        }
+        if (answers.customScaffoldList) {
+            answers.customScaffoldList.split(',').forEach((scaffoldType) => {
+                scaffoldList.push(scaffoldType.trim());
+            });
+        }
+        const commands = Object.fromEntries(scaffoldList.map((scaffoldType) => [
+            scaffoldType,
+            { type: 'scaffold', outputDirectory: '', scaffoldUrl: '' }
+        ]));
+        const config = {
+            app: {
+                name: answers.appName,
+                outputDirectory: answers.outputDirectory,
+                scaffoldUrl: answers.scaffoldUrl
+            },
+            commands
+        };
+        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
+        fs_1.default.writeFileSync(fileName, `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
+        (0, _helpers_1.printMessage)('Created config in project root', 'success');
+        return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
+    }
+    else {
+        (0, _helpers_1.throwError)(continueProcess);
+    }
 };
 exports.default = init;

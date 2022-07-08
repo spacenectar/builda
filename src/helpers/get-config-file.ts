@@ -2,14 +2,26 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-const configFile = path.join('.', '.builda.yml');
+import globals from './globals';
+import throwError from './throw-error';
+
+// Import types
+import { ConfigFile } from '@typedefs/config-file';
+
+const { configFileName } = globals;
+
+const configFile = path.join('.', configFileName);
 
 const getConfigFile = () => {
   if (fs.existsSync(configFile)) {
-    const config = yaml.load(fs.readFileSync(configFile, 'utf8')) as Object;
+    const config = yaml.load(fs.readFileSync(configFile, 'utf8'), {
+      json: true
+    }) as ConfigFile;
     return config;
   } else {
-    return;
+    return throwError(
+      `${configFileName} file not found. Please run 'builda --init' to create a new config file.`
+    );
   }
 };
 

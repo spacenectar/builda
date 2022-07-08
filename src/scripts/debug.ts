@@ -5,6 +5,7 @@
  */
 
 import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 import fs from 'fs';
 
 import init from '@scripts/init';
@@ -12,14 +13,21 @@ import presetAnswers from '@mocks/preset-answers';
 import arguments from '@data/arguments.json';
 import printMessage from '@helpers/print-message';
 
-const args = process.argv.slice(2);
+const args = hideBin(process.argv);
 
 const options = {
   ...arguments,
   clear: {
     description: 'Deletes generated files',
     required: false,
-    boolean: true
+    boolean: true,
+    alias: 'c'
+  },
+  force: {
+    description: 'Overwrites existing files',
+    required: false,
+    boolean: true,
+    alias: 'f'
   }
 };
 
@@ -31,14 +39,22 @@ const parser = yargs(args)
   .alias('h', 'help')
   .command('<name..>', 'Create a new component');
 
-(async () => {
+export const debug = async ({
+  runInit = false,
+  runClear = false,
+  force = false
+}) => {
   const argv = await parser.argv;
 
-  if (argv.init) {
-    return init({ presetAnswers });
+  if (argv.force) {
+    force = true;
   }
 
-  if (argv.clear) {
+  if (argv.init || runInit) {
+    return init({ presetAnswers, force });
+  }
+
+  if (argv.clear || runClear) {
     if (fs.existsSync('.builda.yml')) {
       fs.rmSync('.builda.yml');
       return printMessage('.builda.yml file has been deleted', 'success');
@@ -46,5 +62,10 @@ const parser = yargs(args)
     return printMessage('No .builda.yml file found', 'danger');
   }
 
-  printMessage('That debug command is not yet implemented.', 'danger');
-})();
+  if (args.length)
+    printMessage('That debug command is not yet implemented.', 'danger');
+};
+
+export default debug;
+
+if (args.length) debug({});

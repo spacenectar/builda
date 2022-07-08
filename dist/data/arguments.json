@@ -2,11 +2,13 @@
     "init": {
         "description": "Initialises a new project",
         "required": false,
-        "boolean": true
+        "boolean": true,
+        "alias": "i"
     },
     "migrate": {
         "description": "Migrates a project to the latest version",
         "required": false,
-        "boolean": true
+        "boolean": true,
+        "alias": "m"
     }
 }
