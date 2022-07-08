@@ -15,69 +15,63 @@ describe('init function (happy path)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(console, 'log').mockImplementation(() => {});
+    init(options);
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
-    fs.rmSync(fileName);
+    if (fs.existsSync(fileName)) {
+      fs.rmSync(fileName);
+    }
   });
 
   test('A config file is produced', () => {
-    init(options);
     expect(fs.existsSync(fileName)).toBe(true);
   });
 
   test('The config file contains an "app:" entry', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toContain('app:');
   });
 
   test('The config file contains an appName value which reads "test"', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toContain('name: test');
   });
 
-  test('The config file contains an outputDirectory value which reads "./test"', () => {
-    init(options);
+  test('The config file contains an outputDirectory value which reads "./experiments"', () => {
     const config = fs.readFileSync(fileName, 'utf8');
-    expect(config).toContain('outputDirectory: ./test');
+    expect(config).toContain('outputDirectory: ./experiments');
   });
 
   test('The config file contains a scaffoldUrl value which reads ""', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toContain('scaffoldUrl: http://test.url');
   });
 
-  test('The config file contains a "scaffold:" entry', () => {
-    init(options);
+  test('The config file contains a "commands:" entry', () => {
     const config = fs.readFileSync(fileName, 'utf8');
-    expect(config).toContain('scaffolds:');
+    expect(config).toContain('commands:');
   });
 
   test('The config file contains an "atom" section with the correct values', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /atom:\n    outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  atom:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/atom\n.   scaffoldUrl: ''/gm
     );
   });
 
   test('The config file contains an "component" section with the correct values', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /component:\n    outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  component:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/component\n.   scaffoldUrl: ''/gm
     );
   });
 
   test('The config file contains a "test" section with the correct values', () => {
-    init(options);
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /test:\n    outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  test:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/test\n.   scaffoldUrl: ''/gm
     );
   });
 });
@@ -90,6 +84,9 @@ describe('init function (error path)', () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+    if (fs.existsSync(fileName)) {
+      fs.rmSync(fileName);
+    }
   });
 
   test('If a config file already exists, an error is thrown and the promise is rejected', () => {
@@ -97,14 +94,5 @@ describe('init function (error path)', () => {
     expect(() => init(options)).rejects.toThrowError(
       `You already have a ${fileName} file. Process Aborted.`
     );
-    fs.rmSync(fileName);
-  });
-
-  test('If a .buildcomrc file already exists, an error is thrown and the promise is rejected', () => {
-    fs.writeFileSync('.buildcomrc', 'test');
-    expect(() => init(options)).rejects.toThrowError(
-      'Please delete the .buildcomrc file and try again. Process Aborted.'
-    );
-    fs.rmSync('.buildcomrc');
   });
 });

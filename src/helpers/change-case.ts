@@ -10,20 +10,36 @@ const changeCase = (input: string, type: string) => {
     .replace(/\s+/g, '-')
     .trim();
   let output = '';
-  if (type === 'sentence') {
-    // Output the component name however they provided it
-    output = input;
-  } else if (type === 'kebab') {
+  if (type === 'sentenceCase') {
+    output = str.replace(/\w\S*/g, (txt) => {
+      return (
+        txt.charAt(0).toUpperCase() +
+        txt.substring(1).toLowerCase().replace(/-/g, ' ').replace(/_/g, ' ')
+      );
+    });
+  } else if (type === 'kebabCase') {
     output = str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-  } else if (type === 'pascal') {
+  } else if (type === 'pascalCase') {
     output = str
       .split('-')
       .map((word) => {
         return word.charAt(0).toUpperCase() + word.slice(1);
       })
       .join('');
+  } else if (type === 'camelCase') {
+    output = str
+      .split('-')
+      .map((word, index) => {
+        return index === 0
+          ? word.charAt(0).toLowerCase() + word.slice(1)
+          : word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join('');
+  } else if (type === 'snakeCase') {
+    output = str.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+  } else {
+    output = str;
   }
-
   return output;
 };
 

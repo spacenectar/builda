@@ -5,8 +5,10 @@
 npm-debug.log
 /components
 log.txt
-clarity.yml
+.builda.yml
+.buildcomrc
 .nyc_output/
 coverage/
 src/helpers/globals.ts
 **/tsconfig.tsbuildinfo
+/experiments

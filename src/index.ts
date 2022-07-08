@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 
 import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 // import helpers
 import { printMessage, askQuestion, getConfigFile, printLogo } from '@helpers';
@@ -13,8 +14,10 @@ import { QuestionType } from '@typedefs/question-type';
 
 // import scripts
 import init from '@scripts/init';
+import generateCommands from '@scripts/generate-commands';
+import buildFromScaffold from '@scripts/build-from-scaffold';
 
-const args = process.argv.slice(2);
+const args = hideBin(process.argv);
 const config = getConfigFile();
 
 const parser = yargs(args)
@@ -22,16 +25,9 @@ const parser = yargs(args)
   .options(arguments as { [key: string]: yargs.Options })
   .help('h')
   .version()
-  .alias('h', 'help')
-  .command('<name..>', 'Create a new component');
+  .alias('h', 'help');
 
 printLogo();
-
-const OVERWRITE_CONFIG_QUESTION = {
-  message: 'Do you really want to replace your .builda.yml file?',
-  name: 'replaceConfig',
-  type: 'confirm' as QuestionType
-};
 
 const CREATE_CONFIG_QUESTION = {
   message: 'Would you like to create a .builda.yml file?',
@@ -50,10 +46,6 @@ const CREATE_CONFIG_QUESTION = {
 
   if (args.length === 0 && !config) {
     // No arguments were passed but a config file does not exist
-    printMessage(
-      'No arguments were passed and no .builda.yml was found.\r',
-      'warning'
-    );
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
         return init({});
@@ -63,29 +55,24 @@ const CREATE_CONFIG_QUESTION = {
     });
   }
 
-  if (argv.init) {
-    if (config) {
-      printMessage('.builda.yml file detected.\r', 'warning');
-      return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
-        ({ replaceConfig }) => {
-          if (replaceConfig) {
-            return init({ force: true });
-          }
-          printMessage('Process terminated due to user selection', 'error');
-          return process.exit(1);
-        }
-      );
-    }
-    printMessage(
-      'No .builda.yml file detected. Starting initialisation...\r',
-      'success'
-    );
-    init({});
-  }
+  if (argv.init) init({});
 
   if (argv.migrate) {
     // The user wants to migrate an old buildcom config file
     // Go to migrate function
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
+  }
+
+  const commands = config ? generateCommands() : [];
+
+  const command = process.argv[2].replace('--', '');
+
+  if (commands.includes(command)) {
+    return buildFromScaffold(command, 'TestComponent');
+  } else {
+    return printMessage(
+      `'${command}' is not a recognised command.\r`,
+      'danger'
+    );
   }
 })();

@@ -50,10 +50,12 @@
     "src/**/*.tsx" ],
   "exclude": [
     "node_modules",
+    "experiments",
     "examples",
     "coverage",
     "src/scaffold",
     "src/data",
-    "v3"
+    "src/mocks",
+    "archive"
   ]
 }
