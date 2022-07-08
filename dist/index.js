@@ -35,7 +35,8 @@ const CREATE_CONFIG_QUESTION = {
     const argv = await parser.argv;
     if (args.length === 0 && config) {
         // No arguments were passed but a config file exists
-        (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
+        (0, _helpers_1.printMessage)('No arguments provided.\r', 'danger');
+        parser.showHelp();
     }
     if (args.length === 0 && !config) {
         // No arguments were passed but a config file does not exist

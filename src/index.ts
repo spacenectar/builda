@@ -44,7 +44,8 @@ const CREATE_CONFIG_QUESTION = {
 
   if (args.length === 0 && config) {
     // No arguments were passed but a config file exists
-    printMessage('🛠 This route does not exist yet.\r', 'notice');
+    printMessage('No arguments provided.\r', 'danger');
+    parser.showHelp();
   }
 
   if (args.length === 0 && !config) {

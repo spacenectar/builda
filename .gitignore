@@ -9,3 +9,4 @@ clarity.yml
 .nyc_output/
 coverage/
 src/helpers/globals.ts
+**/tsconfig.tsbuildinfo
