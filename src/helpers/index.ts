@@ -10,3 +10,5 @@ export { default as askQuestion } from './ask-question';
 export { default as questions } from './questions';
 export { default as throwError } from './throw-error';
 export { default as randomWordGenerator } from './random-word-generator';
+export { default as getFileListFromRegistry } from './get-file-list-from-registry';
+export { default as convertRegistryPathToUrl } from './convert-registry-path-to-url';

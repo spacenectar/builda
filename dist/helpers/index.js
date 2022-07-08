@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.randomWordGenerator = exports.throwError = exports.questions = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.changeCase = exports.skip = exports.directoryRegex = exports.getConfigFile = exports.globals = void 0;
+exports.convertRegistryPathToUrl = exports.getFileListFromRegistry = exports.randomWordGenerator = exports.throwError = exports.questions = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.changeCase = exports.skip = exports.directoryRegex = exports.getConfigFile = exports.globals = void 0;
 var globals_1 = require("./globals");
 Object.defineProperty(exports, "globals", { enumerable: true, get: function () { return __importDefault(globals_1).default; } });
 var get_config_file_1 = require("./get-config-file");
@@ -28,3 +28,7 @@ var throw_error_2 = require("./throw-error");
 Object.defineProperty(exports, "throwError", { enumerable: true, get: function () { return __importDefault(throw_error_2).default; } });
 var random_word_generator_1 = require("./random-word-generator");
 Object.defineProperty(exports, "randomWordGenerator", { enumerable: true, get: function () { return __importDefault(random_word_generator_1).default; } });
+var get_file_list_from_registry_1 = require("./get-file-list-from-registry");
+Object.defineProperty(exports, "getFileListFromRegistry", { enumerable: true, get: function () { return __importDefault(get_file_list_from_registry_1).default; } });
+var convert_registry_path_to_url_1 = require("./convert-registry-path-to-url");
+Object.defineProperty(exports, "convertRegistryPathToUrl", { enumerable: true, get: function () { return __importDefault(convert_registry_path_to_url_1).default; } });
