@@ -1,10 +1,13 @@
 import fs from 'fs';
 
+// Import ignorefile
+import ignoreFile from '@data/ignore-file.json';
+
 // import helpers
 import { getConfigFile, changeCase } from '@helpers';
 
 // Ignore these files
-const ignoreFiles = ['.DS_Store'];
+const ignoreFiles = ignoreFile.ignore;
 
 export const buildFromScaffold = async (
   command: string,

@@ -3,6 +3,9 @@ import fs from 'fs';
 import debug from '@scripts/debug';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 
+const MOCK_SCAFFOLD_PATH = './src/mocks/scaffolds/test-scaffold';
+const MOCK_OUTPUT_DIRECTORY = './experiments/atom/test-component/';
+
 describe('Build from scaffold function', () => {
   beforeEach(() => {
     jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -16,8 +19,8 @@ describe('Build from scaffold function', () => {
   });
 
   test('An index.tsx file is generated with the correct data', async () => {
-    await buildFromScaffold('atom', 'TestComponent', './src/mocks/scaffold');
-    const filePath = './experiments/atom/test-component/index.tsx';
+    await buildFromScaffold('atom', 'TestComponent', MOCK_SCAFFOLD_PATH);
+    const filePath = `${MOCK_OUTPUT_DIRECTORY}/index.tsx`;
     expect(fs.existsSync(filePath)).toBe(true);
     const file = fs.readFileSync(filePath, 'utf8');
     expect(file).toContain(
@@ -30,8 +33,8 @@ describe('Build from scaffold function', () => {
   });
 
   test('An index.stories.tsx file is generated with the correct data', async () => {
-    await buildFromScaffold('atom', 'TestComponent', './src/mocks/scaffold');
-    const filePath = './experiments/atom/test-component/index.stories.mdx';
+    await buildFromScaffold('atom', 'TestComponent', MOCK_SCAFFOLD_PATH);
+    const filePath = `${MOCK_OUTPUT_DIRECTORY}/index.stories.mdx`;
     expect(fs.existsSync(filePath)).toBe(true);
     const file = fs.readFileSync(filePath, 'utf8');
     expect(file).toContain('title="atom/TestComponent"');
@@ -43,8 +46,8 @@ describe('Build from scaffold function', () => {
   });
 
   test('A styles.module.scss file is generated with the correct data', async () => {
-    await buildFromScaffold('atom', 'TestComponent', './src/mocks/scaffold');
-    const filePath = './experiments/atom/test-component/styles.module.scss';
+    await buildFromScaffold('atom', 'TestComponent', MOCK_SCAFFOLD_PATH);
+    const filePath = `${MOCK_OUTPUT_DIRECTORY}/styles.module.scss`;
     expect(fs.existsSync(filePath)).toBe(true);
     const file = fs.readFileSync(filePath, 'utf8');
     expect(file).toContain('.test-component {');

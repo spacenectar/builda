@@ -26,6 +26,7 @@
     "start": "node dist/index.js",
     "dev": "tsc --watch & tsc-alias -w",
     "debug" : "node dist/scripts/debug.js",
+    "generate-scaffold" : "node dist/scripts/generate-scaffold-registry.js",
     "test": "jest",
     "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
     "copyfiles": "cp -r ./src/data ./dist",
