@@ -1,5 +1,9 @@
 #! /usr/bin/env node
 
+/**
+ * This file is for debugging purposes.
+ */
+
 import yargs from 'yargs';
 import fs from 'fs';
 
