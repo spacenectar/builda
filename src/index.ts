@@ -15,6 +15,7 @@ import { QuestionType } from '@typedefs/question-type';
 // import scripts
 import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
+import buildFromScaffold from '@scripts/build-from-scaffold';
 
 const args = hideBin(process.argv);
 const config = getConfigFile();
@@ -64,9 +65,14 @@ const CREATE_CONFIG_QUESTION = {
 
   const commands = config ? generateCommands() : [];
 
-  commands.forEach((command) => {
-    if (argv[command]) {
-      return printMessage(`${command} does not exist yet.\r`, 'notice');
-    }
-  });
+  const command = process.argv[2].replace('--', '');
+
+  if (commands.includes(command)) {
+    return buildFromScaffold(command, 'TestComponent');
+  } else {
+    return printMessage(
+      `'${command}' is not a recognised command.\r`,
+      'danger'
+    );
+  }
 })();

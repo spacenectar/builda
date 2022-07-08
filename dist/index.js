@@ -13,6 +13,7 @@ const arguments_json_1 = __importDefault(require("./data/arguments.json"));
 // import scripts
 const init_1 = __importDefault(require("./scripts/init"));
 const generate_commands_1 = __importDefault(require("./scripts/generate-commands"));
+const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaffold"));
 const args = (0, helpers_1.hideBin)(process.argv);
 const config = (0, _helpers_1.getConfigFile)();
 const parser = (0, yargs_1.default)(args)
@@ -52,9 +53,11 @@ const CREATE_CONFIG_QUESTION = {
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
     }
     const commands = config ? (0, generate_commands_1.default)() : [];
-    commands.forEach((command) => {
-        if (argv[command]) {
-            return (0, _helpers_1.printMessage)(`${command} does not exist yet.\r`, 'notice');
-        }
-    });
+    const command = process.argv[2].replace('--', '');
+    if (commands.includes(command)) {
+        return (0, build_from_scaffold_1.default)(command, 'TestComponent');
+    }
+    else {
+        return (0, _helpers_1.printMessage)(`'${command}' is not a recognised command.\r`, 'danger');
+    }
 })();

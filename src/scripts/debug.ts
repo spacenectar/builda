@@ -42,6 +42,7 @@ const parser = yargs(args)
 export const debug = async ({
   runInit = false,
   runClear = false,
+  runPurge = false,
   force = false
 }) => {
   const argv = await parser.argv;
@@ -55,11 +56,19 @@ export const debug = async ({
   }
 
   if (argv.clear || runClear) {
+    if (fs.existsSync('./experiments')) {
+      fs.rmdirSync('experiments', { recursive: true });
+      printMessage('experiments folder has been deleted', 'success');
+    }
+    return process.exit(0);
+  }
+
+  if (argv.purge || runPurge) {
     if (fs.existsSync('.builda.yml')) {
       fs.rmSync('.builda.yml');
-      return printMessage('.builda.yml file has been deleted', 'success');
+      printMessage('.builda.yml file has been deleted', 'success');
     }
-    return printMessage('No .builda.yml file found', 'danger');
+    return process.exit(0);
   }
 
   if (args.length)

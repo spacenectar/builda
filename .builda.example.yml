@@ -1,0 +1,20 @@
+# Builda config file
+# This file is used to set up your 'builda' commands. Visit https://www.builda.app/setup for more information.
+
+app:
+  name: test
+  outputDirectory: ./experiments
+  scaffoldUrl: http://test.url
+commands:
+  atom:
+    type: scaffold
+    outputDirectory: './experiments/atom'
+    scaffoldUrl: './scaffolds/component-with-storybook'
+  component:
+    type: scaffold
+    outputDirectory: './experiments/component'
+    scaffoldUrl: './scaffolds/component-with-storybook'
+  test:
+    type: scaffold
+    outputDirectory: './experiments/test'
+    scaffoldUrl: './scaffolds/component-with-storybook'
