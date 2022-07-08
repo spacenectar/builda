@@ -39,9 +39,9 @@ describe('init function (happy path)', () => {
     expect(config).toContain('name: test');
   });
 
-  test('The config file contains an outputDirectory value which reads "./test"', () => {
+  test('The config file contains an outputDirectory value which reads "./experiments"', () => {
     const config = fs.readFileSync(fileName, 'utf8');
-    expect(config).toContain('outputDirectory: ./test');
+    expect(config).toContain('outputDirectory: ./experiments');
   });
 
   test('The config file contains a scaffoldUrl value which reads ""', () => {
@@ -57,21 +57,21 @@ describe('init function (happy path)', () => {
   test('The config file contains an "atom" section with the correct values', () => {
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /  atom:\n.   type: scaffold\n.   outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  atom:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/atom\n.   scaffoldUrl: ''/gm
     );
   });
 
   test('The config file contains an "component" section with the correct values', () => {
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /  component:\n.   type: scaffold\n.   outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  component:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/component\n.   scaffoldUrl: ''/gm
     );
   });
 
   test('The config file contains a "test" section with the correct values', () => {
     const config = fs.readFileSync(fileName, 'utf8');
     expect(config).toMatch(
-      /  test:\n.   type: scaffold\n.   outputDirectory: ''\n.   scaffoldUrl: ''/gm
+      /  test:\n.   type: scaffold\n.   outputDirectory: .\/experiments\/test\n.   scaffoldUrl: ''/gm
     );
   });
 });

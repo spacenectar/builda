@@ -6,11 +6,15 @@ import { getConfigFile, changeCase } from '@helpers';
 // Ignore these files
 const ignoreFiles = ['.DS_Store'];
 
-export const buildFromScaffold = async (command: string, name: string) => {
+export const buildFromScaffold = async (
+  command: string,
+  name: string,
+  scaffold?: string
+) => {
   const config = getConfigFile();
 
   if (config) {
-    const scaffold = config.commands[command].scaffoldUrl;
+    const scaffoldPath = scaffold || config.commands[command].scaffoldUrl;
     const outputDirectory = `${
       config.commands[command].outputDirectory
     }/${changeCase(name, 'kebabCase')}`;
@@ -19,7 +23,7 @@ export const buildFromScaffold = async (command: string, name: string) => {
     fs.mkdirSync(outputDirectory, { recursive: true });
 
     // get the directory contents
-    const files = fs.readdirSync(scaffold);
+    const files = fs.readdirSync(scaffoldPath);
 
     // loop through the files
     files.forEach((file) => {
@@ -27,7 +31,7 @@ export const buildFromScaffold = async (command: string, name: string) => {
       if (ignoreFiles.includes(file)) return;
 
       // get the file contents
-      const fileContents = fs.readFileSync(`${scaffold}/${file}`, 'utf8');
+      const fileContents = fs.readFileSync(`${scaffoldPath}/${file}`, 'utf8');
 
       // replace the each placeholder with the correctly formatted name
       const newContents = fileContents

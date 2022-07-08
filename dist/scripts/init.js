@@ -63,7 +63,11 @@ const init = async ({ fileName = configFileName, presetAnswers, force = false })
         }
         const commands = Object.fromEntries(scaffoldList.map((scaffoldType) => [
             scaffoldType,
-            { type: 'scaffold', outputDirectory: '', scaffoldUrl: '' }
+            {
+                type: 'scaffold',
+                outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
+                scaffoldUrl: ''
+            }
         ]));
         const config = {
             app: {

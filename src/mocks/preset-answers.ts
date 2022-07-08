@@ -1,6 +1,6 @@
 export const presetAnswers = {
   appName: 'test',
-  outputDirectory: './test',
+  outputDirectory: './experiments',
   scaffoldUrl: 'http://test.url',
   scaffoldSelection: ['atom', 'component'],
   customScaffoldList: 'test'

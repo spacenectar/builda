@@ -98,7 +98,11 @@ const init = async ({
     const commands = Object.fromEntries(
       scaffoldList.map((scaffoldType: string) => [
         scaffoldType,
-        { type: 'scaffold', outputDirectory: '', scaffoldUrl: '' }
+        {
+          type: 'scaffold',
+          outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
+          scaffoldUrl: ''
+        }
       ])
     );
 
