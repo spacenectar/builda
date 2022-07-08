@@ -1,16 +1,0 @@
-# Builda config file# This file is used to set up your 'builda' commands. Visit www.builda.app/setup for more information.
-
-app:
-  name: My App
-  outputDirectory: ./src
-  scaffoldUrl: https://github.com/st-elmos-fire/builda/scaffolds/project/default
-scaffolds:
-  atom:
-    path: ''
-    scaffoldUrl: ''
-  molecule:
-    path: ''
-    scaffoldUrl: ''
-  organism:
-    path: ''
-    scaffoldUrl: ''

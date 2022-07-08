@@ -39,6 +39,9 @@
       "@helpers": [
         "helpers/index.ts"
       ],
+      "@mocks/*": [
+        "mocks/*"
+      ],
     },
     "incremental": true
   },
