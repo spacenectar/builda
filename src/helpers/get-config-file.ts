@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-import globals from './globals';
+import globals from '@data/globals';
 import throwError from './throw-error';
 
 // Import types
