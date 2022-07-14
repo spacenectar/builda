@@ -39,8 +39,8 @@ describe('Build from scaffold function', () => {
     const file = fs.readFileSync(filePath, 'utf8');
     expect(file).toContain('title="atom/TestComponent"');
     expect(file).toContain('component={TestComponent}');
-    expect(file).toContain('# Testcomponent');
-    expect(file).toContain('The Testcomponent component.');
+    expect(file).toContain('# Test component');
+    expect(file).toContain('The Test component component.');
     expect(file).toContain('{(args) => <TestComponent {...args} />}');
     expect(file).toContain('<ArgsTable of={TestComponent} />');
   });

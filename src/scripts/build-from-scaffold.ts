@@ -4,7 +4,8 @@ import fs from 'fs';
 import ignoreFile from '@data/ignore-file.json';
 
 // import helpers
-import { getConfigFile, changeCase } from '@helpers';
+import { getConfigFile } from '@helpers';
+import { changeCase } from '@helpers/string-functions';
 
 // Ignore these files
 const ignoreFiles = ignoreFile.ignore;

@@ -2,7 +2,6 @@ export { default as globals } from './globals';
 export { default as getConfigFile } from './get-config-file';
 export { default as directoryRegex } from './directory-regex';
 export { default as skip } from './skip';
-export { default as changeCase } from './change-case';
 export { default as printMessage } from './print-message';
 export { default as printLogo } from './print-logo';
 export { default as nameError } from './throw-error';
