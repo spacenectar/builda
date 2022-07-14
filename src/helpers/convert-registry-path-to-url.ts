@@ -5,18 +5,26 @@ export const convertRegistryPathToUrl = (registryPath: string) => {
     throw new Error('Registry path must start with http or https');
   }
 
-  if (newPath.includes('github.com')) {
+  if (newPath.includes('github')) {
     newPath = registryPath
       .replace('github.com', 'raw.githubusercontent.com')
       .replace('/blob', '');
   }
 
-  if (newPath.includes('bitbucket.org')) {
-    newPath = registryPath.replace('bitbucket.org', 'bitbucket.org/raw');
+  // Regular bitbucket repo url
+  if (newPath.includes('bitbucket') && !newPath.includes('/projects')) {
+    newPath = registryPath.replace(
+      /(?:http|https)?[://]?(bitbucket.+)\/([\w-]+)\/([\w-]+)\/browse\/([\w/.-]+)/,
+      `$1/$2/$3/raw/$4`
+    );
   }
 
-  if (newPath.includes('gitlab.com')) {
-    newPath = registryPath.replace('gitlab.com', 'gitlab.com/raw');
+  // Bitbucket projects repo url
+  if (newPath.includes('bitbucket') && newPath.includes('/projects')) {
+    newPath = registryPath.replace(
+      /(?:http|https)?[://]?(bitbucket.+)\/projects\/([\w-]+)\/repos\/([\w-]+)\/browse\/([\w/.-]+)/,
+      `$1/projects/$2/repos/$3/raw/$3`
+    );
   }
 
   if (newPath.endsWith('/')) {
