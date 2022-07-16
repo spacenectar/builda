@@ -8,9 +8,9 @@ describe('getFileListFromRegistry() function', () => {
   test('should return a list of files from a registry.json file', async () => {
     axios.get = jest.fn().mockResolvedValue({ data: { files: fileList } });
     const registryPath =
-      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook/registry.json';
+      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook';
     const registryContent = await getFileListFromRegistry(registryPath);
-    expect(axios.get).toHaveBeenCalledWith(registryPath);
+    expect(axios.get).toHaveBeenCalledWith(`${registryPath}/registry.json`);
     expect(registryContent).toEqual(fileList);
   });
 });

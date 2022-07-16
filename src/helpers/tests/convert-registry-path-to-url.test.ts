@@ -5,7 +5,7 @@ describe('convertRegistryPathToUrl() function', () => {
     const registryPath =
       'https://github.com/st-elmos-fire/builda/tree/master/scaffolds/component-with-storybook';
     const expected =
-      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook/registry.json';
+      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook';
     expect(convertRegistryPathToUrl(registryPath)).toEqual(expected);
   });
 
@@ -13,7 +13,7 @@ describe('convertRegistryPathToUrl() function', () => {
     const registryPath =
       'https://bitbucket.org/alexfoxleigh1981/scaffolds/src/master/component-with-storybook/';
     const expected =
-      'https://bitbucket.org/alexfoxleigh1981/scaffolds/raw/master/component-with-storybook/registry.json';
+      'https://bitbucket.org/alexfoxleigh1981/scaffolds/raw/master/component-with-storybook';
     expect(convertRegistryPathToUrl(registryPath)).toEqual(expected);
   });
 
@@ -26,7 +26,7 @@ describe('convertRegistryPathToUrl() function', () => {
     const registryPath =
       'https://bitbucket.custom.url/projects/BULDA/repos/component-library/browse/components/';
     const expected =
-      'https://bitbucket.custom.url/projects/BULDA/repos/component-library/raw/master/components/registry.json';
+      'https://bitbucket.custom.url/projects/BULDA/repos/component-library/raw/master/components';
     expect(convertRegistryPathToUrl(registryPath, customMatcher)).toEqual(
       expected
     );

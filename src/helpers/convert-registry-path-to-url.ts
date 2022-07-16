@@ -11,28 +11,24 @@ export const convertRegistryPathToUrl = (
     throw new Error('Registry path must start with http or https');
   }
 
+  if (newPath.endsWith('/')) {
+    newPath = newPath.slice(0, -1);
+  }
+
+  if (customMatcher) {
+    const regex = new RegExp(customMatcher.original, 'gm');
+    return newPath.replace(regex, customMatcher.transformed);
+  }
+
   if (newPath.includes('github.com')) {
-    newPath = registryPath
+    return newPath
       .replace('github.com', 'raw.githubusercontent.com')
       .replace('/blob', '')
       .replace('/tree', '');
   }
 
   if (newPath.includes('bitbucket.org')) {
-    newPath = registryPath.replace('src', 'raw');
-  }
-
-  if (customMatcher) {
-    const regex = new RegExp(customMatcher.original, 'gm');
-    newPath = registryPath.replace(regex, customMatcher.transformed);
-  }
-
-  if (newPath.endsWith('/')) {
-    newPath = newPath.slice(0, -1);
-  }
-
-  if (!newPath.endsWith('registry.json')) {
-    newPath = `${newPath}/registry.json`;
+    return newPath.replace('src', 'raw');
   }
 
   return newPath;
