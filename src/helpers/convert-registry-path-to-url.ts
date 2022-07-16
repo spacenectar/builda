@@ -1,34 +1,34 @@
-export const convertRegistryPathToUrl = (registryPath: string) => {
+export const convertRegistryPathToUrl = (
+  registryPath: string,
+  customMatcher?: {
+    original: string;
+    transformed: string;
+  }
+) => {
   let newPath = registryPath;
 
   if (!newPath.startsWith('http') || !newPath.startsWith('https')) {
     throw new Error('Registry path must start with http or https');
   }
 
-  if (newPath.includes('github')) {
+  if (newPath.includes('github.com')) {
     newPath = registryPath
       .replace('github.com', 'raw.githubusercontent.com')
-      .replace('/blob', '');
+      .replace('/blob', '')
+      .replace('/tree', '');
   }
 
-  // Regular bitbucket repo url
-  if (newPath.includes('bitbucket') && !newPath.includes('/projects')) {
-    newPath = registryPath.replace(
-      /(?:http|https)?[://]?(bitbucket.+)\/([\w-]+)\/([\w-]+)\/browse\/([\w/.-]+)/,
-      `$1/$2/$3/raw/$4`
-    );
+  if (newPath.includes('bitbucket.org')) {
+    newPath = registryPath.replace('src', 'raw');
   }
 
-  // Bitbucket projects repo url
-  if (newPath.includes('bitbucket') && newPath.includes('/projects')) {
-    newPath = registryPath.replace(
-      /(?:http|https)?[://]?(bitbucket.+)\/projects\/([\w-]+)\/repos\/([\w-]+)\/browse\/([\w/.-]+)/,
-      `$1/projects/$2/repos/$3/raw/$3`
-    );
+  if (customMatcher) {
+    const regex = new RegExp(customMatcher.original, 'gm');
+    newPath = registryPath.replace(regex, customMatcher.transformed);
   }
 
   if (newPath.endsWith('/')) {
-    newPath = registryPath.slice(0, -1);
+    newPath = newPath.slice(0, -1);
   }
 
   if (!newPath.endsWith('registry.json')) {
