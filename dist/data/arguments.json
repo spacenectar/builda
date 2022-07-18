@@ -1,14 +1,14 @@
 {
-    "init": {
-        "description": "Initialises a new project",
-        "required": false,
-        "boolean": true,
-        "alias": "i"
-    },
-    "migrate": {
-        "description": "Migrates a project to the latest version",
-        "required": false,
-        "boolean": true,
-        "alias": "m"
-    }
+  "init": {
+    "description": "Initialises a new project",
+    "required": false,
+    "boolean": true,
+    "alias": "i"
+  },
+  "migrate": {
+    "description": "Migrates a project to the latest version",
+    "required": false,
+    "boolean": true,
+    "alias": "m"
+  }
 }

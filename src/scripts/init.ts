@@ -1,19 +1,16 @@
 import fs from 'fs';
-import { Question } from 'inquirer';
 import yaml from 'js-yaml';
 
-import {
-  globals,
-  askQuestion,
-  printMessage,
-  questions,
-  throwError
-} from '@helpers';
+import { askQuestion, printMessage, throwError } from '@helpers';
+
+import globals from '@data/globals';
+import questions from '@data/globals';
 
 const { configFileName, docSiteUrl } = globals;
 
 // Types
 import { QuestionType } from '@typedefs/question-type';
+import { Question } from 'inquirer';
 
 interface Answers {
   appName: string;
@@ -33,7 +30,7 @@ const getAnswers = async () => {
   let answers = {} as Answers;
   try {
     await askQuestion({
-      questionList: questions as Array<Question>
+      questionList: questions as unknown as Question[]
     }).then((res) => {
       answers = res as Answers;
     });

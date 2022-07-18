@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
-const globals_1 = __importDefault(require("./globals"));
+const globals_1 = __importDefault(require("../data/globals"));
 const throw_error_1 = __importDefault(require("./throw-error"));
 const { configFileName } = globals_1.default;
 const configFile = path_1.default.join('.', configFileName);

@@ -70,9 +70,6 @@ export const debug = async ({
     }
     return process.exit(0);
   }
-
-  if (args.length)
-    printMessage('That debug command is not yet implemented.', 'danger');
 };
 
 export default debug;
