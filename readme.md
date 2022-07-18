@@ -4,8 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
 [![GitHub issues](https://img.shields.io/github/issues/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
 [![GitHub stars](https://img.shields.io/github/stars/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
-![Code Climate coverage](https://img.shields.io/codeclimate/coverage/foxleigh81/builda?style=for-the-badge&logo=codeclimate)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/foxleigh81/builda?style=for-the-badge&logo=codeclimate)
+![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://patreon.com/buildcom?style=for-the-badge)
 
 ## Setup

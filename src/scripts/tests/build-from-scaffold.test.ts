@@ -13,16 +13,19 @@ const MOCK_REMOTE_SCAFFOLD_PATH =
 
 jest.mock('@helpers/get-file-list-from-registry');
 
+beforeAll(() => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
+  debug({ runInit: true, force: true });
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+  fs.rmSync('./experiments', { recursive: true });
+});
+
 describe('Build from local scaffold function', () => {
   beforeAll(() => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    debug({ runInit: true, force: true });
     return buildFromScaffold('atom', 'LocalComponent', MOCK_SCAFFOLD_PATH);
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
-    fs.rmSync('./experiments', { recursive: true });
   });
 
   test('An index.tsx file is generated with the correct data', () => {
@@ -90,18 +93,12 @@ describe('Build from remote scaffold function', () => {
         )
       });
 
-    debug({ runInit: true, force: true });
     await new Promise(process.nextTick);
     await buildFromScaffold(
       'atom',
       'RemoteComponent',
       MOCK_REMOTE_SCAFFOLD_PATH
     );
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
-    fs.rmSync('./experiments', { recursive: true });
   });
 
   test('getFileListFromRegistry is called', () => {

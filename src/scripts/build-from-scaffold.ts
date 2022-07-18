@@ -49,8 +49,8 @@ const buildFromRemoteScaffold = async (
 ) => {
   // get the directory contents
   try {
-    await getFileListFromRegistry(scaffoldPath).then((value) => {
-      const files = value as string[];
+    await getFileListFromRegistry(scaffoldPath).then((value: string[]) => {
+      const files = value;
       files
         .filter((file: string) => !ignoreFiles.includes(file))
         .forEach((file: string) => {

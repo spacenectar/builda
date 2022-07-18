@@ -10,7 +10,7 @@ describe('generateScaffoldRegistry() function happy path', () => {
     }
   });
   test('generateScaffoldRegistry() function generates a scaffold registry', () => {
-    generateScaffoldRegistry('./src/mocks/scaffolds');
+    generateScaffoldRegistry('./src/mocks/scaffolds/test-scaffold');
     expect(
       fs.existsSync('./src/mocks/scaffolds/test-scaffold/registry.json')
     ).toBe(true);
