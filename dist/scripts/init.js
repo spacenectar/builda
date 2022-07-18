@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const _helpers_1 = require("../helpers/index.js");
-const { configFileName, docSiteUrl } = _helpers_1.globals;
+const globals_1 = __importDefault(require("../data/globals"));
+const globals_2 = __importDefault(require("../data/globals"));
+const { configFileName, docSiteUrl } = globals_1.default;
 const OVERWRITE_CONFIG_QUESTION = {
     message: 'Do you really want to replace your .builda.yml file?',
     name: 'replaceConfig',
@@ -16,7 +18,7 @@ const getAnswers = async () => {
     let answers = {};
     try {
         await (0, _helpers_1.askQuestion)({
-            questionList: _helpers_1.questions
+            questionList: globals_2.default
         }).then((res) => {
             answers = res;
         });

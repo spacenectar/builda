@@ -1,23 +1,84 @@
 import fs from 'fs';
-import path from 'path';
 import axios from 'axios';
 
 // Import ignorefile
 import ignoreFile from '@data/ignore-file.json';
 
-// Import types
-import { ComponentRegistry } from '@typedefs/component-registry';
-
 // import helpers
 import {
   getConfigFile,
   detectPathType,
-  getFileListFromRegistry
+  getFileListFromRegistry,
+  writeFile
 } from '@helpers';
 import { changeCase } from '@helpers/string-functions';
 
 // Ignore these files
 const ignoreFiles = ignoreFile.ignore;
+
+const getRegistryData = async (isRemote: boolean, scaffoldPath: string) => {
+  if (isRemote) {
+    return (await axios.get(`${scaffoldPath}/registry.json`)).data;
+  } else {
+    return JSON.parse(fs.readFileSync(`${scaffoldPath}/registry.json`, 'utf8'));
+  }
+};
+
+const buildFromLocalScaffold = (
+  scaffoldPath: string,
+  command: string,
+  name: string,
+  outputDirectory: string
+) => {
+  // get the directory contents and
+  // filter out the files we don't want
+  const files = fs
+    .readdirSync(scaffoldPath)
+    .filter((file) => !ignoreFiles.includes(file))
+    .forEach((file) => {
+      writeFile({ file, scaffoldPath, command, name, outputDirectory });
+    });
+  return files;
+};
+
+const buildFromRemoteScaffold = async (
+  scaffoldPath: string,
+  command: string,
+  name: string,
+  outputDirectory: string
+) => {
+  // get the directory contents
+  try {
+    await getFileListFromRegistry(scaffoldPath).then((value) => {
+      const files = value as string[];
+      files
+        .filter((file: any) => !ignoreFiles.includes(file))
+        .forEach((file: string) => {
+          // Download the file
+          axios
+            .get(`${scaffoldPath}/${file}`)
+            .then((response) => {
+              const fileObject = {
+                name: file,
+                content: response.data
+              };
+
+              return writeFile({
+                fileObject,
+                command,
+                name,
+                outputDirectory
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const buildFromScaffold = async (
   command: string,
@@ -25,6 +86,7 @@ export const buildFromScaffold = async (
   scaffold?: string
 ) => {
   const config = getConfigFile();
+  console.log(`Building ${command} ${name}`);
 
   if (config) {
     const outputDirectory = `${
@@ -33,73 +95,19 @@ export const buildFromScaffold = async (
 
     // Create the directory tree if it doesn't exist
     fs.mkdirSync(outputDirectory, { recursive: true });
-    // Create a temporary directory to store the scaffold files
-    const tempDirectory = `./temp`;
-    fs.mkdirSync(tempDirectory, { recursive: true });
 
     const scaffoldPath = scaffold || config.commands[command].scaffoldUrl;
     const pathType = detectPathType(scaffoldPath);
 
-    let files = [];
-    let registry = {} as ComponentRegistry;
-
     if (pathType === 'local') {
-      // Populate the registry
-      registry = JSON.parse(
-        fs.readFileSync(`${scaffoldPath}/registry.json`, 'utf8')
-      );
-
-      // get the directory contents
-      files = fs.readdirSync(scaffoldPath);
-
-      // filter out the files we don't want
-      files = files.filter((file) => !ignoreFiles.includes(file));
-
-      // copy the files to a temporary directory
-      files.forEach((file) => {
-        fs.copyFileSync(`${scaffoldPath}/${file}`, `${tempDirectory}/${file}`);
-      });
+      buildFromLocalScaffold(scaffoldPath, command, name, outputDirectory);
     }
 
     if (pathType === 'remote') {
-      // Populate the registry
-      registry = (await axios.get(`${scaffoldPath}/registry.json`)).data;
-
-      // get the directory contents
-      const fileList = await getFileListFromRegistry(scaffoldPath);
-
-      await fileList.map(async (file: string) => {
-        // Download the file
-        const response = await axios.get(`${scaffoldPath}/${file}`);
-        // Write the file to a temporary directory
-        fs.writeFileSync(`${tempDirectory}/${file}`, response.data);
-      });
-
-      files = fileList;
+      buildFromRemoteScaffold(scaffoldPath, command, name, outputDirectory);
     }
 
-    // loop through the files
-    files.forEach((file: string) => {
-      // ignore files
-      if (ignoreFiles.includes(file)) return;
-
-      // get the file contents
-      const fileContents = fs.readFileSync(
-        path.resolve(`${tempDirectory}/${file}`),
-        'utf8'
-      );
-
-      // replace the each placeholder with the correctly formatted name
-      const newContents = fileContents
-        .replace(/%TYPE%/g, command)
-        .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
-        .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
-        .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))
-        .replace(/%PASCAL_CASE%/g, changeCase(name, 'pascalCase'))
-        .replace(/%SENTENCE_CASE%/g, changeCase(name, 'sentenceCase'));
-      // write the new file contents to the output directory
-      fs.writeFileSync(`${outputDirectory}/${file}`, newContents);
-    });
+    const registry = await getRegistryData(pathType === 'remote', scaffoldPath);
 
     const componentRegistry = {
       name,
@@ -113,13 +121,10 @@ export const buildFromScaffold = async (
     };
 
     // Add a component registry file to the output directory
-    fs.writeFileSync(
+    return fs.writeFileSync(
       `${outputDirectory}/registry.json`,
       JSON.stringify(componentRegistry)
     );
-
-    // delete the temporary directory
-    fs.rmdirSync(tempDirectory, { recursive: true });
   }
 };
 
