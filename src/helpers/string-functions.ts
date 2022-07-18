@@ -25,6 +25,8 @@ export const detectCase = (input: string) => {
 
 export const normalizeCase = (input: string) => {
   const caseType = detectCase(input);
+  const words = input.split(/(?=[A-Z])/);
+  const lowerCasedWords = words.slice(1).map((word) => word.toLowerCase());
   switch (caseType) {
     case 'snake':
       return input.replace(/_/g, ' ').toLowerCase();
@@ -34,8 +36,6 @@ export const normalizeCase = (input: string) => {
         .map((word) => word.toLowerCase())
         .join(' ');
     case 'camel':
-      const words = input.split(/(?=[A-Z])/);
-      const lowerCasedWords = words.slice(1).map((word) => word.toLowerCase());
       lowerCasedWords.unshift(words[0].toLowerCase());
       return lowerCasedWords.join(' ');
     case 'kebab':

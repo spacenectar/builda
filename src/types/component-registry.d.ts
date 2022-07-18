@@ -3,8 +3,8 @@ export interface ComponentRegistry {
   version: string;
   author: string;
   scaffold: {
-    name: any;
-    version: any;
+    name: string;
+    version: string;
     path: string;
   };
 }

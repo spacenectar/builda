@@ -52,7 +52,7 @@ const buildFromRemoteScaffold = async (
     await getFileListFromRegistry(scaffoldPath).then((value) => {
       const files = value as string[];
       files
-        .filter((file: any) => !ignoreFiles.includes(file))
+        .filter((file: string) => !ignoreFiles.includes(file))
         .forEach((file: string) => {
           // Download the file
           axios
