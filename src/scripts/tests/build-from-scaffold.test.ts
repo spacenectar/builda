@@ -55,7 +55,7 @@ describe('Build from local scaffold function', () => {
 
 describe('Build from remote scaffold function', () => {
   beforeAll(async () => {
-    // jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
     debug({ runInit: true, force: true });
     await new Promise(process.nextTick);
     await buildFromScaffold(
