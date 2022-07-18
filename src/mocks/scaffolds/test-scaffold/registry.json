@@ -1,0 +1,10 @@
+
+          {
+            "name": "test-scaffold",
+            "version": "1.0.0",
+            "description": "",
+            "files": [
+              "index.stories.mdx","index.tsx","styles.module.scss"
+            ]
+          }
+      
