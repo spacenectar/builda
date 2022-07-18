@@ -1,12 +1,17 @@
 import fs from 'fs';
+import axios from 'axios';
 
 import debug from '@scripts/debug';
 import buildFromScaffold from '@scripts/build-from-scaffold';
+import getFileListFromRegistry from '@helpers/get-file-list-from-registry';
+import path from 'path';
 
 const MOCK_SCAFFOLD_PATH = './src/mocks/scaffolds/test-scaffold';
 const MOCK_OUTPUT_DIRECTORY = './experiments/atom';
 const MOCK_REMOTE_SCAFFOLD_PATH =
   'https://rococo-seahorse-bfbde7.netlify.app/component-with-storybook';
+
+jest.mock('@helpers/get-file-list-from-registry');
 
 describe('Build from local scaffold function', () => {
   beforeAll(() => {
@@ -55,7 +60,36 @@ describe('Build from local scaffold function', () => {
 
 describe('Build from remote scaffold function', () => {
   beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => {});
+    // @ts-ignore - This is a mock
+    getFileListFromRegistry.mockImplementationOnce(() =>
+      Promise.resolve(['index.tsx', 'index.stories.mdx', 'styles.module.scss'])
+    );
+    axios.get = jest
+      .fn()
+      .mockResolvedValueOnce({
+        data: true
+      })
+      .mockResolvedValueOnce({
+        data: fs.readFileSync(
+          path.resolve('./src/mocks/scaffolds/test-scaffold/index.tsx'),
+          'utf8'
+        )
+      })
+      .mockResolvedValueOnce({
+        data: fs.readFileSync(
+          path.resolve('./src/mocks/scaffolds/test-scaffold/index.stories.mdx'),
+          'utf8'
+        )
+      })
+      .mockResolvedValueOnce({
+        data: fs.readFileSync(
+          path.resolve(
+            './src/mocks/scaffolds/test-scaffold/styles.module.scss'
+          ),
+          'utf8'
+        )
+      });
+
     debug({ runInit: true, force: true });
     await new Promise(process.nextTick);
     await buildFromScaffold(
@@ -68,6 +102,12 @@ describe('Build from remote scaffold function', () => {
   afterAll(() => {
     jest.restoreAllMocks();
     fs.rmSync('./experiments', { recursive: true });
+  });
+
+  test('getFileListFromRegistry is called', () => {
+    expect(getFileListFromRegistry).toHaveBeenCalledWith(
+      MOCK_REMOTE_SCAFFOLD_PATH
+    );
   });
 
   test('An index.tsx file is generated with the correct data', () => {
