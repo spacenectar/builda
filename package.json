@@ -5,7 +5,7 @@
     "builda": "dist/index.js"
   },
   "main": "dist/index.js",
-  "description": "A component generator for react",
+  "description": "The everything generator",
   "keywords": [
     "node",
     "components",
@@ -17,7 +17,9 @@
     "css",
     "jest",
     "storybook",
-    "typescript"
+    "typescript",
+    "scaffold",
+    "prefab"
   ],
   "files": [
     "dist"
