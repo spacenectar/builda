@@ -3,7 +3,6 @@ import path from 'path';
 import yaml from 'js-yaml';
 
 import globals from '@data/globals';
-import throwError from './throw-error';
 
 // Import types
 import { ConfigFile } from '@typedefs/config-file';
@@ -19,9 +18,7 @@ const getConfigFile = () => {
     }) as ConfigFile;
     return config;
   } else {
-    return throwError(
-      `${configFileName} file not found. Please run 'builda --init' to create a new config file.`
-    );
+    return null;
   }
 };
 

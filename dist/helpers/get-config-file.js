@@ -7,7 +7,6 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const globals_1 = __importDefault(require("../data/globals"));
-const throw_error_1 = __importDefault(require("./throw-error"));
 const { configFileName } = globals_1.default;
 const configFile = path_1.default.join('.', configFileName);
 const getConfigFile = () => {
@@ -18,7 +17,7 @@ const getConfigFile = () => {
         return config;
     }
     else {
-        return (0, throw_error_1.default)(`${configFileName} file not found. Please run 'builda --init' to create a new config file.`);
+        return null;
     }
 };
 exports.default = getConfigFile;
