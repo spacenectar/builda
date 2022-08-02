@@ -11,3 +11,4 @@ coverage/
 src/helpers/globals.ts
 **/tsconfig.tsbuildinfo
 /experiments
+.builda/*
