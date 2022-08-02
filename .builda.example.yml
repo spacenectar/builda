@@ -3,7 +3,7 @@
 
 app:
   name: test
-  outputDirectory: ./experiments
+  outputDirectory: .
   scaffoldUrl: http://test.url
 commands:
   atom:
@@ -12,8 +12,8 @@ commands:
     scaffoldUrl: './scaffolds/component-with-storybook'
   component:
     type: scaffold
-    outputDirectory: './experiments/component'
-    scaffoldUrl: './scaffolds/component-with-storybook'
+    outputDirectory: ./components
+    scaffoldUrl: https://github.com/userspace-apps/scaffolds/tree/master/components/foxys-own
   test:
     type: scaffold
     outputDirectory: './experiments/test'
