@@ -24,8 +24,8 @@ afterAll(() => {
 describe('Build from local scaffold function', () => {
     beforeAll(() => {
         return (0, build_from_scaffold_1.default)({
-            command: 'atom',
             name: 'LocalComponent',
+            command: 'atom',
             scaffold: MOCK_SCAFFOLD_PATH
         });
     });

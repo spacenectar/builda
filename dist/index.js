@@ -63,16 +63,21 @@ const CREATE_CONFIG_QUESTION = {
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
     }
     const commands = config ? (0, generate_commands_1.default)() : [];
-    const command = process.argv[2].replace('--', '');
-    if (commands.includes(command)) {
+    const commandString = process.argv[2].replace('--', '');
+    const command = commands.find((c) => c.name === commandString);
+    if (command) {
         const name = argv._[1].toString();
-        const options = argv._.slice(2);
-        return (0, build_from_scaffold_1.default)({
-            command,
-            name,
-            options: {
-                prefix: options.toString()
+        const prefix = argv.prefix ? argv.prefix : '';
+        if (prefix) {
+            const allowedPrefixes = command.substitute.prefix;
+            if (!allowedPrefixes.includes(prefix)) {
+                return (0, _helpers_1.printMessage)(`Prefix ${prefix} is not allowed.`, 'error');
             }
+        }
+        return (0, build_from_scaffold_1.default)({
+            name,
+            command: command.name,
+            substitute: prefix
         });
     }
     else {

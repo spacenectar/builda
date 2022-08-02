@@ -5,14 +5,14 @@ import changeCase from './string-functions';
 interface IWriteFileOptions {
   file: string;
   outputDirectory: string;
-  command: string;
+  substitute?: string;
   name: string;
 }
 
 export const writeFile = ({
   file,
   outputDirectory,
-  command,
+  substitute,
   name
 }: IWriteFileOptions) => {
   const fileName = file.split('/').pop();
@@ -24,7 +24,7 @@ export const writeFile = ({
   const newContents =
     fileContents &&
     fileContents
-      .replace(/%TYPE%/g, command)
+      .replace(/%TYPE%/g, substitute || 'default')
       .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
       .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
       .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))

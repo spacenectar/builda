@@ -10,13 +10,15 @@ app:
       type: scaffold
       use: foxys-own
       outputPath: './experiments/components'
-      allowedPrefixes:
-        - 'atom'
-        - 'molecule'
-        - 'organism'
+      substitute:
+        prefix':
+          - 'atom'
+          - 'molecule'
+          - 'organism'
     partial:
       type: scaffold
       use: foxys-own
       outputPath: './experiments/partials'
-      allowedPrefixes:
-        - 'partial'
+      substitute:
+        prefix':
+          - 'partial'

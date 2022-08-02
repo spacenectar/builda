@@ -77,17 +77,26 @@ const CREATE_CONFIG_QUESTION = {
 
   const commands = config ? generateCommands() : [];
 
-  const command = process.argv[2].replace('--', '');
+  const commandString = process.argv[2].replace('--', '');
 
-  if (commands.includes(command)) {
+  const command = commands.find((c) => c.name === commandString);
+
+  if (command) {
     const name = argv._[1].toString();
-    const options = argv._.slice(2);
-    return buildFromScaffold({
-      command,
-      name,
-      options: {
-        prefix: options.toString()
+
+    const prefix = argv.prefix ? (argv.prefix as string) : '';
+
+    if (prefix) {
+      const allowedPrefixes = command.substitute.prefix;
+      if (!allowedPrefixes.includes(prefix)) {
+        return printMessage(`Prefix ${prefix} is not allowed.`, 'error');
       }
+    }
+
+    return buildFromScaffold({
+      name,
+      command: command.name,
+      substitute: prefix
     });
   } else {
     return printMessage(

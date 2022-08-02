@@ -1,6 +1,7 @@
+import ModuleType from './module-types';
 export interface ModuleRegistry {
   name: string;
-  type: 'scaffold' | 'prefab';
+  type: ModuleType;
   version: string;
   author: string;
   description: string;

@@ -79,17 +79,17 @@ const addModule = async (path) => {
                 const name = module.name;
                 const version = module.version;
                 if (type === 'scaffold') {
-                    if (!config.app.scaffolds) {
-                        config.app.scaffolds = {};
+                    if (!config.modules.scaffold) {
+                        config.modules.scaffold = {};
                     }
-                    let scaffolds = config.app.scaffolds;
+                    const scaffolds = config.modules.scaffold;
                     scaffolds[name] = version;
                 }
                 if (type === 'prefab') {
-                    if (!config.app.prefabs) {
-                        config.app.prefabs = {};
+                    if (!config.modules.prefab) {
+                        config.modules.prefab = {};
                     }
-                    let prefabs = config.app.prefabs;
+                    const prefabs = config.modules.prefab;
                     prefabs[name] = version;
                 }
                 // Write the config file

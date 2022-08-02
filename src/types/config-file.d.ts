@@ -1,19 +1,21 @@
+import { ModuleType } from './module-types';
+import { CommandConfig } from './command-config';
+
+type RemoveNameField<T> = Omit<T, 'name'>;
+
 export interface ConfigFile {
   app: {
     name: string;
-    scaffolds?: {
+  };
+  modules: {
+    [ModuleType.SCAFFOLD]?: {
       [key: string]: string;
     };
-    prefabs?: {
+    [ModuleType.PREFAB]?: {
       [key: string]: string;
     };
   };
   commands: {
-    [key: string]: {
-      type: string;
-      outputPath: string;
-      use: string;
-      allowedPrefixes: string[];
-    };
+    [key: string]: RemoveNameField<CommandConfig>;
   };
 }
