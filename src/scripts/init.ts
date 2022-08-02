@@ -4,7 +4,7 @@ import yaml from 'js-yaml';
 import { askQuestion, printMessage, throwError } from '@helpers';
 
 import globals from '@data/globals';
-import questions from '@data/globals';
+import questions from '@data/questions';
 
 const { configFileName, docSiteUrl } = globals;
 
@@ -56,16 +56,13 @@ const checkExistingConfig = async (fileName: string, debug: boolean) => {
       }
     );
   }
-  printMessage(
-    'No .builda.yml file detected. Starting initialisation...\r',
-    'success'
-  );
+  printMessage('Starting initialisation...\r', 'success');
   return 'yes';
 };
 
 const init = async ({
   fileName = configFileName,
-  presetAnswers,
+  presetAnswers = undefined,
   force = false
 }: {
   fileName?: string;
@@ -74,11 +71,13 @@ const init = async ({
 }) => {
   // Check if a config file already exists unless presetAnswers is passed
   const continueProcess = !force
-    ? await checkExistingConfig(fileName, !!presetAnswers)
+    ? await checkExistingConfig(fileName, presetAnswers !== undefined)
     : 'yes';
 
   if (continueProcess === 'yes') {
     const answers = presetAnswers || (await getAnswers());
+
+    if (!answers.appName) return throwError('App name is required');
 
     const scaffoldList = [];
 
