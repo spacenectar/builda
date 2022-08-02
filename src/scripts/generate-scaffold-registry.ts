@@ -3,6 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import yaml from 'js-yaml';
 
 import ignoreFiles from '@data/ignore-file.json';
 
@@ -42,7 +43,7 @@ export const generateScaffoldRegistry = (scaffoldPath?: string) => {
           }
       `;
 
-      fs.writeFileSync(`${readPath}/${file}/registry.json`, page);
+      fs.writeFileSync(`${readPath}/${file}/registry.yaml`, yaml.dump(page));
     }
   });
 };

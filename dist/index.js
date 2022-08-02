@@ -61,7 +61,8 @@ const CREATE_CONFIG_QUESTION = {
     const commands = config ? (0, generate_commands_1.default)() : [];
     const command = process.argv[2].replace('--', '');
     if (commands.includes(command)) {
-        return (0, build_from_scaffold_1.default)(command, 'TestComponent');
+        const itemName = argv._[1].toString();
+        return (0, build_from_scaffold_1.default)(command, itemName);
     }
     else {
         return (0, _helpers_1.printMessage)(`'${command}' is not a recognised command.\r`, 'danger');

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import axios from 'axios';
+import yaml from 'js-yaml';
 
 // Import ignorefile
 import ignoreFile from '@data/ignore-file.json';
@@ -8,20 +9,30 @@ import ignoreFile from '@data/ignore-file.json';
 import {
   getConfigFile,
   detectPathType,
+  convertRegistryPathToUrl,
   getFileListFromRegistry,
-  writeFile
+  writeFile,
+  throwError,
+  printMessage
 } from '@helpers';
 import { changeCase } from '@helpers/string-functions';
+import ComponentRegistry from '@typedefs/component-registry';
 
 // Ignore these files
 const ignoreFiles = ignoreFile.ignore;
 
 const getRegistryData = async (isRemote: boolean, scaffoldPath: string) => {
+  let data: ComponentRegistry;
   if (isRemote) {
-    return (await axios.get(`${scaffoldPath}/registry.json`)).data;
+    data = yaml.load(
+      (await axios.get(`${scaffoldPath}/registry.yaml`)).data
+    ) as ComponentRegistry;
   } else {
-    return JSON.parse(fs.readFileSync(`${scaffoldPath}/registry.json`, 'utf8'));
+    data = yaml.load(
+      fs.readFileSync(`${scaffoldPath}/registry.yaml`, 'utf8')
+    ) as ComponentRegistry;
   }
+  return data;
 };
 
 const buildFromLocalScaffold = (
@@ -71,12 +82,12 @@ const buildFromRemoteScaffold = async (
               });
             })
             .catch((error) => {
-              console.log(error);
+              throwError(error);
             });
         });
     });
   } catch (error) {
-    console.error(error);
+    throwError(error);
   }
 };
 
@@ -86,7 +97,7 @@ export const buildFromScaffold = async (
   scaffold?: string
 ) => {
   const config = getConfigFile();
-  console.log(`Building ${command} ${name}`);
+  printMessage(`Building ${command} '${name}'...`, 'notice');
 
   if (config) {
     const outputDirectory = `${
@@ -96,7 +107,8 @@ export const buildFromScaffold = async (
     // Create the directory tree if it doesn't exist
     fs.mkdirSync(outputDirectory, { recursive: true });
 
-    const scaffoldPath = scaffold || config.commands[command].scaffoldUrl;
+    const rawScaffoldPath = scaffold || config.commands[command].scaffoldUrl;
+    const scaffoldPath = convertRegistryPathToUrl(rawScaffoldPath);
     const pathType = detectPathType(scaffoldPath);
 
     if (pathType === 'local') {
@@ -109,21 +121,23 @@ export const buildFromScaffold = async (
 
     const registry = await getRegistryData(pathType === 'remote', scaffoldPath);
 
+    console.log(scaffoldPath);
+
     const componentRegistry = {
       name,
       version: '1.0.0',
       author: '',
       scaffold: {
-        name: registry.name,
+        path: rawScaffoldPath,
         version: registry.version,
-        path: scaffoldPath
+        dependencies: registry.dependencies
       }
     };
 
     // Add a component registry file to the output directory
     return fs.writeFileSync(
-      `${outputDirectory}/registry.json`,
-      JSON.stringify(componentRegistry)
+      `${outputDirectory}/registry.yaml`,
+      yaml.dump(componentRegistry)
     );
   }
 };

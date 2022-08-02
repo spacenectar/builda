@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFromScaffold = void 0;
 const fs_1 = __importDefault(require("fs"));
 const axios_1 = __importDefault(require("axios"));
+const js_yaml_1 = __importDefault(require("js-yaml"));
 // Import ignorefile
 const ignore_file_json_1 = __importDefault(require("../data/ignore-file.json"));
 // import helpers
@@ -14,12 +15,14 @@ const string_functions_1 = require("../helpers/string-functions");
 // Ignore these files
 const ignoreFiles = ignore_file_json_1.default.ignore;
 const getRegistryData = async (isRemote, scaffoldPath) => {
+    let data;
     if (isRemote) {
-        return (await axios_1.default.get(`${scaffoldPath}/registry.json`)).data;
+        data = js_yaml_1.default.load((await axios_1.default.get(`${scaffoldPath}/registry.yaml`)).data);
     }
     else {
-        return JSON.parse(fs_1.default.readFileSync(`${scaffoldPath}/registry.json`, 'utf8'));
+        data = js_yaml_1.default.load(fs_1.default.readFileSync(`${scaffoldPath}/registry.yaml`, 'utf8'));
     }
+    return data;
 };
 const buildFromLocalScaffold = (scaffoldPath, command, name, outputDirectory) => {
     // get the directory contents and
@@ -56,23 +59,24 @@ const buildFromRemoteScaffold = async (scaffoldPath, command, name, outputDirect
                     });
                 })
                     .catch((error) => {
-                    console.log(error);
+                    (0, _helpers_1.throwError)(error);
                 });
             });
         });
     }
     catch (error) {
-        console.error(error);
+        (0, _helpers_1.throwError)(error);
     }
 };
 const buildFromScaffold = async (command, name, scaffold) => {
     const config = (0, _helpers_1.getConfigFile)();
-    console.log(`Building ${command} ${name}`);
+    (0, _helpers_1.printMessage)(`Building ${command} '${name}'...`, 'notice');
     if (config) {
         const outputDirectory = `${config.commands[command].outputDirectory}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         fs_1.default.mkdirSync(outputDirectory, { recursive: true });
-        const scaffoldPath = scaffold || config.commands[command].scaffoldUrl;
+        const rawScaffoldPath = scaffold || config.commands[command].scaffoldUrl;
+        const scaffoldPath = (0, _helpers_1.convertRegistryPathToUrl)(rawScaffoldPath);
         const pathType = (0, _helpers_1.detectPathType)(scaffoldPath);
         if (pathType === 'local') {
             buildFromLocalScaffold(scaffoldPath, command, name, outputDirectory);
@@ -81,18 +85,19 @@ const buildFromScaffold = async (command, name, scaffold) => {
             buildFromRemoteScaffold(scaffoldPath, command, name, outputDirectory);
         }
         const registry = await getRegistryData(pathType === 'remote', scaffoldPath);
+        console.log(scaffoldPath);
         const componentRegistry = {
             name,
             version: '1.0.0',
             author: '',
             scaffold: {
-                name: registry.name,
+                path: rawScaffoldPath,
                 version: registry.version,
-                path: scaffoldPath
+                dependencies: registry.dependencies
             }
         };
         // Add a component registry file to the output directory
-        return fs_1.default.writeFileSync(`${outputDirectory}/registry.json`, JSON.stringify(componentRegistry));
+        return fs_1.default.writeFileSync(`${outputDirectory}/registry.yaml`, js_yaml_1.default.dump(componentRegistry));
     }
 };
 exports.buildFromScaffold = buildFromScaffold;
