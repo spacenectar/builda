@@ -2,13 +2,20 @@
   "init": {
     "description": "Initialises a new project",
     "required": false,
-    "boolean": true,
-    "alias": "i"
+    "boolean": true
   },
   "migrate": {
     "description": "Migrates a project to the latest version",
     "required": false,
+    "boolean": true
+  },
+  "manual": {
+    "description": "Bypasses the need for a config file",
+    "required": false,
     "boolean": true,
-    "alias": "m"
+    "alias": [
+      "cli",
+      "m"
+    ]
   }
 }

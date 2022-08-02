@@ -7,7 +7,7 @@ const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
-const globals_2 = __importDefault(require("../data/globals"));
+const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, docSiteUrl } = globals_1.default;
 const OVERWRITE_CONFIG_QUESTION = {
     message: 'Do you really want to replace your .builda.yml file?',
@@ -18,7 +18,7 @@ const getAnswers = async () => {
     let answers = {};
     try {
         await (0, _helpers_1.askQuestion)({
-            questionList: globals_2.default
+            questionList: questions_1.default
         }).then((res) => {
             answers = res;
         });
@@ -43,17 +43,19 @@ const checkExistingConfig = async (fileName, debug) => {
             return 'Process terminated due to user selection';
         });
     }
-    (0, _helpers_1.printMessage)('No .builda.yml file detected. Starting initialisation...\r', 'success');
+    (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
     return 'yes';
 };
-const init = async ({ fileName = configFileName, presetAnswers, force = false }) => {
+const init = async ({ fileName = configFileName, presetAnswers = undefined, force = false }) => {
     var _a;
     // Check if a config file already exists unless presetAnswers is passed
     const continueProcess = !force
-        ? await checkExistingConfig(fileName, !!presetAnswers)
+        ? await checkExistingConfig(fileName, presetAnswers !== undefined)
         : 'yes';
     if (continueProcess === 'yes') {
         const answers = presetAnswers || (await getAnswers());
+        if (!answers.appName)
+            return (0, _helpers_1.throwError)('App name is required');
         const scaffoldList = [];
         if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
             scaffoldList.push(...answers.scaffoldSelection);

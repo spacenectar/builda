@@ -35,7 +35,8 @@ const CREATE_CONFIG_QUESTION = {
         (0, _helpers_1.printMessage)('No arguments provided.\r', 'danger');
         parser.showHelp();
     }
-    if (args.length === 0 && !config) {
+    if ((args.length === 0 || !argv.manual) && !config) {
+        (0, _helpers_1.printMessage)('Builda config file not detected.\r', 'danger');
         // No arguments were passed but a config file does not exist
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
@@ -47,6 +48,11 @@ const CREATE_CONFIG_QUESTION = {
     }
     if (argv.init)
         (0, init_1.default)({});
+    if (argv.manual) {
+        (0, _helpers_1.printMessage)('Manual mode selected.\r', 'notice');
+        return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
+        return;
+    }
     if (argv.migrate) {
         // The user wants to migrate an old buildcom config file
         // Go to migrate function
