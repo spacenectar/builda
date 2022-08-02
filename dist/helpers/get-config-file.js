@@ -7,8 +7,8 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const globals_1 = __importDefault(require("../data/globals"));
-const { configFileName } = globals_1.default;
-const configFile = path_1.default.join('.', configFileName);
+const { configFileName, buildaDir } = globals_1.default;
+const configFile = path_1.default.join(buildaDir, configFileName);
 const getConfigFile = () => {
     if (fs_1.default.existsSync(configFile)) {
         const config = js_yaml_1.default.load(fs_1.default.readFileSync(configFile, 'utf8'), {

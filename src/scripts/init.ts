@@ -1,12 +1,13 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
+import path from 'path';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
 
 import globals from '@data/globals';
 import questions from '@data/questions';
 
-const { configFileName, docSiteUrl } = globals;
+const { configFileName, buildaDir, docSiteUrl } = globals;
 
 // Types
 import { QuestionType } from '@typedefs/question-type';
@@ -21,7 +22,7 @@ interface Answers {
 }
 
 const OVERWRITE_CONFIG_QUESTION = {
-  message: 'Do you really want to replace your .builda.yml file?',
+  message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
   name: 'replaceConfig',
   type: 'confirm' as QuestionType
 };
@@ -42,7 +43,7 @@ const getAnswers = async () => {
 };
 
 const checkExistingConfig = async (fileName: string, debug: boolean) => {
-  if (fs.existsSync(fileName)) {
+  if (fs.existsSync(path.join(buildaDir, fileName))) {
     if (debug) {
       // Preset answers were passed so we are in debug/test mode
       return `You already have a ${fileName} file. Process Aborted.`;
@@ -113,7 +114,13 @@ const init = async ({
 
     const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
 
-    fs.writeFileSync(fileName, `${topText}\n\n${yaml.dump(config)}`, 'utf8');
+    fs.mkdirSync(buildaDir, { recursive: true });
+
+    fs.writeFileSync(
+      path.join(buildaDir, fileName),
+      `${topText}\n\n${yaml.dump(config)}`,
+      'utf8'
+    );
 
     printMessage('Created config in project root', 'success');
     return printMessage(

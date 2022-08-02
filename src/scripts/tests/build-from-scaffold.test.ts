@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import debug from '@scripts/debug';
 import buildFromScaffold from '@scripts/build-from-scaffold';
-import getFileListFromRegistry from '@helpers/get-file-list-from-registry';
+import getRegistry from '@helpers/get-registry';
 import path from 'path';
 
 const MOCK_SCAFFOLD_PATH = './src/mocks/scaffolds/test-scaffold';
@@ -25,7 +25,11 @@ afterAll(() => {
 
 describe('Build from local scaffold function', () => {
   beforeAll(() => {
-    return buildFromScaffold('atom', 'LocalComponent', MOCK_SCAFFOLD_PATH);
+    return buildFromScaffold({
+      command: 'atom',
+      name: 'LocalComponent',
+      scaffold: MOCK_SCAFFOLD_PATH
+    });
   });
 
   test('An index.tsx file is generated with the correct data', () => {
@@ -64,7 +68,7 @@ describe('Build from local scaffold function', () => {
 describe('Build from remote scaffold function', () => {
   beforeAll(async () => {
     // @ts-ignore - This is a mock
-    getFileListFromRegistry.mockImplementationOnce(() =>
+    getRegistry.mockImplementationOnce(() =>
       Promise.resolve(['index.tsx', 'index.stories.mdx', 'styles.module.scss'])
     );
     axios.get = jest
@@ -94,17 +98,15 @@ describe('Build from remote scaffold function', () => {
       });
 
     await new Promise(process.nextTick);
-    await buildFromScaffold(
-      'atom',
-      'RemoteComponent',
-      MOCK_REMOTE_SCAFFOLD_PATH
-    );
+    await buildFromScaffold({
+      command: 'atom',
+      name: 'RemoteComponent',
+      scaffold: MOCK_REMOTE_SCAFFOLD_PATH
+    });
   });
 
   test('getFileListFromRegistry is called', () => {
-    expect(getFileListFromRegistry).toHaveBeenCalledWith(
-      MOCK_REMOTE_SCAFFOLD_PATH
-    );
+    expect(getRegistry).toHaveBeenCalledWith(MOCK_REMOTE_SCAFFOLD_PATH);
   });
 
   test('An index.tsx file is generated with the correct data', () => {

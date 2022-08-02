@@ -16,6 +16,7 @@ import { QuestionType } from '@typedefs/question-type';
 import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
 import buildFromScaffold from '@scripts/build-from-scaffold';
+import addModule from '@scripts/add-module';
 
 const args = hideBin(process.argv);
 const config = getConfigFile();
@@ -30,7 +31,7 @@ const parser = yargs(args)
 printLogo();
 
 const CREATE_CONFIG_QUESTION = {
-  message: 'Would you like to create a .builda.yml file?',
+  message: 'Would you like to create a .builda config?',
   name: 'createConfig',
   type: 'confirm' as QuestionType
 };
@@ -45,7 +46,7 @@ const CREATE_CONFIG_QUESTION = {
   }
 
   if ((args.length === 0 || !argv.manual) && !config) {
-    printMessage('Builda config file not detected.\r', 'danger');
+    printMessage('Builda config not detected.\r', 'danger');
     // No arguments were passed but a config file does not exist
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
@@ -61,7 +62,11 @@ const CREATE_CONFIG_QUESTION = {
   if (argv.manual) {
     printMessage('Manual mode selected.\r', 'notice');
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
-    return;
+  }
+
+  if (argv._[0].toString() === 'add') {
+    const module = argv._[1].toString();
+    return addModule(module);
   }
 
   if (argv.migrate) {
@@ -75,8 +80,15 @@ const CREATE_CONFIG_QUESTION = {
   const command = process.argv[2].replace('--', '');
 
   if (commands.includes(command)) {
-    const itemName = argv._[1].toString();
-    return buildFromScaffold(command, itemName);
+    const name = argv._[1].toString();
+    const options = argv._.slice(2);
+    return buildFromScaffold({
+      command,
+      name,
+      options: {
+        prefix: options.toString()
+      }
+    });
   } else {
     return printMessage(
       `'${command}' is not a recognised command.\r`,

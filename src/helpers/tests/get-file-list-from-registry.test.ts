@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { getFileListFromRegistry } from '../get-file-list-from-registry';
+import { getRegistry } from '../get-registry';
 
 const fileList = ['index.stories.mdx', 'index.tsx', 'styles.module.scss'];
 
@@ -9,7 +9,7 @@ describe('getFileListFromRegistry() function', () => {
     axios.get = jest.fn().mockResolvedValue({ data: { files: fileList } });
     const registryPath =
       'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook';
-    const registryContent = await getFileListFromRegistry(registryPath);
+    const registryContent = await getRegistry(registryPath);
     expect(axios.get).toHaveBeenCalledWith(`${registryPath}/registry.json`);
     expect(registryContent).toEqual(fileList);
   });

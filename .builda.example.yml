@@ -3,18 +3,20 @@
 
 app:
   name: test
-  outputDirectory: .
-  scaffoldUrl: http://test.url
-commands:
-  atom:
-    type: scaffold
-    outputDirectory: './experiments/atom'
-    scaffoldUrl: './scaffolds/component-with-storybook'
-  component:
-    type: scaffold
-    outputDirectory: ./components
-    scaffoldUrl: https://github.com/userspace-apps/scaffolds/tree/master/components/foxys-own
-  test:
-    type: scaffold
-    outputDirectory: './experiments/test'
-    scaffoldUrl: './scaffolds/component-with-storybook'
+  scaffolds:
+    - "foxys-own@1.1.0": https://github.com/userspace-apps/scaffolds/tree/master/components/foxys-own
+  commands:
+    component:
+      type: scaffold
+      use: foxys-own
+      outputPath: './experiments/components'
+      allowedPrefixes:
+        - 'atom'
+        - 'molecule'
+        - 'organism'
+    partial:
+      type: scaffold
+      use: foxys-own
+      outputPath: './experiments/partials'
+      allowedPrefixes:
+        - 'partial'

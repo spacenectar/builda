@@ -6,10 +6,11 @@ const version = require('./package.json').version;
 
 const globals = {
   version,
-  configFileName: '.builda.yml',
+  buildaDir: '.builda',
+  configFileName: 'config.yml',
   docSiteUrl: 'https://www.builda.app'
 };
 
 const output = `export default ${JSON.stringify(globals)};`;
 
-fs.writeFileSync('./src/helpers/globals.ts', output);
+fs.writeFileSync('./src/data/globals.ts', output);

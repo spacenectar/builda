@@ -7,7 +7,7 @@ const fs_1 = __importDefault(require("fs"));
 const axios_1 = __importDefault(require("axios"));
 const debug_1 = __importDefault(require("../debug"));
 const build_from_scaffold_1 = __importDefault(require("../build-from-scaffold"));
-const get_file_list_from_registry_1 = __importDefault(require("../../helpers/get-file-list-from-registry"));
+const get_registry_1 = __importDefault(require("../../helpers/get-registry"));
 const path_1 = __importDefault(require("path"));
 const MOCK_SCAFFOLD_PATH = './src/mocks/scaffolds/test-scaffold';
 const MOCK_OUTPUT_DIRECTORY = './experiments/atom';
@@ -23,7 +23,11 @@ afterAll(() => {
 });
 describe('Build from local scaffold function', () => {
     beforeAll(() => {
-        return (0, build_from_scaffold_1.default)('atom', 'LocalComponent', MOCK_SCAFFOLD_PATH);
+        return (0, build_from_scaffold_1.default)({
+            command: 'atom',
+            name: 'LocalComponent',
+            scaffold: MOCK_SCAFFOLD_PATH
+        });
     });
     test('An index.tsx file is generated with the correct data', () => {
         const filePath = `${MOCK_OUTPUT_DIRECTORY}/local-component/index.tsx`;
@@ -54,7 +58,7 @@ describe('Build from local scaffold function', () => {
 describe('Build from remote scaffold function', () => {
     beforeAll(async () => {
         // @ts-ignore - This is a mock
-        get_file_list_from_registry_1.default.mockImplementationOnce(() => Promise.resolve(['index.tsx', 'index.stories.mdx', 'styles.module.scss']));
+        get_registry_1.default.mockImplementationOnce(() => Promise.resolve(['index.tsx', 'index.stories.mdx', 'styles.module.scss']));
         axios_1.default.get = jest
             .fn()
             .mockResolvedValueOnce({
@@ -70,10 +74,14 @@ describe('Build from remote scaffold function', () => {
             data: fs_1.default.readFileSync(path_1.default.resolve('./src/mocks/scaffolds/test-scaffold/styles.module.scss'), 'utf8')
         });
         await new Promise(process.nextTick);
-        await (0, build_from_scaffold_1.default)('atom', 'RemoteComponent', MOCK_REMOTE_SCAFFOLD_PATH);
+        await (0, build_from_scaffold_1.default)({
+            command: 'atom',
+            name: 'RemoteComponent',
+            scaffold: MOCK_REMOTE_SCAFFOLD_PATH
+        });
     });
     test('getFileListFromRegistry is called', () => {
-        expect(get_file_list_from_registry_1.default).toHaveBeenCalledWith(MOCK_REMOTE_SCAFFOLD_PATH);
+        expect(get_registry_1.default).toHaveBeenCalledWith(MOCK_REMOTE_SCAFFOLD_PATH);
     });
     test('An index.tsx file is generated with the correct data', () => {
         const filePath = `${MOCK_OUTPUT_DIRECTORY}/remote-component/index.tsx`;

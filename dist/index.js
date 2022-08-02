@@ -14,6 +14,7 @@ const arguments_json_1 = __importDefault(require("./data/arguments.json"));
 const init_1 = __importDefault(require("./scripts/init"));
 const generate_commands_1 = __importDefault(require("./scripts/generate-commands"));
 const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaffold"));
+const add_module_1 = __importDefault(require("./scripts/add-module"));
 const args = (0, helpers_1.hideBin)(process.argv);
 const config = (0, _helpers_1.getConfigFile)();
 const parser = (0, yargs_1.default)(args)
@@ -24,7 +25,7 @@ const parser = (0, yargs_1.default)(args)
     .alias('h', 'help');
 (0, _helpers_1.printLogo)();
 const CREATE_CONFIG_QUESTION = {
-    message: 'Would you like to create a .builda.yml file?',
+    message: 'Would you like to create a .builda config?',
     name: 'createConfig',
     type: 'confirm'
 };
@@ -36,7 +37,7 @@ const CREATE_CONFIG_QUESTION = {
         parser.showHelp();
     }
     if ((args.length === 0 || !argv.manual) && !config) {
-        (0, _helpers_1.printMessage)('Builda config file not detected.\r', 'danger');
+        (0, _helpers_1.printMessage)('Builda config not detected.\r', 'danger');
         // No arguments were passed but a config file does not exist
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
@@ -51,7 +52,10 @@ const CREATE_CONFIG_QUESTION = {
     if (argv.manual) {
         (0, _helpers_1.printMessage)('Manual mode selected.\r', 'notice');
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
-        return;
+    }
+    if (argv._[0].toString() === 'add') {
+        const module = argv._[1].toString();
+        return (0, add_module_1.default)(module);
     }
     if (argv.migrate) {
         // The user wants to migrate an old buildcom config file
@@ -61,8 +65,15 @@ const CREATE_CONFIG_QUESTION = {
     const commands = config ? (0, generate_commands_1.default)() : [];
     const command = process.argv[2].replace('--', '');
     if (commands.includes(command)) {
-        const itemName = argv._[1].toString();
-        return (0, build_from_scaffold_1.default)(command, itemName);
+        const name = argv._[1].toString();
+        const options = argv._.slice(2);
+        return (0, build_from_scaffold_1.default)({
+            command,
+            name,
+            options: {
+                prefix: options.toString()
+            }
+        });
     }
     else {
         return (0, _helpers_1.printMessage)(`'${command}' is not a recognised command.\r`, 'danger');

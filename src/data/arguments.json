@@ -4,6 +4,11 @@
     "required": false,
     "boolean": true
   },
+  "add": {
+    "description": "Adds a new builda module",
+    "required": false,
+    "type": "string"
+  },
   "migrate": {
     "description": "Migrates a project to the latest version",
     "required": false,

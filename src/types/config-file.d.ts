@@ -1,13 +1,19 @@
 export interface ConfigFile {
   app: {
     name: string;
-    outputDirectory: string;
-    scaffoldUrl: string;
+    scaffolds?: {
+      [key: string]: string;
+    };
+    prefabs?: {
+      [key: string]: string;
+    };
   };
   commands: {
     [key: string]: {
-      outputDirectory: string;
-      scaffoldUrl: string;
+      type: string;
+      outputPath: string;
+      use: string;
+      allowedPrefixes: string[];
     };
   };
 }

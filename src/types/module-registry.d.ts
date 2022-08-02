@@ -1,5 +1,6 @@
-export interface ComponentRegistry {
+export interface ModuleRegistry {
   name: string;
+  type: 'scaffold' | 'prefab';
   version: string;
   author: string;
   description: string;
@@ -11,4 +12,4 @@ export interface ComponentRegistry {
   };
 }
 
-export default ComponentRegistry;
+export default ModuleRegistry;

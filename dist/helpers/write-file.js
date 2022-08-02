@@ -7,14 +7,10 @@ exports.writeFile = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const string_functions_1 = __importDefault(require("./string-functions"));
-const writeFile = ({ file, fileObject, outputDirectory, command, name, scaffoldPath }) => {
-    const fileName = file || (fileObject === null || fileObject === void 0 ? void 0 : fileObject.name);
-    if (file && fileObject)
-        throw new Error('Cannot provide file and fileObject at the same time.');
+const writeFile = ({ file, outputDirectory, command, name }) => {
+    const fileName = file.split('/').pop();
     // get the file contents
-    const fileContents = file && scaffoldPath
-        ? fs_1.default.readFileSync(path_1.default.resolve(`${scaffoldPath}/${file}`), 'utf8')
-        : fileObject === null || fileObject === void 0 ? void 0 : fileObject.content;
+    const fileContents = fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8');
     // replace the each placeholder with the correctly formatted name
     const newContents = fileContents &&
         fileContents

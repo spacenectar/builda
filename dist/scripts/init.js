@@ -5,12 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
+const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
-const { configFileName, docSiteUrl } = globals_1.default;
+const { configFileName, buildaDir, docSiteUrl } = globals_1.default;
 const OVERWRITE_CONFIG_QUESTION = {
-    message: 'Do you really want to replace your .builda.yml file?',
+    message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
     name: 'replaceConfig',
     type: 'confirm'
 };
@@ -31,7 +32,7 @@ const getAnswers = async () => {
     }
 };
 const checkExistingConfig = async (fileName, debug) => {
-    if (fs_1.default.existsSync(fileName)) {
+    if (fs_1.default.existsSync(path_1.default.join(buildaDir, fileName))) {
         if (debug) {
             // Preset answers were passed so we are in debug/test mode
             return `You already have a ${fileName} file. Process Aborted.`;
@@ -82,7 +83,8 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             commands
         };
         const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
-        fs_1.default.writeFileSync(fileName, `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
+        fs_1.default.mkdirSync(buildaDir, { recursive: true });
+        fs_1.default.writeFileSync(path_1.default.join(buildaDir, fileName), `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
         (0, _helpers_1.printMessage)('Created config in project root', 'success');
         return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
     }

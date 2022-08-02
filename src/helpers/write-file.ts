@@ -3,35 +3,22 @@ import path from 'path';
 import changeCase from './string-functions';
 
 interface IWriteFileOptions {
-  file?: string;
-  fileObject?: {
-    name: string;
-    content: string;
-  };
+  file: string;
   outputDirectory: string;
   command: string;
   name: string;
-  scaffoldPath?: string;
 }
 
 export const writeFile = ({
   file,
-  fileObject,
   outputDirectory,
   command,
-  name,
-  scaffoldPath
+  name
 }: IWriteFileOptions) => {
-  const fileName = file || fileObject?.name;
-
-  if (file && fileObject)
-    throw new Error('Cannot provide file and fileObject at the same time.');
+  const fileName = file.split('/').pop();
 
   // get the file contents
-  const fileContents =
-    file && scaffoldPath
-      ? fs.readFileSync(path.resolve(`${scaffoldPath}/${file}`), 'utf8')
-      : fileObject?.content;
+  const fileContents = fs.readFileSync(path.resolve(file), 'utf8');
 
   // replace the each placeholder with the correctly formatted name
   const newContents =
