@@ -3,7 +3,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
-  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/examples/'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/examples/', '/.builda/modules/'],
   moduleNameMapper: {
     "@scaffold/(.*)": "<rootDir>/src/scaffold/$1",
     "@scripts/(.*)": "<rootDir>/src/scripts/$1",
