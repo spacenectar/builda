@@ -8,7 +8,6 @@ import { changeCase } from '@helpers/string-functions';
 
 // Import types
 import TSubstitution from '@typedefs/substitution';
-import path from 'path';
 
 // import { CommandConfig } from '@typedefs/command-config';
 
