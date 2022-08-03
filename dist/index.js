@@ -65,19 +65,53 @@ const CREATE_CONFIG_QUESTION = {
     const commands = config ? (0, generate_commands_1.default)() : [];
     const commandString = process.argv[2].replace('--', '');
     const command = commands.find((c) => c.name === commandString);
+    const getSubstitutions = (command) => {
+        const substitutions = [];
+        if (command.substitute) {
+            command.substitute.forEach((substitute) => {
+                var _a;
+                // No substitution was provided but the config requires one
+                if (substitute.required && !argv[substitute.string]) {
+                    (0, _helpers_1.throwError)(`"--${substitute.string}" missing in arguments. This is required.\n`);
+                }
+                // User has not provided a substitution but the config has a default fallback value
+                if (substitute.default && !argv[substitute.string]) {
+                    substitutions.push({
+                        replace: substitute.string,
+                        with: substitute.default
+                    });
+                }
+                // User has provided the substitution argument
+                if (argv[substitute.string]) {
+                    const value = argv[substitute.string] === true
+                        ? ''
+                        : argv[substitute.string];
+                    // User has provided the substitution argument with no value
+                    if (value === '') {
+                        (0, _helpers_1.throwError)(`"--${substitute.string}" requires a value`);
+                    }
+                    if (substitute.valid &&
+                        value !== '' &&
+                        !((_a = substitute.valid) === null || _a === void 0 ? void 0 : _a.includes(value))) {
+                        (0, _helpers_1.throwError)(`\n"${value}" is not a valid ${substitute.string}. Please use one of the following: \n - ${substitute.valid.join(`\n - `)}\n`);
+                    }
+                    // The value provided is valid
+                    substitutions.push({
+                        replace: substitute.string,
+                        with: argv[substitute.string]
+                    });
+                }
+            });
+        }
+        return substitutions;
+    };
+    const substitutions = getSubstitutions(command);
     if (command) {
         const name = argv._[1].toString();
-        const prefix = argv.prefix ? argv.prefix : '';
-        if (prefix) {
-            const allowedPrefixes = command.substitute.prefix;
-            if (!allowedPrefixes.includes(prefix)) {
-                return (0, _helpers_1.printMessage)(`Prefix ${prefix} is not allowed.`, 'error');
-            }
-        }
         return (0, build_from_scaffold_1.default)({
             name,
             command: command.name,
-            substitute: prefix
+            substitute: substitutions
         });
     }
     else {

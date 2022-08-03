@@ -4,7 +4,13 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 // import helpers
-import { printMessage, askQuestion, getConfigFile, printLogo } from '@helpers';
+import {
+  printMessage,
+  askQuestion,
+  getConfigFile,
+  printLogo,
+  throwError
+} from '@helpers';
 
 // import data
 import arguments from '@data/arguments.json';
@@ -17,6 +23,8 @@ import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 import addModule from '@scripts/add-module';
+import { TSubstitute } from '@typedefs/command-config';
+import TSubstitution from '@typedefs/substitution';
 
 const args = hideBin(process.argv);
 const config = getConfigFile();
@@ -81,22 +89,71 @@ const CREATE_CONFIG_QUESTION = {
 
   const command = commands.find((c) => c.name === commandString);
 
+  const getSubstitutions = (command: any) => {
+    const substitutions = [] as TSubstitution[];
+    if (command.substitute) {
+      command.substitute.forEach((substitute: TSubstitute) => {
+        // No substitution was provided but the config requires one
+        if (substitute.required && !argv[substitute.string]) {
+          throwError(
+            `"--${substitute.string}" missing in arguments. This is required.\n`
+          );
+        }
+
+        // User has not provided a substitution but the config has a default fallback value
+        if (substitute.default && !argv[substitute.string]) {
+          substitutions.push({
+            replace: substitute.string,
+            with: substitute.default
+          });
+        }
+
+        // User has provided the substitution argument
+        if (argv[substitute.string]) {
+          const value =
+            argv[substitute.string] === true
+              ? ''
+              : (argv[substitute.string] as string);
+
+          // User has provided the substitution argument with no value
+          if (value === '') {
+            throwError(`"--${substitute.string}" requires a value`);
+          }
+
+          if (
+            substitute.valid &&
+            value !== '' &&
+            !substitute.valid?.includes(value)
+          ) {
+            throwError(
+              `\n"${value}" is not a valid ${
+                substitute.string
+              }. Please use one of the following: \n - ${substitute.valid.join(
+                `\n - `
+              )}\n`
+            );
+          }
+
+          // The value provided is valid
+          substitutions.push({
+            replace: substitute.string,
+            with: argv[substitute.string] as string
+          });
+        }
+      });
+    }
+    return substitutions;
+  };
+
+  const substitutions = getSubstitutions(command);
+
   if (command) {
     const name = argv._[1].toString();
-
-    const prefix = argv.prefix ? (argv.prefix as string) : '';
-
-    if (prefix) {
-      const allowedPrefixes = command.substitute.prefix;
-      if (!allowedPrefixes.includes(prefix)) {
-        return printMessage(`Prefix ${prefix} is not allowed.`, 'error');
-      }
-    }
 
     return buildFromScaffold({
       name,
       command: command.name,
-      substitute: prefix
+      substitute: substitutions
     });
   } else {
     return printMessage(

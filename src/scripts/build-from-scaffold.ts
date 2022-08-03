@@ -4,12 +4,15 @@ import yaml from 'js-yaml';
 // import helpers
 import { getConfigFile, printMessage, getModule, writeFile } from '@helpers';
 import { changeCase } from '@helpers/string-functions';
+
+// Import types
+import TSubstitution from '@typedefs/substitution';
 // import { CommandConfig } from '@typedefs/command-config';
 
 type Props = {
   name: string;
   command: string;
-  substitute?: string;
+  substitute?: TSubstitution[];
   scaffold?: string;
 };
 

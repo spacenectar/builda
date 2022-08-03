@@ -12,14 +12,21 @@ const writeFile = ({ file, outputDirectory, substitute, name }) => {
     // get the file contents
     const fileContents = fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8');
     // replace the each placeholder with the correctly formatted name
-    const newContents = fileContents &&
+    let newContents = fileContents &&
         fileContents
-            .replace(/%TYPE%/g, substitute || 'default')
             .replace(/%KEBAB_CASE%/g, (0, string_functions_1.default)(name, 'kebabCase'))
             .replace(/%CAMEL_CASE%/g, (0, string_functions_1.default)(name, 'camelCase'))
             .replace(/%SNAKE_CASE%/g, (0, string_functions_1.default)(name, 'snakeCase'))
             .replace(/%PASCAL_CASE%/g, (0, string_functions_1.default)(name, 'pascalCase'))
             .replace(/%SENTENCE_CASE%/g, (0, string_functions_1.default)(name, 'sentenceCase'));
+    // Replace custom substitutions
+    if (substitute && substitute.length > 0) {
+        substitute.forEach((sub) => {
+            const needle = `%${sub.replace.toUpperCase()}%`;
+            const regex = new RegExp(needle, 'g');
+            newContents = newContents.replace(regex, sub.with);
+        });
+    }
     // write the new file contents to the output directory
     if (newContents) {
         return fs_1.default.writeFileSync(`${outputDirectory}/${fileName}`, newContents);
