@@ -99,15 +99,23 @@ export const addModule = async (path: string) => {
         const type = module.type;
         const name = module.name;
         const version = module.version;
+
+        // User has never installed any modules.
+        if (!config.modules) {
+          config.modules = {};
+        }
+
         if (type === 'scaffold') {
-          if (!config.modules.scaffold) {
+          // User has never installed any scaffolds.
+          if (!config?.modules?.scaffold) {
             config.modules.scaffold = {};
           }
           const scaffolds = config.modules.scaffold;
           scaffolds[name] = version;
         }
         if (type === 'prefab') {
-          if (!config.modules.prefab) {
+          // User has never installed any prefabs.
+          if (!config?.modules?.prefab) {
             config.modules.prefab = {};
           }
           const prefabs = config.modules.prefab;
@@ -117,7 +125,7 @@ export const addModule = async (path: string) => {
         // Write the config file
         fs.writeFileSync(
           `${globals.buildaDir}/config.yml`,
-          yaml.dump(config, { indent: 4 })
+          yaml.dump(config, { indent: 2 })
         );
         return printMessage(
           `${changeCase(type, 'pascal')}: ${name}@${version} installed`,

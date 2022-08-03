@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFromScaffold = void 0;
 const fs_1 = __importDefault(require("fs"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
+const prettier_1 = __importDefault(require("prettier"));
 // import helpers
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
@@ -17,9 +18,9 @@ const buildFromScaffold = async ({ name, command, substitute, scaffold }) => {
             const outputDirectory = `${config.commands[command].outputPath}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
             // Create the directory tree if it doesn't exist
             fs_1.default.mkdirSync(outputDirectory, { recursive: true });
-            const { path, registry, files } = (0, _helpers_1.getModule)(scaffold || config.commands[command].use);
+            const { path: pathstring, registry, files } = (0, _helpers_1.getModule)(scaffold || config.commands[command].use);
             files.forEach((file) => {
-                const srcPath = `${path}/${file}`;
+                const srcPath = `${pathstring}/${file}`;
                 const outputPath = `${outputDirectory}`;
                 (0, _helpers_1.writeFile)({
                     file: srcPath,
@@ -37,8 +38,9 @@ const buildFromScaffold = async ({ name, command, substitute, scaffold }) => {
                     version: registry.version
                 }
             };
+            const yamlContent = js_yaml_1.default.dump(componentRegistry);
             // Add a component registry file to the output directory
-            return fs_1.default.writeFileSync(`${outputDirectory}/registry.yaml`, js_yaml_1.default.dump(componentRegistry));
+            return fs_1.default.writeFileSync(`${outputDirectory}/registry.yaml`, prettier_1.default.format(yamlContent, { parser: 'yaml' }));
         }
     }
     throw new Error('No config file found');

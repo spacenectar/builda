@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import changeCase from './string-functions';
+import prettier from 'prettier';
 
 // Import types
 import TSubstitution from '@typedefs/substitution';
@@ -41,6 +42,10 @@ export const writeFile = ({
       newContents = newContents.replace(regex, sub.with);
     });
   }
+
+  newContents = prettier.format(newContents, {
+    filepath: path.resolve(file)
+  });
 
   // write the new file contents to the output directory
   if (newContents) {

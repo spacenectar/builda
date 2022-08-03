@@ -71,20 +71,21 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             {
                 type: 'scaffold',
                 outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
-                scaffoldUrl: ''
+                use: ''
             }
         ]));
         const config = {
             app: {
-                name: answers.appName,
-                outputDirectory: answers.outputDirectory,
-                scaffoldUrl: answers.scaffoldUrl
+                name: answers.appName
             },
             commands
         };
         const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
         fs_1.default.mkdirSync(buildaDir, { recursive: true });
-        fs_1.default.writeFileSync(path_1.default.join(buildaDir, fileName), `${topText}\n\n${js_yaml_1.default.dump(config)}`, 'utf8');
+        const configYaml = js_yaml_1.default.dump(config, { indent: 2 });
+        const contents = `${topText}\r\n${configYaml}`;
+        fs_1.default.writeFileSync(path_1.default.join(buildaDir, fileName), contents, 'utf8');
+        // prettier.format(path.join(buildaDir, fileName));
         (0, _helpers_1.printMessage)('Created config in project root', 'success');
         return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
     }

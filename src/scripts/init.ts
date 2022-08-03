@@ -98,16 +98,14 @@ const init = async ({
         {
           type: 'scaffold',
           outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
-          scaffoldUrl: ''
+          use: ''
         }
       ])
     );
 
     const config = {
       app: {
-        name: answers.appName,
-        outputDirectory: answers.outputDirectory,
-        scaffoldUrl: answers.scaffoldUrl
+        name: answers.appName
       },
       commands
     };
@@ -116,11 +114,13 @@ const init = async ({
 
     fs.mkdirSync(buildaDir, { recursive: true });
 
-    fs.writeFileSync(
-      path.join(buildaDir, fileName),
-      `${topText}\n\n${yaml.dump(config)}`,
-      'utf8'
-    );
+    const configYaml = yaml.dump(config, { indent: 2 });
+
+    const contents = `${topText}\r\n${configYaml}`;
+
+    fs.writeFileSync(path.join(buildaDir, fileName), contents, 'utf8');
+
+    // prettier.format(path.join(buildaDir, fileName));
 
     printMessage('Created config in project root', 'success');
     return printMessage(

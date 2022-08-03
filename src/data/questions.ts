@@ -13,12 +13,6 @@ export default [
     default: './src'
   },
   {
-    type: 'input',
-    name: 'scaffoldUrl',
-    message: 'What is the url of your scaffold?',
-    default: 'https://github.com/st-elmos-fire/builda/scaffolds/project/default'
-  },
-  {
     type: 'checkbox',
     name: 'scaffoldSelection',
     message: 'Select zero or more scaffold types you wish to use',

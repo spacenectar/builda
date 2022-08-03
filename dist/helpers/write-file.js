@@ -7,6 +7,7 @@ exports.writeFile = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const string_functions_1 = __importDefault(require("./string-functions"));
+const prettier_1 = __importDefault(require("prettier"));
 const writeFile = ({ file, outputDirectory, substitute, name }) => {
     const fileName = file.split('/').pop();
     // get the file contents
@@ -27,6 +28,9 @@ const writeFile = ({ file, outputDirectory, substitute, name }) => {
             newContents = newContents.replace(regex, sub.with);
         });
     }
+    newContents = prettier_1.default.format(newContents, {
+        filepath: path_1.default.resolve(file)
+    });
     // write the new file contents to the output directory
     if (newContents) {
         return fs_1.default.writeFileSync(`${outputDirectory}/${fileName}`, newContents);

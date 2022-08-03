@@ -1,5 +1,6 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
+import prettier from 'prettier';
 
 // import helpers
 import { getConfigFile, printMessage, getModule, writeFile } from '@helpers';
@@ -7,6 +8,8 @@ import { changeCase } from '@helpers/string-functions';
 
 // Import types
 import TSubstitution from '@typedefs/substitution';
+import path from 'path';
+
 // import { CommandConfig } from '@typedefs/command-config';
 
 type Props = {
@@ -34,12 +37,14 @@ export const buildFromScaffold = async ({
       // Create the directory tree if it doesn't exist
       fs.mkdirSync(outputDirectory, { recursive: true });
 
-      const { path, registry, files } = getModule(
-        scaffold || config.commands[command].use
-      );
+      const {
+        path: pathstring,
+        registry,
+        files
+      } = getModule(scaffold || config.commands[command].use);
 
       files.forEach((file: string) => {
-        const srcPath = `${path}/${file}`;
+        const srcPath = `${pathstring}/${file}`;
         const outputPath = `${outputDirectory}`;
 
         writeFile({
@@ -60,10 +65,12 @@ export const buildFromScaffold = async ({
         }
       };
 
+      const yamlContent = yaml.dump(componentRegistry);
+
       // Add a component registry file to the output directory
       return fs.writeFileSync(
         `${outputDirectory}/registry.yaml`,
-        yaml.dump(componentRegistry)
+        prettier.format(yamlContent, { parser: 'yaml' })
       );
     }
   }
