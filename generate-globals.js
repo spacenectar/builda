@@ -7,7 +7,7 @@ const version = require('./package.json').version;
 const globals = {
   version,
   buildaDir: '.builda',
-  configFileName: 'config.yml',
+  configFileName: '.builda.yml',
   docSiteUrl: 'https://www.builda.app'
 };
 

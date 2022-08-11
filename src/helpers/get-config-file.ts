@@ -7,9 +7,9 @@ import globals from '@data/globals';
 // Import types
 import { ConfigFile } from '@typedefs/config-file';
 
-const { configFileName, buildaDir } = globals;
+const { configFileName } = globals;
 
-const configFile = path.join(buildaDir, configFileName);
+const configFile = path.join(configFileName);
 
 const getConfigFile = () => {
   if (fs.existsSync(configFile)) {

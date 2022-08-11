@@ -70,8 +70,9 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             scaffoldType,
             {
                 type: 'scaffold',
-                outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
-                use: ''
+                outputPath: `${answers.outputDirectory}/${scaffoldType}`,
+                use: '',
+                substitute: {}
             }
         ]));
         const config = {
@@ -84,7 +85,7 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
         fs_1.default.mkdirSync(buildaDir, { recursive: true });
         const configYaml = js_yaml_1.default.dump(config, { indent: 2 });
         const contents = `${topText}\r\n${configYaml}`;
-        fs_1.default.writeFileSync(path_1.default.join(buildaDir, fileName), contents, 'utf8');
+        fs_1.default.writeFileSync(path_1.default.join(fileName), contents, 'utf8');
         // prettier.format(path.join(buildaDir, fileName));
         (0, _helpers_1.printMessage)('Created config in project root', 'success');
         return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');

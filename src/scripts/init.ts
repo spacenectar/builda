@@ -97,8 +97,9 @@ const init = async ({
         scaffoldType,
         {
           type: 'scaffold',
-          outputDirectory: `${answers.outputDirectory}/${scaffoldType}`,
-          use: ''
+          outputPath: `${answers.outputDirectory}/${scaffoldType}`,
+          use: '',
+          substitute: {}
         }
       ])
     );
@@ -118,7 +119,7 @@ const init = async ({
 
     const contents = `${topText}\r\n${configYaml}`;
 
-    fs.writeFileSync(path.join(buildaDir, fileName), contents, 'utf8');
+    fs.writeFileSync(path.join(fileName), contents, 'utf8');
 
     // prettier.format(path.join(buildaDir, fileName));
 
