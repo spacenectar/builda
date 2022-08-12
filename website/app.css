@@ -74,6 +74,7 @@ table {
 
 .app-name {
 	font-size: 6rem;
+	margin-bottom: 2rem;
 }
 .coming-soon-text {
 	font-size: 2rem;
@@ -85,13 +86,44 @@ table {
 	grid-template-rows: 2fr 1fr;
 	gap: .5rem;
 	color: #fff;
-	background-color: hsl(330, 71%, 53%);
+	background-color: #dc3287;
 	font-weight: bold;
 	width: 100vw;
 	font-size: 2rem;
 	padding: 1rem 0 1.5rem 0;
 }
 
+.form-container {
+	display: grid;
+	grid-template-columns: 1fr;
+	place-items: center;
+}
+
+.form {
+	background-color: #fff;
+	padding: 2rem 4rem;
+	margin: 2rem 0;
+	text-align: left;
+	color: #dc3287;
+	font-size: 1.4rem;
+}
+
+.form label,
+.form input {
+	display: block;
+	margin-bottom: 1rem;
+}
+
+.form input {
+	padding: .5rem 1rem;
+}
+
+.form button {
+	color: #fff;
+	background-color: #dc3287;
+	padding: 1rem 2rem;
+	border: none;
+}
 
 @media screen and (min-width: 768px) {
 	.logo {

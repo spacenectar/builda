@@ -25,10 +25,34 @@
                 <div class="text">
                     <h1 id="data-app-name" class="app-name">Welcome to Builda</h1>
                     <p>The website isn't quite ready yet. This domain is currently only used to host Builda assets.</p>
-                    <p>Check back later though, there is a lot more to come!</p>
+                    <p>Check back later though, there is a lot more to come! If you want to be notified when this site goes life. Add your name and email to our mailing list below:</p>
+                    <div class="form-container">
+                        <form netlify method="POST" class="form">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email">
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
+    <script type="text/javascript">
+        // Replace the form with a thank you message after submission
+        document.querySelector('.form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => response.text())
+            .then(text => {
+                document.querySelector('.form-container').innerHTML = text;
+            });
+        });
+
+    </script>
 </body>
 </html>
