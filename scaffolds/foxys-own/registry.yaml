@@ -3,6 +3,7 @@ type: "scaffold"
 version: "2.1.0"
 author: "Alex Foxleigh (https://www.alexfoxleigh.com/)"
 funding: "https://www.patreon.com/builda"
+moduleUrl: "https://github.com/spacenectar/scaffolds/edit/master/foxys-own"
 description: >
   This is the scaffold that I ([@foxleigh81](https://github.com/foxleigh81)) use myself to create my own projects.
   *Note:* You will need to install the [foxys-own](builda-prefab-foxys-own) prefab (or configure storybook the same way) before you can use this scaffold as is. 
