@@ -25,16 +25,17 @@
                 <div class="text">
                     <h1 id="data-app-name" class="app-name">Welcome to Builda</h1>
                     <p>The website isn't quite ready yet. This domain is currently only used to host Builda assets.</p>
-                    <p>Check back later though, there is a lot more to come! If you want to be notified when this site goes life. Add your name and email to our mailing list below:</p>
-                    <div class="form-container">
-                        <form netlify method="POST" class="form">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email">
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
+                    <p>Check back later though, there is a lot more to come! </p>
+                    <br>If you want to be notified when this site goes live. Add your name and email to our mailing list below, </br> we will use this list to send you exactly one email and then we will purge the list.</p>
+                </div>
+                <div class="form-container">
+                    <form netlify method="POST" class="form">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email">
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
             </div>
         </main>
@@ -49,7 +50,7 @@
             })
             .then(response => response.text())
             .then(text => {
-                document.querySelector('.form-container').innerHTML = text;
+                document.querySelector('.form').innerHTML = "<p>Thank you for your interest! We'll let you know when the site is active</p>";
             });
         });
 
