@@ -41,7 +41,7 @@
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/st-elmos-fire/builda"
+    "url": "git+https://github.com/spacenectar/builda"
   },
   "author": {
     "name": "Alex Foxleigh",

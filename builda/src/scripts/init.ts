@@ -7,7 +7,7 @@ import { askQuestion, printMessage, throwError } from '@helpers';
 import globals from '@data/globals';
 import questions from '@data/questions';
 
-const { configFileName, buildaDir, docSiteUrl } = globals;
+const { configFileName, buildaDir, websiteUrl } = globals;
 
 // Types
 import { QuestionType } from '@typedefs/question-type';
@@ -129,7 +129,7 @@ const init = async ({
       commands
     };
 
-    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
+    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${websiteUrl}/setup for more information.`;
 
     fs.mkdirSync(buildaDir, { recursive: true });
 
@@ -141,16 +141,22 @@ const init = async ({
       if (err) throw err;
       printMessage('Created config in project root', 'success');
       if (answers.installDefaultModule === 'custom') {
-        await addModule(answers.scaffoldUrl);
+        await addModule({path: answers.scaffoldUrl});
       }
       if (answers.installDefaultModule === 'typescript') {
         await addModule(
-          'https://github.com/spacenectar/scaffolds/tree/master/default-ts'
+          {
+            path: 'default-ts',
+            official: true
+          }
         );
       }
       if (answers.installDefaultModule === 'javascript') {
         await addModule(
-          'https://github.com/spacenectar/scaffolds/tree/master/default-js'
+          {
+            path: 'default-js',
+            official: true
+          }
         );
       }
       printMessage('Installing default scaffolds...\r', 'success');
@@ -159,7 +165,7 @@ const init = async ({
     // prettier.format(path.join(buildaDir, fileName));
 
     return printMessage(
-      `Visit ${docSiteUrl}/setup for instructions on what to do next`,
+      `Visit ${websiteUrl}/setup for instructions on what to do next`,
       'notice'
     );
   } else {

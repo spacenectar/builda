@@ -60,20 +60,21 @@ const addRemoteModule = async (modulePath) => {
     });
     return registry;
 };
-const addModule = async (path) => {
+const addModule = async ({ path, official }) => {
     const config = (0, _helpers_1.getConfigFile)();
     if (config) {
         // Check the module directory exists and create it if it doesn't
         const moduleDirPath = `${globals_1.default.buildaDir}/modules`;
+        const newPath = official ? `${globals_1.default.repoUrl}/scaffolds/${path}` : path;
         await (0, _helpers_1.createDir)(moduleDirPath).then(async () => {
             var _a, _b;
-            const moduleType = (0, _helpers_1.detectPathType)(path);
+            const moduleType = (0, _helpers_1.detectPathType)(newPath);
             let module;
             if (moduleType === 'local') {
-                module = await addLocalModule(path);
+                module = await addLocalModule(newPath);
             }
             if (moduleType === 'remote') {
-                module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(path));
+                module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath));
             }
             if (module === null || module === void 0 ? void 0 : module.name) {
                 const type = module.type;

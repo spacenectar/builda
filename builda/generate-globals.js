@@ -2,13 +2,16 @@
 
 const fs = require('fs');
 
-const version = require('./package.json').version;
+const packageJson = require('./package.json');
+const { version, repository } = packageJson;
 
 const globals = {
   version,
   buildaDir: '.builda',
   configFileName: '.builda.yml',
-  docSiteUrl: 'https://www.builda.app'
+  websiteUrl: 'https://www.builda.app',
+  repoUrl: repository.url
+
 };
 
 const output = `export default ${JSON.stringify(globals)};`;

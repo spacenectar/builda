@@ -9,7 +9,7 @@ const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
-const { configFileName, buildaDir, docSiteUrl } = globals_1.default;
+const { configFileName, buildaDir, websiteUrl } = globals_1.default;
 const add_module_1 = __importDefault(require("./add-module"));
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
@@ -96,7 +96,7 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             },
             commands
         };
-        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${docSiteUrl}/setup for more information.`;
+        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${websiteUrl}/setup for more information.`;
         fs_1.default.mkdirSync(buildaDir, { recursive: true });
         const configYaml = js_yaml_1.default.dump(config, { indent: 2 });
         const contents = `${topText}\r\n${configYaml}`;
@@ -105,18 +105,24 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
                 throw err;
             (0, _helpers_1.printMessage)('Created config in project root', 'success');
             if (answers.installDefaultModule === 'custom') {
-                await (0, add_module_1.default)(answers.scaffoldUrl);
+                await (0, add_module_1.default)({ path: answers.scaffoldUrl });
             }
             if (answers.installDefaultModule === 'typescript') {
-                await (0, add_module_1.default)('https://github.com/spacenectar/scaffolds/tree/master/default-ts');
+                await (0, add_module_1.default)({
+                    path: 'default-ts',
+                    official: true
+                });
             }
             if (answers.installDefaultModule === 'javascript') {
-                await (0, add_module_1.default)('https://github.com/spacenectar/scaffolds/tree/master/default-js');
+                await (0, add_module_1.default)({
+                    path: 'default-js',
+                    official: true
+                });
             }
             (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
         });
         // prettier.format(path.join(buildaDir, fileName));
-        return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
+        return (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
     }
     else {
         (0, _helpers_1.throwError)(continueProcess);

@@ -78,21 +78,25 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
   return registry;
 };
 
-export const addModule = async (path: string) => {
+export const addModule = async ({
+  path, official
+} : { path: string, official?:boolean}) => {
   const config = getConfigFile();
   if (config) {
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = `${globals.buildaDir}/modules`;
 
+    const newPath = official ? `${globals.repoUrl}/scaffolds/${path}` : path;
+
     await createDir(moduleDirPath).then(async () => {
-      const moduleType = detectPathType(path);
+      const moduleType = detectPathType(newPath);
       let module;
       if (moduleType === 'local') {
-        module = await addLocalModule(path);
+        module = await addLocalModule(newPath);
       }
 
       if (moduleType === 'remote') {
-        module = await addRemoteModule(convertRegistryPathToUrl(path));
+        module = await addRemoteModule(convertRegistryPathToUrl(newPath));
       }
 
       if (module?.name) {
