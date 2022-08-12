@@ -1,4 +1,4 @@
-# ![Logo](./builda-logo.png)
+# ![Logo](../builda-logo.png)
 
 [![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
 [![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
