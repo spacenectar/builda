@@ -124,7 +124,7 @@ export const addModule = async (path: string) => {
 
         // Write the config file
         fs.writeFileSync(
-          `${globals.buildaDir}/config.yml`,
+          globals.configFileName,
           yaml.dump(config, { indent: 2 })
         );
         return printMessage(

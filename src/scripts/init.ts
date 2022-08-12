@@ -12,10 +12,12 @@ const { configFileName, buildaDir, docSiteUrl } = globals;
 // Types
 import { QuestionType } from '@typedefs/question-type';
 import { Question } from 'inquirer';
+import addModule from './add-module';
 
 interface Answers {
   appName: string;
   outputDirectory: string;
+  installDefaultModule: string;
   scaffoldUrl: string;
   scaffoldSelection: string[];
   customScaffoldList: string;
@@ -81,6 +83,22 @@ const init = async ({
     if (!answers.appName) return throwError('App name is required');
 
     const scaffoldList = [];
+    let module = '';
+
+    // Install the default scaffolds
+    if (answers.installDefaultModule === 'typescript') {
+      printMessage('Installing default scaffolds...\r', 'success');
+      module = 'default-ts';
+    }
+    if (answers.installDefaultModule === 'javascript') {
+      // Install the default scaffolds
+      module = 'default-js';
+    }
+
+    if (answers.installDefaultModule === 'custom') {
+      // Install the default scaffolds
+      module = answers.scaffoldUrl;
+    }
 
     if (answers.scaffoldSelection?.length) {
       scaffoldList.push(...answers.scaffoldSelection);
@@ -98,7 +116,7 @@ const init = async ({
         {
           type: 'scaffold',
           outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-          use: '',
+          use: module,
           substitute: {}
         }
       ])
@@ -119,11 +137,27 @@ const init = async ({
 
     const contents = `${topText}\r\n${configYaml}`;
 
-    fs.writeFileSync(path.join(fileName), contents, 'utf8');
+    fs.writeFile(path.join(fileName), contents, async (err) => {
+      if (err) throw err;
+      printMessage('Created config in project root', 'success');
+      if (answers.installDefaultModule === 'custom') {
+        await addModule(answers.scaffoldUrl);
+      }
+      if (answers.installDefaultModule === 'typescript') {
+        await addModule(
+          'https://github.com/spacenectar/scaffolds/tree/master/default-ts'
+        );
+      }
+      if (answers.installDefaultModule === 'javascript') {
+        await addModule(
+          'https://github.com/spacenectar/scaffolds/tree/master/default-js'
+        );
+      }
+      printMessage('Installing default scaffolds...\r', 'success');
+    });
 
     // prettier.format(path.join(buildaDir, fileName));
 
-    printMessage('Created config in project root', 'success');
     return printMessage(
       `Visit ${docSiteUrl}/setup for instructions on what to do next`,
       'notice'

@@ -100,7 +100,7 @@ const addModule = async (path) => {
                     prefabs[name] = version;
                 }
                 // Write the config file
-                fs_1.default.writeFileSync(`${globals_1.default.buildaDir}/config.yml`, js_yaml_1.default.dump(config, { indent: 2 }));
+                fs_1.default.writeFileSync(globals_1.default.configFileName, js_yaml_1.default.dump(config, { indent: 2 }));
                 return (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
             }
         });

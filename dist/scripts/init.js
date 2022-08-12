@@ -10,6 +10,7 @@ const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, docSiteUrl } = globals_1.default;
+const add_module_1 = __importDefault(require("./add-module"));
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
     name: 'replaceConfig',
@@ -58,6 +59,20 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
         if (!answers.appName)
             return (0, _helpers_1.throwError)('App name is required');
         const scaffoldList = [];
+        let module = '';
+        // Install the default scaffolds
+        if (answers.installDefaultModule === 'typescript') {
+            (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
+            module = 'default-ts';
+        }
+        if (answers.installDefaultModule === 'javascript') {
+            // Install the default scaffolds
+            module = 'default-js';
+        }
+        if (answers.installDefaultModule === 'custom') {
+            // Install the default scaffolds
+            module = answers.scaffoldUrl;
+        }
         if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
             scaffoldList.push(...answers.scaffoldSelection);
         }
@@ -71,7 +86,7 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             {
                 type: 'scaffold',
                 outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-                use: '',
+                use: module,
                 substitute: {}
             }
         ]));
@@ -85,9 +100,22 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
         fs_1.default.mkdirSync(buildaDir, { recursive: true });
         const configYaml = js_yaml_1.default.dump(config, { indent: 2 });
         const contents = `${topText}\r\n${configYaml}`;
-        fs_1.default.writeFileSync(path_1.default.join(fileName), contents, 'utf8');
+        fs_1.default.writeFile(path_1.default.join(fileName), contents, async (err) => {
+            if (err)
+                throw err;
+            (0, _helpers_1.printMessage)('Created config in project root', 'success');
+            if (answers.installDefaultModule === 'custom') {
+                await (0, add_module_1.default)(answers.scaffoldUrl);
+            }
+            if (answers.installDefaultModule === 'typescript') {
+                await (0, add_module_1.default)('https://github.com/spacenectar/scaffolds/tree/master/default-ts');
+            }
+            if (answers.installDefaultModule === 'javascript') {
+                await (0, add_module_1.default)('https://github.com/spacenectar/scaffolds/tree/master/default-js');
+            }
+            (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
+        });
         // prettier.format(path.join(buildaDir, fileName));
-        (0, _helpers_1.printMessage)('Created config in project root', 'success');
         return (0, _helpers_1.printMessage)(`Visit ${docSiteUrl}/setup for instructions on what to do next`, 'notice');
     }
     else {
