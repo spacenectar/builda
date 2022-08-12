@@ -1,0 +1,17 @@
+name: "default-ts"
+type: "scaffold"
+version: "1.0.0"
+author: "Alex Foxleigh (https://www.alexfoxleigh.com/)"
+funding: "https://www.patreon.com/builda"
+description: >
+  This is the default typescript scaffold that ships with builda. It only has the bare minimum of dependencies to get you started.
+keywords: 
+  - react
+  - typescript
+files: 
+  - index.tsx
+dependencies:
+  - react
+  - typescript
+
+      
