@@ -1,0 +1,142 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+html {
+	font-size: 62.5%;
+}
+html, body {
+	height: 100%;
+	height: 100vh;
+}
+body {
+	line-height: 1;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	background-image: url('./bg.png');
+	background-repeat: repeat;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.content {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 1fr;
+	place-items: center;
+	text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.logo {
+	width: 80vw;
+	height: auto;
+}
+
+.app-name {
+	font-size: 6rem;
+}
+.coming-soon-text {
+	font-size: 2rem;
+}
+
+.text {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 2fr 1fr;
+	gap: .5rem;
+	color: #fff;
+	background-color: hsl(330, 71%, 53%);
+	font-weight: bold;
+	width: 100vw;
+	font-size: 2rem;
+	padding: 1rem 0 1.5rem 0;
+}
+
+
+@media screen and (min-width: 768px) {
+	.logo {
+		width: 800px;
+		height: auto;
+	}
+
+	.app-name {
+		font-size: 8rem;
+	}
+
+	.coming-soon-text {
+		font-size: 2rem;
+	}
+}
+
+@media screen and (max-width: 768px) and (min-aspect-ratio: 73/89) {
+	/* Adding a max override here as this is an edge case anyway */
+	.content {
+		grid-template-columns: 120px 1fr;
+		grid-template-rows: 1fr;
+	}
+
+	.logo {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+		place-items: center;
+		width: 100%;
+		backdrop-filter: blur(5px) saturate(180%) brightness(0.7);
+	}
+
+	.app-name {
+		font-size: 4rem;
+		margin-top: 2rem;
+	}
+
+	.coming-soon-text {
+		font-size: 1.2rem;
+	}
+
+	.text {
+		width: 100%;
+		height: 120px;
+		padding: 0;
+		gap: 0;
+	}
+}
