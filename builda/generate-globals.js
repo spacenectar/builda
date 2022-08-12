@@ -9,9 +9,7 @@ const globals = {
   version,
   buildaDir: '.builda',
   configFileName: '.builda.yml',
-  websiteUrl: 'https://www.builda.app',
-  repoUrl: repository.url
-
+  websiteUrl: 'https://www.builda.app'
 };
 
 const output = `export default ${JSON.stringify(globals)};`;

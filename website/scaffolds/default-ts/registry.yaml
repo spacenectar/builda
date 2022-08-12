@@ -3,7 +3,7 @@ type: "scaffold"
 version: "1.0.0"
 author: "Alex Foxleigh (https://www.alexfoxleigh.com/)"
 funding: "https://www.patreon.com/builda"
-moduleUrl: "https://github.com/spacenectar/scaffolds/edit/master/default-ts"
+moduleUrl: "https://builda.add/scaffolds/default-ts"
 description: >
   This is the default typescript scaffold that ships with builda. It only has the bare minimum of dependencies to get you started.
 keywords: 

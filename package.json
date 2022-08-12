@@ -2,8 +2,6 @@
   "private": true,
   "workspaces": [
     "builda",
-    "scaffolds",
-    "prefabs",
     "website"
   ]
 }

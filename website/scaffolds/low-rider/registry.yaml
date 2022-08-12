@@ -3,7 +3,7 @@ type: "scaffold"
 version: "1.0.0"
 author: "Alex Foxleigh (https://www.alexfoxleigh.com/)"
 funding: "https://www.patreon.com/builda"
-moduleUrl: "https://github.com/spacenectar/scaffolds/edit/master/low-rider"
+moduleUrl: "https://builda.app/scaffolds/low-rider"
 description: >
   This scaffold is not yet described.
 keywords: 

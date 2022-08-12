@@ -86,7 +86,7 @@ export const addModule = async ({
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = `${globals.buildaDir}/modules`;
 
-    const newPath = official ? `${globals.repoUrl}/scaffolds/${path}` : path;
+    const newPath = official ? `${globals.websiteUrl}/scaffolds/${path}` : path;
 
     await createDir(moduleDirPath).then(async () => {
       const moduleType = detectPathType(newPath);

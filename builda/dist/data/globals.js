@@ -1,3 +1,3 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = { "version": "3.0.0-alpha.1", "buildaDir": ".builda", "configFileName": ".builda.yml", "websiteUrl": "https://www.builda.app", "repoUrl": "git+https://github.com/spacenectar/builda" };
+exports.default = { "version": "3.0.0-alpha.1", "buildaDir": ".builda", "configFileName": ".builda.yml", "websiteUrl": "https://www.builda.app" };
