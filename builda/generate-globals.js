@@ -8,7 +8,7 @@ const { version, repository } = packageJson;
 const globals = {
   version,
   buildaDir: '.builda',
-  configFileName: '.builda.yml',
+  configFileName: '.builda.json',
   websiteUrl: 'https://www.builda.app'
 };
 

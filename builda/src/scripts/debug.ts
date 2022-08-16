@@ -13,6 +13,10 @@ import presetAnswers from '@mocks/preset-answers';
 import arguments from '@data/arguments.json';
 import printMessage from '@helpers/print-message';
 
+import globals from '@data/globals';
+
+const { configFileName } = globals;
+
 const args = hideBin(process.argv);
 
 const options = {
@@ -52,7 +56,7 @@ export const debug = async ({
   }
 
   if (argv.init || runInit) {
-    return init({ presetAnswers, force });
+    await init({ presetAnswers, force });
   }
 
   if (argv.clear || runClear) {
@@ -60,16 +64,17 @@ export const debug = async ({
       fs.rmdirSync('experiments', { recursive: true });
       printMessage('experiments folder has been deleted', 'success');
     }
-    return process.exit(0);
+    process.exit(0);
   }
 
   if (argv.purge || runPurge) {
-    if (fs.existsSync('.builda.yml')) {
-      fs.rmSync('.builda.yml');
-      printMessage('.builda.yml file has been deleted', 'success');
+    if (fs.existsSync(configFileName)) {
+      fs.rmSync(configFileName);
+      printMessage(`${configFileName} file has been deleted`, 'success');
     }
-    return process.exit(0);
+    process.exit(0);
   }
+
 };
 
 export default debug;

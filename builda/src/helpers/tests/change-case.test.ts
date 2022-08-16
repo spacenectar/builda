@@ -2,7 +2,7 @@ import { changeCase } from '@helpers/string-functions';
 
 describe('changeCase() convert from kebab case', () => {
   beforeEach(() => {
-    // jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
   });
   afterAll(() => {
     jest.resetAllMocks();

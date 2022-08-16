@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
-const js_yaml_1 = __importDefault(require("js-yaml"));
 const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
@@ -16,37 +15,32 @@ const OVERWRITE_CONFIG_QUESTION = {
     name: 'replaceConfig',
     type: 'confirm'
 };
-const getAnswers = async () => {
-    let answers = {};
-    try {
-        await (0, _helpers_1.askQuestion)({
+const getAnswers = () => {
+    return new Promise(resolve => {
+        (0, _helpers_1.askQuestion)({
             questionList: questions_1.default
-        }).then((res) => {
-            answers = res;
+        }).then(answers => {
+            return resolve(answers);
         });
-    }
-    catch (error) {
-        (0, _helpers_1.printMessage)(error.message, 'error');
-    }
-    finally {
-        return answers;
-    }
+    });
 };
-const checkExistingConfig = async (fileName, debug) => {
-    if (fs_1.default.existsSync(path_1.default.join(buildaDir, fileName))) {
-        if (debug) {
-            // Preset answers were passed so we are in debug/test mode
-            return `You already have a ${fileName} file. Process Aborted.`;
-        }
-        return await (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
-            if (replaceConfig) {
-                return 'yes';
+const checkExistingConfig = (fileName, debug) => {
+    return new Promise(resolve => {
+        if (fs_1.default.existsSync(path_1.default.join(fileName))) {
+            if (debug) {
+                // Preset answers were passed so we are in debug/test mode
+                return resolve(`You already have a ${fileName} file. Process Aborted.`);
             }
-            return 'Process terminated due to user selection';
-        });
-    }
-    (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
-    return 'yes';
+            return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
+                if (replaceConfig) {
+                    return resolve('yes');
+                }
+                return 'Process terminated due to user selection';
+            });
+        }
+        (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
+        return resolve('yes');
+    });
 };
 const init = async ({ fileName = configFileName, presetAnswers = undefined, force = false }) => {
     var _a;
@@ -55,7 +49,7 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
         ? await checkExistingConfig(fileName, presetAnswers !== undefined)
         : 'yes';
     if (continueProcess === 'yes') {
-        const answers = presetAnswers || (await getAnswers());
+        const answers = presetAnswers || await getAnswers();
         if (!answers.appName)
             return (0, _helpers_1.throwError)('App name is required');
         const scaffoldList = [];
@@ -96,33 +90,33 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
             },
             commands
         };
-        const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${websiteUrl}/setup for more information.`;
         fs_1.default.mkdirSync(buildaDir, { recursive: true });
-        const configYaml = js_yaml_1.default.dump(config, { indent: 2 });
-        const contents = `${topText}\r\n${configYaml}`;
-        fs_1.default.writeFile(path_1.default.join(fileName), contents, async (err) => {
-            if (err)
-                throw err;
-            (0, _helpers_1.printMessage)('Created config in project root', 'success');
-            if (answers.installDefaultModule === 'custom') {
-                await (0, add_module_1.default)({ path: answers.scaffoldUrl });
-            }
-            if (answers.installDefaultModule === 'typescript') {
-                await (0, add_module_1.default)({
-                    path: 'default-ts',
-                    official: true
-                });
-            }
-            if (answers.installDefaultModule === 'javascript') {
-                await (0, add_module_1.default)({
-                    path: 'default-js',
-                    official: true
-                });
-            }
-            (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
+        const contents = JSON.stringify(config, null, 2);
+        return new Promise(resolve => {
+            fs_1.default.writeFile(path_1.default.join(fileName), contents, async (err) => {
+                if (err)
+                    throw err;
+                (0, _helpers_1.printMessage)('Created config in project root', 'success');
+                if (answers.installDefaultModule === 'custom') {
+                    await (0, add_module_1.default)({ path: answers.scaffoldUrl });
+                }
+                if (answers.installDefaultModule === 'typescript') {
+                    await (0, add_module_1.default)({
+                        path: 'default-ts',
+                        official: true
+                    });
+                }
+                if (answers.installDefaultModule === 'javascript') {
+                    await (0, add_module_1.default)({
+                        path: 'default-js',
+                        official: true
+                    });
+                }
+                resolve();
+                return (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
+            });
+            return (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
         });
-        // prettier.format(path.join(buildaDir, fileName));
-        return (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
     }
     else {
         (0, _helpers_1.throwError)(continueProcess);

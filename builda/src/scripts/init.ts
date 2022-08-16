@@ -1,5 +1,4 @@
 import fs from 'fs';
-import yaml from 'js-yaml';
 import path from 'path';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
@@ -29,38 +28,35 @@ const OVERWRITE_CONFIG_QUESTION = {
   type: 'confirm' as QuestionType
 };
 
-const getAnswers = async () => {
-  let answers = {} as Answers;
-  try {
-    await askQuestion({
-      questionList: questions as unknown as Question[]
-    }).then((res) => {
-      answers = res as Answers;
+const getAnswers = () => {
+  return new Promise(resolve => {
+    askQuestion({
+      questionList: questions as Question[]
+    }).then(answers => {
+      return resolve(answers);
     });
-  } catch (error) {
-    printMessage(error.message, 'error');
-  } finally {
-    return answers;
-  }
+  })
 };
 
-const checkExistingConfig = async (fileName: string, debug: boolean) => {
-  if (fs.existsSync(path.join(buildaDir, fileName))) {
-    if (debug) {
-      // Preset answers were passed so we are in debug/test mode
-      return `You already have a ${fileName} file. Process Aborted.`;
-    }
-    return await askQuestion(OVERWRITE_CONFIG_QUESTION).then(
-      ({ replaceConfig }) => {
-        if (replaceConfig) {
-          return 'yes';
-        }
-        return 'Process terminated due to user selection';
+const checkExistingConfig = (fileName: string, debug: boolean) => {
+  return new Promise(resolve => {
+    if (fs.existsSync(path.join(fileName))) {
+      if (debug) {
+        // Preset answers were passed so we are in debug/test mode
+        return resolve(`You already have a ${fileName} file. Process Aborted.`);
       }
-    );
-  }
-  printMessage('Starting initialisation...\r', 'success');
-  return 'yes';
+      return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
+        ({ replaceConfig }) => {
+          if (replaceConfig) {
+            return resolve('yes');
+          }
+          return 'Process terminated due to user selection';
+        }
+      );
+    }
+    printMessage('Starting initialisation...\r', 'success');
+    return resolve('yes');
+  });
 };
 
 const init = async ({
@@ -74,11 +70,11 @@ const init = async ({
 }) => {
   // Check if a config file already exists unless presetAnswers is passed
   const continueProcess = !force
-    ? await checkExistingConfig(fileName, presetAnswers !== undefined)
-    : 'yes';
+  ? await checkExistingConfig(fileName, presetAnswers !== undefined) as string
+  : 'yes';
 
   if (continueProcess === 'yes') {
-    const answers = presetAnswers || (await getAnswers());
+    const answers = presetAnswers || await getAnswers() as Answers;
 
     if (!answers.appName) return throwError('App name is required');
 
@@ -129,45 +125,42 @@ const init = async ({
       commands
     };
 
-    const topText = `# Builda config file\r# This file is used to set up your 'builda' commands. Visit ${websiteUrl}/setup for more information.`;
-
     fs.mkdirSync(buildaDir, { recursive: true });
 
-    const configYaml = yaml.dump(config, { indent: 2 });
+    const contents = JSON.stringify(config, null, 2);
 
-    const contents = `${topText}\r\n${configYaml}`;
+    return new Promise<void>(resolve => {
+      fs.writeFile(path.join(fileName), contents, async (err) => {
+        if (err) throw err;
+        printMessage('Created config in project root', 'success');
+        if (answers.installDefaultModule === 'custom') {
+          await addModule({path: answers.scaffoldUrl});
+        }
+        if (answers.installDefaultModule === 'typescript') {
+          await addModule(
+            {
+              path: 'default-ts',
+              official: true
+            }
+          );
+        }
+        if (answers.installDefaultModule === 'javascript') {
+          await addModule(
+            {
+              path: 'default-js',
+              official: true
+            }
+          );
+        }
+        resolve();
+        return printMessage('Installing default scaffolds...\r', 'success');
+      });
 
-    fs.writeFile(path.join(fileName), contents, async (err) => {
-      if (err) throw err;
-      printMessage('Created config in project root', 'success');
-      if (answers.installDefaultModule === 'custom') {
-        await addModule({path: answers.scaffoldUrl});
-      }
-      if (answers.installDefaultModule === 'typescript') {
-        await addModule(
-          {
-            path: 'default-ts',
-            official: true
-          }
-        );
-      }
-      if (answers.installDefaultModule === 'javascript') {
-        await addModule(
-          {
-            path: 'default-js',
-            official: true
-          }
-        );
-      }
-      printMessage('Installing default scaffolds...\r', 'success');
+      return printMessage(
+        `Visit ${websiteUrl}/setup for instructions on what to do next`,
+        'notice'
+      );
     });
-
-    // prettier.format(path.join(buildaDir, fileName));
-
-    return printMessage(
-      `Visit ${websiteUrl}/setup for instructions on what to do next`,
-      'notice'
-    );
   } else {
     throwError(continueProcess);
   }

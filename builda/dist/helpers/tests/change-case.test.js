@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const string_functions_1 = require("../string-functions");
 describe('changeCase() convert from kebab case', () => {
     beforeEach(() => {
-        // jest.spyOn(console, 'log').mockImplementation(() => {});
+        jest.spyOn(console, 'log').mockImplementation(() => { });
     });
     afterAll(() => {
         jest.resetAllMocks();

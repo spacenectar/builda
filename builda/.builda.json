@@ -1,0 +1,30 @@
+{
+  "app": {
+    "name": "test"
+  },
+  "commands": {
+    "atom": {
+      "type": "scaffold",
+      "outputPath": "./experiments/atom",
+      "use": "default-ts",
+      "substitute": {}
+    },
+    "component": {
+      "type": "scaffold",
+      "outputPath": "./experiments/component",
+      "use": "default-ts",
+      "substitute": {}
+    },
+    "test": {
+      "type": "scaffold",
+      "outputPath": "./experiments/test",
+      "use": "default-ts",
+      "substitute": {}
+    }
+  },
+  "modules": {
+    "scaffold": {
+      "default-ts": "1.0.0"
+    }
+  }
+}

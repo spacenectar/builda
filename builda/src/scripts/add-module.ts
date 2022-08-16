@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import fs from 'fs';
-import yaml from 'js-yaml';
 
 // Import helpers
 import {
@@ -38,10 +37,10 @@ const addLocalModule = async (modulePath: string): Promise<ModuleRegistry> => {
     (file: string) => !ignoreFiles.includes(file)
   );
   // write the files to the output directory
-  filteredFiles.forEach((file: string) => {
+  filteredFiles.forEach(async (file: string) => {
     const srcPath = `${modulePath}/${file}`;
     const outputPath = `${globals.buildaDir}/modules/${registry.type}/${registry.name}`;
-    createDir(outputPath).then(() => {
+    await createDir(outputPath).then(() => {
       fs.copyFileSync(srcPath, `${outputPath}/${file}`);
     });
   });
@@ -51,7 +50,7 @@ const addLocalModule = async (modulePath: string): Promise<ModuleRegistry> => {
 const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
   // get the directory contents
   const registry = await getRegistry(modulePath);
-  const files = [...registry.files, 'registry.yaml'];
+  const files = [...registry.files, 'registry.json'];
   files
     .filter((file: string) => !ignoreFiles.includes(file))
     .forEach((file: string) => {
@@ -59,9 +58,12 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
       axios
         .get(`${modulePath}/${file}`)
         .then((response) => {
+
+          const content = file === 'registry.json' ? JSON.stringify(response.data, null, 2) : response.data.toString();
+
           const fileObject = {
             name: file,
-            content: response.data
+            content
           };
           const outputPath = `${globals.buildaDir}/modules/${registry.type}/${registry.name}`;
           createDir(outputPath).then(() => {
@@ -80,7 +82,7 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
 
 export const addModule = async ({
   path, official
-} : { path: string, official?:boolean}) => {
+} : { path: string, official?: boolean}) => {
   const config = getConfigFile();
   if (config) {
     // Check the module directory exists and create it if it doesn't
@@ -129,9 +131,9 @@ export const addModule = async ({
         // Write the config file
         fs.writeFileSync(
           globals.configFileName,
-          yaml.dump(config, { indent: 2 })
+          JSON.stringify(config,  null, 2)
         );
-        return printMessage(
+        printMessage(
           `${changeCase(type, 'pascal')}: ${name}@${version} installed`,
           'success'
         );

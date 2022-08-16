@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addModule = void 0;
 const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
-const js_yaml_1 = __importDefault(require("js-yaml"));
 // Import helpers
 const _helpers_1 = require("../helpers/index.js");
 // Import data
@@ -25,10 +24,10 @@ const addLocalModule = async (modulePath) => {
     // filter out the ignore files
     const filteredFiles = files.filter((file) => !ignoreFiles.includes(file));
     // write the files to the output directory
-    filteredFiles.forEach((file) => {
+    filteredFiles.forEach(async (file) => {
         const srcPath = `${modulePath}/${file}`;
         const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}/${registry.name}`;
-        (0, _helpers_1.createDir)(outputPath).then(() => {
+        await (0, _helpers_1.createDir)(outputPath).then(() => {
             fs_1.default.copyFileSync(srcPath, `${outputPath}/${file}`);
         });
     });
@@ -37,7 +36,7 @@ const addLocalModule = async (modulePath) => {
 const addRemoteModule = async (modulePath) => {
     // get the directory contents
     const registry = await (0, _helpers_1.getRegistry)(modulePath);
-    const files = [...registry.files, 'registry.yaml'];
+    const files = [...registry.files, 'registry.json'];
     files
         .filter((file) => !ignoreFiles.includes(file))
         .forEach((file) => {
@@ -45,9 +44,10 @@ const addRemoteModule = async (modulePath) => {
         axios_1.default
             .get(`${modulePath}/${file}`)
             .then((response) => {
+            const content = file === 'registry.json' ? JSON.stringify(response.data, null, 2) : response.data.toString();
             const fileObject = {
                 name: file,
-                content: response.data
+                content
             };
             const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}/${registry.name}`;
             (0, _helpers_1.createDir)(outputPath).then(() => {
@@ -101,8 +101,8 @@ const addModule = async ({ path, official }) => {
                     prefabs[name] = version;
                 }
                 // Write the config file
-                fs_1.default.writeFileSync(globals_1.default.configFileName, js_yaml_1.default.dump(config, { indent: 2 }));
-                return (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
+                fs_1.default.writeFileSync(globals_1.default.configFileName, JSON.stringify(config, null, 2));
+                (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
             }
         });
     }

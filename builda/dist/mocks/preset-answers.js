@@ -4,8 +4,8 @@ exports.presetAnswers = void 0;
 exports.presetAnswers = {
     appName: 'test',
     outputDirectory: './experiments',
-    installDefaultModule: 'default-js',
-    scaffoldUrl: 'http://test.url',
+    installDefaultModule: 'typescript',
+    scaffoldUrl: '',
     scaffoldSelection: ['atom', 'component'],
     customScaffoldList: 'test'
 };

@@ -1,5 +1,4 @@
 import fs from 'fs';
-import yaml from 'js-yaml';
 
 // Import globals
 import globals from '@data/globals';
@@ -8,7 +7,6 @@ import globals from '@data/globals';
 import { getConfigFile } from '@helpers';
 
 // Import types
-import ModuleRegistry from '@typedefs/module-registry';
 import ModuleType from '@typedefs/module-types';
 
 const config = getConfigFile();
@@ -23,10 +21,10 @@ export const getmodule = (name: string) => {
     );
 
     const path = `${globals.buildaDir}/modules/${moduleCategory}/${name}`;
-    const registryFile = fs.readFileSync(`${path}/registry.yaml`, 'utf8');
-    const registry = yaml.load(registryFile, { json: true }) as ModuleRegistry;
+    console.log(path);
+    const registry = JSON.parse(fs.readFileSync(`${path}/registry.json`, 'utf8'));
     const files = registry.files.filter(
-      (file: string) => file !== 'registry.yaml'
+      (file: string) => file !== 'registry.json'
     );
     return {
       path,

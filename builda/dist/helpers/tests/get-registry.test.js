@@ -9,9 +9,9 @@ const fileList = ['index.stories.mdx', 'index.tsx', 'styles.module.scss'];
 describe('getFileListFromRegistry() function', () => {
     test('should return a list of files from a registry.json file', async () => {
         axios_1.default.get = jest.fn().mockResolvedValue({ data: { files: fileList } });
-        const registryPath = 'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook';
+        const registryPath = 'https://builda.app/scaffolds/foxys-own';
         const registryContent = await (0, get_registry_1.getRegistry)(registryPath);
         expect(axios_1.default.get).toHaveBeenCalledWith(`${registryPath}/registry.json`);
-        expect(registryContent).toEqual(fileList);
+        expect(registryContent.files).toEqual(fileList);
     });
 });

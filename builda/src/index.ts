@@ -16,7 +16,8 @@ import {
 import arguments from '@data/arguments.json';
 
 // import type definitions
-import { QuestionType } from '@typedefs/question-type';
+import type { QuestionType } from '@typedefs/question-type';
+import type { CommandConfig } from '@typedefs/command-config';
 
 // import scripts
 import init from '@scripts/init';
@@ -87,48 +88,48 @@ const CREATE_CONFIG_QUESTION = {
 
   const commandString = process.argv[2].replace('--', '');
 
-  const command = commands.find((c) => c.name === commandString);
+  const command = commands.find((c) => c.name === commandString) as CommandConfig;
 
-  const getSubstitutions = (command: any) => {
+  const getSubstitutions = (commandList: CommandConfig) => {
     const substitutions = [] as TSubstitution[];
-    if (command.substitute) {
-      command.substitute.forEach((substitute: TSubstitute) => {
+    if (commandList.substitute) {
+      commandList.substitute.forEach((sub: TSubstitute) => {
         // No substitution was provided but the config requires one
-        if (substitute.required && !argv[substitute.string]) {
+        if (sub.required && !argv[sub.string]) {
           throwError(
-            `"--${substitute.string}" missing in arguments. This is required.\n`
+            `"--${sub.string}" missing in arguments. This is required.\n`
           );
         }
 
         // User has not provided a substitution but the config has a default fallback value
-        if (substitute.default && !argv[substitute.string]) {
+        if (sub.default && !argv[sub.string]) {
           substitutions.push({
-            replace: substitute.string,
-            with: substitute.default
+            replace: sub.string,
+            with: sub.default
           });
         }
 
         // User has provided the substitution argument
-        if (argv[substitute.string]) {
+        if (argv[sub.string]) {
           const value =
-            argv[substitute.string] === true
+            argv[sub.string] === true
               ? ''
-              : (argv[substitute.string] as string);
+              : (argv[sub.string] as string);
 
           // User has provided the substitution argument with no value
           if (value === '') {
-            throwError(`"--${substitute.string}" requires a value`);
+            throwError(`"--${sub.string}" requires a value`);
           }
 
           if (
-            substitute.valid &&
+            sub.valid &&
             value !== '' &&
-            !substitute.valid?.includes(value)
+            !sub.valid?.includes(value)
           ) {
             throwError(
               `\n"${value}" is not a valid ${
-                substitute.string
-              }. Please use one of the following: \n - ${substitute.valid.join(
+                sub.string
+              }. Please use one of the following: \n - ${sub.valid.join(
                 `\n - `
               )}\n`
             );
@@ -136,8 +137,8 @@ const CREATE_CONFIG_QUESTION = {
 
           // The value provided is valid
           substitutions.push({
-            replace: substitute.string,
-            with: argv[substitute.string] as string
+            replace: sub.string,
+            with: argv[sub.string] as string
           });
         }
       });
@@ -145,7 +146,7 @@ const CREATE_CONFIG_QUESTION = {
     return substitutions;
   };
 
-  const substitutions = getSubstitutions(command);
+  const substitute = getSubstitutions(command);
 
   if (command) {
     const name = argv._[1].toString();
@@ -153,7 +154,7 @@ const CREATE_CONFIG_QUESTION = {
     return buildFromScaffold({
       name,
       command: command.name,
-      substitute: substitutions
+      substitute
     });
   } else {
     return printMessage(

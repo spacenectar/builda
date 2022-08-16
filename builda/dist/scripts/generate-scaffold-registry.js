@@ -8,7 +8,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateScaffoldRegistry = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const js_yaml_1 = __importDefault(require("js-yaml"));
 const ignore_file_json_1 = __importDefault(require("../data/ignore-file.json"));
 const generateScaffoldRegistry = (scaffoldPath) => {
     const readPath = scaffoldPath || './scaffolds';
@@ -29,20 +28,20 @@ const generateScaffoldRegistry = (scaffoldPath) => {
             "files": [
               ${fs_1.default
                 .readdirSync(`${readPath}/${file}`)
-                .map((file) => {
-                if (!ignore.includes(file)) {
-                    return `"${file}"`;
+                .map((f) => {
+                if (!ignore.includes(f)) {
+                    return `"${f}"`;
                 }
                 else {
                     return '';
                 }
             })
-                .filter((file) => file !== '')
+                .filter((f) => f !== '')
                 .join(',')}
             ]
           }
       `;
-            fs_1.default.writeFileSync(`${readPath}/${file}/registry.yaml`, js_yaml_1.default.dump(page));
+            fs_1.default.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page));
         }
     });
 };

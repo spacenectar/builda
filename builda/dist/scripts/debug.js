@@ -15,6 +15,8 @@ const init_1 = __importDefault(require("./init"));
 const preset_answers_1 = __importDefault(require("../mocks/preset-answers"));
 const arguments_json_1 = __importDefault(require("../data/arguments.json"));
 const print_message_1 = __importDefault(require("../helpers/print-message"));
+const globals_1 = __importDefault(require("../data/globals"));
+const { configFileName } = globals_1.default;
 const args = (0, helpers_1.hideBin)(process.argv);
 const options = Object.assign(Object.assign({}, arguments_json_1.default), { clear: {
         description: 'Deletes generated files',
@@ -40,21 +42,21 @@ const debug = async ({ runInit = false, runClear = false, runPurge = false, forc
         force = true;
     }
     if (argv.init || runInit) {
-        return (0, init_1.default)({ presetAnswers: preset_answers_1.default, force });
+        await (0, init_1.default)({ presetAnswers: preset_answers_1.default, force });
     }
     if (argv.clear || runClear) {
         if (fs_1.default.existsSync('./experiments')) {
             fs_1.default.rmdirSync('experiments', { recursive: true });
             (0, print_message_1.default)('experiments folder has been deleted', 'success');
         }
-        return process.exit(0);
+        process.exit(0);
     }
     if (argv.purge || runPurge) {
-        if (fs_1.default.existsSync('.builda.yml')) {
-            fs_1.default.rmSync('.builda.yml');
-            (0, print_message_1.default)('.builda.yml file has been deleted', 'success');
+        if (fs_1.default.existsSync(configFileName)) {
+            fs_1.default.rmSync(configFileName);
+            (0, print_message_1.default)(`${configFileName} file has been deleted`, 'success');
         }
-        return process.exit(0);
+        process.exit(0);
     }
 };
 exports.debug = debug;

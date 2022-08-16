@@ -3,7 +3,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import yaml from 'js-yaml';
 
 import ignoreFiles from '@data/ignore-file.json';
 
@@ -30,20 +29,20 @@ export const generateScaffoldRegistry = (scaffoldPath?: string) => {
             "files": [
               ${fs
                 .readdirSync(`${readPath}/${file}`)
-                .map((file) => {
-                  if (!ignore.includes(file)) {
-                    return `"${file}"`;
+                .map((f) => {
+                  if (!ignore.includes(f)) {
+                    return `"${f}"`;
                   } else {
                     return '';
                   }
                 })
-                .filter((file) => file !== '')
+                .filter((f) => f !== '')
                 .join(',')}
             ]
           }
       `;
 
-      fs.writeFileSync(`${readPath}/${file}/registry.yaml`, yaml.dump(page));
+      fs.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page));
     }
   });
 };

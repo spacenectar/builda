@@ -65,53 +65,53 @@ const CREATE_CONFIG_QUESTION = {
     const commands = config ? (0, generate_commands_1.default)() : [];
     const commandString = process.argv[2].replace('--', '');
     const command = commands.find((c) => c.name === commandString);
-    const getSubstitutions = (command) => {
+    const getSubstitutions = (commandList) => {
         const substitutions = [];
-        if (command.substitute) {
-            command.substitute.forEach((substitute) => {
+        if (commandList.substitute) {
+            commandList.substitute.forEach((sub) => {
                 var _a;
                 // No substitution was provided but the config requires one
-                if (substitute.required && !argv[substitute.string]) {
-                    (0, _helpers_1.throwError)(`"--${substitute.string}" missing in arguments. This is required.\n`);
+                if (sub.required && !argv[sub.string]) {
+                    (0, _helpers_1.throwError)(`"--${sub.string}" missing in arguments. This is required.\n`);
                 }
                 // User has not provided a substitution but the config has a default fallback value
-                if (substitute.default && !argv[substitute.string]) {
+                if (sub.default && !argv[sub.string]) {
                     substitutions.push({
-                        replace: substitute.string,
-                        with: substitute.default
+                        replace: sub.string,
+                        with: sub.default
                     });
                 }
                 // User has provided the substitution argument
-                if (argv[substitute.string]) {
-                    const value = argv[substitute.string] === true
+                if (argv[sub.string]) {
+                    const value = argv[sub.string] === true
                         ? ''
-                        : argv[substitute.string];
+                        : argv[sub.string];
                     // User has provided the substitution argument with no value
                     if (value === '') {
-                        (0, _helpers_1.throwError)(`"--${substitute.string}" requires a value`);
+                        (0, _helpers_1.throwError)(`"--${sub.string}" requires a value`);
                     }
-                    if (substitute.valid &&
+                    if (sub.valid &&
                         value !== '' &&
-                        !((_a = substitute.valid) === null || _a === void 0 ? void 0 : _a.includes(value))) {
-                        (0, _helpers_1.throwError)(`\n"${value}" is not a valid ${substitute.string}. Please use one of the following: \n - ${substitute.valid.join(`\n - `)}\n`);
+                        !((_a = sub.valid) === null || _a === void 0 ? void 0 : _a.includes(value))) {
+                        (0, _helpers_1.throwError)(`\n"${value}" is not a valid ${sub.string}. Please use one of the following: \n - ${sub.valid.join(`\n - `)}\n`);
                     }
                     // The value provided is valid
                     substitutions.push({
-                        replace: substitute.string,
-                        with: argv[substitute.string]
+                        replace: sub.string,
+                        with: argv[sub.string]
                     });
                 }
             });
         }
         return substitutions;
     };
-    const substitutions = getSubstitutions(command);
+    const substitute = getSubstitutions(command);
     if (command) {
         const name = argv._[1].toString();
         return (0, build_from_scaffold_1.default)({
             name,
             command: command.name,
-            substitute: substitutions
+            substitute
         });
     }
     else {
