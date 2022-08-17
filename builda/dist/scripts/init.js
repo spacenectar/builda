@@ -82,7 +82,7 @@ const init = async ({ fileName = configFileName, presetAnswers = undefined, forc
                 type: 'scaffold',
                 outputPath: `${answers.outputDirectory}/${scaffoldType}`,
                 use: module,
-                substitute: {}
+                substitute: []
             }
         ]));
         const config = {

@@ -10,7 +10,7 @@
 ## Setup
 
 You can either install `builda` as a global module or install it locally into your
-project, if you are using the `.builda.yml` file, installing locally is recommended.
+project, if you are using the `.builda.json` file, installing locally is recommended.
 
 ![NPM](https://img.shields.io/badge/npm-install_globally-red?style=for-the-badge&logo=npm)
 
@@ -36,40 +36,58 @@ npm i --dev builda
 yarn add -d builda
 ```
 
-Then you can initialise builda by typing `builda --init` this will create a `.builda.yml`
+Then you can initialise builda by typing `builda --init` this will create a `.builda.json`
 file in your project root. (see [Configuration](#configuration) below)
 
 ## Usage
 
 Once you have installed builda, you can use it to build your project files.
 
-## Screenshot
+<!-- ## Screenshot
 
 ![How builda runs](./example.gif)
 
-The component produced in this animation is available to view here: https://github.com/foxleigh81/builda/tree/master/examples/my-example-component
+The component produced in this animation is available to view here: https://github.com/foxleigh81/builda/tree/master/examples/my-example-component -->
 
 ## Configuration
 
-You can specify some defaults by creating a `.builda.yml` file in your home directory.
+You can specify some defaults by creating a `.builda.json` file in your home directory.
 
 You can create this file manually or by running `builda --init`
 
-> 🚨 **WARNING** : If you're coming from the `buildcom` project, you might want
-> to migrate instead of initialising. See [Migrating](#migrating-from-buildcom) below.
+## Generating files
+
+When you run `builda --init`, you will generate scaffold types which can be used 
+to generate files. Each scaffold type is converted into a runnable command.
+
+For example, if you generated a `component` scaffold-type, you could run:
 
 ```bash
-builda my-component
+builda component my-example-component
 ```
 
-This will generate a component called `my-component` in the directory specified
-in the `.builda.yml` file.
+This will generate a component called `my-example-component` in the directory specified
+in the `.builda.json` file under the `component` command.
 
-You can also use this method to create multiple components at once:
+If you generated an `atom` scaffold-type, you could run:
+
+```bash
+builda atom my-example-atom
+```
+
+This will generate an atom called `my-example-atom` in the directory specified
+in the `.builda.json` file under the `atom` command.
+
+This is a powerful feature as not only does it allow you to specify the directory
+to generate files in, it also allows you to specify the scaffold to generate from,
+so if you had some components which needed to be typescript and others that
+needed to be javascript, you can specify a different scaffold for each.
+
+<!-- You can also use this method to create multiple components at once:
 
 ```bash
     builda my-component my-other-component
-```
+``` -->
 
 ## Migrating from Buildcom
 

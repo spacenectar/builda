@@ -114,7 +114,7 @@ const init = async ({
           type: 'scaffold',
           outputPath: `${answers.outputDirectory}/${scaffoldType}`,
           use: module,
-          substitute: {}
+          substitute: []
         }
       ])
     );
