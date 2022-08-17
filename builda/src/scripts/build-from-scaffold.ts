@@ -1,5 +1,4 @@
 import fs from 'fs';
-import prettier from 'prettier';
 
 // import helpers
 import { getConfigFile, printMessage, getModule, writeFile } from '@helpers';
@@ -62,7 +61,7 @@ export const buildFromScaffold = ({
     // Add a component registry file to the output directory
     return fs.writeFileSync(
       `${outputDirectory}/registry.json`,
-      prettier.format(JSON.stringify(componentRegistry), { parser: 'json' })
+      JSON.stringify(componentRegistry, null, 2)
     );
   }
   throw new Error('No config file found');

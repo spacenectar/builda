@@ -3,11 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.skip = exports.getModule = exports.getConfigFile = exports.detectPathType = void 0;
+exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.skip = exports.getModule = exports.getSubstitutions = exports.getConfigFile = exports.detectPathType = void 0;
 var detect_path_type_1 = require("./detect-path-type");
 Object.defineProperty(exports, "detectPathType", { enumerable: true, get: function () { return __importDefault(detect_path_type_1).default; } });
 var get_config_file_1 = require("./get-config-file");
 Object.defineProperty(exports, "getConfigFile", { enumerable: true, get: function () { return __importDefault(get_config_file_1).default; } });
+var get_substitutions_1 = require("./get-substitutions");
+Object.defineProperty(exports, "getSubstitutions", { enumerable: true, get: function () { return __importDefault(get_substitutions_1).default; } });
 var get_module_1 = require("./get-module");
 Object.defineProperty(exports, "getModule", { enumerable: true, get: function () { return __importDefault(get_module_1).default; } });
 var skip_1 = require("./skip");

@@ -41,7 +41,7 @@ const generateScaffoldRegistry = (scaffoldPath) => {
             ]
           }
       `;
-            fs_1.default.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page));
+            fs_1.default.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page, null, 2));
         }
     });
 };

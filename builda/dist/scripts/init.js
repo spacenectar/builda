@@ -39,6 +39,7 @@ const checkExistingConfig = (fileName, debug) => {
             });
         }
         (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
+        (0, _helpers_1.printMessage)(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
         return resolve('yes');
     });
 };

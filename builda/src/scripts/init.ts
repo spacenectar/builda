@@ -55,6 +55,7 @@ const checkExistingConfig = (fileName: string, debug: boolean) => {
       );
     }
     printMessage('Starting initialisation...\r', 'success');
+    printMessage(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
     return resolve('yes');
   });
 };

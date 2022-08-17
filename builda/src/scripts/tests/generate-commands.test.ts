@@ -3,6 +3,7 @@ import init from '@scripts/init';
 import presetAnswers from '@mocks/preset-answers';
 
 describe('generateCommands() function happy path', () => {
+
   beforeAll(async () => {
     jest.spyOn(console, 'log').mockImplementation(() => null);
     await init({presetAnswers, force: true});
