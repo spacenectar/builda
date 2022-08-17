@@ -4,7 +4,7 @@
 npm-debug.log
 /components
 log.txt
-.builda.yml
+.builda.json
 .buildcomrc
 .nyc_output/
 coverage/

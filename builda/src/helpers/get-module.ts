@@ -16,12 +16,11 @@ const moduleTypes = ['scaffold', 'prefab'] as ModuleType[];
 export const getmodule = (name: string) => {
   if (config) {
     const moduleList = config.modules;
-    const moduleCategory = moduleTypes.find(
-      (category) => moduleList[category] && moduleList?.[category]?.[name]
+    const moduleType = moduleTypes.find(
+      (type) => moduleList[type] && moduleList?.[type]?.[name]
     );
 
-    const path = `${globals.buildaDir}/modules/${moduleCategory}/${name}`;
-    console.log(path);
+    const path = `${globals.buildaDir}/modules/${moduleType}/${name}`;
     const registry = JSON.parse(fs.readFileSync(`${path}/registry.json`, 'utf8'));
     const files = registry.files.filter(
       (file: string) => file !== 'registry.json'

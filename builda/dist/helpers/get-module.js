@@ -14,9 +14,8 @@ const moduleTypes = ['scaffold', 'prefab'];
 const getmodule = (name) => {
     if (config) {
         const moduleList = config.modules;
-        const moduleCategory = moduleTypes.find((category) => { var _a; return moduleList[category] && ((_a = moduleList === null || moduleList === void 0 ? void 0 : moduleList[category]) === null || _a === void 0 ? void 0 : _a[name]); });
-        const path = `${globals_1.default.buildaDir}/modules/${moduleCategory}/${name}`;
-        console.log(path);
+        const moduleType = moduleTypes.find((type) => { var _a; return moduleList[type] && ((_a = moduleList === null || moduleList === void 0 ? void 0 : moduleList[type]) === null || _a === void 0 ? void 0 : _a[name]); });
+        const path = `${globals_1.default.buildaDir}/modules/${moduleType}/${name}`;
         const registry = JSON.parse(fs_1.default.readFileSync(`${path}/registry.json`, 'utf8'));
         const files = registry.files.filter((file) => file !== 'registry.json');
         return {

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFromScaffold = void 0;
 const fs_1 = __importDefault(require("fs"));
-const prettier_1 = __importDefault(require("prettier"));
 // import helpers
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
@@ -37,7 +36,7 @@ const buildFromScaffold = ({ name, command, substitute }) => {
             }
         };
         // Add a component registry file to the output directory
-        return fs_1.default.writeFileSync(`${outputDirectory}/registry.json`, prettier_1.default.format(JSON.stringify(componentRegistry), { parser: 'json' }));
+        return fs_1.default.writeFileSync(`${outputDirectory}/registry.json`, JSON.stringify(componentRegistry, null, 2));
     }
     throw new Error('No config file found');
 };
