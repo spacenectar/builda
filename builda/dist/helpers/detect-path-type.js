@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.detectPathType = void 0;
 const detectPathType = (path) => {
-    if (path.startsWith('http') || path.startsWith('https')) {
-        return 'remote';
+    if (path.startsWith('/') || path.startsWith('./') || path.startsWith('..') || path.startsWith('~')) {
+        return 'local';
     }
     else {
-        return 'local';
+        return 'remote';
     }
 };
 exports.detectPathType = detectPathType;

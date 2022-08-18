@@ -8,7 +8,7 @@ export const convertRegistryPathToUrl = (
   let newPath = registryPath;
 
   if (!newPath.startsWith('http') || !newPath.startsWith('https')) {
-    throw new Error('Registry path must start with http or https');
+    newPath = `https://builda.app/modules/${newPath}`;
   }
 
   if (newPath.endsWith('/')) {
