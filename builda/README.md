@@ -7,6 +7,10 @@
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
+🚨 🚨 This is an **alpha** version of Builda. It is not ready for production use.
+The documentation is incomplete and the application has not been fully tested. Use
+at your own risk. 🚨 🚨
+
 ## Setup
 
 You can either install `builda` as a global module or install it locally into your
