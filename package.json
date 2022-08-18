@@ -3,5 +3,9 @@
   "workspaces": [
     "builda",
     "website"
-  ]
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test"
+  }
 }
