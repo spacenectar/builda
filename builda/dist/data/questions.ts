@@ -44,7 +44,8 @@ export default [
   {
     type: 'checkbox',
     name: 'scaffoldSelection',
-    message: 'Select zero or more scaffold types you wish to use',
+    message: 'Select one or more scaffold types you wish to use',
+    default: ['component'],
     choices: [
       'component',
       'atom',

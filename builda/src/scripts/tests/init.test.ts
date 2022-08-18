@@ -37,7 +37,7 @@ describe('init function (happy path)', () => {
       type: 'scaffold',
       outputPath: './experiments/atom',
       use: 'default-ts',
-      substitute: {}
+      substitute: []
     });
   });
 
@@ -46,7 +46,7 @@ describe('init function (happy path)', () => {
       type: 'scaffold',
       outputPath: './experiments/component',
       use: 'default-ts',
-      substitute: {}
+      substitute: []
     });
   });
 
@@ -55,7 +55,7 @@ describe('init function (happy path)', () => {
       type: 'scaffold',
       outputPath: './experiments/test',
       use: 'default-ts',
-      substitute: {}
+      substitute: []
     });
   });
 });

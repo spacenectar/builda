@@ -20,21 +20,21 @@ describe('generateCommands() function happy path', () => {
         type: 'scaffold',
         use: 'default-ts',
         outputPath: './experiments/atom',
-        substitute: {}
+        substitute: []
       },
       {
         name: 'component',
         type: 'scaffold',
         use: 'default-ts',
         outputPath: './experiments/component',
-        substitute: {}
+        substitute: []
       },
       {
         name: 'test',
         type: 'scaffold',
         use: 'default-ts',
         outputPath: './experiments/test',
-        substitute: {}
+        substitute: []
       }
     ]);
   });

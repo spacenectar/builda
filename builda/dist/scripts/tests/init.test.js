@@ -30,7 +30,7 @@ describe('init function (happy path)', () => {
             type: 'scaffold',
             outputPath: './experiments/atom',
             use: 'default-ts',
-            substitute: {}
+            substitute: []
         });
     });
     test('The config file contains an "component" section with the correct values', () => {
@@ -38,7 +38,7 @@ describe('init function (happy path)', () => {
             type: 'scaffold',
             outputPath: './experiments/component',
             use: 'default-ts',
-            substitute: {}
+            substitute: []
         });
     });
     test('The config file contains a "test" section with the correct values', () => {
@@ -46,7 +46,7 @@ describe('init function (happy path)', () => {
             type: 'scaffold',
             outputPath: './experiments/test',
             use: 'default-ts',
-            substitute: {}
+            substitute: []
         });
     });
 });
