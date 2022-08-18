@@ -5,7 +5,7 @@ import docs from './README.md';
 
 
 export default {
-  title: 'local/%PASCAL_CASE%',
+  title: '%PREFIX%/%PASCAL_CASE%',
   component: %PASCAL_CASE%,
   decorators: [],
   parameters: {

@@ -25,6 +25,10 @@
     "styles.module.scss"
   ],
   "substitute": [
-    "prefix"
+    {
+      "string": "PREFIX",
+      "required": true,
+      "default": "local"
+    }
   ]
 }

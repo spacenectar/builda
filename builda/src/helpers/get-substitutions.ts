@@ -20,7 +20,7 @@ export const getSubstitutions = (commandList: Partial<CommandConfig>, argv: Argv
       // User has not provided a substitution but the config has a default fallback value
       if (sub.default && !argv[sub.string]) {
         substitutions.push({
-          replace: sub.string,
+          replace: sub.string.toUpperCase(),
           with: sub.default
         });
       }
@@ -53,7 +53,7 @@ export const getSubstitutions = (commandList: Partial<CommandConfig>, argv: Argv
 
         // The value provided is valid
         substitutions.push({
-          replace: sub.string,
+          replace: sub.string.toUpperCase(),
           with: argv[sub.string] as string
         });
       }

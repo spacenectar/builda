@@ -17,7 +17,7 @@ const getSubstitutions = (commandList, argv) => {
             // User has not provided a substitution but the config has a default fallback value
             if (sub.default && !argv[sub.string]) {
                 substitutions.push({
-                    replace: sub.string,
+                    replace: sub.string.toUpperCase(),
                     with: sub.default
                 });
             }
@@ -37,7 +37,7 @@ const getSubstitutions = (commandList, argv) => {
                 }
                 // The value provided is valid
                 substitutions.push({
-                    replace: sub.string,
+                    replace: sub.string.toUpperCase(),
                     with: argv[sub.string]
                 });
             }
