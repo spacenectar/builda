@@ -22,6 +22,5 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
-          cache-dependency-path: builda/yarn.lock
       - run: yarn build --if-present
       - run: yarn test
