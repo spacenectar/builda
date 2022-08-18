@@ -5,7 +5,8 @@
   "description": "The website for the builda application and the main store for scaffolds and prefabs\"",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0"
+    "test": "echo \"Error: no test specified\" && exit 0",
+    "build": "echo \"Error: no build specified\" && exit 0"
   },
   "author": {
     "name": "Alex Foxleigh",
