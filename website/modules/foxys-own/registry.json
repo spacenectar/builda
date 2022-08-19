@@ -23,7 +23,7 @@
   ],
   "substitute": [
     {
-      "string": "prefix",
+      "string": "PREFIX",
       "required": true
     },
     {
