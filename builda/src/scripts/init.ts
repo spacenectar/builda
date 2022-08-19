@@ -38,133 +38,146 @@ const getAnswers = () => {
   })
 };
 
-const checkExistingConfig = (fileName: string, debug: boolean) => {
-  return new Promise(resolve => {
+const checkExistingConfig = (fileName: string, debug: boolean): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
     if (fs.existsSync(path.join(fileName))) {
       if (debug) {
         // Preset answers were passed so we are in debug/test mode
-        return resolve(`You already have a ${fileName} file. Process Aborted.`);
+        reject(false)
+        return throwError(`You already have a ${fileName} file. Process Aborted.`);
       }
       return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
         ({ replaceConfig }) => {
           if (replaceConfig) {
-            return resolve('yes');
+            return resolve(true);
           }
-          return 'Process terminated due to user selection';
+          reject(false);
+          return throwError('Process terminated due to user selection');
         }
       );
     }
     printMessage('Starting initialisation...\r', 'success');
     printMessage(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
-    return resolve('yes');
+    return resolve(true);
   });
 };
 
+const writeConfig = (filename: string, contents: string) => {
+  return new Promise(resolve => {
+    fs.writeFile(filename, contents, (err) => {
+      if (err) throw err;
+      return resolve(printMessage('Created config in project root', 'success'));
+    });
+  });
+}
+
+const installModules = async (answers: Answers) => {
+  printMessage('Installing initial scaffold...\r', 'notice');
+  let options = {
+    path: answers.installDefaultModule,
+    official: true
+  };
+
+  if (answers.installDefaultModule === 'custom') {
+    options = {
+      path: answers.scaffoldUrl,
+      official: false
+    };
+  }
+  await addModule(options);
+}
+
 const init = async ({
-  fileName = configFileName,
-  presetAnswers = undefined,
-  force = false
+  presetAnswers
 }: {
-  fileName?: string;
   presetAnswers?: Answers;
-  force?: boolean;
 }) => {
   // Check if a config file already exists unless presetAnswers is passed
-  const continueProcess = !force
-  ? await checkExistingConfig(fileName, presetAnswers !== undefined) as string
-  : 'yes';
+  let continueProcess = false;
+  const scaffoldList: string[] = [];
+  let answers = {} as Answers;
 
-  if (continueProcess === 'yes') {
-    const answers = presetAnswers || await getAnswers() as Answers;
-
-    if (!answers.appName) return throwError('App name is required');
-
-    const scaffoldList = [];
-    let module = '';
-
-    // Install the default scaffolds
-    if (answers.installDefaultModule === 'typescript') {
-      printMessage('Installing default scaffolds...\r', 'success');
-      module = 'default-ts';
+  if (!presetAnswers) {
+    try {
+      continueProcess = await checkExistingConfig(configFileName, false);
+    } catch (err) {
+      Promise.reject(err);
+      return throwError(err);
     }
-    if (answers.installDefaultModule === 'javascript') {
-      // Install the default scaffolds
-      module = 'default-js';
+    try {
+      answers = await getAnswers() as Answers;
+    } catch (err) {
+      Promise.reject(err);
+      throwError(err);
     }
+  } else {
+    continueProcess = true;
+    answers = presetAnswers;
+  }
 
-    if (answers.installDefaultModule === 'custom') {
-      // Install the default scaffolds
-      module = answers.scaffoldUrl;
-    }
+  if (!answers.appName) {
+    Promise.reject('No app name provided');
+    return throwError('App name is required');
+  }
 
-    if (answers.scaffoldSelection?.length) {
-      scaffoldList.push(...answers.scaffoldSelection);
-    }
+  return new Promise<void>(async (resolve, reject) => {
 
-    if (answers.customScaffoldList) {
-      answers.customScaffoldList.split(',').forEach((scaffoldType: string) => {
-        scaffoldList.push(scaffoldType.trim());
-      });
-    }
+    if (continueProcess === true) {
+      fs.mkdirSync(buildaDir, { recursive: true });
 
-    const commands = Object.fromEntries(
-      scaffoldList.map((scaffoldType: string) => [
+      if (answers.scaffoldSelection?.length) {
+        scaffoldList.push(...answers.scaffoldSelection);
+      }
+
+      if (answers.customScaffoldList) {
+        answers.customScaffoldList.split(',').forEach((scaffoldType: string) => {
+          scaffoldList.push(scaffoldType.trim());
+        });
+      }
+
+      const commandList = scaffoldList.map((scaffoldType: string) => [
         scaffoldType,
         {
           type: 'scaffold',
           outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-          use: module,
+          use: answers.installDefaultModule, // TODO: This will not work with unofficial modules yet
           substitute: []
         }
       ])
-    );
 
-    const config = {
-      app: {
-        name: answers.appName
-      },
-      commands
-    };
+      const commands = Object.fromEntries(commandList);
 
-    fs.mkdirSync(buildaDir, { recursive: true });
+      const config = {
+        app: {
+          name: answers.appName
+        },
+        commands
+      };
 
-    const contents = JSON.stringify(config, null, 2);
+      const configString = JSON.stringify(config, null, 2);
 
-    return new Promise<void>(resolve => {
-      fs.writeFile(path.join(fileName), contents, async (err) => {
-        if (err) throw err;
-        printMessage('Created config in project root', 'success');
-        if (answers.installDefaultModule === 'custom') {
-          await addModule({path: answers.scaffoldUrl});
+        try {
+          await writeConfig(configFileName, configString);
+        } catch (err) {
+          reject(err);
+          return throwError(err);
         }
-        if (answers.installDefaultModule === 'typescript') {
-          await addModule(
-            {
-              path: 'default-ts',
-              official: true
-            }
+        try {
+          await installModules(answers)
+        } catch (err) {
+          reject(err);
+          return throwError(err);
+        } finally {
+          resolve();
+          printMessage('\rInitialisation complete', 'success');
+          printMessage(
+            `Visit ${websiteUrl}/setup for instructions on what to do next`,
+            'notice'
           );
         }
-        if (answers.installDefaultModule === 'javascript') {
-          await addModule(
-            {
-              path: 'default-js',
-              official: true
-            }
-          );
-        }
-        resolve();
-        return printMessage('Installing default scaffolds...\r', 'success');
-      });
-
-      return printMessage(
-        `Visit ${websiteUrl}/setup for instructions on what to do next`,
-        'notice'
-      );
+      }
+      return Promise.resolve();
     });
-  } else {
-    throwError(continueProcess);
-  }
 };
 
 export default init;

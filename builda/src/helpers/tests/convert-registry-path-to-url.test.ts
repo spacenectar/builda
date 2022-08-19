@@ -3,17 +3,17 @@ import { convertRegistryPathToUrl } from '../convert-registry-path-to-url';
 describe('convertRegistryPathToUrl() function', () => {
   test('should return a raw path to a registry.json file when a github repo folder path is provided', () => {
     const registryPath =
-      'https://github.com/st-elmos-fire/builda/tree/master/scaffolds/component-with-storybook';
+      'https://github.com/test-path/builda/tree/master/scaffolds/component-with-storybook';
     const expected =
-      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook';
+      'https://raw.githubusercontent.com/test-path/builda/master/scaffolds/component-with-storybook';
     expect(convertRegistryPathToUrl(registryPath)).toEqual(expected);
   });
 
   test('should return a raw path to a registry.json file when a bitbucket repo folder path is provided', () => {
     const registryPath =
-      'https://bitbucket.org/alexfoxleigh1981/scaffolds/src/master/component-with-storybook/';
+      'https://bitbucket.org/builda/scaffolds/src/master/component-with-storybook/';
     const expected =
-      'https://bitbucket.org/alexfoxleigh1981/scaffolds/raw/master/component-with-storybook';
+      'https://bitbucket.org/builda/scaffolds/raw/master/component-with-storybook';
     expect(convertRegistryPathToUrl(registryPath)).toEqual(expected);
   });
 

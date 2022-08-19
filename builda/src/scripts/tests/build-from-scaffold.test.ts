@@ -1,37 +1,45 @@
+import buildFromScaffold from '@scripts/build-from-scaffold';
 import fs from 'fs';
 
 import init from '@scripts/init';
-import buildFromScaffold from '@scripts/build-from-scaffold';
-
 import presetAnswers from '@mocks/preset-answers';
+import path from 'path';
 
-const MOCK_OUTPUT_DIRECTORY = './experiments/atom';
+const FILE_PATH = './experiments/atom/test-component/index.tsx';
+const CONFIG_FILE = '.builda.json';
+const CONFIG_FOLDER = '.builda';
 
-describe('Build from scaffold function', () => {
-  beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => null);
-    await init({presetAnswers, force: true});
-    buildFromScaffold({
-      name: 'TestComponent',
-      command: 'atom'
-    });
+beforeAll(async () => {
+  await init({presetAnswers});
+  return buildFromScaffold({
+    name: 'TestComponent',
+    command: 'atom'
   });
+});
 
-  afterAll(() => {
-    jest.restoreAllMocks();
-    fs.rmSync('./experiments', { recursive: true });
-  });
+afterAll(() => {
+  if (fs.existsSync(CONFIG_FILE)) {
+    fs.rmSync(path.resolve(CONFIG_FILE));
+  }
+  if (fs.existsSync(CONFIG_FOLDER)) {
+    fs.rmSync(path.resolve(CONFIG_FOLDER), { recursive: true });
+  }
+  if (fs.existsSync(FILE_PATH)) {
+    fs.rmSync(path.resolve(FILE_PATH));
+  }
+});
 
-  test('An index.tsx file is generated with the correct data', () => {
-    const filePath = `${MOCK_OUTPUT_DIRECTORY}/test-component/index.tsx`;
-    expect(fs.existsSync(filePath)).toBe(true);
-    const file = fs.readFileSync(filePath, 'utf8');
-    expect(file).toContain(
-      'export const TestComponent: React.FC<Props> = ({'
-    );
-    expect(file).toContain(
-      "<div className={`'test-component' ${className}`} {...props}>"
-    );
-    expect(file).toContain('export default TestComponent;');
-  });
+test('Builds a component from a scaffold', () => {
+  expect(fs.existsSync(FILE_PATH)).toBe(true);
+});
+
+test('The index.tsx file contains the correct data', () => {
+  const file = fs.readFileSync(path.resolve(FILE_PATH), 'utf8');
+  expect(file).toContain(
+    'export const TestComponent: React.FC<Props> = ({'
+  );
+  expect(file).toContain(
+    "<div className={`'test-component' ${className}`} {...props}>"
+  );
+  expect(file).toContain('export default TestComponent;');
 });

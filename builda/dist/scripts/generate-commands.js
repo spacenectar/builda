@@ -2,23 +2,27 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCommands = void 0;
 const _helpers_1 = require("../helpers/index.js");
-const generateCommands = () => {
+const generateCommands = async () => {
     const config = (0, _helpers_1.getConfigFile)();
+    const commands = [];
     if (config) {
-        return Object.keys(config.commands).map((command) => {
-            const { use, outputPath, substitute } = config.commands[command];
-            const { registry } = (0, _helpers_1.getModule)(use);
-            return {
-                name: command,
-                type: registry.type,
-                use,
-                outputPath,
-                substitute
-            };
+        Object.keys(config.commands).forEach((command) => {
+            commands.push(new Promise((resolve) => {
+                const { use, outputPath, substitute } = config.commands[command];
+                const { registry } = (0, _helpers_1.getModule)(config, config.commands[command]);
+                resolve({
+                    name: command,
+                    type: registry.type,
+                    use,
+                    outputPath,
+                    substitute
+                });
+            }));
         });
+        return Promise.all(commands);
     }
     else {
-        throw new Error('No config file found');
+        return Promise.reject(`Could not find config file`);
     }
 };
 exports.generateCommands = generateCommands;

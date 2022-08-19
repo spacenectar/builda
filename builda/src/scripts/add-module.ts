@@ -53,9 +53,9 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
   const files = [...registry.files, 'registry.json'];
   files
     .filter((file: string) => !ignoreFiles.includes(file))
-    .forEach((file: string) => {
+    .forEach(async (file: string) => {
       // Download the file
-      axios
+      await axios
         .get(`${modulePath}/${file}`)
         .then((response) => {
 
@@ -66,7 +66,7 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
             content
           };
           const outputPath = `${globals.buildaDir}/modules/${registry.type}/${registry.name}`;
-          createDir(outputPath).then(() => {
+          return createDir(outputPath).then(() => {
             return fs.writeFileSync(
               `${outputPath}/${fileObject.name}`,
               fileObject.content
@@ -90,7 +90,7 @@ export const addModule = async ({
 
     const newPath = official ? `${globals.websiteUrl}/modules/${path}` : path;
 
-    await createDir(moduleDirPath).then(async () => {
+    return createDir(moduleDirPath).then(async () => {
       const moduleType = detectPathType(newPath);
       let module;
       if (moduleType === 'local') {
@@ -138,6 +138,8 @@ export const addModule = async ({
           'success'
         );
       }
+    }).catch((error) => {
+      throwError(error);
     });
   }
 };

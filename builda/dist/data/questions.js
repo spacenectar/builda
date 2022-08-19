@@ -20,11 +20,11 @@ exports.default = [
         choices: [
             {
                 name: 'Default React (typescript)',
-                value: 'typescript'
+                value: 'default-ts'
             },
             {
                 name: 'Default React (javascript)',
-                value: 'javascript'
+                value: 'default-js'
             },
             {
                 name: 'Custom module',

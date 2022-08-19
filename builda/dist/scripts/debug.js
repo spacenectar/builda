@@ -42,7 +42,7 @@ const debug = async ({ runInit = false, runClear = false, runPurge = false, forc
         force = true;
     }
     if (argv.init || runInit) {
-        await (0, init_1.default)({ presetAnswers: preset_answers_1.default, force });
+        await (0, init_1.default)({ presetAnswers: preset_answers_1.default });
     }
     if (argv.clear || runClear) {
         if (fs_1.default.existsSync('./experiments')) {

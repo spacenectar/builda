@@ -3,24 +3,23 @@ import fs from 'fs';
 // Import globals
 import globals from '@data/globals';
 
-// Import helpers
-import { getConfigFile } from '@helpers';
-
 // Import types
 import ModuleType from '@typedefs/module-types';
+import { ConfigFile } from '@typedefs/config-file';
+import CommandConfig from '@typedefs/command-config';
 
-const config = getConfigFile();
 
 const moduleTypes = ['scaffold', 'prefab'] as ModuleType[];
 
-export const getmodule = (name: string) => {
+export const getmodule = (config: ConfigFile, command: CommandConfig) => {
+
   if (config) {
     const moduleList = config.modules;
     const moduleType = moduleTypes.find(
-      (type) => moduleList[type] && moduleList?.[type]?.[name]
+      (type) => moduleList[type] && moduleList?.[type]?.[command.use]
     );
 
-    const path = `${globals.buildaDir}/modules/${moduleType}/${name}`;
+    const path = `${globals.buildaDir}/modules/${moduleType}/${command.use}`;
     const registry = JSON.parse(fs.readFileSync(`${path}/registry.json`, 'utf8'));
     const files = registry.files.filter(
       (file: string) => file !== 'registry.json'
