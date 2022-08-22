@@ -12,17 +12,16 @@ export const getRegistry = async (registryPath: string) => {
     return JSON.parse(fs.readFileSync(`${registryPath}/registry.json`, 'utf8'));
   }
 
-  try {
-    const response = await axios.get(
+  return axios.get(
       `${convertRegistryPathToUrl(registryPath)}/registry.json`
-    );
-    return response.data;
-  } catch (error) {
-    if (error.response.status === 404) {
-      throwError(`No module found at ${registryPath} \n If you want to use a custom registry, please use the full url (including http(s)://)`);
-    }
-    throw new Error(error);
-  }
+    ).then((response) => {
+      return response.data;
+    }).catch((error) => {
+      if (error.response.status === 404) {
+        throwError(`No module found at ${registryPath} \n If you want to use a custom registry, please use the full url (including http(s)://)`);
+      }
+      throwError(error);
+    });
 };
 
 export default getRegistry;

@@ -39,9 +39,9 @@ const addRemoteModule = async (modulePath) => {
     const files = [...registry.files, 'registry.json'];
     files
         .filter((file) => !ignoreFiles.includes(file))
-        .forEach((file) => {
+        .forEach(async (file) => {
         // Download the file
-        axios_1.default
+        await axios_1.default
             .get(`${modulePath}/${file}`)
             .then((response) => {
             const content = file === 'registry.json' ? JSON.stringify(response.data, null, 2) : response.data.toString();
@@ -50,7 +50,7 @@ const addRemoteModule = async (modulePath) => {
                 content
             };
             const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}/${registry.name}`;
-            (0, _helpers_1.createDir)(outputPath).then(() => {
+            return (0, _helpers_1.createDir)(outputPath).then(() => {
                 return fs_1.default.writeFileSync(`${outputPath}/${fileObject.name}`, fileObject.content);
             });
         })
@@ -66,7 +66,7 @@ const addModule = async ({ path, official }) => {
         // Check the module directory exists and create it if it doesn't
         const moduleDirPath = `${globals_1.default.buildaDir}/modules`;
         const newPath = official ? `${globals_1.default.websiteUrl}/modules/${path}` : path;
-        await (0, _helpers_1.createDir)(moduleDirPath).then(async () => {
+        return (0, _helpers_1.createDir)(moduleDirPath).then(async () => {
             var _a, _b;
             const moduleType = (0, _helpers_1.detectPathType)(newPath);
             let module;
@@ -104,6 +104,8 @@ const addModule = async ({ path, official }) => {
                 fs_1.default.writeFileSync(globals_1.default.configFileName, JSON.stringify(config, null, 2));
                 (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
             }
+        }).catch((error) => {
+            (0, _helpers_1.throwError)(error);
         });
     }
 };

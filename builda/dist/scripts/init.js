@@ -15,112 +15,140 @@ const OVERWRITE_CONFIG_QUESTION = {
     name: 'replaceConfig',
     type: 'confirm'
 };
-const getAnswers = () => {
-    return new Promise(resolve => {
+const getAnswers = async () => {
+    return new Promise((resolve) => {
         (0, _helpers_1.askQuestion)({
             questionList: questions_1.default
-        }).then(answers => {
+        }).then((answers) => {
             return resolve(answers);
         });
     });
 };
-const checkExistingConfig = (fileName, debug) => {
-    return new Promise(resolve => {
+const checkExistingConfig = async (fileName, debug) => {
+    return new Promise((resolve, reject) => {
         if (fs_1.default.existsSync(path_1.default.join(fileName))) {
             if (debug) {
                 // Preset answers were passed so we are in debug/test mode
-                return resolve(`You already have a ${fileName} file. Process Aborted.`);
+                reject(false);
+                return (0, _helpers_1.throwError)(`You already have a ${fileName} file. Process Aborted.`);
             }
             return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
                 if (replaceConfig) {
-                    return resolve('yes');
+                    return resolve(true);
                 }
-                return 'Process terminated due to user selection';
+                reject(false);
+                return (0, _helpers_1.throwError)('Process terminated due to user selection');
             });
         }
         (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
         (0, _helpers_1.printMessage)(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
-        return resolve('yes');
+        return resolve(true);
     });
 };
-const init = async ({ fileName = configFileName, presetAnswers = undefined, force = false }) => {
-    var _a;
-    // Check if a config file already exists unless presetAnswers is passed
-    const continueProcess = !force
-        ? await checkExistingConfig(fileName, presetAnswers !== undefined)
-        : 'yes';
-    if (continueProcess === 'yes') {
-        const answers = presetAnswers || await getAnswers();
-        if (!answers.appName)
-            return (0, _helpers_1.throwError)('App name is required');
-        const scaffoldList = [];
-        let module = '';
-        // Install the default scaffolds
-        if (answers.installDefaultModule === 'typescript') {
-            (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
-            module = 'default-ts';
-        }
-        if (answers.installDefaultModule === 'javascript') {
-            // Install the default scaffolds
-            module = 'default-js';
-        }
-        if (answers.installDefaultModule === 'custom') {
-            // Install the default scaffolds
-            module = answers.scaffoldUrl;
-        }
-        if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
-            scaffoldList.push(...answers.scaffoldSelection);
-        }
-        if (answers.customScaffoldList) {
-            answers.customScaffoldList.split(',').forEach((scaffoldType) => {
-                scaffoldList.push(scaffoldType.trim());
-            });
-        }
-        const commands = Object.fromEntries(scaffoldList.map((scaffoldType) => [
-            scaffoldType,
-            {
-                type: 'scaffold',
-                outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-                use: module,
-                substitute: []
-            }
-        ]));
-        const config = {
-            app: {
-                name: answers.appName
-            },
-            commands
-        };
-        fs_1.default.mkdirSync(buildaDir, { recursive: true });
-        const contents = JSON.stringify(config, null, 2);
-        return new Promise(resolve => {
-            fs_1.default.writeFile(path_1.default.join(fileName), contents, async (err) => {
-                if (err)
-                    throw err;
-                (0, _helpers_1.printMessage)('Created config in project root', 'success');
-                if (answers.installDefaultModule === 'custom') {
-                    await (0, add_module_1.default)({ path: answers.scaffoldUrl });
-                }
-                if (answers.installDefaultModule === 'typescript') {
-                    await (0, add_module_1.default)({
-                        path: 'default-ts',
-                        official: true
-                    });
-                }
-                if (answers.installDefaultModule === 'javascript') {
-                    await (0, add_module_1.default)({
-                        path: 'default-js',
-                        official: true
-                    });
-                }
-                resolve();
-                return (0, _helpers_1.printMessage)('Installing default scaffolds...\r', 'success');
-            });
-            return (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
+const writeConfig = async (filename, contents) => {
+    return new Promise((resolve) => {
+        fs_1.default.writeFile(filename, contents, (err) => {
+            if (err)
+                throw err;
+            return resolve((0, _helpers_1.printMessage)('Created config in project root', 'success'));
         });
+    });
+};
+const installModules = async (answers) => {
+    (0, _helpers_1.printMessage)('Installing initial scaffold...\r', 'notice');
+    let options = {
+        path: answers.installDefaultModule,
+        official: true
+    };
+    if (answers.installDefaultModule === 'custom') {
+        options = {
+            path: answers.scaffoldUrl,
+            official: false
+        };
+    }
+    await (0, add_module_1.default)(options);
+};
+const init = async ({ presetAnswers }) => {
+    // Check if a config file already exists unless presetAnswers is passed
+    let continueProcess = false;
+    const scaffoldList = [];
+    let answers = {};
+    if (!presetAnswers) {
+        try {
+            continueProcess = await checkExistingConfig(configFileName, false);
+        }
+        catch (err) {
+            Promise.reject(err);
+            return (0, _helpers_1.throwError)(err);
+        }
+        try {
+            answers = (await getAnswers());
+        }
+        catch (err) {
+            Promise.reject(err);
+            (0, _helpers_1.throwError)(err);
+        }
     }
     else {
-        (0, _helpers_1.throwError)(continueProcess);
+        continueProcess = true;
+        answers = presetAnswers;
     }
+    if (!answers.appName) {
+        Promise.reject('No app name provided');
+        return (0, _helpers_1.throwError)('App name is required');
+    }
+    return new Promise(async (resolve, reject) => {
+        var _a;
+        if (continueProcess === true) {
+            fs_1.default.mkdirSync(buildaDir, { recursive: true });
+            if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
+                scaffoldList.push(...answers.scaffoldSelection);
+            }
+            if (answers.customScaffoldList) {
+                answers.customScaffoldList
+                    .split(',')
+                    .forEach((scaffoldType) => {
+                    scaffoldList.push(scaffoldType.trim());
+                });
+            }
+            const commandList = scaffoldList.map((scaffoldType) => [
+                scaffoldType,
+                {
+                    type: 'scaffold',
+                    outputPath: `${answers.outputDirectory}/${scaffoldType}`,
+                    use: answers.installDefaultModule,
+                    substitute: []
+                }
+            ]);
+            const commands = Object.fromEntries(commandList);
+            const config = {
+                app: {
+                    name: answers.appName
+                },
+                commands
+            };
+            const configString = JSON.stringify(config, null, 2);
+            try {
+                await writeConfig(configFileName, configString);
+            }
+            catch (err) {
+                reject(err);
+                return (0, _helpers_1.throwError)(err);
+            }
+            try {
+                await installModules(answers);
+            }
+            catch (err) {
+                reject(err);
+                return (0, _helpers_1.throwError)(err);
+            }
+            finally {
+                resolve();
+                (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
+                (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
+            }
+        }
+        return Promise.resolve();
+    });
 };
 exports.default = init;

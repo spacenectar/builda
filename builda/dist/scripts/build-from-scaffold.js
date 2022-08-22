@@ -8,14 +8,14 @@ const fs_1 = __importDefault(require("fs"));
 // import helpers
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
-const config = (0, _helpers_1.getConfigFile)();
 const buildFromScaffold = ({ name, command, substitute }) => {
+    const config = (0, _helpers_1.getConfigFile)();
     if (config) {
         (0, _helpers_1.printMessage)(`Building ${command} '${name}'...`, 'notice');
         const outputDirectory = `${config.commands[command].outputPath}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         fs_1.default.mkdirSync(outputDirectory, { recursive: true });
-        const { path: pathstring, registry, files } = (0, _helpers_1.getModule)(config.commands[command].use);
+        const { path: pathstring, registry, files } = (0, _helpers_1.getModule)(config, config.commands[command]);
         files.forEach((file) => {
             const srcPath = `${pathstring}/${file}`;
             const outputPath = `${outputDirectory}`;

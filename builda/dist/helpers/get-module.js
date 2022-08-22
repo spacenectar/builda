@@ -5,21 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getmodule = void 0;
 const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
 // Import globals
 const globals_1 = __importDefault(require("../data/globals"));
-// Import helpers
-const _helpers_1 = require("./index.js");
-const config = (0, _helpers_1.getConfigFile)();
 const moduleTypes = ['scaffold', 'prefab'];
-const getmodule = (name) => {
+const getmodule = (config, command) => {
     if (config) {
         const moduleList = config.modules;
-        const moduleType = moduleTypes.find((type) => { var _a; return moduleList[type] && ((_a = moduleList === null || moduleList === void 0 ? void 0 : moduleList[type]) === null || _a === void 0 ? void 0 : _a[name]); });
-        const path = `${globals_1.default.buildaDir}/modules/${moduleType}/${name}`;
-        const registry = JSON.parse(fs_1.default.readFileSync(`${path}/registry.json`, 'utf8'));
+        const moduleType = moduleTypes.find((type) => { var _a; return moduleList[type] && ((_a = moduleList === null || moduleList === void 0 ? void 0 : moduleList[type]) === null || _a === void 0 ? void 0 : _a[command.use]); });
+        const modulePath = path_1.default.resolve(`${globals_1.default.buildaDir}/modules/${moduleType}/${command.use}`);
+        const registry = JSON.parse(fs_1.default.readFileSync(`${modulePath}/registry.json`, 'utf8'));
         const files = registry.files.filter((file) => file !== 'registry.json');
         return {
-            path,
+            path: modulePath,
             registry,
             files
         };

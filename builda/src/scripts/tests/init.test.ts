@@ -1,31 +1,20 @@
 import fs from 'fs';
 
-import init from '@scripts/init';
-
 import presetAnswers from '@mocks/preset-answers';
-import type { ConfigFile } from '@typedefs/config-file';
+import init from '@scripts/init';
+import { ConfigFile } from '@typedefs/config-file';
+import getConfigFile from '@helpers/get-config-file';
 
-
-import globals from '@data/globals';
-
-const { configFileName: fileName } = globals;
-
-let config = {} as ConfigFile
-
-describe('init function (happy path)', () => {
+describe('init', () => {
+  const CONFIG_FILE = '.builda.json';
+  let config = {} as ConfigFile;
   beforeAll(async () => {
-    jest.clearAllMocks();
-    jest.spyOn(console, 'log').mockImplementation(() => null);
-    await init({presetAnswers, force: true});
-    config = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
+    await init({ presetAnswers });
+    config = getConfigFile();
   });
 
   test('A config file is produced', () => {
-    expect(fs.existsSync(fileName)).toBe(true);
+    expect(fs.existsSync(CONFIG_FILE)).toBe(true);
   });
 
   test('The config file contains an appName value which reads "test"', () => {
@@ -50,29 +39,13 @@ describe('init function (happy path)', () => {
     });
   });
 
-  test('The config file contains a "test" section with the correct values', () => {
+  test('The config file contains a "test" section with the correct values', (done) => {
     expect(config.commands.test).toEqual({
       type: 'scaffold',
       outputPath: './experiments/test',
       use: 'default-ts',
       substitute: []
     });
-  });
-});
-
-describe('init function (error path)', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    jest.spyOn(console, 'log').mockImplementation(() => null);
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  test('If a config file already exists, an error is thrown and the promise is rejected', () => {
-    expect(() => init({presetAnswers})).rejects.toThrowError(
-      `You already have a ${fileName} file. Process Aborted.`
-    );
+    setTimeout(() => done(), 2000);
   });
 });

@@ -2,13 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const string_functions_1 = require("../string-functions");
 describe('changeCase() convert from kebab case', () => {
-    beforeEach(() => {
-        jest.spyOn(console, 'log').mockImplementation(() => { });
-    });
-    afterAll(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-    });
     test('Kebabcase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('my-component', 'sentenceCase');
         expect(string).toEqual('My component');
@@ -47,13 +40,6 @@ describe('changeCase() convert from kebab case', () => {
     });
 });
 describe('changeCase() convert from pascal case', () => {
-    beforeEach(() => {
-        // jest.spyOn(console, 'log').mockImplementation(() => {});
-    });
-    afterAll(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-    });
     test('Pascalcase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('MyComponent', 'sentenceCase');
         expect(string).toEqual('My component');
@@ -88,13 +74,6 @@ describe('changeCase() convert from pascal case', () => {
     });
 });
 describe('changeCase() convert from camel case', () => {
-    beforeEach(() => {
-        // jest.spyOn(console, 'log').mockImplementation(() => {});
-    });
-    afterAll(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-    });
     test('Camelcase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('myComponent', 'sentenceCase');
         expect(string).toEqual('My component');
@@ -129,13 +108,6 @@ describe('changeCase() convert from camel case', () => {
     });
 });
 describe('changeCase() convert from snake case', () => {
-    beforeEach(() => {
-        // jest.spyOn(console, 'log').mockImplementation(() => {});
-    });
-    afterAll(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-    });
     test('Snakecase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('my_component', 'sentenceCase');
         expect(string).toEqual('My component');
@@ -174,13 +146,6 @@ describe('changeCase() convert from snake case', () => {
     });
 });
 describe('changeCase() convert from sentence case', () => {
-    beforeEach(() => {
-        // jest.spyOn(console, 'log').mockImplementation(() => {});
-    });
-    afterAll(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-    });
     test('Sentencecase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('My component', 'sentenceCase');
         expect(string).toEqual('My component');

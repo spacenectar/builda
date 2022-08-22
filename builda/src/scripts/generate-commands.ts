@@ -1,24 +1,26 @@
 import { getConfigFile, getModule } from '@helpers';
 import type CommandConfig from '@typedefs/command-config';
 
-export const generateCommands = (): CommandConfig[] => {
+export const generateCommands = async (): Promise<CommandConfig[]> => {
   const config = getConfigFile();
+  const commands: Promise<CommandConfig>[] = [];
   if (config) {
-    return Object.keys(config.commands).map((command) => {
-      const { use, outputPath, substitute } = config.commands[command];
-
-      const { registry } = getModule(use);
-
-      return {
-        name: command,
-        type: registry.type,
-        use,
-        outputPath,
-        substitute
-      };
+    Object.keys(config.commands).forEach((command) => {
+      commands.push(new Promise((resolve) => {
+        const { use, outputPath, substitute } = config.commands[command];
+        const { registry } = getModule(config, config.commands[command]);
+        resolve({
+          name: command,
+          type: registry.type,
+          use,
+          outputPath,
+          substitute
+        });
+      }));
     });
+    return Promise.all(commands);
   } else {
-    throw new Error('No config file found');
+    return Promise.reject(`Could not find config file`);
   }
 };
 

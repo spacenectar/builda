@@ -4,23 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
-const init_1 = __importDefault(require("../init"));
 const preset_answers_1 = __importDefault(require("../../mocks/preset-answers"));
-const globals_1 = __importDefault(require("../../data/globals"));
-const { configFileName: fileName } = globals_1.default;
-let config = {};
-describe('init function (happy path)', () => {
+const init_1 = __importDefault(require("../init"));
+const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
+describe('init', () => {
+    const CONFIG_FILE = '.builda.json';
+    let config = {};
     beforeAll(async () => {
-        jest.clearAllMocks();
-        jest.spyOn(console, 'log').mockImplementation(() => null);
-        await (0, init_1.default)({ presetAnswers: preset_answers_1.default, force: true });
-        config = JSON.parse(fs_1.default.readFileSync(fileName, 'utf8'));
-    });
-    afterAll(() => {
-        jest.restoreAllMocks();
+        await (0, init_1.default)({ presetAnswers: preset_answers_1.default });
+        config = (0, get_config_file_1.default)();
     });
     test('A config file is produced', () => {
-        expect(fs_1.default.existsSync(fileName)).toBe(true);
+        expect(fs_1.default.existsSync(CONFIG_FILE)).toBe(true);
     });
     test('The config file contains an appName value which reads "test"', () => {
         expect(config.app.name).toBe('test');
@@ -41,24 +36,13 @@ describe('init function (happy path)', () => {
             substitute: []
         });
     });
-    test('The config file contains a "test" section with the correct values', () => {
+    test('The config file contains a "test" section with the correct values', (done) => {
         expect(config.commands.test).toEqual({
             type: 'scaffold',
             outputPath: './experiments/test',
             use: 'default-ts',
             substitute: []
         });
-    });
-});
-describe('init function (error path)', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-        jest.spyOn(console, 'log').mockImplementation(() => null);
-    });
-    afterEach(() => {
-        jest.restoreAllMocks();
-    });
-    test('If a config file already exists, an error is thrown and the promise is rejected', () => {
-        expect(() => (0, init_1.default)({ presetAnswers: preset_answers_1.default })).rejects.toThrowError(`You already have a ${fileName} file. Process Aborted.`);
+        setTimeout(() => done(), 2000);
     });
 });

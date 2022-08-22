@@ -9,7 +9,7 @@ describe('detectPathType', () => {
 
   test("should return 'remote' when a remote path is provided", () => {
     const path =
-      'https://raw.githubusercontent.com/st-elmos-fire/builda/master/scaffolds/component-with-storybook/registry.json';
+      'https://thisurlaintreal.com';
     const expected = 'remote';
     expect(detectPathType(path)).toEqual(expected);
   });

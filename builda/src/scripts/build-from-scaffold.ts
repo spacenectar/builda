@@ -13,13 +13,14 @@ type Props = {
   substitute?: TSubstitution[];
 };
 
-const config = getConfigFile();
-
 export const buildFromScaffold = ({
   name,
   command,
   substitute
 }: Props) => {
+
+  const config = getConfigFile();
+
   if (config) {
     printMessage(`Building ${command} '${name}'...`, 'notice');
     const outputDirectory = `${
@@ -33,7 +34,7 @@ export const buildFromScaffold = ({
       path: pathstring,
       registry,
       files
-    } = getModule(config.commands[command].use);
+    } = getModule(config, config.commands[command]);
 
     files.forEach((file: string) => {
       const srcPath = `${pathstring}/${file}`;

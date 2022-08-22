@@ -1,19 +1,14 @@
 import generateCommands from '@scripts/generate-commands';
-import init from '@scripts/init';
-import presetAnswers from '@mocks/preset-answers';
+import CommandConfig from '@typedefs/command-config';
 
-describe('generateCommands() function happy path', () => {
+describe('generateCommands', () => {
+  let commands = [] as CommandConfig[];
 
-  beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(() => null);
-    await init({presetAnswers, force: true});
+  beforeEach(async () => {
+    commands = await generateCommands();
   });
-  afterAll(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-  });
+
   test('config file is parsed and commands extracted', () => {
-    const commands = generateCommands();
     expect(commands).toEqual([
       {
         name: 'atom',
