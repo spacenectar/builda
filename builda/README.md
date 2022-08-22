@@ -20,11 +20,11 @@ template automatically.
 
 ### Initialising builda
 
-![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/example/init.gif)
+![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/builda/example/init.gif)
 
 ### Generate an atom component
 
-![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/example/generate-atom.gif)
+![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/builda/example/generate-atom.gif)
 
 The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda/tree/master/example/test-component)
 
