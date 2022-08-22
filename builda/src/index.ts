@@ -8,8 +8,7 @@ import {
   printMessage,
   askQuestion,
   getConfigFile,
-  printLogo,
-  getSubstitutions
+  printLogo
 } from '@helpers';
 
 // import data
@@ -66,7 +65,6 @@ const CREATE_CONFIG_QUESTION = {
   }
 
   if ((args.length === 0 || !argv.manual) && !config) {
-    printMessage(`No ${configFileName} found. Please run the 'init' command.\r`, 'danger');
     // No arguments were passed but a config file does not exist
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
@@ -95,7 +93,7 @@ const CREATE_CONFIG_QUESTION = {
 
   if (argv._[0].toString() === 'add') {
     const module = argv._[1].toString();
-    return addModule({path: module});
+    return addModule({config, path: module});
   }
 
   const commands = config ? await generateCommands() : [];
@@ -104,15 +102,13 @@ const CREATE_CONFIG_QUESTION = {
 
   const command = commands.find((c) => c.name === commandString);
 
-  const substitute = command ? getSubstitutions(command, argv) : [];
-
   if (command) {
     const name = argv._[1].toString();
 
     return buildFromScaffold({
       name,
-      command: command.name,
-      substitute
+      command,
+      args: argv
     });
   } else {
     return printMessage(

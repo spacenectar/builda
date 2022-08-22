@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
+import { pluralise } from '@helpers/string-functions';
 
 import globals from '@data/globals';
 import questions from '@data/questions';
@@ -12,6 +13,7 @@ const { configFileName, buildaDir, websiteUrl } = globals;
 import { QuestionType } from '@typedefs/question-type';
 import { Question } from 'inquirer';
 import addModule from './add-module';
+import { ConfigFile } from '@typedefs/config-file';
 
 interface Answers {
   appName: string;
@@ -79,20 +81,22 @@ const writeConfig = async (filename: string, contents: string) => {
   });
 };
 
-const installModules = async (answers: Answers) => {
+const installModules = async (config: Partial<ConfigFile>, answers: Answers)  => {
   printMessage('Installing initial scaffold...\r', 'notice');
   let options = {
+    config,
     path: answers.installDefaultModule,
     official: true
   };
 
   if (answers.installDefaultModule === 'custom') {
     options = {
+      config,
       path: answers.scaffoldUrl,
       official: false
     };
   }
-  await addModule(options);
+  return addModule(options);
 };
 
 const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
@@ -139,49 +143,47 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
             scaffoldList.push(scaffoldType.trim());
           });
       }
-
-      const commandList = scaffoldList.map((scaffoldType: string) => [
-        scaffoldType,
-        {
-          type: 'scaffold',
-          outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-          use: answers.installDefaultModule, // TODO: This will not work with unofficial modules yet
-          substitute: []
-        }
-      ]);
-
-      const commands = Object.fromEntries(commandList);
-
       const config = {
         app: {
           name: answers.appName
-        },
-        commands
-      };
+        }
+      } as ConfigFile;
 
-      const configString = JSON.stringify(config, null, 2);
+      await installModules(config, answers).then((response) => {
 
-      try {
-        await writeConfig(configFileName, configString);
-      } catch (err) {
+        const commandList = scaffoldList.map((scaffoldType: string) => [
+          scaffoldType,
+          {
+            type: 'scaffold',
+            outputPath: `${answers.outputDirectory}/${pluralise(scaffoldType)}`,
+            use: response.module.name
+          }
+        ]);
+
+        const commands = Object.fromEntries(commandList);
+
+        const updatedConfig = {
+          ...response.config,
+          commands
+        };
+
+        const configString = JSON.stringify(updatedConfig, null, 2);
+        writeConfig(configFileName, configString).then(() => {
+            printMessage('\rInitialisation complete', 'success');
+            printMessage(
+              `Visit ${websiteUrl}/setup for instructions on what to do next`,
+              'notice'
+            );
+            resolve();
+          }).catch((err) => {
+            reject(err);
+            throwError(err);
+          });
+      }).catch((err) => {
         reject(err);
-        return throwError(err);
-      }
-      try {
-        await installModules(answers);
-      } catch (err) {
-        reject(err);
-        return throwError(err);
-      } finally {
-        resolve();
-        printMessage('\rInitialisation complete', 'success');
-        printMessage(
-          `Visit ${websiteUrl}/setup for instructions on what to do next`,
-          'notice'
-        );
-      }
+        throwError(err);
+      });
     }
-    return Promise.resolve();
   });
 };
 

@@ -14,22 +14,19 @@ describe('generateCommands', () => {
         name: 'atom',
         type: 'scaffold',
         use: 'default-ts',
-        outputPath: './experiments/atom',
-        substitute: []
+        outputPath: './experiments/atoms'
       },
       {
         name: 'component',
         type: 'scaffold',
         use: 'default-ts',
-        outputPath: './experiments/component',
-        substitute: []
+        outputPath: './experiments/components'
       },
       {
         name: 'test',
         type: 'scaffold',
         use: 'default-ts',
-        outputPath: './experiments/test',
-        substitute: []
+        outputPath: './experiments/tests'
       }
     ]);
   });

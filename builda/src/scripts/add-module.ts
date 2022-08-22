@@ -5,7 +5,6 @@ import fs from 'fs';
 
 // Import helpers
 import {
-  getConfigFile,
   detectPathType,
   throwError,
   getRegistry,
@@ -23,6 +22,7 @@ import ModuleRegistry from '@typedefs/module-registry';
 // Import ignorefile
 import ignoreFile from '@data/ignore-file.json';
 import changeCase from '@helpers/string-functions';
+import { ConfigFile } from '@typedefs/config-file';
 
 // Ignore these files
 const ignoreFiles = ignoreFile.ignore;
@@ -80,68 +80,82 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
   return registry;
 };
 
+export type AddModulesResponse = {
+  module: ModuleRegistry,
+  config: Partial<ConfigFile>
+};
+
 export const addModule = async ({
-  path, official
-} : { path: string, official?: boolean}) => {
-  const config = getConfigFile();
+  config, path, official
+} : { config: Partial<ConfigFile>, path: string, official?: boolean}): Promise<AddModulesResponse> => {
+  let module = {} as ModuleRegistry;
   if (config) {
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = `${globals.buildaDir}/modules`;
 
     const newPath = official ? `${globals.websiteUrl}/modules/${path}` : path;
 
-    return createDir(moduleDirPath).then(async () => {
-      const moduleType = detectPathType(newPath);
-      let module;
-      if (moduleType === 'local') {
-        module = await addLocalModule(newPath);
+    await createDir(moduleDirPath)
+
+    const moduleType = detectPathType(newPath);
+
+    if (moduleType === 'local') {
+      module = await addLocalModule(newPath);
+    }
+
+    if (moduleType === 'remote') {
+      module = await addRemoteModule(convertRegistryPathToUrl(newPath));
+    }
+
+    if (module?.name) {
+      const type = module.type;
+      const name = module.name;
+      const version = module.version;
+
+      // User has never installed any modules.
+      if (!config.modules) {
+        config.modules = {};
       }
 
-      if (moduleType === 'remote') {
-        module = await addRemoteModule(convertRegistryPathToUrl(newPath));
-      }
-
-      if (module?.name) {
-        const type = module.type;
-        const name = module.name;
-        const version = module.version;
-
-        // User has never installed any modules.
-        if (!config.modules) {
-          config.modules = {};
+      if (type === 'scaffold') {
+        // User has never installed any scaffolds.
+        if (!config?.modules?.scaffold) {
+          config.modules.scaffold = {};
         }
+        const scaffolds = config.modules.scaffold;
+        scaffolds[name] = version;
+      }
+      if (type === 'prefab') {
+        // User has never installed any prefabs.
+        if (!config?.modules?.prefab) {
+          config.modules.prefab = {};
+        }
+        const prefabs = config.modules.prefab;
+        prefabs[name] = version;
+      }
 
-        if (type === 'scaffold') {
-          // User has never installed any scaffolds.
-          if (!config?.modules?.scaffold) {
-            config.modules.scaffold = {};
+      // Write the config file
+      fs.writeFile(
+        globals.configFileName,
+        JSON.stringify(config,  null, 2),
+        (err) => {
+          if (err) {
+            throwError(err.message);
           }
-          const scaffolds = config.modules.scaffold;
-          scaffolds[name] = version;
+          printMessage(
+            `${changeCase(type, 'pascal')}: ${name}@${version} installed`,
+            'success'
+          );
         }
-        if (type === 'prefab') {
-          // User has never installed any prefabs.
-          if (!config?.modules?.prefab) {
-            config.modules.prefab = {};
-          }
-          const prefabs = config.modules.prefab;
-          prefabs[name] = version;
-        }
-
-        // Write the config file
-        fs.writeFileSync(
-          globals.configFileName,
-          JSON.stringify(config,  null, 2)
-        );
-        printMessage(
-          `${changeCase(type, 'pascal')}: ${name}@${version} installed`,
-          'success'
-        );
-      }
-    }).catch((error) => {
-      throwError(error);
-    });
+      )
+      return {
+        module,
+        config
+      };
+    }
+    return throwError('Something went wrong');
   }
+  return throwError('No config file found');
 };
 
 export default addModule;

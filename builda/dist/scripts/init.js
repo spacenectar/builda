@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
+const string_functions_1 = require("../helpers/string-functions");
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
@@ -54,19 +55,21 @@ const writeConfig = async (filename, contents) => {
         });
     });
 };
-const installModules = async (answers) => {
+const installModules = async (config, answers) => {
     (0, _helpers_1.printMessage)('Installing initial scaffold...\r', 'notice');
     let options = {
+        config,
         path: answers.installDefaultModule,
         official: true
     };
     if (answers.installDefaultModule === 'custom') {
         options = {
+            config,
             path: answers.scaffoldUrl,
             official: false
         };
     }
-    await (0, add_module_1.default)(options);
+    return (0, add_module_1.default)(options);
 };
 const init = async ({ presetAnswers }) => {
     // Check if a config file already exists unless presetAnswers is passed
@@ -111,44 +114,36 @@ const init = async ({ presetAnswers }) => {
                     scaffoldList.push(scaffoldType.trim());
                 });
             }
-            const commandList = scaffoldList.map((scaffoldType) => [
-                scaffoldType,
-                {
-                    type: 'scaffold',
-                    outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-                    use: answers.installDefaultModule,
-                    substitute: []
-                }
-            ]);
-            const commands = Object.fromEntries(commandList);
             const config = {
                 app: {
                     name: answers.appName
-                },
-                commands
+                }
             };
-            const configString = JSON.stringify(config, null, 2);
-            try {
-                await writeConfig(configFileName, configString);
-            }
-            catch (err) {
+            await installModules(config, answers).then((response) => {
+                const commandList = scaffoldList.map((scaffoldType) => [
+                    scaffoldType,
+                    {
+                        type: 'scaffold',
+                        outputPath: `${answers.outputDirectory}/${(0, string_functions_1.pluralise)(scaffoldType)}`,
+                        use: response.module.name
+                    }
+                ]);
+                const commands = Object.fromEntries(commandList);
+                const updatedConfig = Object.assign(Object.assign({}, response.config), { commands });
+                const configString = JSON.stringify(updatedConfig, null, 2);
+                writeConfig(configFileName, configString).then(() => {
+                    (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
+                    (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
+                    resolve();
+                }).catch((err) => {
+                    reject(err);
+                    (0, _helpers_1.throwError)(err);
+                });
+            }).catch((err) => {
                 reject(err);
-                return (0, _helpers_1.throwError)(err);
-            }
-            try {
-                await installModules(answers);
-            }
-            catch (err) {
-                reject(err);
-                return (0, _helpers_1.throwError)(err);
-            }
-            finally {
-                resolve();
-                (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
-                (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
-            }
+                (0, _helpers_1.throwError)(err);
+            });
         }
-        return Promise.resolve();
     });
 };
 exports.default = init;

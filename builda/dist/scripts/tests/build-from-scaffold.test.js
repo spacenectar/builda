@@ -7,9 +7,15 @@ const build_from_scaffold_1 = __importDefault(require("../build-from-scaffold"))
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const FILE_FOLDER = './experiments';
-const FILE_PATH = `${FILE_FOLDER}/atom/test-component/index.tsx`;
+const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FILE = '.builda.json';
 const CONFIG_FOLDER = '.builda';
+const command = {
+    name: 'atom',
+    type: 'scaffold',
+    use: 'default-ts',
+    outputPath: './experiments/atoms'
+};
 afterAll((done) => {
     if (fs_1.default.existsSync(CONFIG_FILE)) {
         fs_1.default.rmSync(path_1.default.resolve(CONFIG_FILE));
@@ -26,7 +32,7 @@ describe('buildFromScaffold', () => {
     beforeAll((done) => {
         (0, build_from_scaffold_1.default)({
             name: 'TestComponent',
-            command: 'atom'
+            command
         });
         return done();
     });

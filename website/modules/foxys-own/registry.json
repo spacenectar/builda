@@ -1,7 +1,7 @@
 {
   "name": "foxys-own",
   "type": "scaffold",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "author": "Alex Foxleigh (https://www.alexfoxleigh.com/)",
   "funding": "https://www.patreon.com/builda",
   "moduleUrl": "https://builda.app/modules/foxys-own",
@@ -23,12 +23,13 @@
   ],
   "substitute": [
     {
-      "string": "PREFIX",
-      "required": true
+      "replace": "PREFIX",
+      "required": true,
+      "with": "command"
     },
     {
-      "string": "type",
-      "default": "component"
+      "replace": "TYPE",
+      "with": "component"
     }
   ]
 }

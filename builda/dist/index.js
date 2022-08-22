@@ -48,7 +48,6 @@ const CREATE_CONFIG_QUESTION = {
         }
     }
     if ((args.length === 0 || !argv.manual) && !config) {
-        (0, _helpers_1.printMessage)(`No ${configFileName} found. Please run the 'init' command.\r`, 'danger');
         // No arguments were passed but a config file does not exist
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
@@ -73,18 +72,17 @@ const CREATE_CONFIG_QUESTION = {
         return (0, init_1.default)({});
     if (argv._[0].toString() === 'add') {
         const module = argv._[1].toString();
-        return (0, add_module_1.default)({ path: module });
+        return (0, add_module_1.default)({ config, path: module });
     }
     const commands = config ? await (0, generate_commands_1.default)() : [];
     const commandString = process.argv[2].replace('--', '');
     const command = commands.find((c) => c.name === commandString);
-    const substitute = command ? (0, _helpers_1.getSubstitutions)(command, argv) : [];
     if (command) {
         const name = argv._[1].toString();
         return (0, build_from_scaffold_1.default)({
             name,
-            command: command.name,
-            substitute
+            command,
+            args: argv
         });
     }
     else {

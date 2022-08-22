@@ -1,0 +1,9 @@
+{
+  "name": "test-component",
+  "version": "1.0.0",
+  "author": "",
+  "scaffold": {
+    "name": "foxys-own",
+    "version": "2.1.0"
+  }
+}

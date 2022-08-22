@@ -1,0 +1,29 @@
+import { TestComponent } from "./index.tsx";
+
+<Meta
+  title="atom/TestComponent"
+  component={TestComponent}
+  args={{
+    text: "Default text",
+  }}
+/>
+
+<Title type="ALPHA">Test component</Title>
+
+<Description of={TestComponent} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <TestComponent {...args} />}</Story>
+  <Story
+    name="Alternate Text"
+    args={{
+      text: "Alternate Text",
+    }}
+  >
+    {(args) => <TestComponent {...args} />}
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={TestComponent} />

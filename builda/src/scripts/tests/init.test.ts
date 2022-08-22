@@ -24,27 +24,24 @@ describe('init', () => {
   test('The config file contains an "atom" section with the correct values', () => {
     expect(config.commands.atom).toEqual({
       type: 'scaffold',
-      outputPath: './experiments/atom',
-      use: 'default-ts',
-      substitute: []
+      outputPath: './experiments/atoms',
+      use: 'default-ts'
     });
   });
 
   test('The config file contains an "component" section with the correct values', () => {
     expect(config.commands.component).toEqual({
       type: 'scaffold',
-      outputPath: './experiments/component',
-      use: 'default-ts',
-      substitute: []
+      outputPath: './experiments/components',
+      use: 'default-ts'
     });
   });
 
   test('The config file contains a "test" section with the correct values', (done) => {
     expect(config.commands.test).toEqual({
       type: 'scaffold',
-      outputPath: './experiments/test',
-      use: 'default-ts',
-      substitute: []
+      outputPath: './experiments/tests',
+      use: 'default-ts'
     });
     setTimeout(() => done(), 2000);
   });

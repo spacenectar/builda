@@ -1,18 +1,11 @@
 import ModuleType from './module-types';
-
-export type TSubstitute = {
-  string: string;
-  default?: string;
-  valid?: string[];
-  required?: boolean;
-};
-
+import TSubstitution from './substitution';
 export interface CommandConfig {
   name: string;
   type: ModuleType;
   use: string;
   outputPath: string;
-  substitute: TSubstitute[];
+  substitute: TSubstitution[];
 }
 
 export default CommandConfig;
