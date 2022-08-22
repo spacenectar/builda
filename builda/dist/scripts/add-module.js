@@ -60,54 +60,60 @@ const addRemoteModule = async (modulePath) => {
     });
     return registry;
 };
-const addModule = async ({ path, official }) => {
-    const config = (0, _helpers_1.getConfigFile)();
+const addModule = async ({ config, path, official }) => {
+    var _a, _b;
+    let module = {};
     if (config) {
         // Check the module directory exists and create it if it doesn't
         const moduleDirPath = `${globals_1.default.buildaDir}/modules`;
         const newPath = official ? `${globals_1.default.websiteUrl}/modules/${path}` : path;
-        return (0, _helpers_1.createDir)(moduleDirPath).then(async () => {
-            var _a, _b;
-            const moduleType = (0, _helpers_1.detectPathType)(newPath);
-            let module;
-            if (moduleType === 'local') {
-                module = await addLocalModule(newPath);
+        await (0, _helpers_1.createDir)(moduleDirPath);
+        const moduleType = (0, _helpers_1.detectPathType)(newPath);
+        if (moduleType === 'local') {
+            module = await addLocalModule(newPath);
+        }
+        if (moduleType === 'remote') {
+            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath));
+        }
+        if (module === null || module === void 0 ? void 0 : module.name) {
+            const type = module.type;
+            const name = module.name;
+            const version = module.version;
+            // User has never installed any modules.
+            if (!config.modules) {
+                config.modules = {};
             }
-            if (moduleType === 'remote') {
-                module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath));
+            if (type === 'scaffold') {
+                // User has never installed any scaffolds.
+                if (!((_a = config === null || config === void 0 ? void 0 : config.modules) === null || _a === void 0 ? void 0 : _a.scaffold)) {
+                    config.modules.scaffold = {};
+                }
+                const scaffolds = config.modules.scaffold;
+                scaffolds[name] = version;
             }
-            if (module === null || module === void 0 ? void 0 : module.name) {
-                const type = module.type;
-                const name = module.name;
-                const version = module.version;
-                // User has never installed any modules.
-                if (!config.modules) {
-                    config.modules = {};
+            if (type === 'prefab') {
+                // User has never installed any prefabs.
+                if (!((_b = config === null || config === void 0 ? void 0 : config.modules) === null || _b === void 0 ? void 0 : _b.prefab)) {
+                    config.modules.prefab = {};
                 }
-                if (type === 'scaffold') {
-                    // User has never installed any scaffolds.
-                    if (!((_a = config === null || config === void 0 ? void 0 : config.modules) === null || _a === void 0 ? void 0 : _a.scaffold)) {
-                        config.modules.scaffold = {};
-                    }
-                    const scaffolds = config.modules.scaffold;
-                    scaffolds[name] = version;
+                const prefabs = config.modules.prefab;
+                prefabs[name] = version;
+            }
+            // Write the config file
+            fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
+                if (err) {
+                    (0, _helpers_1.throwError)(err.message);
                 }
-                if (type === 'prefab') {
-                    // User has never installed any prefabs.
-                    if (!((_b = config === null || config === void 0 ? void 0 : config.modules) === null || _b === void 0 ? void 0 : _b.prefab)) {
-                        config.modules.prefab = {};
-                    }
-                    const prefabs = config.modules.prefab;
-                    prefabs[name] = version;
-                }
-                // Write the config file
-                fs_1.default.writeFileSync(globals_1.default.configFileName, JSON.stringify(config, null, 2));
                 (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
-            }
-        }).catch((error) => {
-            (0, _helpers_1.throwError)(error);
-        });
+            });
+            return {
+                module,
+                config
+            };
+        }
+        return (0, _helpers_1.throwError)('Something went wrong');
     }
+    return (0, _helpers_1.throwError)('No config file found');
 };
 exports.addModule = addModule;
 exports.default = exports.addModule;

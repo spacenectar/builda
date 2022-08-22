@@ -14,5 +14,12 @@
   ],
   "dependencies": {
     "react": "^17.0.0"
-  }
+  },
+  "substitute": [
+    {
+      "replace": "TYPE",
+      "with": "component",
+      "required": true
+    }
+  ]
 }

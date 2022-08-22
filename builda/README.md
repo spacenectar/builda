@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/spacenectar/builda/blob/master/builda-logo.png)
+# ![Builda Logo](https://raw.githubusercontent.com/spacenectar/builda/master/builda-logo.png)
 
 [![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
 [![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
@@ -7,14 +7,32 @@
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
-🚨 🚨 This is an **alpha** version of Builda. It is not ready for production use.
-The documentation is incomplete and the application has not been fully tested. Use
-at your own risk. 🚨 🚨
+## What's this
+
+Builda is a simple command-line tool to make building project elements fast and easy.
+
+Builda generates files and folders using something called a 'scaffold', this is a
+template that contains all the files and directories that you want to create as well
+as a set of variables (called 'substitutions') that you can use to fill in the
+template automatically.
+
+## Screenshots
+
+### Initialising builda
+
+![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/example/init.gif)
+
+### Generate an atom component
+
+![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/example/generate-atom.gif)
+
+The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda/tree/master/example/test-component)
 
 ## Setup
 
 You can either install `builda` as a global module or install it locally into your
-project, if you are using the `.builda.json` file, installing locally is recommended.
+project, if you choose to install it locally, you will need to run `npm run builda`
+or `yarn builda` instead of just `builda`.
 
 ![NPM](https://img.shields.io/badge/npm-install_globally-red?style=for-the-badge&logo=npm)
 
@@ -47,22 +65,18 @@ file in your project root. (see [Configuration](#configuration) below)
 
 Once you have installed builda, you can use it to build your project files.
 
-<!-- ## Screenshot
-
-![How builda runs](./example.gif)
-
-The component produced in this animation is available to view here: https://github.com/foxleigh81/builda/tree/master/examples/my-example-component -->
-
 ## Configuration
 
 You can specify some defaults by creating a `.builda.json` file in your home directory.
 
 You can create this file manually or by running `builda --init`
 
+[This section is incomplete and will be updated soon](#configuration)
+
 ## Generating files
 
-When you run `builda --init`, you will generate scaffold types which can be used 
-to generate files. Each scaffold type is converted into a runnable command.
+When you run `builda --init`, you will generate a list of commands which can be
+used to generate files.
 
 For example, if you generated a `component` scaffold-type, you could run:
 
@@ -87,24 +101,33 @@ to generate files in, it also allows you to specify the scaffold to generate fro
 so if you had some components which needed to be typescript and others that
 needed to be javascript, you can specify a different scaffold for each.
 
-<!-- You can also use this method to create multiple components at once:
-
-```bash
-    builda my-component my-other-component
-``` -->
-
 ## Migrating from Buildcom
 
 If you previously used the [buildcom](https://npmjs.com/package/buildcom) package
-then please be aware that although this is the spiritual successor to buildcom,
-it is a completely different package. It is not compatible with buildcom.
+then please be aware that although this is the successor to buildcom,
+it is a completely different package and is not backwards compatible.
 
 If you rely on the legacy buildcom package, you may find that builda covers
-all of the functionality of buildcom and then some.
+all of the functionality of buildcom and then some. However as this is an early release,
+you may find that you are better off staying with buildcom for now.
 
-Take a look in our [scaffold marketplace](/coming-soon) to see if there is a
-scaffold that suits your needs, alternatively, it's pretty easy to [create your
-own scaffolds](/coming-soon).
+## Roadmap
+
+- Add support for generating multiple components at once
+
+- Add a larger selection of default scaffolds
+
+- Create a website for builda with full documentation as well as a scaffold gallery
+
+- Add the ability to easily generate your own scaffolds
+
+- Add 'Prefabs' - These will allow you to generate an entire project with a
+single command (Think 'create-react-app' but even more powerful)
+
+- Add a command line only mode which will work without needing to initialise
+builda or even install it locally
+
+- Even more stuff!
 
 ## Support me
 

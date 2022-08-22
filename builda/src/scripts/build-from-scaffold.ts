@@ -1,30 +1,31 @@
 import fs from 'fs';
 
 // import helpers
-import { getConfigFile, printMessage, getModule, writeFile } from '@helpers';
+import { getConfigFile, printMessage, getModule, writeFile, getSubstitutions } from '@helpers';
 import { changeCase } from '@helpers/string-functions';
 
 // Import types
-import TSubstitution from '@typedefs/substitution';
+import CommandConfig from '@typedefs/command-config';
+import { Argv } from '@typedefs/argv';
 
 type Props = {
   name: string;
-  command: string;
-  substitute?: TSubstitution[];
+  command: CommandConfig;
+  args?: Argv
 };
 
 export const buildFromScaffold = ({
   name,
   command,
-  substitute
+  args
 }: Props) => {
 
   const config = getConfigFile();
 
   if (config) {
-    printMessage(`Building ${command} '${name}'...`, 'notice');
+    printMessage(`Building ${command.name} '${name}'...`, 'notice');
     const outputDirectory = `${
-      config.commands[command].outputPath
+      command.outputPath
     }/${changeCase(name, 'kebabCase')}`;
 
     // Create the directory tree if it doesn't exist
@@ -34,7 +35,13 @@ export const buildFromScaffold = ({
       path: pathstring,
       registry,
       files
-    } = getModule(config, config.commands[command]);
+    } = getModule(config, command);
+
+    const substitute = command ? getSubstitutions({
+      registry,
+      command,
+      args
+    }) : [];
 
     files.forEach((file: string) => {
       const srcPath = `${pathstring}/${file}`;

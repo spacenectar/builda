@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normalizeCase = exports.detectCase = void 0;
+exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normalizeCase = exports.detectCase = void 0;
 const detectCase = (input) => {
-    const snakeCaseRegex = /^(?:[a-zA-Z]+_[a-zA-Z]+)+$/;
-    const pascalCaseRegex = /^(?:[A-Z]{1}[a-zA-Z]+[A-Z]{1}[a-zA-Z]+)+$/;
-    const camelCaseRegex = /^(?:[a-z]{1}[a-zA-Z]+[A-Z]{1}[a-zA-Z]+)+$/;
-    const sentenceCaseRegex = /^(?:[a-zA-Z]+ [a-zA-Z]+)+$/;
-    const kebabCaseRegex = /^(?:[a-zA-Z]+-[a-zA-Z]+)+$/;
+    const snakeCaseRegex = /^(?:[a-zA-Z:]+_[a-zA-Z:]+)+$/;
+    const pascalCaseRegex = /^(?:[A-Z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/;
+    const camelCaseRegex = /^(?:[a-z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/;
+    const sentenceCaseRegex = /^(?:[a-zA-Z:]+ [a-zA-Z:]+)+$/;
+    const kebabCaseRegex = /^(?:[a-zA-Z:]+-[a-zA-Z:]+)+$/;
     if (snakeCaseRegex.test(input)) {
         return 'snake';
     }
@@ -27,11 +27,11 @@ const detectCase = (input) => {
 exports.detectCase = detectCase;
 const normalizeCase = (input) => {
     const caseType = (0, exports.detectCase)(input);
-    const words = input.split(/(?=[A-Z])/);
+    const words = input.split(/(?=[A-Z:])/).filter((word) => word !== ':');
     const lowerCasedWords = words.slice(1).map((word) => word.toLowerCase());
     switch (caseType) {
         case 'snake':
-            return input.replace(/_/g, ' ').toLowerCase();
+            return input.replace(/_/g, ' ').toLowerCase().replace(/:/g, ' ');
         case 'pascal':
             return input
                 .split(/(?=[A-Z])/)
@@ -41,33 +41,35 @@ const normalizeCase = (input) => {
             lowerCasedWords.unshift(words[0].toLowerCase());
             return lowerCasedWords.join(' ');
         case 'kebab':
-            return input.replace(/-/g, ' ').toLowerCase();
+            return input.replace(/-/g, ' ').replace(/:/g, ' ').toLowerCase();
         case 'sentence':
         default:
-            return input;
+            return input.replace(/:/g, '');
     }
 };
 exports.normalizeCase = normalizeCase;
 const convertNumbersToWords = (input) => {
     const words = [
-        'Zero',
-        'One',
-        'Two',
-        'Three',
-        'Four',
-        'Five',
-        'Six',
-        'Seven',
-        'Eight',
-        'Nine'
+        ':Zero',
+        ':One',
+        ':Two',
+        ':Three',
+        ':Four',
+        ':Five',
+        ':Six',
+        ':Seven',
+        ':Eight',
+        ':Nine'
     ];
     const findNumbers = /\d+/g;
     const numbers = input.match(findNumbers);
-    // Numbers found, replace them with words
-    if (numbers) {
-        const number = numbers[0];
-        const numberAsWord = words[Number(number)];
-        return input.replace(number, numberAsWord);
+    const individualNumbers = numbers ? numbers[0].split('') : [];
+    if (individualNumbers) {
+        const numberString = individualNumbers.map((number) => {
+            const numberIndex = parseInt(number, 10);
+            return words[numberIndex];
+        }).join('');
+        return input.replace(findNumbers, numberString);
     }
     // No numbers found, return input
     return input;
@@ -75,14 +77,14 @@ const convertNumbersToWords = (input) => {
 exports.convertNumbersToWords = convertNumbersToWords;
 const convertSymbolsToWords = (input) => {
     return input
-        .replace(/&/g, 'And')
-        .replace(/@/g, 'At')
-        .replace(/#/g, 'Hash')
-        .replace(/\$/g, 'Dollar')
-        .replace(/£/g, 'Pound')
-        .replace(/%/g, 'Percent')
-        .replace(/\+/g, 'Plus')
-        .replace(/\*/g, 'Asterisk');
+        .replace(/&/g, ':And')
+        .replace(/@/g, ':At')
+        .replace(/#/g, ':Hash')
+        .replace(/\$/g, ':Dollar')
+        .replace(/£/g, ':Pound')
+        .replace(/%/g, ':Percent')
+        .replace(/\+/g, ':Plus')
+        .replace(/\*/g, ':Asterisk');
 };
 exports.convertSymbolsToWords = convertSymbolsToWords;
 const changeCase = (input, type) => {
@@ -124,4 +126,12 @@ const changeCase = (input, type) => {
     }
 };
 exports.changeCase = changeCase;
+const pluralise = (input) => {
+    const lastChar = input.charAt(input.length - 1);
+    if (lastChar === 's') {
+        return input;
+    }
+    return input + 's';
+};
+exports.pluralise = pluralise;
 exports.default = exports.changeCase;
