@@ -7,7 +7,7 @@
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
-## What's this?
+## What's this
 
 Builda is a simple command-line tool to make building project elements fast and easy.
 
@@ -26,7 +26,7 @@ template automatically.
 
 ![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/example/generate-atom.gif)
 
-The component produced in this animation is available to view here: https://github.com/spacenectar/builda/tree/master/example/test-component
+The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda/tree/master/example/test-component)
 
 ## Setup
 
@@ -76,7 +76,7 @@ You can create this file manually or by running `builda --init`
 ## Generating files
 
 When you run `builda --init`, you will generate a list of commands which can be
-used to generate files. 
+used to generate files.
 
 For example, if you generated a `component` scaffold-type, you could run:
 
@@ -113,19 +113,21 @@ you may find that you are better off staying with buildcom for now.
 
 ## Roadmap
 
-- [ ] Add support for generating multiple components at once
-- [ ] Add a larger selection of default scaffolds
-- [ ] Create a website for builda with full documentation as well as a scaffold gallery
-- [ ] Add the ability to easily generate your own scaffolds
-- [ ] Add 'Prefabs' - These will allow you to generate an entire project with a
-single command (Think 'create-react-app' but even more powerful)
-- [ ] Add a command line only mode which will work without needing to initialise 
-builda or even install it locally
-- [ ] Even more stuff!
+- Add support for generating multiple components at once
 
-<!-- Take a look in our [scaffold marketplace](/coming-soon) to see if there is a
-scaffold that suits your needs, alternatively, it's pretty easy to [create your
-own scaffolds](/coming-soon). -->
+- Add a larger selection of default scaffolds
+
+- Create a website for builda with full documentation as well as a scaffold gallery
+
+- Add the ability to easily generate your own scaffolds
+
+- Add 'Prefabs' - These will allow you to generate an entire project with a
+single command (Think 'create-react-app' but even more powerful)
+
+- Add a command line only mode which will work without needing to initialise
+builda or even install it locally
+
+- Even more stuff!
 
 ## Support me
 
