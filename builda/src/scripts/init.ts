@@ -28,23 +28,28 @@ const OVERWRITE_CONFIG_QUESTION = {
   type: 'confirm' as QuestionType
 };
 
-const getAnswers = () => {
-  return new Promise(resolve => {
+const getAnswers = async () => {
+  return new Promise((resolve) => {
     askQuestion({
       questionList: questions as Question[]
-    }).then(answers => {
+    }).then((answers) => {
       return resolve(answers);
     });
-  })
+  });
 };
 
-const checkExistingConfig = (fileName: string, debug: boolean): Promise<boolean> => {
+const checkExistingConfig = async (
+  fileName: string,
+  debug: boolean
+): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     if (fs.existsSync(path.join(fileName))) {
       if (debug) {
         // Preset answers were passed so we are in debug/test mode
-        reject(false)
-        return throwError(`You already have a ${fileName} file. Process Aborted.`);
+        reject(false);
+        return throwError(
+          `You already have a ${fileName} file. Process Aborted.`
+        );
       }
       return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
         ({ replaceConfig }) => {
@@ -57,19 +62,22 @@ const checkExistingConfig = (fileName: string, debug: boolean): Promise<boolean>
       );
     }
     printMessage('Starting initialisation...\r', 'success');
-    printMessage(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
+    printMessage(
+      `All answers can be changed later by editing the ${configFileName} file`,
+      'notice'
+    );
     return resolve(true);
   });
 };
 
-const writeConfig = (filename: string, contents: string) => {
-  return new Promise(resolve => {
+const writeConfig = async (filename: string, contents: string) => {
+  return new Promise((resolve) => {
     fs.writeFile(filename, contents, (err) => {
       if (err) throw err;
       return resolve(printMessage('Created config in project root', 'success'));
     });
   });
-}
+};
 
 const installModules = async (answers: Answers) => {
   printMessage('Installing initial scaffold...\r', 'notice');
@@ -85,13 +93,9 @@ const installModules = async (answers: Answers) => {
     };
   }
   await addModule(options);
-}
+};
 
-const init = async ({
-  presetAnswers
-}: {
-  presetAnswers?: Answers;
-}) => {
+const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
   // Check if a config file already exists unless presetAnswers is passed
   let continueProcess = false;
   const scaffoldList: string[] = [];
@@ -105,7 +109,7 @@ const init = async ({
       return throwError(err);
     }
     try {
-      answers = await getAnswers() as Answers;
+      answers = (await getAnswers()) as Answers;
     } catch (err) {
       Promise.reject(err);
       throwError(err);
@@ -121,7 +125,6 @@ const init = async ({
   }
 
   return new Promise<void>(async (resolve, reject) => {
-
     if (continueProcess === true) {
       fs.mkdirSync(buildaDir, { recursive: true });
 
@@ -130,9 +133,11 @@ const init = async ({
       }
 
       if (answers.customScaffoldList) {
-        answers.customScaffoldList.split(',').forEach((scaffoldType: string) => {
-          scaffoldList.push(scaffoldType.trim());
-        });
+        answers.customScaffoldList
+          .split(',')
+          .forEach((scaffoldType: string) => {
+            scaffoldList.push(scaffoldType.trim());
+          });
       }
 
       const commandList = scaffoldList.map((scaffoldType: string) => [
@@ -143,7 +148,7 @@ const init = async ({
           use: answers.installDefaultModule, // TODO: This will not work with unofficial modules yet
           substitute: []
         }
-      ])
+      ]);
 
       const commands = Object.fromEntries(commandList);
 
@@ -156,28 +161,28 @@ const init = async ({
 
       const configString = JSON.stringify(config, null, 2);
 
-        try {
-          await writeConfig(configFileName, configString);
-        } catch (err) {
-          reject(err);
-          return throwError(err);
-        }
-        try {
-          await installModules(answers)
-        } catch (err) {
-          reject(err);
-          return throwError(err);
-        } finally {
-          resolve();
-          printMessage('\rInitialisation complete', 'success');
-          printMessage(
-            `Visit ${websiteUrl}/setup for instructions on what to do next`,
-            'notice'
-          );
-        }
+      try {
+        await writeConfig(configFileName, configString);
+      } catch (err) {
+        reject(err);
+        return throwError(err);
       }
-      return Promise.resolve();
-    });
+      try {
+        await installModules(answers);
+      } catch (err) {
+        reject(err);
+        return throwError(err);
+      } finally {
+        resolve();
+        printMessage('\rInitialisation complete', 'success');
+        printMessage(
+          `Visit ${websiteUrl}/setup for instructions on what to do next`,
+          'notice'
+        );
+      }
+    }
+    return Promise.resolve();
+  });
 };
 
 export default init;

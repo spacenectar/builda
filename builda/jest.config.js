@@ -4,6 +4,8 @@ module.exports = {
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   silent: true,
+  maxWorkers: 1,
+  testSequencer: '<rootDir>/config/jest-sequencer.js',
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/examples/', '<rootDir>/.builda/'],
   moduleNameMapper: {
     "@scaffold/(.*)": "<rootDir>/src/scaffold/$1",

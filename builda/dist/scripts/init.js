@@ -15,16 +15,16 @@ const OVERWRITE_CONFIG_QUESTION = {
     name: 'replaceConfig',
     type: 'confirm'
 };
-const getAnswers = () => {
-    return new Promise(resolve => {
+const getAnswers = async () => {
+    return new Promise((resolve) => {
         (0, _helpers_1.askQuestion)({
             questionList: questions_1.default
-        }).then(answers => {
+        }).then((answers) => {
             return resolve(answers);
         });
     });
 };
-const checkExistingConfig = (fileName, debug) => {
+const checkExistingConfig = async (fileName, debug) => {
     return new Promise((resolve, reject) => {
         if (fs_1.default.existsSync(path_1.default.join(fileName))) {
             if (debug) {
@@ -45,8 +45,8 @@ const checkExistingConfig = (fileName, debug) => {
         return resolve(true);
     });
 };
-const writeConfig = (filename, contents) => {
-    return new Promise(resolve => {
+const writeConfig = async (filename, contents) => {
+    return new Promise((resolve) => {
         fs_1.default.writeFile(filename, contents, (err) => {
             if (err)
                 throw err;
@@ -82,7 +82,7 @@ const init = async ({ presetAnswers }) => {
             return (0, _helpers_1.throwError)(err);
         }
         try {
-            answers = await getAnswers();
+            answers = (await getAnswers());
         }
         catch (err) {
             Promise.reject(err);
@@ -105,7 +105,9 @@ const init = async ({ presetAnswers }) => {
                 scaffoldList.push(...answers.scaffoldSelection);
             }
             if (answers.customScaffoldList) {
-                answers.customScaffoldList.split(',').forEach((scaffoldType) => {
+                answers.customScaffoldList
+                    .split(',')
+                    .forEach((scaffoldType) => {
                     scaffoldList.push(scaffoldType.trim());
                 });
             }
