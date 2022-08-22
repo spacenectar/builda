@@ -2,39 +2,39 @@ import throwError from "./throw-error";
 
 import type CommandConfig from "@typedefs/command-config";
 import type TSubstitution from "@typedefs/substitution";
-import type { TSubstitute } from '@typedefs/command-config';
 import type { Argv } from "@typedefs/argv";
 
 
-export const getSubstitutions = (commandList: Partial<CommandConfig>, argv: Argv) => {
+export const getSubstitutions = (commandList: Partial<CommandConfig>, argv?: Argv) => {
   const substitutions = [] as TSubstitution[];
-  if (commandList.substitute) {
-    commandList.substitute.forEach((sub: TSubstitute) => {
+  if (commandList.substitute?.length) {
+    commandList.substitute.forEach((sub: TSubstitution) => {
+      const argString = argv?.[sub.replace] || '';
       // No substitution was provided but the config requires one
-      if (sub.required && !argv[sub.string]) {
+      if (sub.required && !argString) {
         throwError(
-          `"--${sub.string}" missing in arguments. This is required.\n`
+          `"--${sub.replace}" missing in arguments. This is required.\n`
         );
       }
 
       // User has not provided a substitution but the config has a default fallback value
-      if (sub.default && !argv[sub.string]) {
+      if (sub.with && !argString) {
         substitutions.push({
-          replace: sub.string.toUpperCase(),
-          with: sub.default
+          replace: sub.replace.toUpperCase(),
+          with: sub.with
         });
       }
 
       // User has provided the substitution argument
-      if (argv[sub.string]) {
+      if (argString) {
         const value =
-          argv[sub.string] === true
+          argString === true
             ? ''
-            : (argv[sub.string] as string);
+            : (argString as string);
 
         // User has provided the substitution argument with no value
         if (value === '') {
-          throwError(`"--${sub.string}" requires a value`);
+          throwError(`"--${sub.replace}" requires a value`);
         }
 
         if (
@@ -44,7 +44,7 @@ export const getSubstitutions = (commandList: Partial<CommandConfig>, argv: Argv
         ) {
           throwError(
             `\n"${value}" is not a valid ${
-              sub.string
+              sub.replace
             }. Please use one of the following: \n - ${sub.valid.join(
               `\n - `
             )}\n`
@@ -53,8 +53,8 @@ export const getSubstitutions = (commandList: Partial<CommandConfig>, argv: Argv
 
         // The value provided is valid
         substitutions.push({
-          replace: sub.string.toUpperCase(),
-          with: argv[sub.string] as string
+          replace: sub.replace.toUpperCase(),
+          with: argString as string
         });
       }
     });

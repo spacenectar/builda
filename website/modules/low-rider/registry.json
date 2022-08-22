@@ -26,9 +26,8 @@
   ],
   "substitute": [
     {
-      "string": "PREFIX",
-      "required": true,
-      "default": "local"
+      "replace": "PREFIX",
+      "with": "local"
     }
   ]
 }

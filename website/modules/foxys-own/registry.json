@@ -23,12 +23,12 @@
   ],
   "substitute": [
     {
-      "string": "PREFIX",
+      "replace": "PREFIX",
       "required": true
     },
     {
-      "string": "type",
-      "default": "component"
+      "replace": "TYPE",
+      "with": "component"
     }
   ]
 }

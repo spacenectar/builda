@@ -1,4 +1,5 @@
 import buildFromScaffold from '@scripts/build-from-scaffold';
+import CommandConfig from '@typedefs/command-config';
 import fs from 'fs';
 
 import path from 'path';
@@ -7,6 +8,14 @@ const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atom/test-component/index.tsx`;
 const CONFIG_FILE = '.builda.json';
 const CONFIG_FOLDER = '.builda';
+
+const command = {
+  name: 'atom',
+  type: 'scaffold',
+  use: 'default-ts',
+  outputPath: './experiments/atom',
+  substitute: []
+} as CommandConfig;
 
 afterAll((done) => {
   if (fs.existsSync(CONFIG_FILE)) {
@@ -25,7 +34,7 @@ describe('buildFromScaffold', () => {
   beforeAll((done) => {
     buildFromScaffold({
       name: 'TestComponent',
-      command: 'atom'
+      command
     });
     return done();
   });

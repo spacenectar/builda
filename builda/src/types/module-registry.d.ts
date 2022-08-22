@@ -1,4 +1,5 @@
 import ModuleType from './module-types';
+import TSubstitution from './substitution';
 export interface ModuleRegistry {
   name: string;
   type: ModuleType;
@@ -11,6 +12,7 @@ export interface ModuleRegistry {
   dependencies?: {
     [key: string]: string[];
   };
+  substitute? : TSubstitution[]
 }
 
 export default ModuleRegistry;
