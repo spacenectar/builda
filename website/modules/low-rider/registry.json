@@ -27,7 +27,7 @@
   "substitute": [
     {
       "replace": "PREFIX",
-      "with": "local"
+      "with": "command"
     }
   ]
 }

@@ -14,7 +14,6 @@ import { QuestionType } from '@typedefs/question-type';
 import { Question } from 'inquirer';
 import addModule from './add-module';
 import { ConfigFile } from '@typedefs/config-file';
-import TSubstitution from '@typedefs/substitution';
 
 interface Answers {
   appName: string;
@@ -152,20 +151,12 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
 
       await installModules(config, answers).then((response) => {
 
-        const subs = response?.module?.substitute || [];
-
         const commandList = scaffoldList.map((scaffoldType: string) => [
           scaffoldType,
           {
             type: 'scaffold',
             outputPath: `${answers.outputDirectory}/${pluralise(scaffoldType)}`,
-            use: response.module.name,
-            substitute: subs.map((sub: TSubstitution) => {
-              return {
-                replace: sub.replace,
-                with: sub.with || scaffoldType
-              }
-            }) || []
+            use: response.module.name
           }
         ]);
 

@@ -23,7 +23,7 @@ export const buildFromScaffold = ({
   const config = getConfigFile();
 
   if (config) {
-    printMessage(`Building ${command} '${name}'...`, 'notice');
+    printMessage(`Building ${command.name} '${name}'...`, 'notice');
     const outputDirectory = `${
       command.outputPath
     }/${changeCase(name, 'kebabCase')}`;
@@ -37,7 +37,11 @@ export const buildFromScaffold = ({
       files
     } = getModule(config, command);
 
-    const substitute = command ? getSubstitutions(command, args) : [];
+    const substitute = command ? getSubstitutions({
+      registry,
+      command,
+      args
+    }) : [];
 
     files.forEach((file: string) => {
       const srcPath = `${pathstring}/${file}`;

@@ -11,12 +11,16 @@ const string_functions_1 = require("../helpers/string-functions");
 const buildFromScaffold = ({ name, command, args }) => {
     const config = (0, _helpers_1.getConfigFile)();
     if (config) {
-        (0, _helpers_1.printMessage)(`Building ${command} '${name}'...`, 'notice');
+        (0, _helpers_1.printMessage)(`Building ${command.name} '${name}'...`, 'notice');
         const outputDirectory = `${command.outputPath}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         fs_1.default.mkdirSync(outputDirectory, { recursive: true });
         const { path: pathstring, registry, files } = (0, _helpers_1.getModule)(config, command);
-        const substitute = command ? (0, _helpers_1.getSubstitutions)(command, args) : [];
+        const substitute = command ? (0, _helpers_1.getSubstitutions)({
+            registry,
+            command,
+            args
+        }) : [];
         files.forEach((file) => {
             const srcPath = `${pathstring}/${file}`;
             const outputPath = `${outputDirectory}`;

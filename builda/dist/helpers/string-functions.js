@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normalizeCase = exports.detectCase = void 0;
+exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normalizeCase = exports.detectCase = void 0;
 const detectCase = (input) => {
     const snakeCaseRegex = /^(?:[a-zA-Z]+_[a-zA-Z]+)+$/;
     const pascalCaseRegex = /^(?:[A-Z]{1}[a-zA-Z]+[A-Z]{1}[a-zA-Z]+)+$/;
@@ -124,4 +124,12 @@ const changeCase = (input, type) => {
     }
 };
 exports.changeCase = changeCase;
+const pluralise = (input) => {
+    const lastChar = input.charAt(input.length - 1);
+    if (lastChar === 's') {
+        return input;
+    }
+    return input + 's';
+};
+exports.pluralise = pluralise;
 exports.default = exports.changeCase;

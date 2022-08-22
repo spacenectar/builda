@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
+const string_functions_1 = require("../helpers/string-functions");
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
@@ -119,20 +120,12 @@ const init = async ({ presetAnswers }) => {
                 }
             };
             await installModules(config, answers).then((response) => {
-                var _a;
-                const subs = ((_a = response === null || response === void 0 ? void 0 : response.module) === null || _a === void 0 ? void 0 : _a.substitute) || [];
                 const commandList = scaffoldList.map((scaffoldType) => [
                     scaffoldType,
                     {
                         type: 'scaffold',
-                        outputPath: `${answers.outputDirectory}/${scaffoldType}`,
-                        use: response.module.name,
-                        substitute: subs.map((sub) => {
-                            return {
-                                replace: sub.replace,
-                                with: sub.with || scaffoldType
-                            };
-                        }) || []
+                        outputPath: `${answers.outputDirectory}/${(0, string_functions_1.pluralise)(scaffoldType)}`,
+                        use: response.module.name
                     }
                 ]);
                 const commands = Object.fromEntries(commandList);
