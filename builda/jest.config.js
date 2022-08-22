@@ -6,7 +6,7 @@ module.exports = {
   silent: true,
   maxWorkers: 1,
   testSequencer: '<rootDir>/config/jest-sequencer.js',
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/examples/', '<rootDir>/.builda/'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/example/',  '<rootDir>/.builda/'],
   moduleNameMapper: {
     "@scaffold/(.*)": "<rootDir>/src/scaffold/$1",
     "@scripts/(.*)": "<rootDir>/src/scripts/$1",
