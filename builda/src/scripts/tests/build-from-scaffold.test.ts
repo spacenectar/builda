@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 const FILE_FOLDER = './experiments';
-const FILE_PATH = `${FILE_FOLDER}/atom/test-component/index.tsx`;
+const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FILE = '.builda.json';
 const CONFIG_FOLDER = '.builda';
 
@@ -13,8 +13,7 @@ const command = {
   name: 'atom',
   type: 'scaffold',
   use: 'default-ts',
-  outputPath: './experiments/atom',
-  substitute: []
+  outputPath: './experiments/atoms'
 } as CommandConfig;
 
 afterAll((done) => {
