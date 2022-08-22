@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
+import { pluralise } from '@helpers/string-functions';
 
 import globals from '@data/globals';
 import questions from '@data/questions';
@@ -157,7 +158,7 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
           scaffoldType,
           {
             type: 'scaffold',
-            outputPath: `${answers.outputDirectory}/${scaffoldType}`,
+            outputPath: `${answers.outputDirectory}/${pluralise(scaffoldType)}`,
             use: response.module.name,
             substitute: subs.map((sub: TSubstitution) => {
               return {
