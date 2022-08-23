@@ -1,0 +1,52 @@
+$allowed-grid-columns: 10;
+
+.grid {
+  display: grid;
+  gap: $gutters;
+  grid-template-columns: repeat(1, 1fr);
+  row-gap: $component-spacing;
+
+  &.with-2-columns {
+    @include mq($bp-medium-small) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &.with-3-columns {
+    @include mq($bp-medium-small) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mq($bp-medium) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &.with-4-columns {
+    @include mq($bp-medium-small) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mq($bp-medium) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mq($bp-medium-large) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &.with-5-columns {
+    @include mq($bp-medium-small) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mq($bp-medium) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @include mq($bp-medium-large) {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+}

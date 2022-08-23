@@ -1,0 +1,10 @@
+@use '../vars' as *;
+
+@mixin card() {
+  display: grid;
+  grid-template-rows: 1fr;
+  height: 100%;
+  background-color: $col-background;
+  box-shadow: $drop-shadow;
+  border-radius: $border-radius;
+}

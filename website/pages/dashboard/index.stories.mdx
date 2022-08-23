@@ -1,0 +1,21 @@
+import { Dashboard } from "./index.tsx";
+
+<Meta
+  title="Page/Dashboard"
+  component={Dashboard}
+  args={{
+    text: "Default text",
+  }}
+/>
+
+<Title type="ALPHA">Dashboard</Title>
+
+<Description of={Dashboard} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <Dashboard {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Dashboard} />

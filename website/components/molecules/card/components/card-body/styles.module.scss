@@ -1,0 +1,21 @@
+.body {
+  height: 100%;
+  padding: padding(2) padding(3);
+  width: 100%;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+.overflow-y-visible {
+  overflow-y: visible;
+}

@@ -1,0 +1,32 @@
+.top-nav {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: spacing(2);
+  align-items: center;
+}
+.nav-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: spacing(2);
+  a {
+    color: $col-body-text;
+    text-decoration: none;
+    display: flex;
+    gap: spacing(.5);
+    font-weight: bold;
+    font-size: $fs-link;
+    &:hover {
+      border-bottom: 1px solid $col-body-text;
+    }
+  }
+
+  svg {
+    height: 12px;
+  }
+}
+
+.trade-store-button {
+  font-weight: bold;
+}

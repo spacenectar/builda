@@ -1,0 +1,50 @@
+@use '../_colours' as *;
+
+/**
+* This file is used to export variables to be used inside react components.
+* Feel free to add your own variables here but be cautious if you are modifying
+* existing ones.
+*/
+
+:export {
+  colBackground: $col-background;
+  colMainPanelBg: $col-main-panel-bg;
+  colToolHeaderBg: $col-tool-header-bg;
+  colPrimary: $col-primary;
+  colSecondary: $col-secondary;
+  colDark: $col-dark;
+  colLight: $col-light;
+  colBodyText: $col-body-text;
+  colBodyTextLight: $col-body-text-light;
+  colLink: $col-link;
+  colLinkHover: $col-link-hover;
+  colLinkFocusBg: $col-link-focus-bg;
+  colAction: $col-action;
+  colActionCreate: $col-action-create;
+  colActionDestroy: $col-action-destroy;
+  colActionDisabled: $col-action-disabled;
+  colActionHover: $col-action-hover;
+  colActionDestroyHover: $col-action-destroy-hover;
+  colActionCreateHover: $col-action-create-hover;
+  colActionFocusBg: $col-action-focus-bg;
+  colActionDestroyFocusBg: $col-action-destroy-focus-bg;
+  colActionCreateFocusBg: $col-action-create-focus-bg;
+  colActionText: $col-action-text;
+  colInputBg: $col-input-bg;
+  colInputFocusBg: $col-input-focus-bg;
+  colInputBorder: $col-input-border;
+  colLabelText: $col-label-text;
+  colChipBg: $col-chip-bg;
+  colChipCategoryBg: $col-chip-category-bg;
+  colShadow: $col-shadow;
+  colBorder: $col-border;
+  colTableBg: $col-table-bg;
+  colTableHeaderBg: $col-table-header-bg;
+  colTableHeaderText: $col-table-header-text;
+  colTableStripeBg: $col-table-stripe-bg;
+  colDanger: $col-danger;
+  colError: $col-error;
+  colWarning: $col-warning;
+  colSuccess: $col-success;
+  colInfo: $col-info;
+}

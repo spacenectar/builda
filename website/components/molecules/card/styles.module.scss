@@ -1,0 +1,29 @@
+.card {
+  @include utils.card();
+}
+
+.v-spacing {
+  margin-bottom: $component-spacing;
+  margin-top: $component-spacing;
+}
+
+.h-spacing {
+  margin-left: $component-spacing;
+  margin-right: $component-spacing;
+}
+
+.no-bg {
+  background-color: unset;
+}
+
+.no-shadow {
+  box-shadow: unset;
+}
+
+.no-border-radius {
+  border-radius: unset;
+}
+
+.with-2-rows {
+  grid-template-rows: min-content 1fr;
+}

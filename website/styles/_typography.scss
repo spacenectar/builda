@@ -1,0 +1,117 @@
+@use 'spacing';
+@use '@fontsource/albert-sans/scss/mixins' as AlbertSans;
+
+@include AlbertSans.fontFace(
+  $weight: 300,
+  $display: 'fallback',
+  $fontName: 'Albert Sans'
+);
+@include AlbertSans.fontFace($weight: 400, $display: 'fallback');
+@include AlbertSans.fontFace(
+  $weight: 400,
+  $style: italic,
+  $display: 'fallback',
+  $fontName: 'Albert Sans'
+);
+@include AlbertSans.fontFace(
+  $weight: 700,
+  $display: 'fallback',
+  $fontName: 'Albert Sans'
+);
+@include AlbertSans.fontFace(
+  $weight: 700,
+  $style: italic,
+  $display: 'fallback',
+  $fontName: 'Albert Sans'
+);
+@include AlbertSans.fontFace(
+  $weight: 900,
+  $display: 'fallback',
+  $fontName: 'Albert Sans'
+);
+
+$fs-body-text: 1.4rem;
+
+@mixin fs-body-text {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-body-text;
+  line-height: 2.1rem;
+}
+
+.body-text {
+  @include fs-body-text;
+}
+
+/* Forms and buttons */
+$fs-input: $fs-body-text;
+
+@mixin fs-input {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-input;
+  line-height: 1rem;
+}
+
+.fs-input {
+  @include fs-input;
+}
+
+$fs-input-label: $fs-input;
+
+@mixin fs-input-label {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-input-label;
+  line-height: 1;
+}
+
+.fs-input-label {
+  @include fs-input-label;
+}
+
+$fs-input-placeholder: $fs-input;
+
+@mixin fs-input-placeholder {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-input-placeholder;
+  line-height: 1.8rem;
+}
+
+.fs-input-placeholder {
+  @include fs-input-placeholder;
+}
+
+$fs-form-metadata: 1.2rem;
+
+@mixin fs-form-metadata {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-form-metadata;
+  line-height: 1.8rem;
+}
+
+.fs-form-metadata {
+  @include fs-form-metadata;
+}
+
+$fs-button: 1.6rem;
+
+@mixin fs-button {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-button;
+  line-height: 1;
+}
+
+.fs-button {
+  @include fs-button;
+}
+
+/* Links */
+$fs-link: 1.6rem;
+
+@mixin fs-link {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-link;
+  line-height: 1;
+}
+
+.fs-link {
+  @include fs-link;
+}

@@ -1,0 +1,24 @@
+import { useState, useEffect } from 'react';
+import RegisterForm from './index';
+import { Logo } from 'components';
+
+<Meta
+  title="Organism/RegisterForm"
+  component={RegisterForm}
+  args={{
+    appName: "Box Tracker",
+    logo: <Logo fill="#000"/>
+  }}
+/>
+
+# Register Form
+
+<Description of={RegisterForm} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <RegisterForm {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={RegisterForm} />

@@ -1,0 +1,24 @@
+import AppFooter from './index';
+
+import users from 'lib/mocks/users';
+
+import { Logo } from 'components';
+
+<Meta
+  title="Organism/AppFooter"
+  args={{
+    appName: "Box Tracker"
+  }}
+/>
+
+# App header
+
+<Description of={AppFooter} />
+
+<Canvas withSource="open">
+  <Story name="Default">
+    {
+      (args) => <AppFooter {...args} />
+    }
+  </Story>
+</Canvas>

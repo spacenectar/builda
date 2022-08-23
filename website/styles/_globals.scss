@@ -1,0 +1,53 @@
+/**
+ Establishes a set of global styles that are used throughout the application.
+*/
+
+@use 'vars' as *;
+
+::selection {
+  /* Code for Firefox */
+  background: $col-primary;
+  color: $col-light;
+}
+
+body {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-body-text;
+  color: $col-body-text;
+  background: url('/bg.png'), linear-gradient(0.86deg, #ADADAD 0.96%, #BDBDBD 25.08%, #EFEFEF 99.49%);
+  background-blend-mode: multiply, normal;
+  p:not(:last-child) {
+    margin-bottom: $paragraph-spacing;
+  }
+}
+
+// Makes application full height.
+/* stylelint-disable selector-max-id --  ID used to target root next element */
+#__next {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+/* stylelint-enable selector-max-id */
+
+main {
+  padding: padding(2);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-bottom: margin(1);
+  }
+
+  a {
+    color: $col-primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
