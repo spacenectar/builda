@@ -1,0 +1,33 @@
+{
+  "name": "low-rider",
+  "type": "scaffold",
+  "version": "1.0.0",
+  "author": "Alex Foxleigh (https://www.alexfoxleigh.com/)",
+  "funding": "https://www.patreon.com/builda",
+  "moduleUrl": "https://builda.app/modules/low-rider",
+  "description": "This scaffold is not yet described.\n",
+  "keywords": [
+    "react",
+    "storybook",
+    "storybook-csf",
+    "typescript",
+    "testing-library-react",
+    "sass",
+    "sass-modules",
+    "scss",
+    "scss-modules"
+  ],
+  "files": [
+    "index.stories.tsx",
+    "index.test.tsx",
+    "index.tsx",
+    "README.md",
+    "styles.module.scss"
+  ],
+  "substitute": [
+    {
+      "replace": "PREFIX",
+      "with": "command"
+    }
+  ]
+}
