@@ -117,17 +117,34 @@ you may find that you are better off staying with buildcom for now.
 
 - Add a larger selection of default scaffolds
 
-- Create a website for builda with full documentation as well as a scaffold gallery
+- Create a website for builda with full documentation
 
 - Add the ability to easily generate your own scaffolds
 
 - Add 'Prefabs' - These will allow you to generate an entire project with a
-single command (Think 'create-react-app' but even more powerful)
+  single command (Think 'create-react-app' but even more powerful - watch this space!)
+
+- Create a community marketplace for scaffolds and prefabs.
+
+- Version control of all scaffolds and prefabs
 
 - Add a command line only mode which will work without needing to initialise
-builda or even install it locally
+  builda or even install it locally
 
 - Even more stuff!
+
+## Get support / discuss builda
+
+I've set up a [GitHub Discussions board](https://github.com/spacenectar/builda/discussions)
+for builda. Feel free to post questions, bugs, suggestions, or just to chat.
+
+## Contribute
+
+Builda is not yet set up to receive contributions, but if you would like to help
+then please feel free to post questions, suggestions or bug reports on the
+discussions board (link above). I will be happy to review any pull requests you may
+have but it makes sense to wait until I release the docs and tools which will make
+contributing much easier.
 
 ## Support me
 
