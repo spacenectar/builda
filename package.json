@@ -7,6 +7,5 @@
   "scripts": {
     "build": "yarn workspaces run build",
     "test": "yarn workspaces run test"
-  },
-  "version": "0.0.1"
+  }
 }
