@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import getFirebase from 'lib/services/firebase';
 import { User } from 'lib/types/user';
 import FcProps from 'lib/types/fc-props';
-import { RegisterFormData } from 'components/organisms/register-form';
+import { RegisterFormData } from 'components/partials/register-form';
 
 const firebase = getFirebase();
 

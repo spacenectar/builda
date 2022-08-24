@@ -13,3 +13,4 @@ builda/src/helpers/globals.ts
 builda/experiments
 .builda
 .env.local
+.next
