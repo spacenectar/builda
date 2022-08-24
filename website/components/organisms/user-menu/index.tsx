@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 // Stylesheet
 import styles from './styles.module.scss';
 
 // Components
-import { Avatar, Button, ContextMenu } from 'components';
+import { Avatar, ContextMenu } from 'components';
 
 // Types
 import { User } from 'lib/types/user';
@@ -77,8 +76,6 @@ const loggedInLinks = [
  */
 export const UserMenu: React.FC<Props> = ({ user, ...props }: Props) => {
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const router = useRouter();
 
   return (
     <div

@@ -21,6 +21,7 @@ export const Holding: NextPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // @ts-ignore
     const { name, email } = e.currentTarget.elements;
     if (name.value && email.value) {
       setFormPosted(true);
@@ -54,6 +55,7 @@ export const Holding: NextPage = () => {
                   <p>We'll let you know when <br /> the site is active</p>
                 </div>
               ) : (
+                // @ts-ignore
                 <form netlify="true" method="POST" onSubmit={handleSubmit}>
                   <label htmlFor="name">Name</label>
                   <input type="text" name="name" id="name" required/>

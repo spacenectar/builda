@@ -8,11 +8,8 @@ import styles from './styles.module.scss';
 /** Import custom types */
 import { ComponentStatuses } from 'lib/types/component-statuses';
 
-// Import icons
-import { Icons } from 'components';
-
 // Import components
-import { Button, Modal } from 'components';
+import { Button, Modal, Icons} from 'components';
 import CompletedCrop from './types/completed-crop';
 import generateFile from './helpers/generate-file';
 import OnSelectFile from './types/on-select-file';
