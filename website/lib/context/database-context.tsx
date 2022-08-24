@@ -1,5 +1,4 @@
-import React, { useContext, createContext, useState, useEffect } from 'react';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import React, { useContext, createContext } from 'react';
 
 import FcProps from 'lib/types/fc-props';
 
