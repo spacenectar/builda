@@ -12,8 +12,6 @@
 This is the readme for the monorepo. To view the readme for each individual workspace, see below:
 
 - [Builda](./builda/README.md)
-- [Scaffolds](./scaffolds/README.md)
-- [Prefabs](./prefabs/README.md)
 - [Website](./website/README.md)
 
 ## Support me
