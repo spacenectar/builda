@@ -11,7 +11,8 @@ module.exports = {
   framework: '@storybook/react',
   features: {
     storyStoreV7: !global.navigator?.userAgent?.match?.('jsdom'),
-    interactionsDebugger: true
+    interactionsDebugger: true,
+    postcss: false
   },
   stories: ['../components/**/*.stories.mdx', '../pages/**/*.stories.mdx'],
   addons: [
@@ -24,9 +25,6 @@ module.exports = {
     { from: '../public', to: '/' },
     { from: '../lib/mocks', to: '/mocks' }
   ],
-  features: {
-    postcss: false
-  },
   webpackFinal: async (config) => {
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),

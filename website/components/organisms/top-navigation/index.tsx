@@ -14,18 +14,13 @@ export interface Props extends React.ComponentProps<'header'> {
    * The list of links to display
    */
   links: LinkObject[];
-  /**
-   * Is the user logged in?
-   */
-  isLoggedIn?: boolean;
 }
 
 /**
  * The `TopNavigation` component is the header section of the application. It is used to display the logo, application name, user details and primary navigation.
  */
 export const TopNavigation: React.FC<Props> = ({
-  links,
-  isLoggedIn
+  links
 }: Props) => (
   <nav className={styles['top-nav']}>
     <ul className={styles['nav-list']}>
@@ -38,12 +33,12 @@ export const TopNavigation: React.FC<Props> = ({
           </Link>
         </li>
       ))}
+      <li>
+        <Link href="/trade-store">
+          <Button variant="primary" label="Trade Store" className={styles['trade-store-button']}/>
+        </Link>
+      </li>
     </ul>
-    {isLoggedIn && (
-      <Link href="/trade-store">
-        <Button variant="primary" label="Trade Store" className={styles['trade-store-button']}/>
-      </Link>
-    )}
   </nav>
 );
 

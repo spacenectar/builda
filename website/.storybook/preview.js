@@ -113,8 +113,10 @@ export const parameters = {
   options: {
     showSearchBox: true,
     storySort: {
+      method: 'alphabetical',
+      includeName: true,
       order: [
-        'Docs',
+        'docs',
         [
           'Introduction',
           'Coding Guidelines',
@@ -123,10 +125,42 @@ export const parameters = {
           'Architectural Decisions',
           ['Introduction']
         ],
-        'Atoms',
-        'Molecules',
-        'Organisms',
-        'Pages'
+        'atom',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ],
+        'molecule',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ],
+        'organism',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ],
+        'partial',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ],
+        'page',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ],
+        'input',
+        [
+          'Introduction',
+          'Default',
+          '*'
+        ]
       ]
     }
   },

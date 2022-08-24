@@ -14,7 +14,6 @@ e.g. with registering
   import { fetcher, poster } from 'lib/helpers'
 */
 
-
 export { default as Avatar } from './atoms/avatar';
 export { default as Button } from './atoms/button';
 export { default as Icons } from './atoms/icons';
@@ -39,9 +38,9 @@ export { default as Modal } from './molecules/modal';
 export { default as Table } from './molecules/table';
 export { default as AppFooter } from './organisms/app-footer';
 export { default as AppHeader } from './organisms/app-header';
-export { default as Authentication } from './organisms/authentication';
 export { default as ContextMenu } from './organisms/context-menu';
-export { default as RegisterForm } from './organisms/register-form';
 export { default as TableFactory } from './organisms/table-factory';
 export { default as TopNavigation } from './organisms/top-navigation';
 export { default as UserMenu } from './organisms/user-menu';
+export { default as Authentication } from './partials/authentication';
+export { default as RegisterForm } from './partials/register-form';

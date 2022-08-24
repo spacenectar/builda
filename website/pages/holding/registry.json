@@ -1,0 +1,9 @@
+{
+  "name": "holding",
+  "version": "1.0.0",
+  "author": "",
+  "scaffold": {
+    "name": "foxys-own",
+    "version": "3.0.0"
+  }
+}

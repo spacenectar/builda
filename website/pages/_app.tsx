@@ -8,7 +8,7 @@ import 'styles/index.scss';
 // Import stylesheet for react-crop-image
 import 'react-image-crop/dist/ReactCrop.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <DatabaseProvider>
@@ -18,4 +18,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default App;

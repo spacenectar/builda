@@ -35,7 +35,7 @@ e.g. with registering
 */`;
 
 const include = '.ts|.tsx';
-const exclude = `index|\\.spec\\.ts|\\.d\\.ts|\\.DS_Store|\\.gitkeep|README\\.md|readme\\.md`;
+const exclude = `index|\\.spec\\.ts|\\.d\\.ts|\\.DS_Store|\\.gitkeep|README\\.md|readme\\.md|\\.mdx`;
 
 const generateLines = (directory, parent) => {
   const dir = readdirSync(resolve(directory)).filter(

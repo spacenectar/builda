@@ -1,9 +1,6 @@
-.main {
+.container {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
   align-content: space-around;
-  background: #4A00E0;  /* fallback for old browsers */
-  background: linear-gradient(-45deg, #4A00E0, #8E2DE2);
-  height: 100vh;
 }

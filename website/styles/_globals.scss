@@ -14,8 +14,9 @@ body {
   font-family: 'Albert Sans', sans-serif;
   font-size: $fs-body-text;
   color: $col-body-text;
-  background: url('/bg.png'), linear-gradient(0.86deg, #ADADAD 0.96%, #BDBDBD 25.08%, #EFEFEF 99.49%);
+  background: url('/bg.png'), linear-gradient(0.9deg, #ADADAD 0%, #BDBDBD 25%, #EFEFEF 100%);
   background-blend-mode: multiply, normal;
+  background-attachment: fixed;
   p:not(:last-child) {
     margin-bottom: $paragraph-spacing;
   }
@@ -26,7 +27,6 @@ body {
 #__next {
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr;
 }
 /* stylelint-enable selector-max-id */
 
