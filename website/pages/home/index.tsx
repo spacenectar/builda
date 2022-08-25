@@ -13,14 +13,16 @@ import styles from './styles.module.scss';
  * @returns {JSX.Element}
  */
 export const Home: NextPage = () => {
-  const auth = useAuth();
-
+  const { getUser, isLoggedIn } = useAuth();
   const [user, setUser] = useState<User | undefined>(undefined);
-
   useEffect(() => {
     // Check if a user is logged in
-    setUser(auth?.getUser());
-  }, [auth]);
+    if (isLoggedIn) {
+      setUser(getUser());
+    } else {
+      setUser(undefined);
+    }
+  }, [isLoggedIn]);
 
   return (
     <MainTemplate user={user}>

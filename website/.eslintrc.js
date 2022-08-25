@@ -41,7 +41,11 @@ module.exports = {
     browser: true,
     node: true
   },
-  ignorePatterns: ['**/venv/*, **/*.test.*, **/*.spec.*', '**/.builda/**'],
+  ignorePatterns: [
+    '**/venv/*, **/*.test.*, **/*.spec.*',
+    '**/.builda/**',
+    '**/scaffolds/**'
+  ],
   rules: {
     'react/prop-types': [
       2,

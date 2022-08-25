@@ -14,9 +14,14 @@ import { User } from 'lib/types/user';
 export interface Props extends FcProps {
   children: React.ReactNode;
   user?: User;
+  redirectURL?: string;
 }
 
-const MainTemplate: NextPage<Props> = ({ children, user }: Props) => {
+const MainTemplate: NextPage<Props> = ({
+  children,
+  user,
+  redirectURL = '/'
+}: Props) => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME || '';
 
   const links = [
@@ -26,7 +31,7 @@ const MainTemplate: NextPage<Props> = ({ children, user }: Props) => {
       icon: <Icons.House width={'15px'} />
     },
     {
-      href: '/get-started',
+      href: '/getting-started',
       label: 'Getting Started'
     },
     {
@@ -50,7 +55,13 @@ const MainTemplate: NextPage<Props> = ({ children, user }: Props) => {
         <link rel="icon" href="/favicon.ico" />
         <meta name="robots" content="noindex" />
       </Head>
-      <AppHeader appName={appName} logo={<Logo />} user={user} links={links} />
+      <AppHeader
+        appName={appName}
+        logo={<Logo />}
+        user={user}
+        links={links}
+        redirectURL={redirectURL}
+      />
       <main className={styles.main}>{children}</main>
       <AppFooter appName={appName} />
     </div>

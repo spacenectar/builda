@@ -1,4 +1,3 @@
-import { Site } from './site';
 import { Roles } from './roles';
 
 export interface User {
@@ -11,5 +10,4 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   lastLogin: string;
-  sites: Site[];
 }

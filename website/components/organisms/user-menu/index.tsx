@@ -13,6 +13,10 @@ export interface Props extends React.ComponentProps<'div'> {
    * The User object (if logged in)
    */
   user?: User;
+  /**
+   * The URL to redirect to when the user clicks the login button
+   */
+  redirectURL?: string;
 }
 
 const ProfileIcon = () => (
@@ -47,35 +51,39 @@ const LogoutIcon = () => (
   </svg>
 );
 
-const loggedOutLinks = [
-  {
-    label: 'Login',
-    href: '/login'
-  },
-  {
-    label: 'Register',
-    href: '/register'
-  }
-];
-
-const loggedInLinks = [
-  {
-    href: '/',
-    label: 'Manage profile',
-    icon: <ProfileIcon />
-  },
-  {
-    href: '/logout',
-    label: 'Logout',
-    icon: <LogoutIcon />
-  }
-];
-
 /**
  * The `UserMenu` component is used to display the logged in users avatar and a dropdown menu of their account options.
  */
-export const UserMenu: React.FC<Props> = ({ user, ...props }: Props) => {
+export const UserMenu: React.FC<Props> = ({
+  user,
+  redirectURL = '/',
+  ...props
+}: Props) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const loggedOutLinks = [
+    {
+      label: 'Login',
+      href: `/login?redirect=${redirectURL}`
+    },
+    {
+      label: 'Register',
+      href: '/register'
+    }
+  ];
+
+  const loggedInLinks = [
+    {
+      href: '/manage-profile',
+      label: 'Manage profile',
+      icon: <ProfileIcon />
+    },
+    {
+      href: '/logout',
+      label: 'Logout',
+      icon: <LogoutIcon />
+    }
+  ];
 
   return (
     <div

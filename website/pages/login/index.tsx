@@ -8,50 +8,57 @@ import { User } from 'lib/types/user';
 import Link from 'next/link';
 import { Authentication, Card, Logo } from 'components';
 
-import styles from './styles.module.scss';
-
 /**
  * The `Login` page is used to Login to the application.
  * @returns {JSX.Element}
  */
 export const Login: NextPage = () => {
-  const auth = useAuth();
+  const { getUser, isLoggedIn, login } = useAuth();
 
   const [user, setUser] = useState<User | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
-
+  const [redirectUrl, setRedirectUrl] = useState<string>('/');
   const router = useRouter();
 
   const handleSubmit = (data: { email: string; password: string }) => {
-    const login = auth?.login(data.email, data.password);
-    if (login) {
-      login.then((res) => {
+    const doLogin = login(data.email, data.password);
+    if (doLogin) {
+      doLogin.then((res) => {
         if (res.type === 'error') {
           setError(res.response as string);
         } else {
-          router.push('/');
+          // TODO: Redirect isn't working properly, it looks like it starts to do the redirect and then returns to the home page
+          router.push(redirectUrl);
         }
       });
     }
   };
 
   useEffect(() => {
-    const getUser = auth?.getUser();
     // Check if a user is logged in
-    setUser(getUser || undefined);
-  }, []);
+    if (isLoggedIn) {
+      setUser(getUser());
+    } else {
+      setUser(undefined);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (router.query.redirect) {
+      setRedirectUrl(router.query.redirect as string);
+    } else {
+      setRedirectUrl('/');
+    }
+  }, [router.query.redirect]);
 
   return (
     <CenterTemplate>
       {user?.email ? (
         <Card>
           <Card.Header>
-            <h2 className={styles['card-header']}>
-              {' '}
-              🤦‍♂️ You are already logged in!
-            </h2>
+            <h2>🤦‍♂️ You are already logged in!</h2>
           </Card.Header>
-          <Card.Body className={styles['card-body']}>
+          <Card.Body>
             <p>
               <Link href="/">
                 <a>Click here to return to the home page</a>
@@ -62,7 +69,7 @@ export const Login: NextPage = () => {
         </Card>
       ) : (
         <Authentication
-          logo={<Logo fill="#000" />}
+          logo={<Logo />}
           onLogin={handleSubmit}
           loginError={error}
         />

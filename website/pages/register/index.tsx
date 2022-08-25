@@ -20,17 +20,17 @@ import { RegisterFormData } from 'components/partials/register-form';
  * @returns {JSX.Element}
  */
 export const Register: NextPage = () => {
-  const auth = useAuth();
+  const { getUser, isLoggedIn, register } = useAuth();
   const [userName, setUserName] = useState<string | undefined>(undefined);
   const [user, setUser] = useState<User | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [registered, setRegistered] = useState<boolean>(false);
 
   const handleSubmit = (data: RegisterFormData) => {
-    const register = auth?.register(data);
+    const doRegister = register(data);
     setError(undefined);
-    if (register) {
-      register.then((res) => {
+    if (doRegister) {
+      doRegister.then((res) => {
         if (res.type === 'error') {
           setError(res.response as string);
         }
@@ -46,8 +46,12 @@ export const Register: NextPage = () => {
 
   useEffect(() => {
     // Check if a user is logged in
-    setUser(auth?.getUser());
-  }, [auth]);
+    if (isLoggedIn) {
+      setUser(getUser());
+    } else {
+      setUser(undefined);
+    }
+  }, [isLoggedIn]);
 
   const AlreadyRegisteredCard = () => (
     <Card>
@@ -102,7 +106,7 @@ export const Register: NextPage = () => {
       ) : (
         <RegisterForm
           appName={process.env.NEXT_PUBLIC_APP_NAME || ''}
-          logo={<Logo fill="#000" />}
+          logo={<Logo />}
           onRegister={handleSubmit}
           registerError={error}
         />

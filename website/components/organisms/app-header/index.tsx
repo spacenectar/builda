@@ -28,6 +28,10 @@ export interface Props extends React.ComponentProps<'header'> {
    * The list of links to display
    */
   links: LinkObject[];
+  /**
+   * The redirectURL to redirect to if the user logs in
+   */
+  redirectURL?: string;
 }
 
 /**
@@ -37,6 +41,7 @@ export const AppHeader: React.FC<Props> = ({
   user,
   appName,
   links,
+  redirectURL = '/',
   logo
 }: Props) => (
   <header className={`${styles['app-header']} ${user && styles['logged-in']}`}>
@@ -49,7 +54,7 @@ export const AppHeader: React.FC<Props> = ({
       </h1>
     </div>
     <div className={styles['right-col']}>
-      <UserMenu user={user} />
+      <UserMenu user={user} redirectURL={redirectURL} />
       <TopNavigation links={links} />
     </div>
   </header>

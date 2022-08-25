@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import {
   AuthError,
   createUserWithEmailAndPassword,
@@ -26,12 +26,33 @@ type AuthContextType = {
     data: RegisterFormData
   ) => Promise<{ type: string; response: string | Partial<User> }>;
   getUser: () => User;
+  isLoggedIn: boolean;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({
+  login: async () => {
+    return { type: 'error', response: 'No auth service available' };
+  },
+  logout: async () => {
+    return;
+  },
+  register: async () => {
+    return { type: 'error', response: 'No auth service available' };
+  },
+  getUser: () => {
+    return {
+      uid: '',
+      email: '',
+      displayName: '',
+      photoUrl: ''
+    } as User;
+  },
+  isLoggedIn: false
+});
 
 const AuthProvider: React.FC<FcProps> = ({ children }) => {
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const getDBDetails = (uid: string) => {
     if (firebase) {
@@ -77,6 +98,7 @@ const AuthProvider: React.FC<FcProps> = ({ children }) => {
           );
           if (userDetails.user) {
             getDBDetails(userDetails.user.uid);
+            setIsLoggedIn(true);
           }
           return {
             type: 'success',
@@ -118,6 +140,7 @@ const AuthProvider: React.FC<FcProps> = ({ children }) => {
         if (auth) {
           await auth.signOut();
           localStorage.removeItem('user');
+          setIsLoggedIn(false);
         }
       } catch (error) {
         console.error(error);
@@ -208,7 +231,8 @@ const AuthProvider: React.FC<FcProps> = ({ children }) => {
     login,
     logout,
     register,
-    getUser
+    getUser,
+    isLoggedIn
   } as AuthContextType;
 
   return (
