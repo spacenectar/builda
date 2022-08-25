@@ -27,7 +27,7 @@ const MainTemplate: NextPage<Props> = ({ children, user }: Props) => {
     },
     {
       href: '/get-started',
-      label: 'Getting Started',
+      label: 'Getting Started'
     },
     {
       href: '/docs',
@@ -48,13 +48,9 @@ const MainTemplate: NextPage<Props> = ({ children, user }: Props) => {
           content={`${appName} - The everything generator`}
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="robots" content="noindex" />
       </Head>
-      <AppHeader
-        appName={appName}
-        logo={<Logo />}
-        user={user}
-        links={links}
-      />
+      <AppHeader appName={appName} logo={<Logo />} user={user} links={links} />
       <main className={styles.main}>{children}</main>
       <AppFooter appName={appName} />
     </div>

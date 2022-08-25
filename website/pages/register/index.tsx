@@ -49,42 +49,50 @@ export const Register: NextPage = () => {
     setUser(auth?.getUser());
   }, [auth]);
 
-  const AlreadyRegisteredCard = () => <Card>
-    <Card.Header>
-      <h2 className={styles['card-header']}>
-        {' '}
-        🤦‍♂️ You are already registered!
-      </h2>
-    </Card.Header>
-    <Card.Body className={styles['card-body']}>
-      <p>
-        <Link href="/">
-          <a>Click here to return to the home page</a>
-        </Link>
-        .
-      </p>
-    </Card.Body>
-  </Card>
+  const AlreadyRegisteredCard = () => (
+    <Card>
+      <Card.Header>
+        <h2 className={styles['card-header']}>
+          {' '}
+          🤦‍♂️ You are already registered!
+        </h2>
+      </Card.Header>
+      <Card.Body className={styles['card-body']}>
+        <p>
+          <Link href="/">
+            <a>Click here to return to the home page</a>
+          </Link>
+          .
+        </p>
+      </Card.Body>
+    </Card>
+  );
 
-  const SuccessCard = () => <Card>
-    <Card.Header>
-      <h2 className={styles['card-header']}>
-        {' '}
-        🎉 Welcome, {userName}, you are registered!
-      </h2>
-    </Card.Header>
-    <Card.Body className={styles['card-body']}>
-      <p>
-        <Link href="/login">
-          <a>Click here to login</a>
-        </Link>
-        .
-      </p>
-    </Card.Body>
-  </Card>
+  const SuccessCard = () => (
+    <Card>
+      <Card.Header>
+        <h2 className={styles['card-header']}>
+          {' '}
+          🎉 Welcome, {userName}, you are registered!
+        </h2>
+      </Card.Header>
+      <Card.Body className={styles['card-body']}>
+        <p>
+          <Link href="/login">
+            <a>Click here to login</a>
+          </Link>
+          .
+        </p>
+      </Card.Body>
+    </Card>
+  );
 
   if (user?.email) {
-    return <CenterTemplate><AlreadyRegisteredCard /></CenterTemplate>;
+    return (
+      <CenterTemplate>
+        <AlreadyRegisteredCard />
+      </CenterTemplate>
+    );
   }
 
   return (

@@ -1,6 +1,6 @@
 @use '../vars' as *;
 @use './link.scss' as *;
-@use "sass:color";
+@use 'sass:color';
 
 @mixin disabled-button() {
   background-color: $col-action-disabled;
@@ -18,7 +18,7 @@
   display: inline-block;
   width: max-content;
   outline: 0;
-  padding: padding(.8) padding(2) padding(0.5) padding(2);
+  padding: padding(0.8) padding(2) padding(0.5) padding(2);
   position: relative;
   text-align: center;
   text-transform: uppercase;
@@ -43,7 +43,8 @@
     &:hover,
     &:active,
     &:focus {
-      filter: drop-shadow(0 0 0.2rem rgba(255, 255, 255, 0.4)) drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(0 0 0.2rem rgba(255, 255, 255, 0.4))
+        drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.3));
     }
   }
 

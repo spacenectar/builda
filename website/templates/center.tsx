@@ -15,6 +15,7 @@ const CenterTemplate: NextPage<FcProps> = ({ children }) => {
           content={`${process.env.NEXT_PUBLIC_APP_NAME} - The everything generator`}
         />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="robots" content="noindex" />
       </Head>
       <main className={styles.main}>{children}</main>
     </div>

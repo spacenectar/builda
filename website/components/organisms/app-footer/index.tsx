@@ -23,9 +23,7 @@ export interface Props extends React.ComponentProps<'header'> {
 /**
  * The `AppFooter` component is the footer section of the application. It is used to display the copywrite information and useful links.
  */
-export const AppFooter: React.FC<Props> = ({
-  appName
-}: Props) => (
+export const AppFooter: React.FC<Props> = ({ appName }: Props) => (
   <footer className={styles['app-footer']}>
     <div className={styles['left-col']}>
       <p>

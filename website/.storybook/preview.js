@@ -126,41 +126,17 @@ export const parameters = {
           ['Introduction']
         ],
         'atom',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ],
+        ['Introduction', 'Default', '*'],
         'molecule',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ],
+        ['Introduction', 'Default', '*'],
         'organism',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ],
+        ['Introduction', 'Default', '*'],
         'partial',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ],
+        ['Introduction', 'Default', '*'],
         'page',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ],
+        ['Introduction', 'Default', '*'],
         'input',
-        [
-          'Introduction',
-          'Default',
-          '*'
-        ]
+        ['Introduction', 'Default', '*']
       ]
     }
   },

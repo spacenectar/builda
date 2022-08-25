@@ -18,8 +18,7 @@
   &.enter-done {
     backdrop-filter: blur(5px) grayscale(1);
     background-color: rgba(0, 0, 0, 0.6);
-    transition:
-      background-color 0.5s ease-in-out,
+    transition: background-color 0.5s ease-in-out,
       backdrop-filter 0.5s ease-in-out;
   }
 
@@ -31,8 +30,7 @@
   &.exit-active {
     backdrop-filter: blur(0) grayscale(0);
     background-color: rgba(0, 0, 0, 0);
-    transition:
-      background-color 0.5s ease-in-out,
+    transition: background-color 0.5s ease-in-out,
       backdrop-filter 0.5s ease-in-out;
   }
 }
@@ -102,7 +100,7 @@
   right: -15px;
   top: -15px;
   position: absolute;
-  z-index: $modal-level +1;
+  z-index: $modal-level + 1;
 
   svg {
     color: $col-light;
@@ -122,5 +120,3 @@
   width: 100%;
   z-index: $modal-level;
 }
-
-

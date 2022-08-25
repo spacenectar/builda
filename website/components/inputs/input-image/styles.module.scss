@@ -4,7 +4,7 @@
   background: $col-main-panel-bg;
   border: 1px solid $col-input-border;
   border-radius: $border-radius;
-  padding: padding(.5) padding(1);
+  padding: padding(0.5) padding(1);
   &:hover {
     background-color: darken($col-main-panel-bg, 10%);
     border-color: lighten($col-input-border, 10%);
@@ -64,7 +64,6 @@
 .canvas-preview {
   height: 150px;
   width: 150px;
-
 }
 
 .bottom {

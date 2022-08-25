@@ -7,8 +7,7 @@ export function useDebounceEffect(
 ) {
   useEffect(() => {
     const t = setTimeout(() => {
-      // @ts-ignore - The following is not an issue and can be ignored
-      return fn.apply(undefined, depList);
+      return fn();
     }, waitTime);
 
     return () => {

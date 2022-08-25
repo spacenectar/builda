@@ -50,12 +50,12 @@ const LogoutIcon = () => (
 const loggedOutLinks = [
   {
     label: 'Login',
-    href: '/login',
+    href: '/login'
   },
   {
     label: 'Register',
-    href: '/register',
-  },
+    href: '/register'
+  }
 ];
 
 const loggedInLinks = [
@@ -96,7 +96,11 @@ export const UserMenu: React.FC<Props> = ({ user, ...props }: Props) => {
           clipRule="evenodd"
         />
       </svg>
-      <Avatar name={user?.displayName || ''} imagePath={user?.photoUrl || ''} size="50px" />
+      <Avatar
+        name={user?.displayName || ''}
+        imagePath={user?.photoUrl || ''}
+        size="50px"
+      />
       <ContextMenu
         showMenu={menuOpen}
         links={user ? loggedInLinks : loggedOutLinks}

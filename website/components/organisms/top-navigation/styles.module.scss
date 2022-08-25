@@ -14,7 +14,7 @@
     color: $col-body-text;
     text-decoration: none;
     display: flex;
-    gap: spacing(.5);
+    gap: spacing(0.5);
     font-weight: bold;
     font-size: $fs-link;
     &:hover {

@@ -19,9 +19,7 @@ export interface Props extends React.ComponentProps<'header'> {
 /**
  * The `TopNavigation` component is the header section of the application. It is used to display the logo, application name, user details and primary navigation.
  */
-export const TopNavigation: React.FC<Props> = ({
-  links
-}: Props) => (
+export const TopNavigation: React.FC<Props> = ({ links }: Props) => (
   <nav className={styles['top-nav']}>
     <ul className={styles['nav-list']}>
       {links.map((link) => (
@@ -35,7 +33,11 @@ export const TopNavigation: React.FC<Props> = ({
       ))}
       <li>
         <Link href="/trade-store">
-          <Button variant="primary" label="Trade Store" className={styles['trade-store-button']}/>
+          <Button
+            variant="primary"
+            label="Trade Store"
+            className={styles['trade-store-button']}
+          />
         </Link>
       </li>
     </ul>

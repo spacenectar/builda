@@ -8,9 +8,9 @@ import { Logo } from 'components';
 <Meta
   title="organism/AppHeader"
   args={{
-    appName: "Builda - The Everything Generator",
+    appName: 'Builda - The Everything Generator',
     logo: <Logo />,
-    links: links,
+    links: links
   }}
 />
 
@@ -19,18 +19,11 @@ import { Logo } from 'components';
 <Description of={AppHeader} />
 
 <Canvas withSource="open" withToolbar>
-  <Story name="Logged out">
-    {
-      (args) => <AppHeader {...args} />
-    }
-  </Story>
+  <Story name="Logged out">{(args) => <AppHeader {...args} />}</Story>
 </Canvas>
-
 
 <Canvas withToolbar>
   <Story name="Logged in">
-    {
-      (args) => <AppHeader {...args} user={users[0]} />
-    }
+    {(args) => <AppHeader {...args} user={users[0]} />}
   </Story>
 </Canvas>

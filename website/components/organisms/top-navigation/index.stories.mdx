@@ -15,13 +15,6 @@ import links from 'lib/mocks/links';
 
 <Description of={TopNavigation} />
 
-
 <Canvas withSource="open">
-  <Story name="default">
-    {
-      (args) => 
-        <TopNavigation {...args} />
-      
-    }
-  </Story>
+  <Story name="default">{(args) => <TopNavigation {...args} />}</Story>
 </Canvas>

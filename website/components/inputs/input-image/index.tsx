@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 import { ComponentStatuses } from 'lib/types/component-statuses';
 
 // Import components
-import { Button, Modal, Icons} from 'components';
+import { Button, Modal, Icons } from 'components';
 import CompletedCrop from './types/completed-crop';
 import generateFile from './helpers/generate-file';
 import OnSelectFile from './types/on-select-file';
@@ -70,8 +70,8 @@ export const InputInmage: React.FC<Props> = ({
 
   const onLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     if (aspect) {
-      const { width, height } = e.currentTarget;
-      setCrop(centerAspectCrop(width, height, aspect));
+      const { width: elWidth, height: elHeight } = e.currentTarget;
+      setCrop(centerAspectCrop(elWidth, elHeight, aspect));
     }
   };
 

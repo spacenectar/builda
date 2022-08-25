@@ -3,10 +3,10 @@
   background-color: $col-main-panel-bg;
   border: 1px solid $col-border;
   border-radius: $border-radius;
-  box-shadow: .2rem .2rem .5rem $col-grey-700;
+  box-shadow: 0.2rem 0.2rem 0.5rem $col-grey-700;
   width: max-content;
   overflow: hidden;
-  padding: padding(.5) 0;
+  padding: padding(0.5) 0;
   &.enter {
     opacity: 0;
     transform: translateY(-1rem);
@@ -14,7 +14,7 @@
   &.enter-active {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
   }
   &.exit {
     opacity: 1;
@@ -23,7 +23,7 @@
   &.exit-active {
     opacity: 0;
     transform: translateY(-1rem);
-    transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
   }
 }
 
@@ -31,7 +31,7 @@
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
-  padding: padding(.5) padding(2);
+  padding: padding(0.5) padding(2);
 
   svg {
     width: 15px;
