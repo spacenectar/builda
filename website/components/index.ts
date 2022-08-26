@@ -36,6 +36,7 @@ export { default as Card } from './molecules/card';
 export { default as Grid } from './molecules/grid';
 export { default as Modal } from './molecules/modal';
 export { default as Table } from './molecules/table';
+export { default as TerminalDemo } from './molecules/terminal-demo';
 export { default as AppFooter } from './organisms/app-footer';
 export { default as AppHeader } from './organisms/app-header';
 export { default as ContextMenu } from './organisms/context-menu';

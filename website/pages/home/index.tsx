@@ -4,9 +4,31 @@ import type { NextPage } from 'next';
 import MainTemplate from 'templates/main';
 import useAuth from 'lib/context/auth-context';
 import { User } from 'lib/types/user';
-import { Card, Grid } from 'components';
+import { Card, Grid, TerminalDemo } from 'components';
 
 import styles from './styles.module.scss';
+
+const terminalCommands = [
+  {
+    text: 'builda add component "Hello World"',
+    typing: true,
+    delay: 0
+  },
+  {
+    text: '█████████████████████████████████████████████████ v4.0.1\n\n████████▄  ███    ███ ███ ███      ████████▄   ▄████████\n███    ███ ███    ███ ███ ███      ███   ▀███ ███▀   ███\n███    ███ ███    ███ ███ ███      ███    ███ ███    ███\n███▄▄▄██▀  ███    ███ ███ ███      ███    ███ ███    ███\n███▀▀▀██▄  ███    ███ ███ ███      ███    ███ ██████████\n███    ██▄ ███    ███ ███ ███      ███    ███ ███    ███\n███    ███ ███    ███ ███ ███      ███   ▄███ ███    ███\n████████▀   ▀██████▀  ███ ████████ ████████▀  ███    ███ ██████\n\nComponent generator ███████████████████████████████████████████',
+    colour: '#D33682',
+    delay: 2000
+  },
+  {
+    text: "Building component 'Hello World'",
+    colour: '#2589CF',
+    delay: 5000
+  },
+  {
+    text: 'Done',
+    delay: 6000
+  }
+];
 
 /**
  * The `Home` page is used to display the home page of the application.
@@ -33,6 +55,7 @@ export const Home: NextPage = () => {
           </strong>{' '}
           A stupidly simple command line tool.
         </h2>
+        <TerminalDemo commands={terminalCommands} windowTitle="Builda" />
       </Grid>
       <Grid columns={3}>
         <Card>

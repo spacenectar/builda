@@ -1,0 +1,15 @@
+import { Docs } from "./index.tsx";
+
+<Meta title="page/Home" component={Docs} />
+
+<Title type="ALPHA">Docs</Title>
+
+<Description of={Docs} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <Docs />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Docs} />

@@ -14,11 +14,13 @@ import { Authentication, Card, Logo } from 'components';
  */
 export const Login: NextPage = () => {
   const { getUser, isLoggedIn, login } = useAuth();
+  const router = useRouter();
+
+  const redirectString = (router.query.redirect as string) || '/';
 
   const [user, setUser] = useState<User | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [redirectUrl, setRedirectUrl] = useState<string>('/');
-  const router = useRouter();
+  const [redirectUrl, setRedirectUrl] = useState<string>(redirectString);
 
   const handleSubmit = (data: { email: string; password: string }) => {
     const doLogin = login(data.email, data.password);
@@ -44,12 +46,8 @@ export const Login: NextPage = () => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (router.query.redirect) {
-      setRedirectUrl(router.query.redirect as string);
-    } else {
-      setRedirectUrl('/');
-    }
-  }, [router.query.redirect]);
+    setRedirectUrl(redirectString);
+  }, [router]);
 
   return (
     <CenterTemplate>

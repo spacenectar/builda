@@ -1,0 +1,25 @@
+import { TerminalDemo } from "./index.tsx";
+
+import commandList from './mocks/command-list';
+
+
+<Meta
+  title="molecule/TerminalDemo"
+  component={TerminalDemo}
+  args={{
+    windowTitle: "Terminal Demo",
+    commands: commandList
+  }}
+/>
+
+<Title type="ALPHA">Terminal demo</Title>
+
+<Description of={TerminalDemo} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <TerminalDemo {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={TerminalDemo} />

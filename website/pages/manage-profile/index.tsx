@@ -27,7 +27,7 @@ export const ManageProfile: NextPage = () => {
     }
   }, [isLoggedIn]);
   return (
-    <MainTemplate user={user}>
+    <MainTemplate user={user} redirectURL={router.pathname}>
       {!user?.email ? (
         <div>
           <h2>Er... and you are?</h2>

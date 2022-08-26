@@ -9,7 +9,7 @@ import { User } from 'lib/types/user';
 import LinkObject from 'lib/types/link-object';
 
 // Components
-import { UserMenu, TopNavigation } from 'components';
+import { TopNavigation } from 'components';
 
 export interface Props extends React.ComponentProps<'header'> {
   /**
@@ -41,7 +41,7 @@ export const AppHeader: React.FC<Props> = ({
   user,
   appName,
   links,
-  redirectURL = '/',
+  // redirectURL = '/',
   logo
 }: Props) => (
   <header className={`${styles['app-header']} ${user && styles['logged-in']}`}>
@@ -54,7 +54,8 @@ export const AppHeader: React.FC<Props> = ({
       </h1>
     </div>
     <div className={styles['right-col']}>
-      <UserMenu user={user} redirectURL={redirectURL} />
+      <div />
+      {/* <UserMenu user={user} redirectURL={redirectURL} /> */}
       <TopNavigation links={links} />
     </div>
   </header>
