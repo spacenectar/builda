@@ -129,6 +129,26 @@ is the number of columns displayed on an average desktop screen or above.
   </Story>
 </Canvas>
 
+## Rows
+
+<Canvas withSource="open">
+  <Story
+    name="With Rows"
+    args={{
+      children: (
+        <>
+          {Array.from({ length: 4 }, (_, i) => (
+            <SampleChild key={i} number={i + 1} />
+          ))}
+        </>
+      ),
+      rows: 2
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
 <Tip type="tip">
   This component is responsive! Resize the browser window to see the grid adjust
   to the screen size.

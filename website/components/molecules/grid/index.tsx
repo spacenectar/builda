@@ -18,10 +18,24 @@ export interface Props {
   className?: string;
   /**
    * The number of columns to display
-   * @default 3
-   * @maxmum 5
+   * @default 1
    */
-  columns?: 1 | 2 | 3 | 4 | 5;
+  columns?: number;
+  /**
+   * The number of rows to display
+   * @default 1
+   */
+  rows?: number;
+  /**
+   * The gap between columns
+   * @default '1rem'
+   */
+  colGap?: string;
+  /**
+   * The gap between rows
+   * @default '1rem'
+   */
+  rowGap?: string;
 }
 
 /**
@@ -30,15 +44,29 @@ export interface Props {
 export const Grid: React.FC<Props> = ({
   children,
   className,
-  columns = 3
+  columns = 1,
+  rows = 1,
+  colGap = '1rem',
+  rowGap = '1rem'
 }: Props) => {
   return (
     <div
       className={cx(
         styles['grid'],
-        styles[`with-${columns}-columns`],
+        {
+          [styles['grid-columns-1']]: columns === 1,
+          [styles['grid-columns-2']]: columns === 2
+        },
         className
       )}
+      style={
+        {
+          '--grid-columns': columns,
+          '--grid-rows': rows,
+          '--grid-col-gap': colGap,
+          '--grid-row-gap': rowGap
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>
