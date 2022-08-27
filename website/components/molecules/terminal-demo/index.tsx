@@ -104,12 +104,23 @@ export const TerminalDemo: React.FC<Props> = ({
                         typewriter
                           .changeDelay(20)
                           .typeString(command.text)
-                          .callFunction((state) => {
-                            state.elements.cursor.setAttribute(
-                              'hidden',
-                              'hidden'
-                            );
-                          })
+                          .callFunction(
+                            (state: {
+                              elements: {
+                                cursor: {
+                                  setAttribute: (
+                                    arg0: string,
+                                    arg1: string
+                                  ) => void;
+                                };
+                              };
+                            }) => {
+                              state.elements.cursor.setAttribute(
+                                'hidden',
+                                'hidden'
+                              );
+                            }
+                          )
                           .start();
                       }}
                     />
