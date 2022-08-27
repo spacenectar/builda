@@ -22,11 +22,11 @@ const terminalCommands = [
   {
     text: "Building component 'Hello World'",
     colour: '#2589CF',
-    delay: 5000
+    delay: 3000
   },
   {
     text: 'Done',
-    delay: 6000
+    delay: 4000
   }
 ];
 
@@ -55,7 +55,11 @@ export const Home: NextPage = () => {
           </strong>{' '}
           A stupidly simple command line tool.
         </h2>
-        <TerminalDemo commands={terminalCommands} windowTitle="Builda" />
+        <TerminalDemo
+          commands={terminalCommands}
+          windowTitle="Builda"
+          height="250px"
+        />
       </Grid>
       <Grid columns={3}>
         <Card>

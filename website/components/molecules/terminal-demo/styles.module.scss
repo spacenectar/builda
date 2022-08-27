@@ -1,4 +1,5 @@
 .terminal-demo {
+  position: relative;
   background-color: #272727;
   color: #ffffff;
   width: 100%;
@@ -19,6 +20,8 @@
 }
 
 .window-body {
+  width: 100%;
+  height: 100%;
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
   overflow-y: scroll;

@@ -53,13 +53,13 @@
     "react-icons": "^4.4.0",
     "react-image-crop": "^10.0.4",
     "react-transition-group": "^4.4.2",
-    "react-typing-animation": "^1.6.2",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
     "stylelint": "^14.9.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-sass-guidelines": "^9.0.1",
+    "typewriter-effect": "^2.19.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -85,7 +85,6 @@
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "@types/react-transition-group": "^4.4.5",
-    "@types/react-typing-animation": "^1.6.3",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "babel-jest": "^28.1.3",
     "babel-loader": "^8.2.5",

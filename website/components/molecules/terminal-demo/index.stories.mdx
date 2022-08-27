@@ -20,6 +20,14 @@ import commandList from './mocks/command-list';
   <Story name="Default">{(args) => <TerminalDemo {...args} />}</Story>
 </Canvas>
 
+## Custom Dimensions
+
+You can set the dimensions of the terminal by passing the `width` and `height` props.
+
+<Canvas withSource="open">
+  <Story name="Custom Dimensions">{(args) => <TerminalDemo {...args} width="300px" height="250px" commands={[commandList[0]]} />}</Story>
+</Canvas>
+
 ## Props
 
 <ArgsTable of={TerminalDemo} />
