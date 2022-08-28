@@ -8,7 +8,7 @@ export type Props = React.ComponentProps<'div'>;
 
 // Render component
 export const CardHeader: React.FC<Props> = ({ children }: Props) => (
-  <div className={styles['header']}>{children}</div>
+  <header className={styles['header']}>{children}</header>
 );
 
 CardHeader.displayName = 'CardHeader';

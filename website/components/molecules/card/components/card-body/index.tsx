@@ -26,11 +26,11 @@ export const CardBody: React.FC<Props> = ({
   overflowY = 'auto',
   children
 }: Props) => (
-  <div
+  <section
     className={cx(styles['body'], styles[`overflow-y-${overflowY}`], className)}
   >
     {children}
-  </div>
+  </section>
 );
 
 CardBody.displayName = 'CardBody';

@@ -1,6 +1,7 @@
 import { Card } from 'components';
 import { CardHeader } from './components/card-header';
 import { CardBody } from './components/card-body';
+import { CardFooter } from './components/card-footer';
 
 <Meta
   title="molecule/Card"
@@ -8,7 +9,8 @@ import { CardBody } from './components/card-body';
   subcomponents={{
     Card,
     CardHeader,
-    CardBody
+    CardBody,
+    CardFooter
   }}
 />
 
@@ -29,11 +31,6 @@ You can also pass a `className` prop and style it yourself but this is discourag
   <Story name="Default">
     <Card>
       <p>This card is the default card with all of the styling intact</p>
-    </Card>
-  </Story>
-  <Story name="NoShadow">
-    <Card noShadow>
-      <p>This card has had the shadow styling disabled.</p>
     </Card>
   </Story>
 </Canvas>
@@ -68,7 +65,7 @@ grid layout to make room for the header.
 
 <Tip type="danger">
   This component is not that smart, it assumes if there are two children then
-  the first one is a CardHeader.
+  the first one is a CardHeader. If there are three then it assumes the first is the CardHeader the last is the CardFooter.
 </Tip>
 
 <Canvas withSource="open">
@@ -83,6 +80,45 @@ grid layout to make room for the header.
           euismod, consectetur nunc eget, maximus nunc.
         </p>
       </Card.Body>
+    </Card>
+  </Story>
+</Canvas>
+
+### CardFooter
+
+<Canvas withSource="open">
+  <Story name="WithFooter">
+    <Card>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+      <Card.Footer>
+        <div>Footer goes here</div>
+      </Card.Footer>
+    </Card>
+  </Story>
+</Canvas>
+
+### CardHeader and CardFooter
+
+<Canvas withSource="open">
+  <Story name="WithHeaderAndFooter">
+    <Card>
+      <Card.Header>
+        <div>Header goes here</div>
+      </Card.Header>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+      <Card.Footer>
+        <div>Footer goes here</div>
+      </Card.Footer>
     </Card>
   </Story>
 </Canvas>

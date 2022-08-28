@@ -16,14 +16,19 @@
   background-color: unset;
 }
 
-.no-shadow {
-  box-shadow: unset;
-}
-
 .no-border-radius {
   border-radius: unset;
 }
 
-.with-2-rows {
+.has-header {
   grid-template-rows: min-content 1fr;
 }
+
+.has-footer {
+  grid-template-rows: 1fr min-content;
+}
+
+.has-header-and-footer {
+  grid-template-rows: min-content 1fr min-content;
+}
+

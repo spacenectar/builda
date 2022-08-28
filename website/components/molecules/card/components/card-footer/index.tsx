@@ -8,7 +8,7 @@ export type Props = React.ComponentProps<'div'>;
 
 // Render component
 export const CardFooter: React.FC<Props> = ({ children }: Props) => (
-  <div className={styles['footer']}>{children}</div>
+  <footer className={styles['footer']}>{children}</footer>
 );
 
 CardFooter.displayName = 'CardFooter';
