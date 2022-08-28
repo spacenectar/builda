@@ -99,6 +99,10 @@
   }
 }
 
+.full-width {
+  width: 100%;
+}
+
 // The error to display if the user doesn't add an onClick or a href prop
 .error {
   color: $col-danger;

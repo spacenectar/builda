@@ -19,6 +19,7 @@ export { default as Button } from './atoms/button';
 export { default as Icons } from './atoms/icons';
 export { default as Logo } from './atoms/logo';
 export { default as Spinner } from './atoms/spinner';
+export { default as Text } from './atoms/text';
 export { default as InputAutocomplete } from './inputs/input-autocomplete';
 export { default as InputCheckbox } from './inputs/input-checkbox';
 export { default as InputDatetime } from './inputs/input-datetime';

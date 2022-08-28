@@ -13,7 +13,7 @@ export interface Props extends React.ComponentProps<'button'> {
   /**
    * The button label
    */
-  label: string;
+  label?: string;
   /**
    * The if you want to include an icon, this specifies the side of the button the icon should appear on.
    */
@@ -51,6 +51,11 @@ export interface Props extends React.ComponentProps<'button'> {
    * Use a button preset.
    */
   preset?: PresetIcon;
+  /**
+   * Should the button fill the width of it's container?
+   * @default false
+   */
+  fullWidth?: boolean;
   /**
    * Is the button rectangular or circular?
    * @default false (rectangular)
@@ -104,6 +109,7 @@ export const Button: React.FC<Props> = ({
   submit,
   reset,
   preset,
+  fullWidth,
   loading,
   loadingIndicator,
   children,
@@ -125,15 +131,14 @@ export const Button: React.FC<Props> = ({
   };
   return (
     <button
-      data-testid={
-        testID || `test-button-${label.toLowerCase().split(' ').join('-')}`
-      }
-      aria-label={label}
+      data-testid={testID}
+      aria-label={label || undefined}
       type={buttonType()}
       className={cx(
         styles['button'],
         alignIcon && styles[`icon-${alignIcon}`],
         iconOnly && styles[`icon-only`],
+        fullWidth && styles['full-width'],
         {
           [styles[`button-${variant}` || '']]: variant,
           [styles['loading']]: loading
@@ -149,8 +154,8 @@ export const Button: React.FC<Props> = ({
       {!loading && (
         <>
           {preset && presetIcon(preset)}
-          {children}
           {!iconOnly && label}
+          {children}
         </>
       )}
       {loading && (

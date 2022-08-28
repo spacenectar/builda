@@ -303,6 +303,27 @@ available presets to add an icon to your button.
   </Story>
 </Canvas>
 
+## Children instead of label
+
+You do not need to use the label prop to add text to a button (although it is still the recommended way),
+you can pass children to the button instead.
+
+<Canvas withSource="open">
+  <Story name="With children instead of label">
+   <Button>Hello, I am a button</Button>
+  </Story>
+</Canvas>
+
+## Full width button
+
+Sometimes, you want a button to be full width, this is possible by passing the fullWidth prop to the button.
+
+<Canvas withSource="open">
+  <Story name="Full-width button">
+   <Button fullWidth>Hello, I am a long boi</Button>
+  </Story>
+</Canvas>
+
 ## Loading state
 
 You can pass a 'loading' prop to the button to show a loading state. This will
@@ -323,13 +344,7 @@ prop to show a custom loading text. By default the loading text is 'Loading...'
   </Story>
 </Canvas>
 
-## Props
-
-<ArgsTable of={Button} />
-
-## Usage
-
-### Use as a link
+## Use as a link
 
 A Button component can be used to style a link, however you must wrap the component
 in the correct routing method of your framework for it to work.
@@ -344,19 +359,16 @@ e.g.
 </Link>
 ```
 
-### Adding icons
+## Adding icons
 
 Anything can be used as a child of the button component and can be styled with
 the use of the `className` property. However the component has support for
 adding icons.
 
-Your icon should be either an `svg`, `img` or `picture` tag. Alternatively, you
-can just add an `.icon` class to any child element and it will be treated as an
-icon. You must then apply the `alignIcon` prop to the component which will align
+Your icon should be either an `svg`, `img` or `picture` tag. You must then apply the `alignIcon` prop to the component which will align
 the icon correctly to either the `left` or `right`.
 
-For best results, we recommend using the
-[Icons from `react-icons`](https://react-icons.github.io/)
 
-> Note: As icons are added as children, they are not controllable via storybook controls. However,
-> you can change their alignment via the `alignIcon` control using one of the `With [x] icon` stories.
+## Props
+
+<ArgsTable of={Button} />
