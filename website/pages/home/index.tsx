@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import MainTemplate from 'templates/main';
 import useAuth from 'lib/context/auth-context';
 import { User } from 'lib/types/user';
-import { Card, Grid, TerminalDemo } from 'components';
+import { Button, Card, Grid, TerminalDemo, Text } from 'components';
 
 import styles from './styles.module.scss';
 
@@ -64,57 +64,66 @@ export const Home: NextPage = () => {
           <Grid columns={3} colGap="2rem">
             <Card>
               <Card.Header>
-                <h3 className={styles['card-header']}>
+                <Text use="h2" as="h1">
                   Generate something new from a Scaffold
-                </h3>
+                </Text>
               </Card.Header>
               <Card.Body>
-                <p>
+                <Text>
                   Select a scaffold from our trade store, use one from the
                   community or create your own and you can use it to generate
                   any part of your application!
-                </p>
-                <p>
+                </Text>
+                <Text>
                   A scaffold can live anywhere your application has access to
                   via command line.
-                </p>
+                </Text>
               </Card.Body>
+              <Card.Footer>
+                <Button fullWidth>Find out more about scaffolds</Button>
+              </Card.Footer>
             </Card>
             <Card>
               <Card.Header>
-                <h3 className={styles['card-header']}>
+                <Text use="h2" as="h1">
                   Generate something pre-made from a Prefab
-                </h3>
+                </Text>
               </Card.Header>
               <Card.Body>
-                <p>
+                <Text>
                   Generate a copy of a component from a component library, a set
                   of config files, or a pre-configured plugin from a Prefab.
-                </p>
-                <p>
+                </Text>
+                <Text>
                   Prefabs are available in our Trade Store, from the community
                   or you can make your own.
-                </p>
+                </Text>
               </Card.Body>
+              <Card.Footer>
+                <Button fullWidth>Discover the power of prefabs</Button>
+              </Card.Footer>
             </Card>
             <Card>
               <Card.Header>
-                <h3 className={styles['card-header']}>
+                <Text use="h2" as="h1">
                   Your entire application, built from config.
-                </h3>
+                </Text>
               </Card.Header>
               <Card.Body>
-                <p>
+                <Text>
                   Everything generated via Builda is built from a config file
                   and versions are tracked using registry files, making
                   everything easily updatable with a simple command.
-                </p>
-                <p>
+                </Text>
+                <Text>
                   You can keep all of your application boilerplate code locked
                   away and focus on the look, feel and content of the app
                   itself.
-                </p>
+                </Text>
               </Card.Body>
+              <Card.Footer>
+                <Button fullWidth>How does this work?</Button>
+              </Card.Footer>
             </Card>
           </Grid>
         </Grid>
