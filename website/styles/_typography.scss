@@ -32,6 +32,7 @@
 
 $fs-body-text: 1.4rem;
 
+$fs-heading-xxl: 3.2rem;
 $fs-heading-xl: 2.2rem;
 $fs-heading-l: 2rem;
 $fs-heading-m: 1.6rem;
@@ -44,10 +45,43 @@ $fs-form-metadata: 1.2rem;
 $fs-button: 1.6rem;
 $fs-link: 1.6rem;
 
+@mixin fs-heading-xxl {
+  font-size: $fs-heading-xxl;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@mixin fs-heading-xl {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: $fs-heading-xl;
+  line-height: 1.2;
+}
+
+@mixin fs-heading-l {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: $fs-heading-l;
+  line-height: 1.2;
+}
+
+@mixin fs-heading-m {
+  font-family: 'Albert Sans', sans-serif;
+  font-weight: 700;
+  font-size: $fs-heading-m;
+  line-height: 1.2;
+}
+
+@mixin fs-heading-s {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: $fs-heading-s;
+  line-height: 1.2;
+}
+
 @mixin fs-body-text {
   font-family: 'Albert Sans', sans-serif;
   font-size: $fs-body-text;
-  line-height: 2.1rem;
+  line-height: 1.4;
 }
 
 .body-text {
