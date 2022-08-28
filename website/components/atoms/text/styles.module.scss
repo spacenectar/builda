@@ -1,0 +1,38 @@
+.text-h1 {
+  @include fs-heading-xxl;
+}
+
+.text-h2 {
+  @include fs-heading-xl;
+}
+
+.text-h3 {
+  @include fs-heading-l;
+}
+
+.text-h4 {
+  @include fs-heading-m;
+}
+
+.text-h5 {
+  @include fs-heading-s;
+  font-weight: 600;
+}
+
+.text-h6 {
+  @include fs-heading-s;
+}
+
+.text-p {
+  @include fs-body-text();
+}
+
+.text-span {
+  @include fs-body-text();
+  line-height: 1;
+}
+
+.show-margin:not(.text-span) {
+  margin-bottom: margin(1);
+}
+
