@@ -25,7 +25,7 @@ interface Props {
    * You can make the text 1.5x smaller or 1.5x larger by passing the size prop
    * @default 'normal'
    */
-  size?: 'xs' | 'sm' | 'normal' | 'lg' | 'xl';
+  size?: 'xs' | 's' | 'normal' | 'l' | 'xl' | 'xxl';
   /**
    * Show a margin below the text (does not apply to the span node type)
    * @default true

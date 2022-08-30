@@ -69,12 +69,12 @@ export const Home: NextPage = () => {
                 </Text>
               </Card.Header>
               <Card.Body>
-                <Text>
+                <Text size="l">
                   Select a scaffold from our trade store, use one from the
                   community or create your own and you can use it to generate
                   any part of your application!
                 </Text>
-                <Text>
+                <Text size="l">
                   A scaffold can live anywhere your application has access to
                   via command line.
                 </Text>
@@ -90,11 +90,11 @@ export const Home: NextPage = () => {
                 </Text>
               </Card.Header>
               <Card.Body>
-                <Text>
+                <Text size="l">
                   Generate a copy of a component from a component library, a set
                   of config files, or a pre-configured plugin from a Prefab.
                 </Text>
-                <Text>
+                <Text size="l">
                   Prefabs are available in our Trade Store, from the community
                   or you can make your own.
                 </Text>
@@ -110,12 +110,12 @@ export const Home: NextPage = () => {
                 </Text>
               </Card.Header>
               <Card.Body>
-                <Text>
+                <Text size="l">
                   Everything generated via Builda is built from a config file
                   and versions are tracked using registry files, making
                   everything easily updatable with a simple command.
                 </Text>
-                <Text>
+                <Text size="l">
                   You can keep all of your application boilerplate code locked
                   away and focus on the look, feel and content of the app
                   itself.
