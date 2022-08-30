@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <meta name="msapplication-TileColor" content="#dc3287">
+    <meta name="theme-color" content="#dc3287">
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="mask-icon" href="../safari-pinned-tab.svg" color="#dc3287">
+    <link rel="stylesheet" href="../app.css">
+    <title>Modules | Builda - The Everything generator</title>
+</head>
+<body>
+    <div id="app">
+        <main class="main">
+            <div class="content">                    
+                <div class="logo">
+                    <img src="../logo.svg" alt="Builda - The Everything generator">
+                </div>
+                <div class="text">
+                    <h1 class="app-name">Welcome to Builda</h1>
+                    <h2 class="app-subtitle">This is the future home of the modules directory</h2>
+                    <p>The website isn't quite ready yet. This domain is currently only used to host Builda assets.</p>
+                    <p>Check back later though, there is a lot more to come! </p>
+                    <br>If you want to be notified when this site goes live. Add your name and email to our mailing list below, </br> we will use this list to send you exactly one email and then we will purge the list.</p>
+                </div>
+                <div class="form-container">
+                    <form netlify method="POST" class="form">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" id="email">
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="text/javascript">
+        // Replace the form with a thank you message after submission
+        document.querySelector('.form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('/', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+            .then(response => response.text())
+            .then(text => {
+                document.querySelector('.form').innerHTML = "<p>Thank you for your interest! We'll let you know when the site is active</p>";
+            });
+        });
+
+    </script>
+</body>
+</html>
