@@ -119,6 +119,26 @@ override this by passing the `showMargin` prop and setting it to false.
   </Story>
 </Canvas>
 
+You can make the output text larger or smaller by passing the `size` prop.
+
+<Canvas withSource="open">
+  <Story name="xl paragraph">
+    <Text size="xl">This p tag is xl</Text>
+  </Story>
+  <Story name="lg paragraph">
+    <Text size="lg">This p tag is lg</Text>
+  </Story>
+  <Story name="normal paragraph">
+    <Text size="normal">This p tag is normal sized</Text>
+  </Story>
+  <Story name="sm paragraph">
+    <Text size="sm">This p tag is sm</Text>
+  </Story>
+  <Story name="xs paragraph">
+    <Text size="xs">This p tag is xs</Text>
+  </Story>
+</Canvas>
+
 ## Props
 
 <ArgsTable of={Text} />

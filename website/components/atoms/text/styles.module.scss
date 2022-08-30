@@ -1,5 +1,27 @@
+@mixin sizes($type) {
+  &.size-xs {
+    font-size: calc($fs-heading-#{$type} * 0.5);
+  }
+  &.size-s {
+    font-size: calc($fs-heading-#{$type} * 0.75);
+  }
+  &.size-m {
+    font-size: $fs-heading-#{$type};
+  }
+  &.size-l {
+    font-size: calc($fs-heading-#{$type} * 1.25);
+  }
+  &.size-xl {
+    font-size: calc($fs-heading-#{$type} * 1.5);
+  }
+  &.size-xxl {
+    font-size: calc($fs-heading-#{$type} * 2);
+  }
+}
+
 .text-h1 {
   @include fs-heading-xxl;
+
 }
 
 .text-h2 {
@@ -25,6 +47,12 @@
 
 .text-p {
   @include fs-body-text();
+  &.size-larger {
+    @include fs-body-text(1.5);
+  }
+  &.size-smaller {
+    @include fs-body-text(0.75);
+  }
 }
 
 .text-span {

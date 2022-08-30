@@ -22,6 +22,11 @@ interface Props {
    */
   children: React.ReactNode;
   /**
+   * You can make the text 1.5x smaller or 1.5x larger by passing the size prop
+   * @default 'normal'
+   */
+  size?: 'xs' | 'sm' | 'normal' | 'lg' | 'xl';
+  /**
    * Show a margin below the text (does not apply to the span node type)
    * @default true
    */
@@ -39,6 +44,7 @@ export const Text: React.FC<Props> = ({
   use = 'p',
   as,
   children = '',
+  size = 'normal',
   showMargin = true,
   className
 }: Props) => {
@@ -47,6 +53,7 @@ export const Text: React.FC<Props> = ({
     <Tag
       className={cx(
         styles[`text-${as || use}`],
+        styles[`size-${size}`],
         showMargin && styles['show-margin'],
         className
       )}
