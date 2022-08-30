@@ -13,7 +13,6 @@ import styles from './styles.module.scss';
  */
 export const GettingStarted: NextPage = () => {
   const { getUser, isLoggedIn } = useAuth();
-  const router = useRouter();
 
   const [user, setUser] = useState<User | undefined>(undefined);
 

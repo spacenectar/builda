@@ -100,6 +100,7 @@ export const TerminalDemo: React.FC<Props> = ({
                   <>
                     <div className={styles['prompt']}>&gt;</div>
                     <Typewriter
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Typewriter is a library
                       onInit={(typewriter: any) => {
                         typewriter
                           .changeDelay(20)

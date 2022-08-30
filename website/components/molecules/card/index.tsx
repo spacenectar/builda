@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor, ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 // Import Stylesheet
