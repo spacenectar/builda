@@ -41,7 +41,7 @@
       ],
       "@mocks/*": [
         "mocks/*"
-      ],
+      ]
     },
     "incremental": true
   },
