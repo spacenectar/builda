@@ -44,7 +44,8 @@ module.exports = {
   ignorePatterns: [
     '**/venv/*, **/*.test.*, **/*.spec.*',
     '**/.builda/**',
-    '**/scaffolds/**'
+    '**/scaffolds/**',
+    '**/public/**'
   ],
   rules: {
     'react/prop-types': [

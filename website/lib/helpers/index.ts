@@ -16,5 +16,4 @@ e.g. with registering
 
 export { default as fakeEvent } from './fake-event';
 export { default as generateId } from './generate-id';
-export { default as getTrueItemCount } from './get-true-item-count';
 export { default as handleFormValidation } from './handle-form-validation';
