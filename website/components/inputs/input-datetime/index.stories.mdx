@@ -1,0 +1,35 @@
+import InputDatetime from './index';
+
+<Meta
+  title="input/InputDatetime"
+  component={InputDatetime}
+  args={{
+    name: 'InputDatetime'
+  }}
+/>
+
+export const Template = (args) => <InputDatetime {...args} />;
+
+# InputDatetime
+
+<WorksWith component="InputFactory" />
+
+The `InputDatetime` component uses the native `<input type="date">` element and is a wrapper around it.
+
+<Canvas withSource="open">
+  <Story name="Date picker">{Template.bind({})}</Story>
+  <Story
+    name="Date picker (disabled)"
+    args={{
+      disabled: true
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Props
+
+The `InputDatetime` has the same props as the html `<input type="date">` element, along with the following additional props:
+
+<ArgsTable of={InputDatetime} />

@@ -1,0 +1,58 @@
+.context-menu {
+  display: block;
+  background-color: $col-main-panel-bg;
+  border: 1px solid $col-border;
+  border-radius: $border-radius;
+  box-shadow: 0.2rem 0.2rem 0.5rem $col-grey-700;
+  width: max-content;
+  overflow: hidden;
+  padding: padding(0.5) 0;
+  &.enter {
+    opacity: 0;
+    transform: translateY(-1rem);
+  }
+  &.enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+  &.exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  &.exit-active {
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+}
+
+.menu-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  padding: padding(0.5) padding(2);
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: $col-grey-700;
+  }
+
+  &.has-icon {
+    grid-template-columns: 10px 1fr;
+    gap: spacing(1);
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: $col-grey-600;
+    a {
+      color: $col-grey-300;
+    }
+  }
+
+  a {
+    color: $col-grey-600;
+    text-decoration: none;
+  }
+}

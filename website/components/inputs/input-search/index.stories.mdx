@@ -1,0 +1,27 @@
+import { action } from '@storybook/addon-actions';
+import InputSearch from './index';
+
+<Meta
+  title="input/InputSearch"
+  component={InputSearch}
+  args={{
+    placeholder: 'Search',
+    onSubmit: action('onSubmit')
+  }}
+  argTypes={{
+    onSubmit: { action: 'onSubmit' }
+  }}
+/>
+
+# Input Search
+
+The InputSearch component is a wrapper around the `InputText` component.
+It adds a search icon to the input. It is not compatible with `InputFactory` as it implements it's own instance of it.
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <InputSearch {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={InputSearch} />

@@ -1,0 +1,44 @@
+import TableRow from './index';
+
+<Meta
+  title="molecule/TableRow"
+  component={TableRow}
+  args={{
+    name: 'table-row name',
+    children: <>Hello world</>
+  }}
+/>
+
+export const Template = (args) => <TableRow {...args} />;
+
+## Table Row
+
+The table-row component is used to display a row of a table. It is not a standalone component, but rather a child of the table component.
+
+<Tip type="warning">
+  The example below shows the component in a standard HTML table element. <br />{' '}
+  To see the correct styling and all available features, please refer to the{' '}
+  <a href="?path=/docs/molecule-table--default-story">Table</a> or{' '}
+  <a href="?path=/docs/organism-tablegenerator--default-story">
+    TableGenerator
+  </a>{' '}
+  components.
+</Tip>
+
+<Canvas withSource="open">
+  <Story name="Default">
+    <table>
+      <thead>
+        <TableRow>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Favourite Star Trek captain</th>
+        </TableRow>
+      </thead>
+    </table>
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={TableRow} />

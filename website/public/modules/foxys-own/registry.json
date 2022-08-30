@@ -1,0 +1,31 @@
+{
+  "name": "foxys-own",
+  "type": "scaffold",
+  "version": "3.0.0",
+  "author": "Alex Foxleigh (https://www.alexfoxleigh.com/)",
+  "funding": "https://www.patreon.com/builda",
+  "moduleUrl": "https://builda.app/modules/foxys-own",
+  "description": "This is the scaffold that I ([@foxleigh81](https://github.com/foxleigh81)) use myself to create my own projects. *Note:* You will need to install the [foxys-own](builda-prefab-foxys-own) prefab (or configure storybook the same way) before you can use this scaffold as is. \n",
+  "keywords": [
+    "react",
+    "storybook",
+    "storybook-mdx",
+    "typescript",
+    "sass",
+    "sass-modules",
+    "scss",
+    "scss-modules"
+  ],
+  "files": ["index.stories.mdx", "index.tsx", "styles.module.scss"],
+  "substitute": [
+    {
+      "replace": "PREFIX",
+      "required": true,
+      "with": "command"
+    },
+    {
+      "replace": "TYPE",
+      "with": "component"
+    }
+  ]
+}

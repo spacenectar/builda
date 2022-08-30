@@ -1,0 +1,9 @@
+{
+  "name": "terminal-demo",
+  "version": "1.0.0",
+  "author": "",
+  "scaffold": {
+    "name": "component",
+    "version": "3.0.0"
+  }
+}

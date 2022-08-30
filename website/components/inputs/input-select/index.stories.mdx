@@ -1,0 +1,68 @@
+import InputSelect from './index';
+
+import options from 'lib/mocks/options';
+
+<Meta
+  title="input/InputSelect"
+  component={InputSelect}
+  args={{
+    name: 'test-name',
+    options: options,
+    placeholder: 'Select...'
+  }}
+  argTypes={{
+    options: {
+      control: {
+        type: 'object'
+      }
+    }
+  }}
+/>
+
+# InputSelect
+
+<WorksWith component="InputFactory" />
+
+The input select component is used to select a single option from a list of options.
+It is a drop-in replacement for the native select element.
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <InputSelect {...args} />}</Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story name="Multi-select">
+    {(args) => <InputSelect multiple {...args} />}
+  </Story>
+</Canvas>
+
+You can also use the `value` prop to set the initially selected option. This should be equal to the value of the option you want to be selected.
+
+<Canvas withSource="open">
+  <Story
+    name="Preselected value"
+    args={{
+      value: options[0].value
+    }}
+  >
+    {(args) => <InputSelect {...args} />}
+  </Story>
+</Canvas>
+
+You can also pass a preset value to a `disabled` input select. This will effectively turn it into a read-only input select.
+
+<Canvas withSource="open">
+  <Story
+    name="Disabled"
+    args={{
+      value: options[1].value,
+      disabled: true
+    }}
+  >
+    {(args) => <InputSelect {...args} />}
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={InputSelect} />

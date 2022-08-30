@@ -1,0 +1,32 @@
+.app-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: $col-background;
+  color: $col-body-text;
+  align-items: center;
+  padding: padding(1) padding(2);
+  overflow: hidden;
+}
+
+.left-col {
+  position: relative;
+  justify-content: start;
+  gap: spacing(1);
+  align-content: center;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: spacing(2);
+}
+
+.right-col {
+  display: grid;
+  justify-items: end;
+  align-items: center;
+  height: 100%;
+  gap: spacing(2);
+}

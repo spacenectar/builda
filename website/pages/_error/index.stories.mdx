@@ -1,0 +1,21 @@
+import { Holding } from './index.tsx';
+
+<Meta
+  title="page/Holding"
+  component={Holding}
+  args={{
+    text: 'Default text'
+  }}
+/>
+
+<Title type="ALPHA">Holding</Title>
+
+<Description of={Holding} />
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <Holding {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Holding} />

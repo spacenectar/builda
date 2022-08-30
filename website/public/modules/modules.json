@@ -1,0 +1,18 @@
+[
+  {
+    "name": "default-js",
+    "type": "scaffold"
+  },
+  {
+    "name": "default-ts",
+    "type": "scaffold"
+  },
+  {
+    "name": "foxys-own",
+    "type": "scaffold"
+  },
+  {
+    "name": "low-rider",
+    "type": "scaffold"
+  }
+]

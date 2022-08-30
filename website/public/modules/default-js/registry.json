@@ -1,0 +1,21 @@
+{
+  "name": "default-js",
+  "type": "scaffold",
+  "version": "1.0.0",
+  "author": "Alex Foxleigh (https://www.alexfoxleigh.com/)",
+  "funding": "https://www.patreon.com/builda",
+  "moduleUrl": "https://builda.app/modules/default-js",
+  "description": "This is the default scaffold that ships with builda. It only has the bare minimum of dependencies to get you started.\n",
+  "keywords": ["react"],
+  "files": ["index.jsx"],
+  "dependencies": {
+    "react": "^17.0.0"
+  },
+  "substitute": [
+    {
+      "replace": "TYPE",
+      "with": "component",
+      "required": true
+    }
+  ]
+}

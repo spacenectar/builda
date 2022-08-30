@@ -1,0 +1,38 @@
+import InputTextarea from './index';
+
+<Meta
+  title="input/InputTextarea"
+  component={InputTextarea}
+  args={{
+    name: 'input-textarea',
+    label: 'InputTextarea',
+    placeholder: 'Placeholder text',
+    rows: 5,
+    cols: 30,
+    onChange: () => {}
+  }}
+/>
+
+export const Template = (args) => <InputTextarea {...args} />;
+
+# InputTextarea
+
+<WorksWith component="InputFactory" />
+
+The input-textarea component is used to collect long-form user input
+
+<Canvas withSource="open">
+  <Story name="Default">{Template.bind({})}</Story>
+  <Story
+    name="Disabled"
+    args={{
+      disabled: true
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={InputTextarea} />

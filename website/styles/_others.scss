@@ -1,0 +1,22 @@
+$border-radius: 3px;
+$border-radius-lg: 5px;
+
+@function generate-drop-shadow($color) {
+  @return rgba($color, 0.15) 0 1px 2px 0, rgba($color, 0.05) 0 2px 6px 2px;
+}
+
+$drop-shadow: generate-drop-shadow(#000);
+$modal-shadow: rgba(#000, 0.9) 0 0 10px 0;
+
+// A mixin to make items invisible but still readable by screen readers
+@mixin sr-only() {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}

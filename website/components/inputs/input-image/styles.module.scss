@@ -1,0 +1,75 @@
+.wrapper {
+  height: 60px;
+  position: relative;
+  background: $col-main-panel-bg;
+  border: 1px solid $col-input-border;
+  border-radius: $border-radius;
+  padding: padding(0.5) padding(1);
+  &:hover {
+    background-color: darken($col-main-panel-bg, 10%);
+    border-color: lighten($col-input-border, 10%);
+  }
+}
+
+.icon,
+.input {
+  position: absolute;
+}
+
+.input {
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  top: 0;
+  width: 100%;
+
+  &::file-selector-button {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.fake-input {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: spacing(1);
+  align-items: center;
+  height: 100%;
+}
+
+.icon {
+  height: 30px !important;
+  left: calc(50% - 15px);
+  top: 15px;
+  width: 30px !important;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.modal {
+  width: 21vw;
+}
+
+.image-preview {
+  height: auto;
+  width: 20vw !important;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.canvas-preview {
+  height: 150px;
+  width: 150px;
+}
+
+.bottom {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: spacing(1);
+  align-items: center;
+  justify-items: center;
+}

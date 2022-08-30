@@ -1,0 +1,33 @@
+import InputAutocomplete from './index';
+
+<Meta
+  title="input/InputAutocomplete"
+  component={InputAutocomplete}
+  args={{
+    options: [
+      'Star Trek',
+      'Star Wars',
+      'War of the Worlds',
+      'Harry Potter',
+      'Lord of the Rings',
+      'The Hunger Games'
+    ]
+  }}
+  argTypes={{
+    onChange: { action: 'onChange' }
+  }}
+/>
+
+# Input autocomplete
+
+<WorksWith component="InputFactory" />
+
+The `InputAutocomplete` component is a wrapper around the input-text component that provides autocomplete functionality.
+
+<Canvas withSource="open">
+  <Story name="Default">{(args) => <InputAutocomplete {...args} />}</Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={InputAutocomplete} />

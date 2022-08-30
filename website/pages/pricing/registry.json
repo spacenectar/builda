@@ -1,0 +1,9 @@
+{
+  "name": "pricing",
+  "version": "1.0.0",
+  "author": "",
+  "scaffold": {
+    "name": "page",
+    "version": "1.0.0"
+  }
+}

@@ -1,26 +1,26 @@
 {
-  "init": {
-    "description": "Initialises a new project",
-    "required": false,
-    "boolean": true
-  },
-  "add": {
-    "description": "Adds a new builda module",
-    "required": false,
-    "type": "string"
-  },
-  "migrate": {
-    "description": "Migrates a project to the latest version",
-    "required": false,
-    "boolean": true
-  },
-  "manual": {
-    "description": "Bypasses the need for a config file",
-    "required": false,
-    "boolean": true,
-    "alias": [
-      "cli",
-      "m"
-    ]
-  }
+    "init": {
+        "description": "Initialises a new project",
+        "required": false,
+        "boolean": true
+    },
+    "add": {
+        "description": "Adds a new builda module",
+        "required": false,
+        "type": "string"
+    },
+    "migrate": {
+        "description": "Migrates a project to the latest version",
+        "required": false,
+        "boolean": true
+    },
+    "manual": {
+        "description": "Bypasses the need for a config file",
+        "required": false,
+        "boolean": true,
+        "alias": [
+            "cli",
+            "m"
+        ]
+    }
 }

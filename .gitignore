@@ -12,3 +12,5 @@ builda/src/helpers/globals.ts
 **/tsconfig.tsbuildinfo
 builda/experiments
 .builda
+.env.local
+.next
