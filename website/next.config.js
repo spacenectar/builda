@@ -62,5 +62,44 @@ module.exports = {
       })
     }];
   },
+  async redirects() {
+    return [
+      {
+        source: '/home',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/getting-started',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/docs',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/pricing',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/contact',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/about',
+        destination: '/holding',
+        permanent: false
+      },
+      {
+        source: '/trade-store',
+        destination: '/holding',
+        permanent: false
+      }
+    ]
+  },
 }, {}
 
