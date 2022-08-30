@@ -16,11 +16,7 @@
     "scss",
     "scss-modules"
   ],
-  "files": [
-    "index.stories.mdx",
-    "index.tsx",
-    "styles.module.scss"
-  ],
+  "files": ["index.stories.mdx", "index.tsx", "styles.module.scss"],
   "substitute": [
     {
       "replace": "PREFIX",

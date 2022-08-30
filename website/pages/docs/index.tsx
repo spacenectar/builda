@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import type { NextPage } from "next";
+import React, { useEffect, useState } from 'react';
+import type { NextPage } from 'next';
 
-import MainTemplate from "templates/main";
-import useAuth from "lib/context/auth-context";
-import { User } from "lib/types/user";
+import MainTemplate from 'templates/main';
+import useAuth from 'lib/context/auth-context';
+import { User } from 'lib/types/user';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 /**
  * The `Docs` page is used to display the Docs page of the application.
@@ -28,11 +28,11 @@ export const Docs: NextPage = () => {
 
   return (
     <MainTemplate user={user}>
-      <div className={styles["docs"]}>Your content goes here.</div>
+      <div className={styles['docs']}>Your content goes here.</div>
     </MainTemplate>
   );
 };
 
-Docs.displayName = "Docs";
+Docs.displayName = 'Docs';
 
 export default Docs;

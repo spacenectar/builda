@@ -6,12 +6,8 @@
   "funding": "https://www.patreon.com/builda",
   "moduleUrl": "https://builda.app/modules/default-js",
   "description": "This is the default scaffold that ships with builda. It only has the bare minimum of dependencies to get you started.\n",
-  "keywords": [
-    "react"
-  ],
-  "files": [
-    "index.jsx"
-  ],
+  "keywords": ["react"],
+  "files": ["index.jsx"],
   "dependencies": {
     "react": "^17.0.0"
   },
