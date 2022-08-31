@@ -1,33 +1,26 @@
 import generateCommands from '@scripts/generate-commands';
-import CommandConfig from '@typedefs/command-config';
 
 describe('generateCommands', () => {
-  let commands = [] as CommandConfig[];
+  let commands = {};
 
-  beforeEach(async () => {
-    commands = await generateCommands();
+  beforeEach(() => {
+    commands = generateCommands();
   });
 
   test('config file is parsed and commands extracted', () => {
-    expect(commands).toEqual([
-      {
-        name: 'atom',
-        type: 'scaffold',
+    expect(commands).toEqual({
+      atom: {
         use: 'default-ts',
-        outputPath: './experiments/atoms'
+        output_dir: './experiments/atoms'
       },
-      {
-        name: 'component',
-        type: 'scaffold',
+      component: {
         use: 'default-ts',
-        outputPath: './experiments/components'
+        output_dir: './experiments/components'
       },
-      {
-        name: 'test',
-        type: 'scaffold',
+      test: {
         use: 'default-ts',
-        outputPath: './experiments/tests'
+        output_dir: './experiments/tests'
       }
-    ]);
+    });
   });
 });

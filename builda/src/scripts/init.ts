@@ -81,7 +81,10 @@ const writeConfig = async (filename: string, contents: string) => {
   });
 };
 
-const installModules = async (config: Partial<ConfigFile>, answers: Answers)  => {
+const installModules = async (
+  config: Partial<ConfigFile>,
+  answers: Answers
+) => {
   printMessage('Installing initial scaffold...\r', 'notice');
   let options = {
     config,
@@ -144,45 +147,49 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
           });
       }
       const config = {
-        app: {
-          name: answers.appName
-        }
+        name: answers.appName
       } as ConfigFile;
 
-      await installModules(config, answers).then((response) => {
+      await installModules(config, answers)
+        .then((response) => {
+          const scaffoldScriptsList = scaffoldList.map(
+            (scaffoldType: string) => [
+              scaffoldType,
+              {
+                output_dir: `${answers.outputDirectory}/${pluralise(
+                  scaffoldType
+                )}`,
+                use: response.module.name
+              }
+            ]
+          );
 
-        const commandList = scaffoldList.map((scaffoldType: string) => [
-          scaffoldType,
-          {
-            type: 'scaffold',
-            outputPath: `${answers.outputDirectory}/${pluralise(scaffoldType)}`,
-            use: response.module.name
-          }
-        ]);
+          const scaffoldScripts = Object.fromEntries(scaffoldScriptsList);
 
-        const commands = Object.fromEntries(commandList);
+          const updatedConfig = {
+            ...response.config,
+            scaffold_scripts: scaffoldScripts
+          };
 
-        const updatedConfig = {
-          ...response.config,
-          commands
-        };
-
-        const configString = JSON.stringify(updatedConfig, null, 2);
-        writeConfig(configFileName, configString).then(() => {
-            printMessage('\rInitialisation complete', 'success');
-            printMessage(
-              `Visit ${websiteUrl}/setup for instructions on what to do next`,
-              'notice'
-            );
-            resolve();
-          }).catch((err) => {
-            reject(err);
-            throwError(err);
-          });
-      }).catch((err) => {
-        reject(err);
-        throwError(err);
-      });
+          const configString = JSON.stringify(updatedConfig, null, 2);
+          writeConfig(configFileName, configString)
+            .then(() => {
+              printMessage('\rInitialisation complete', 'success');
+              printMessage(
+                `Visit ${websiteUrl}/setup for instructions on what to do next`,
+                'notice'
+              );
+              resolve();
+            })
+            .catch((err) => {
+              reject(err);
+              throwError(err);
+            });
+        })
+        .catch((err) => {
+          reject(err);
+          throwError(err);
+        });
     }
   });
 };

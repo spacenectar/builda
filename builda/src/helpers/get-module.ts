@@ -5,18 +5,17 @@ import path from 'path';
 import globals from '@data/globals';
 
 // Import types
-import ModuleType from '@typedefs/module-types';
+
 import { ConfigFile } from '@typedefs/config-file';
-import CommandConfig from '@typedefs/command-config';
+import { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
 
-const moduleTypes = ['scaffold', 'prefab'] as ModuleType[];
-
-export const getmodule = (config: ConfigFile, command: CommandConfig) => {
+export const getModule = (
+  type: 'scaffold' | 'prefab',
+  config: ConfigFile,
+  command: ScaffoldScriptContent
+) => {
   if (config) {
-    const moduleList = config.modules;
-    const moduleType = moduleTypes.find(
-      (type) => moduleList[type] && moduleList?.[type]?.[command.use]
-    );
+    const moduleType = `${type}s`;
 
     const modulePath = path.resolve(
       `${globals.buildaDir}/modules/${moduleType}/${command.use}`
@@ -36,4 +35,4 @@ export const getmodule = (config: ConfigFile, command: CommandConfig) => {
   throw new Error(`Could not find config file`);
 };
 
-export default getmodule;
+export default getModule;

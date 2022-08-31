@@ -39,7 +39,7 @@ const addLocalModule = async (modulePath: string): Promise<ModuleRegistry> => {
   // write the files to the output directory
   filteredFiles.forEach(async (file: string) => {
     const srcPath = `${modulePath}/${file}`;
-    const outputPath = `${globals.buildaDir}/modules/${registry.type}/${registry.name}`;
+    const outputPath = `${globals.buildaDir}/modules/${registry.type}s/${registry.name}`;
     await createDir(outputPath).then(() => {
       fs.copyFileSync(srcPath, `${outputPath}/${file}`);
     });
@@ -67,7 +67,7 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
             name: file,
             content
           };
-          const outputPath = `${globals.buildaDir}/modules/${registry.type}/${registry.name}`;
+          const outputPath = `${globals.buildaDir}/modules/${registry.type}s/${registry.name}`;
           return createDir(outputPath).then(() => {
             return fs.writeFileSync(
               `${outputPath}/${fileObject.name}`,
@@ -121,25 +121,21 @@ export const addModule = async ({
       const version = module.version;
 
       // User has never installed any modules.
-      if (!config.modules) {
-        config.modules = {};
+      if (!config.scaffold_scripts) {
+        config.scaffold_scripts = {};
       }
 
       if (type === 'scaffold') {
         // User has never installed any scaffolds.
-        if (!config?.modules?.scaffold) {
-          config.modules.scaffold = {};
+        if (!config?.scaffolds) {
+          config.scaffolds = {};
         }
-        const scaffolds = config.modules.scaffold;
-        scaffolds[name] = version;
       }
       if (type === 'prefab') {
         // User has never installed any prefabs.
-        if (!config?.modules?.prefab) {
-          config.modules.prefab = {};
+        if (!config?.prefabs) {
+          config.prefabs = {};
         }
-        const prefabs = config.modules.prefab;
-        prefabs[name] = version;
       }
 
       // Write the config file

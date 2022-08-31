@@ -8,14 +8,14 @@ import TSubstitution from '@typedefs/substitution';
 
 interface IWriteFileOptions {
   file: string;
-  outputDirectory: string;
+  output_dir: string;
   substitute?: TSubstitution[];
   name: string;
 }
 
 export const writeFile = ({
   file,
-  outputDirectory,
+  output_dir,
   substitute,
   name
 }: IWriteFileOptions) => {
@@ -49,7 +49,7 @@ export const writeFile = ({
 
   // write the new file contents to the output directory
   if (newContents) {
-    return fs.writeFileSync(`${outputDirectory}/${fileName}`, newContents);
+    return fs.writeFileSync(`${output_dir}/${fileName}`, newContents);
   }
   throw new Error(`Could not write file ${fileName}`);
 };

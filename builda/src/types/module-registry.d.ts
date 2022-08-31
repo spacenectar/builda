@@ -1,18 +1,24 @@
-import ModuleType from './module-types';
 import TSubstitution from './substitution';
+import ModuleConfig from './module-config';
 export interface ModuleRegistry {
   name: string;
-  type: ModuleType;
+  type: 'scaffold' | 'prefab';
   version: string;
-  author: string;
-  description: string;
+  url: string;
+  author: {
+    name: string;
+    email?: string;
+    website?: string;
+    builda_user?: string;
+  };
   keywords?: string[];
   funding?: string[];
   files: string[];
   dependencies?: {
     [key: string]: string[];
   };
-  substitute? : TSubstitution[]
+  prefabs?: ModuleConfig;
+  substitute?: TSubstitution[];
 }
 
 export default ModuleRegistry;
