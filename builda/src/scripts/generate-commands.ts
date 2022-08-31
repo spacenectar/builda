@@ -1,28 +1,20 @@
-import { getConfigFile, getModule } from '@helpers';
-import type CommandConfig from '@typedefs/command-config';
+import { getConfigFile } from '@helpers';
+import { ConfigFile } from '@typedefs/config-file';
 
-export const generateCommands = async (): Promise<CommandConfig[]> => {
+export const generateCommands = (): ConfigFile['scaffold_scripts'] => {
   const config = getConfigFile();
-  const commands: Promise<CommandConfig>[] = [];
+  const commands = {} as ConfigFile['scaffold_scripts'];
   if (config) {
-    Object.keys(config.commands).forEach((command) => {
-      commands.push(
-        new Promise((resolve) => {
-          const { use, outputPath, substitute } = config.commands[command];
-          const { registry } = getModule(config, config.commands[command]);
-          resolve({
-            name: command,
-            type: registry.type,
-            use,
-            outputPath,
-            substitute
-          });
-        })
-      );
+    Object.entries<ConfigFile['scaffold_scripts']>(
+      config.scaffold_scripts
+    ).forEach((script) => {
+      const name = script[0];
+      const { use, output_dir, substitute } = script[1];
+      commands[name] = { use, output_dir, substitute };
     });
-    return Promise.all(commands);
+    return commands;
   } else {
-    return Promise.reject(`Could not find config file`);
+    throw new Error('No config file found');
   }
 };
 

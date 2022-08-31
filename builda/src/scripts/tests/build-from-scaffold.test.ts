@@ -1,5 +1,4 @@
 import buildFromScaffold from '@scripts/build-from-scaffold';
-import CommandConfig from '@typedefs/command-config';
 import fs from 'fs';
 
 import path from 'path';
@@ -10,11 +9,10 @@ const CONFIG_FILE = '.builda.json';
 const CONFIG_FOLDER = '.builda';
 
 const command = {
-  name: 'atom',
-  type: 'scaffold',
   use: 'default-ts',
-  outputPath: './experiments/atoms'
-} as CommandConfig;
+  output_dir: './experiments/atoms',
+  substitute: []
+};
 
 afterAll((done) => {
   if (fs.existsSync(CONFIG_FILE)) {

@@ -11,21 +11,21 @@ import {
 import { changeCase } from '@helpers/string-functions';
 
 // Import types
-import CommandConfig from '@typedefs/command-config';
+import { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
 import { Argv } from '@typedefs/argv';
 
 type Props = {
   name: string;
-  command: CommandConfig;
+  command: ScaffoldScriptContent;
   args?: Argv;
 };
 
 export const buildFromScaffold = ({ name, command, args }: Props) => {
   const config = getConfigFile();
 
-  if (config) {
-    printMessage(`Building ${command.name} '${name}'...`, 'notice');
-    const outputDirectory = `${command.outputPath}/${changeCase(
+  if (config !== undefined && !!command.use) {
+    printMessage(`Building ${Object.keys(command)[0]} '${name}'...`, 'notice');
+    const outputDirectory = `${command.output_dir}/${changeCase(
       name,
       'kebabCase'
     )}`;
@@ -33,11 +33,16 @@ export const buildFromScaffold = ({ name, command, args }: Props) => {
     // Create the directory tree if it doesn't exist
     fs.mkdirSync(outputDirectory, { recursive: true });
 
-    const { path: pathstring, registry, files } = getModule(config, command);
+    const {
+      path: pathstring,
+      registry,
+      files
+    } = getModule('scaffold', config, command);
 
     const substitute = command
       ? getSubstitutions({
           registry,
+          name,
           command,
           args
         })
@@ -49,7 +54,7 @@ export const buildFromScaffold = ({ name, command, args }: Props) => {
 
       writeFile({
         file: srcPath,
-        outputDirectory: outputPath,
+        output_dir: outputPath,
         substitute,
         name
       });

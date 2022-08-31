@@ -93,11 +93,11 @@ const CREATE_CONFIG_QUESTION = {
     return addModule({ config, path: module });
   }
 
-  const commands = config ? await generateCommands() : [];
+  const commands = config ? generateCommands() : {};
 
   const commandString = process.argv[2].replace('--', '');
 
-  const command = commands.find((c) => c.name === commandString);
+  const command = commands[commandString];
 
   if (command) {
     const name = argv._[1].toString();

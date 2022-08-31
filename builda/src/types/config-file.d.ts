@@ -1,21 +1,14 @@
-import { ModuleType } from './module-types';
-import { CommandConfig } from './command-config';
-
-type RemoveNameField<T> = Omit<T, 'name'>;
+import { ScaffoldScriptContents } from './scaffold-script-config';
+import { RunScriptConfig } from './run-script-config';
+import { ModuleConfig } from './module-config';
 
 export interface ConfigFile {
-  app: {
-    name: string;
+  name: string;
+  watched_folders: string[];
+  scaffold_scripts: {
+    [key: string]: ScaffoldScriptContents;
   };
-  modules: {
-    [ModuleType.SCAFFOLD]?: {
-      [key: string]: string;
-    };
-    [ModuleType.PREFAB]?: {
-      [key: string]: string;
-    };
-  };
-  commands: {
-    [key: string]: RemoveNameField<CommandConfig>;
-  };
+  run_scripts: RunScriptConfig;
+  prefabs: ModuleConfig;
+  scaffolds: ModuleConfig;
 }
