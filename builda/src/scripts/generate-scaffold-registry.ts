@@ -42,7 +42,10 @@ export const generateScaffoldRegistry = (scaffoldPath?: string) => {
           }
       `;
 
-      fs.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page, null, 2));
+      fs.writeFileSync(
+        `${readPath}/${file}/registry.json`,
+        JSON.stringify(page, null, 2)
+      );
     }
   });
 };

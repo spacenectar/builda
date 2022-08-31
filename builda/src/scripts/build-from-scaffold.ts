@@ -1,7 +1,13 @@
 import fs from 'fs';
 
 // import helpers
-import { getConfigFile, printMessage, getModule, writeFile, getSubstitutions } from '@helpers';
+import {
+  getConfigFile,
+  printMessage,
+  getModule,
+  writeFile,
+  getSubstitutions
+} from '@helpers';
 import { changeCase } from '@helpers/string-functions';
 
 // Import types
@@ -11,37 +17,31 @@ import { Argv } from '@typedefs/argv';
 type Props = {
   name: string;
   command: CommandConfig;
-  args?: Argv
+  args?: Argv;
 };
 
-export const buildFromScaffold = ({
-  name,
-  command,
-  args
-}: Props) => {
-
+export const buildFromScaffold = ({ name, command, args }: Props) => {
   const config = getConfigFile();
 
   if (config) {
     printMessage(`Building ${command.name} '${name}'...`, 'notice');
-    const outputDirectory = `${
-      command.outputPath
-    }/${changeCase(name, 'kebabCase')}`;
+    const outputDirectory = `${command.outputPath}/${changeCase(
+      name,
+      'kebabCase'
+    )}`;
 
     // Create the directory tree if it doesn't exist
     fs.mkdirSync(outputDirectory, { recursive: true });
 
-    const {
-      path: pathstring,
-      registry,
-      files
-    } = getModule(config, command);
+    const { path: pathstring, registry, files } = getModule(config, command);
 
-    const substitute = command ? getSubstitutions({
-      registry,
-      command,
-      args
-    }) : [];
+    const substitute = command
+      ? getSubstitutions({
+          registry,
+          command,
+          args
+        })
+      : [];
 
     files.forEach((file: string) => {
       const srcPath = `${pathstring}/${file}`;
@@ -64,7 +64,6 @@ export const buildFromScaffold = ({
         version: registry.version
       }
     };
-
 
     // Add a component registry file to the output directory
     return fs.writeFileSync(

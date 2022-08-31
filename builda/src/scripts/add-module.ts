@@ -58,8 +58,10 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
       await axios
         .get(`${modulePath}/${file}`)
         .then((response) => {
-
-          const content = file === 'registry.json' ? JSON.stringify(response.data, null, 2) : response.data.toString();
+          const content =
+            file === 'registry.json'
+              ? JSON.stringify(response.data, null, 2)
+              : response.data.toString();
 
           const fileObject = {
             name: file,
@@ -81,13 +83,19 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
 };
 
 export type AddModulesResponse = {
-  module: ModuleRegistry,
-  config: Partial<ConfigFile>
+  module: ModuleRegistry;
+  config: Partial<ConfigFile>;
 };
 
 export const addModule = async ({
-  config, path, official
-} : { config: Partial<ConfigFile>, path: string, official?: boolean}): Promise<AddModulesResponse> => {
+  config,
+  path,
+  official
+}: {
+  config: Partial<ConfigFile>;
+  path: string;
+  official?: boolean;
+}): Promise<AddModulesResponse> => {
   let module = {} as ModuleRegistry;
   if (config) {
     // Check the module directory exists and create it if it doesn't
@@ -95,7 +103,7 @@ export const addModule = async ({
 
     const newPath = official ? `${globals.websiteUrl}/modules/${path}` : path;
 
-    await createDir(moduleDirPath)
+    await createDir(moduleDirPath);
 
     const moduleType = detectPathType(newPath);
 
@@ -137,7 +145,7 @@ export const addModule = async ({
       // Write the config file
       fs.writeFile(
         globals.configFileName,
-        JSON.stringify(config,  null, 2),
+        JSON.stringify(config, null, 2),
         (err) => {
           if (err) {
             throwError(err.message);
@@ -147,7 +155,7 @@ export const addModule = async ({
             'success'
           );
         }
-      )
+      );
       return {
         module,
         config

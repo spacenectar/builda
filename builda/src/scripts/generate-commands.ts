@@ -6,17 +6,19 @@ export const generateCommands = async (): Promise<CommandConfig[]> => {
   const commands: Promise<CommandConfig>[] = [];
   if (config) {
     Object.keys(config.commands).forEach((command) => {
-      commands.push(new Promise((resolve) => {
-        const { use, outputPath, substitute } = config.commands[command];
-        const { registry } = getModule(config, config.commands[command]);
-        resolve({
-          name: command,
-          type: registry.type,
-          use,
-          outputPath,
-          substitute
-        });
-      }));
+      commands.push(
+        new Promise((resolve) => {
+          const { use, outputPath, substitute } = config.commands[command];
+          const { registry } = getModule(config, config.commands[command]);
+          resolve({
+            name: command,
+            type: registry.type,
+            use,
+            outputPath,
+            substitute
+          });
+        })
+      );
     });
     return Promise.all(commands);
   } else {

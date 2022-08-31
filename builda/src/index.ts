@@ -4,12 +4,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
 // import helpers
-import {
-  printMessage,
-  askQuestion,
-  getConfigFile,
-  printLogo
-} from '@helpers';
+import { printMessage, askQuestion, getConfigFile, printLogo } from '@helpers';
 
 // import data
 import arguments from '@data/arguments.json';
@@ -59,7 +54,10 @@ const CREATE_CONFIG_QUESTION = {
     }
 
     if (argv.init) {
-      printMessage(`A ${configFileName} has been found. Please delete it before continuing.\r`, 'danger');
+      printMessage(
+        `A ${configFileName} has been found. Please delete it before continuing.\r`,
+        'danger'
+      );
       return process.exit(0);
     }
   }
@@ -87,13 +85,12 @@ const CREATE_CONFIG_QUESTION = {
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
   }
 
-
   /** HAPPY PATHS */
   if (argv.init) return init({});
 
   if (argv._[0].toString() === 'add') {
     const module = argv._[1].toString();
-    return addModule({config, path: module});
+    return addModule({ config, path: module });
   }
 
   const commands = config ? await generateCommands() : [];
