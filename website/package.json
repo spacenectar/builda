@@ -40,7 +40,7 @@
     "markdown-loader": "^8.0.0",
     "markdownlint-cli": "^0.32.1",
     "mini-css-extract-plugin": "^2.6.1",
-    "next": "12.2.3",
+    "next": "12.2.4",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.8.4",
     "next-secure-headers": "^2.2.0",
