@@ -5,13 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSubstitutions = void 0;
 const throw_error_1 = __importDefault(require("./throw-error"));
-const getSubstitutions = ({ registry, command, args }) => {
+const getSubstitutions = ({ name, registry, command, args }) => {
+    var _a;
     const substitutions = [];
-    const substitute = ((command === null || command === void 0 ? void 0 : command.substitute) && command.substitute.length > 0) ? command === null || command === void 0 ? void 0 : command.substitute : registry === null || registry === void 0 ? void 0 : registry.substitute;
+    const substitute = (command === null || command === void 0 ? void 0 : command.substitute) && ((_a = command.substitute) === null || _a === void 0 ? void 0 : _a.length) > 0
+        ? command === null || command === void 0 ? void 0 : command.substitute
+        : registry === null || registry === void 0 ? void 0 : registry.substitute;
     if (substitute && substitute.length) {
         substitute.forEach((sub) => {
             var _a;
-            const defaultString = sub.with === 'command' ? command === null || command === void 0 ? void 0 : command.name : sub.with;
+            const defaultString = sub.with === 'command' ? name : sub.with;
             const replaceString = (args === null || args === void 0 ? void 0 : args.replace) || sub.replace;
             const argString = args === null || args === void 0 ? void 0 : args.with;
             const withString = argString || defaultString || '';

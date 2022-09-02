@@ -9,6 +9,21 @@
     "required": false,
     "type": "string"
   },
+  "watch": {
+    "description": "Watches for changes and keeps the app in sync with the prefab",
+    "required": false,
+    "boolean": true
+  },
+  "build": {
+    "description": "Syncs the app with the prefab once. Use this to build the app",
+    "required": false,
+    "boolean": true
+  },
+  "run": {
+    "description": "Runs a specified command",
+    "required": false,
+    "boolean": true
+  },
   "migrate": {
     "description": "Migrates a project to the latest version",
     "required": false,

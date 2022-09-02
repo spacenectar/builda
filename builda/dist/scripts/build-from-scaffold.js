@@ -8,25 +8,27 @@ const fs_1 = __importDefault(require("fs"));
 // import helpers
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
-const buildFromScaffold = ({ name, command, args }) => {
-    const config = (0, _helpers_1.getConfigFile)();
-    if (config) {
-        (0, _helpers_1.printMessage)(`Building ${command.name} '${name}'...`, 'notice');
-        const outputDirectory = `${command.outputPath}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
+const buildFromScaffold = ({ config, name, command, args }) => {
+    if (config !== undefined && !!command.use) {
+        (0, _helpers_1.printMessage)(`Building ${Object.keys(command)[0]} '${name}'...`, 'notice');
+        const outputDirectory = `${command.output_dir}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         fs_1.default.mkdirSync(outputDirectory, { recursive: true });
-        const { path: pathstring, registry, files } = (0, _helpers_1.getModule)(config, command);
-        const substitute = command ? (0, _helpers_1.getSubstitutions)({
-            registry,
-            command,
-            args
-        }) : [];
+        const { path: pathstring, registry, files } = (0, _helpers_1.getModule)('scaffold', config, command);
+        const substitute = command
+            ? (0, _helpers_1.getSubstitutions)({
+                registry,
+                name,
+                command,
+                args
+            })
+            : [];
         files.forEach((file) => {
             const srcPath = `${pathstring}/${file}`;
             const outputPath = `${outputDirectory}`;
             (0, _helpers_1.writeFile)({
                 file: srcPath,
-                outputDirectory: outputPath,
+                output_dir: outputPath,
                 substitute,
                 name
             });

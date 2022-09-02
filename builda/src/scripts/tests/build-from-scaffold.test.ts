@@ -1,3 +1,4 @@
+import getConfigFile from '@helpers/get-config-file';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 import fs from 'fs';
 
@@ -29,7 +30,9 @@ afterAll((done) => {
 
 describe('buildFromScaffold', () => {
   beforeAll((done) => {
+    const config = getConfigFile();
     buildFromScaffold({
+      config,
       name: 'TestComponent',
       command
     });

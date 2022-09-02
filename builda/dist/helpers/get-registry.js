@@ -14,9 +14,12 @@ const getRegistry = async (registryPath) => {
     if (pathType === 'local') {
         return JSON.parse(fs_1.default.readFileSync(`${registryPath}/registry.json`, 'utf8'));
     }
-    return axios_1.default.get(`${(0, convert_registry_path_to_url_1.default)(registryPath)}/registry.json`).then((response) => {
+    return axios_1.default
+        .get(`${(0, convert_registry_path_to_url_1.default)(registryPath)}/registry.json`)
+        .then((response) => {
         return response.data;
-    }).catch((error) => {
+    })
+        .catch((error) => {
         if (error.response.status === 404) {
             (0, throw_error_1.default)(`No module found at ${registryPath} \n If you want to use a custom registry, please use the full url (including http(s)://)`);
         }

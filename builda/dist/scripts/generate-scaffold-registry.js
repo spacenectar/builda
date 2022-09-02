@@ -23,8 +23,15 @@ const generateScaffoldRegistry = (scaffoldPath) => {
             const page = `
           {
             "name": "${file}",
+            "type": "scaffold",
             "version": "1.0.0",
-            "description": "",
+            "author": {
+              "name": "",
+              "builda_user:": "",
+              "email": "",
+              "website": ""
+            },
+            "url": "",
             "files": [
               ${fs_1.default
                 .readdirSync(`${readPath}/${file}`)

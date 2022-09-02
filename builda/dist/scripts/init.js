@@ -115,31 +115,32 @@ const init = async ({ presetAnswers }) => {
                 });
             }
             const config = {
-                app: {
-                    name: answers.appName
-                }
+                name: answers.appName
             };
-            await installModules(config, answers).then((response) => {
-                const commandList = scaffoldList.map((scaffoldType) => [
+            await installModules(config, answers)
+                .then((response) => {
+                const scaffoldScriptsList = scaffoldList.map((scaffoldType) => [
                     scaffoldType,
                     {
-                        type: 'scaffold',
-                        outputPath: `${answers.outputDirectory}/${(0, string_functions_1.pluralise)(scaffoldType)}`,
+                        output_dir: `${answers.outputDirectory}/${(0, string_functions_1.pluralise)(scaffoldType)}`,
                         use: response.module.name
                     }
                 ]);
-                const commands = Object.fromEntries(commandList);
-                const updatedConfig = Object.assign(Object.assign({}, response.config), { commands });
+                const scaffoldScripts = Object.fromEntries(scaffoldScriptsList);
+                const updatedConfig = Object.assign(Object.assign({}, response.config), { scaffold_scripts: scaffoldScripts });
                 const configString = JSON.stringify(updatedConfig, null, 2);
-                writeConfig(configFileName, configString).then(() => {
+                writeConfig(configFileName, configString)
+                    .then(() => {
                     (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
                     (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
                     resolve();
-                }).catch((err) => {
+                })
+                    .catch((err) => {
                     reject(err);
                     (0, _helpers_1.throwError)(err);
                 });
-            }).catch((err) => {
+            })
+                .catch((err) => {
                 reject(err);
                 (0, _helpers_1.throwError)(err);
             });

@@ -8,7 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const string_functions_1 = __importDefault(require("./string-functions"));
 const prettier_1 = __importDefault(require("prettier"));
-const writeFile = ({ file, outputDirectory, substitute, name }) => {
+const writeFile = ({ file, output_dir, substitute, name }) => {
     const fileName = file.split('/').pop();
     // get the file contents
     const fileContents = fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8');
@@ -33,7 +33,7 @@ const writeFile = ({ file, outputDirectory, substitute, name }) => {
     });
     // write the new file contents to the output directory
     if (newContents) {
-        return fs_1.default.writeFileSync(`${outputDirectory}/${fileName}`, newContents);
+        return fs_1.default.writeFileSync(`${output_dir}/${fileName}`, newContents);
     }
     throw new Error(`Could not write file ${fileName}`);
 };

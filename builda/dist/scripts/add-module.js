@@ -1,4 +1,3 @@
-#! /usr/bin/env node
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -26,7 +25,7 @@ const addLocalModule = async (modulePath) => {
     // write the files to the output directory
     filteredFiles.forEach(async (file) => {
         const srcPath = `${modulePath}/${file}`;
-        const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}/${registry.name}`;
+        const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
         await (0, _helpers_1.createDir)(outputPath).then(() => {
             fs_1.default.copyFileSync(srcPath, `${outputPath}/${file}`);
         });
@@ -44,12 +43,14 @@ const addRemoteModule = async (modulePath) => {
         await axios_1.default
             .get(`${modulePath}/${file}`)
             .then((response) => {
-            const content = file === 'registry.json' ? JSON.stringify(response.data, null, 2) : response.data.toString();
+            const content = file === 'registry.json'
+                ? JSON.stringify(response.data, null, 2)
+                : response.data.toString();
             const fileObject = {
                 name: file,
                 content
             };
-            const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}/${registry.name}`;
+            const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
             return (0, _helpers_1.createDir)(outputPath).then(() => {
                 return fs_1.default.writeFileSync(`${outputPath}/${fileObject.name}`, fileObject.content);
             });
@@ -61,7 +62,6 @@ const addRemoteModule = async (modulePath) => {
     return registry;
 };
 const addModule = async ({ config, path, official }) => {
-    var _a, _b;
     let module = {};
     if (config) {
         // Check the module directory exists and create it if it doesn't
@@ -80,24 +80,20 @@ const addModule = async ({ config, path, official }) => {
             const name = module.name;
             const version = module.version;
             // User has never installed any modules.
-            if (!config.modules) {
-                config.modules = {};
+            if (!config.scaffold_scripts) {
+                config.scaffold_scripts = {};
             }
             if (type === 'scaffold') {
                 // User has never installed any scaffolds.
-                if (!((_a = config === null || config === void 0 ? void 0 : config.modules) === null || _a === void 0 ? void 0 : _a.scaffold)) {
-                    config.modules.scaffold = {};
+                if (!(config === null || config === void 0 ? void 0 : config.scaffolds)) {
+                    config.scaffolds = {};
                 }
-                const scaffolds = config.modules.scaffold;
-                scaffolds[name] = version;
             }
             if (type === 'prefab') {
                 // User has never installed any prefabs.
-                if (!((_b = config === null || config === void 0 ? void 0 : config.modules) === null || _b === void 0 ? void 0 : _b.prefab)) {
-                    config.modules.prefab = {};
+                if (!(config === null || config === void 0 ? void 0 : config.prefabs)) {
+                    config.prefabs = {};
                 }
-                const prefabs = config.modules.prefab;
-                prefabs[name] = version;
             }
             // Write the config file
             fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {

@@ -1,10 +1,12 @@
+import getConfigFile from '@helpers/get-config-file';
 import generateCommands from '@scripts/generate-commands';
 
 describe('generateCommands', () => {
   let commands = {};
 
   beforeEach(() => {
-    commands = generateCommands();
+    const config = getConfigFile();
+    commands = generateCommands(config);
   });
 
   test('config file is parsed and commands extracted', () => {

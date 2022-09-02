@@ -2,6 +2,7 @@ export { default as detectPathType } from './detect-path-type';
 export { default as getConfigFile } from './get-config-file';
 export { default as getSubstitutions } from './get-substitutions';
 export { default as getModule } from './get-module';
+export { default as getPathFromRoot } from './get-path-from-root';
 export { default as skip } from './skip';
 export { default as printMessage } from './print-message';
 export { default as printLogo } from './print-logo';

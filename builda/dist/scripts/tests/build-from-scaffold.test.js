@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
 const build_from_scaffold_1 = __importDefault(require("../build-from-scaffold"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -11,10 +12,9 @@ const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FILE = '.builda.json';
 const CONFIG_FOLDER = '.builda';
 const command = {
-    name: 'atom',
-    type: 'scaffold',
     use: 'default-ts',
-    outputPath: './experiments/atoms'
+    output_dir: './experiments/atoms',
+    substitute: []
 };
 afterAll((done) => {
     if (fs_1.default.existsSync(CONFIG_FILE)) {
@@ -30,7 +30,9 @@ afterAll((done) => {
 });
 describe('buildFromScaffold', () => {
     beforeAll((done) => {
+        const config = (0, get_config_file_1.default)();
         (0, build_from_scaffold_1.default)({
+            config,
             name: 'TestComponent',
             command
         });

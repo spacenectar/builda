@@ -18,6 +18,7 @@ import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 import addModule from '@scripts/add-module';
+import syncWatched from '@scripts/sync-watched';
 
 const args = hideBin(process.argv);
 const config = getConfigFile();
@@ -85,6 +86,12 @@ const CREATE_CONFIG_QUESTION = {
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
   }
 
+  if (argv.watch) {
+    // The user is watching the app for changes
+    // Go to sync-watched function
+    return syncWatched(config);
+  }
+
   /** HAPPY PATHS */
   if (argv.init) return init({});
 
@@ -93,7 +100,7 @@ const CREATE_CONFIG_QUESTION = {
     return addModule({ config, path: module });
   }
 
-  const commands = config ? generateCommands() : {};
+  const commands = config ? generateCommands(config) : {};
 
   const commandString = process.argv[2].replace('--', '');
 
@@ -103,6 +110,7 @@ const CREATE_CONFIG_QUESTION = {
     const name = argv._[1].toString();
 
     return buildFromScaffold({
+      config,
       name,
       command,
       args: argv

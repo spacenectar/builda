@@ -16,6 +16,7 @@ const init_1 = __importDefault(require("./scripts/init"));
 const generate_commands_1 = __importDefault(require("./scripts/generate-commands"));
 const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaffold"));
 const add_module_1 = __importDefault(require("./scripts/add-module"));
+const sync_watched_1 = __importDefault(require("./scripts/sync-watched"));
 const args = (0, helpers_1.hideBin)(process.argv);
 const config = (0, _helpers_1.getConfigFile)();
 const { configFileName, websiteUrl } = globals_1.default;
@@ -67,6 +68,11 @@ const CREATE_CONFIG_QUESTION = {
         // Go to migrate function
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
     }
+    if (argv.watch) {
+        // The user is watching the app for changes
+        // Go to sync-watched function
+        return (0, sync_watched_1.default)(config);
+    }
     /** HAPPY PATHS */
     if (argv.init)
         return (0, init_1.default)({});
@@ -74,12 +80,13 @@ const CREATE_CONFIG_QUESTION = {
         const module = argv._[1].toString();
         return (0, add_module_1.default)({ config, path: module });
     }
-    const commands = config ? await (0, generate_commands_1.default)() : [];
+    const commands = config ? (0, generate_commands_1.default)(config) : {};
     const commandString = process.argv[2].replace('--', '');
-    const command = commands.find((c) => c.name === commandString);
+    const command = commands[commandString];
     if (command) {
         const name = argv._[1].toString();
         return (0, build_from_scaffold_1.default)({
+            config,
             name,
             command,
             args: argv

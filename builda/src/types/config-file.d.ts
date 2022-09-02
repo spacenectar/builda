@@ -4,7 +4,8 @@ import { ModuleConfig } from './module-config';
 
 export interface ConfigFile {
   name: string;
-  watched_folders: string[];
+  app_root: string;
+  watched: string[];
   scaffold_scripts: {
     [key: string]: ScaffoldScriptContents;
   };
