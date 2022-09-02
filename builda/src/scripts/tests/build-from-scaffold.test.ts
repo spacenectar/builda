@@ -1,3 +1,4 @@
+import getConfigFile from '@helpers/get-config-file';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 import fs from 'fs';
 
@@ -5,7 +6,7 @@ import path from 'path';
 
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
-const CONFIG_FILE = '.builda.json';
+const CONFIG_FILE = '.builda.js';
 const CONFIG_FOLDER = '.builda';
 
 const command = {
@@ -28,12 +29,13 @@ afterAll((done) => {
 });
 
 describe('buildFromScaffold', () => {
-  beforeAll((done) => {
+  beforeAll(async () => {
+    const config = await getConfigFile();
     buildFromScaffold({
+      config,
       name: 'TestComponent',
       command
     });
-    return done();
   });
 
   test('Builds a component from a scaffold', () => {

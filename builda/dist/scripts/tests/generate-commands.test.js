@@ -3,32 +3,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
 const generate_commands_1 = __importDefault(require("../generate-commands"));
 describe('generateCommands', () => {
-    let commands = [];
+    let commands = {};
     beforeEach(async () => {
-        commands = await (0, generate_commands_1.default)();
+        const config = await (0, get_config_file_1.default)();
+        commands = (0, generate_commands_1.default)(config);
     });
     test('config file is parsed and commands extracted', () => {
-        expect(commands).toEqual([
-            {
-                name: 'atom',
-                type: 'scaffold',
+        expect(commands).toEqual({
+            atom: {
                 use: 'default-ts',
-                outputPath: './experiments/atoms'
+                output_dir: './experiments/atoms'
             },
-            {
-                name: 'component',
-                type: 'scaffold',
+            component: {
                 use: 'default-ts',
-                outputPath: './experiments/components'
+                output_dir: './experiments/components'
             },
-            {
-                name: 'test',
-                type: 'scaffold',
+            test: {
                 use: 'default-ts',
-                outputPath: './experiments/tests'
+                output_dir: './experiments/tests'
             }
-        ]);
+        });
     });
 });

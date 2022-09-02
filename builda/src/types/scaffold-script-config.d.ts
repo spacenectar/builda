@@ -6,8 +6,8 @@ export type ScaffoldScriptContent = {
   substitute: TSubstitution[] | [];
 };
 
-export interface ScaffoldScriptConfig {
-  [key: string]: ScaffoldScriptContent;
+export interface ScaffoldScriptConfig<T> {
+  [key: string]: ScaffoldScriptContent | T;
 }
 
 export default ScaffoldScriptConfig;

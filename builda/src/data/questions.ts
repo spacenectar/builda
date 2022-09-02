@@ -1,3 +1,5 @@
+import { Answers } from 'inquirer';
+
 export default [
   {
     type: 'input',
@@ -8,9 +10,8 @@ export default [
   {
     type: 'input',
     name: 'outputDirectory',
-    message:
-      'Choose an output directory relative to your current working directory',
-    default: './src'
+    message: 'Where does your app live? (relative to the root of your project)',
+    default: './'
   },
   {
     type: 'list',
@@ -38,8 +39,7 @@ export default [
     name: 'scaffoldUrl',
     message: 'What is the path to the custom scaffold module you want to use?',
     default: '',
-    when: (answers: { installDefaultModule: string }) =>
-      answers.installDefaultModule === 'custom'
+    when: (answers: Answers) => answers.installDefaultModule === 'custom'
   },
   {
     type: 'checkbox',
@@ -67,6 +67,6 @@ export default [
     name: 'customScaffoldList',
     message: 'Add your custom scaffold types (separated by commas)',
     default: '',
-    when: (answers: { customScaffold: boolean }) => answers.customScaffold
+    when: (answers: Answers) => answers.customScaffold
   }
 ];

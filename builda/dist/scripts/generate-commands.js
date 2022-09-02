@@ -1,28 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateCommands = void 0;
-const _helpers_1 = require("../helpers/index.js");
-const generateCommands = async () => {
-    const config = (0, _helpers_1.getConfigFile)();
-    const commands = [];
+const generateCommands = (config) => {
+    const commands = {};
     if (config) {
-        Object.keys(config.commands).forEach((command) => {
-            commands.push(new Promise((resolve) => {
-                const { use, outputPath, substitute } = config.commands[command];
-                const { registry } = (0, _helpers_1.getModule)(config, config.commands[command]);
-                resolve({
-                    name: command,
-                    type: registry.type,
-                    use,
-                    outputPath,
-                    substitute
-                });
-            }));
+        Object.entries(config.scaffold_scripts).forEach((script) => {
+            const name = script[0];
+            const { use, output_dir, substitute } = script[1];
+            commands[name] = { use, output_dir, substitute };
         });
-        return Promise.all(commands);
+        return commands;
     }
     else {
-        return Promise.reject(`Could not find config file`);
+        throw new Error('No config file found');
     }
 };
 exports.generateCommands = generateCommands;

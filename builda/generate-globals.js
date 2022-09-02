@@ -8,8 +8,9 @@ const { version, repository } = packageJson;
 const globals = {
   version,
   buildaDir: '.builda',
-  configFileName: '.builda.json',
-  websiteUrl: 'https://www.builda.app'
+  configFileName: '.builda.js',
+  websiteUrl: 'https://www.builda.app',
+  repository
 };
 
 const output = `export default ${JSON.stringify(globals)};`;

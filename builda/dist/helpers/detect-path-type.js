@@ -3,7 +3,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.detectPathType = void 0;
 const detectPathType = (path) => {
-    if (path.startsWith('/') || path.startsWith('./') || path.startsWith('..') || path.startsWith('~')) {
+    if (path.startsWith('/') ||
+        path.startsWith('./') ||
+        path.startsWith('..') ||
+        path.startsWith('~')) {
         return 'local';
     }
     else {

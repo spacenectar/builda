@@ -1,8 +1,8 @@
-import { getConfigFile } from '@helpers';
 import { ConfigFile } from '@typedefs/config-file';
 
-export const generateCommands = (): ConfigFile['scaffold_scripts'] => {
-  const config = getConfigFile();
+export const generateCommands = (
+  config: ConfigFile
+): ConfigFile['scaffold_scripts'] => {
   const commands = {} as ConfigFile['scaffold_scripts'];
   if (config) {
     Object.entries<ConfigFile['scaffold_scripts']>(

@@ -6,11 +6,11 @@ import { ConfigFile } from '@typedefs/config-file';
 import getConfigFile from '@helpers/get-config-file';
 
 describe('init', () => {
-  const CONFIG_FILE = '.builda.json';
+  const CONFIG_FILE = '.builda.js';
   let config = {} as ConfigFile;
   beforeAll(async () => {
     await init({ presetAnswers });
-    config = getConfigFile();
+    config = await getConfigFile();
   });
 
   test('A config file is produced', () => {
