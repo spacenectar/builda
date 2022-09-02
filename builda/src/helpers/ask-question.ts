@@ -1,5 +1,6 @@
 import { QuestionType } from '@typedefs/question-type';
-import inquirer, { Question } from 'inquirer';
+import inquirer from 'inquirer';
+import type { Question } from 'inquirer';
 
 interface Props {
   message?: string;

@@ -4,6 +4,21 @@
         "required": false,
         "boolean": true
     },
+    "name": {
+        "description": "The name of the project",
+        "required": false,
+        "boolean": false,
+        "type": "string",
+        "implies": "init",
+        "alias": "n"
+    },
+    "root": {
+        "description": "The relative path to the application root directory",
+        "required": false,
+        "type": "string",
+        "implies": "init",
+        "alias": "r"
+    },
     "add": {
         "description": "Adds a new builda module",
         "required": false,

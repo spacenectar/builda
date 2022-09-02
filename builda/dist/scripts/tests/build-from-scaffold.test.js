@@ -9,7 +9,7 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
-const CONFIG_FILE = '.builda.json';
+const CONFIG_FILE = '.builda.js';
 const CONFIG_FOLDER = '.builda';
 const command = {
     use: 'default-ts',
@@ -29,14 +29,13 @@ afterAll((done) => {
     done();
 });
 describe('buildFromScaffold', () => {
-    beforeAll((done) => {
-        const config = (0, get_config_file_1.default)();
+    beforeAll(async () => {
+        const config = await (0, get_config_file_1.default)();
         (0, build_from_scaffold_1.default)({
             config,
             name: 'TestComponent',
             command
         });
-        return done();
     });
     test('Builds a component from a scaffold', () => {
         expect(fs_1.default.existsSync(FILE_PATH)).toBe(true);

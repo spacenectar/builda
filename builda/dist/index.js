@@ -16,9 +16,9 @@ const init_1 = __importDefault(require("./scripts/init"));
 const generate_commands_1 = __importDefault(require("./scripts/generate-commands"));
 const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaffold"));
 const add_module_1 = __importDefault(require("./scripts/add-module"));
-const sync_watched_1 = __importDefault(require("./scripts/sync-watched"));
+const watch_1 = __importDefault(require("./scripts/watch"));
+const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
 const args = (0, helpers_1.hideBin)(process.argv);
-const config = (0, _helpers_1.getConfigFile)();
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
     .usage('Usage: $0 [options]')
@@ -35,7 +35,7 @@ const CREATE_CONFIG_QUESTION = {
 };
 (async () => {
     const argv = await parser.argv;
-    /** UNHAPPY PATHS */
+    const config = await (0, _helpers_1.getConfigFile)();
     if (config) {
         if (args.length === 0) {
             // No arguments were passed but a config file exists
@@ -48,7 +48,7 @@ const CREATE_CONFIG_QUESTION = {
             return process.exit(0);
         }
     }
-    if ((args.length === 0 || !argv.manual) && !config) {
+    if (args.length === 0 && !argv.manual && !config) {
         // No arguments were passed but a config file does not exist
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
@@ -70,12 +70,22 @@ const CREATE_CONFIG_QUESTION = {
     }
     if (argv.watch) {
         // The user is watching the app for changes
-        // Go to sync-watched function
-        return (0, sync_watched_1.default)(config);
+        // Go to watch function
+        return (0, watch_1.default)(config);
     }
-    /** HAPPY PATHS */
-    if (argv.init)
-        return (0, init_1.default)({});
+    if (argv.build) {
+        // The user wants to build the app
+        // Go to build function
+        return (0, build_from_prefabs_1.default)(config);
+    }
+    if (argv.init) {
+        const name = argv.name || argv.n || '';
+        const output = argv.root || argv.r || '';
+        return (0, init_1.default)({
+            appName: name,
+            outputDirectory: output
+        });
+    }
     if (argv._[0].toString() === 'add') {
         const module = argv._[1].toString();
         return (0, add_module_1.default)({ config, path: module });

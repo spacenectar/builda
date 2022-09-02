@@ -18,10 +18,10 @@ import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
 import buildFromScaffold from '@scripts/build-from-scaffold';
 import addModule from '@scripts/add-module';
-import syncWatched from '@scripts/sync-watched';
+import watch from '@scripts/watch';
+import buildFromPrefabs from '@scripts/build-from-prefabs';
 
 const args = hideBin(process.argv);
-const config = getConfigFile();
 
 const { configFileName, websiteUrl } = globals;
 
@@ -43,8 +43,7 @@ const CREATE_CONFIG_QUESTION = {
 
 (async () => {
   const argv = await parser.argv;
-
-  /** UNHAPPY PATHS */
+  const config = await getConfigFile();
 
   if (config) {
     if (args.length === 0) {
@@ -63,7 +62,7 @@ const CREATE_CONFIG_QUESTION = {
     }
   }
 
-  if ((args.length === 0 || !argv.manual) && !config) {
+  if (args.length === 0 && !argv.manual && !config) {
     // No arguments were passed but a config file does not exist
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
@@ -88,12 +87,24 @@ const CREATE_CONFIG_QUESTION = {
 
   if (argv.watch) {
     // The user is watching the app for changes
-    // Go to sync-watched function
-    return syncWatched(config);
+    // Go to watch function
+    return watch(config);
   }
 
-  /** HAPPY PATHS */
-  if (argv.init) return init({});
+  if (argv.build) {
+    // The user wants to build the app
+    // Go to build function
+    return buildFromPrefabs(config);
+  }
+
+  if (argv.init) {
+    const name = argv.name || argv.n || '';
+    const output = argv.root || argv.r || '';
+    return init({
+      appName: name as string,
+      outputDirectory: output as string
+    });
+  }
 
   if (argv._[0].toString() === 'add') {
     const module = argv._[1].toString();

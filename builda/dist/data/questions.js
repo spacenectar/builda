@@ -10,8 +10,8 @@ exports.default = [
     {
         type: 'input',
         name: 'outputDirectory',
-        message: 'Choose an output directory relative to your current working directory',
-        default: './src'
+        message: 'Where does your app live? (relative to the root of your project)',
+        default: './'
     },
     {
         type: 'list',

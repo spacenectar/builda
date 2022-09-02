@@ -4,13 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
+const throw_error_1 = __importDefault(require("./throw-error"));
 const getPathFromRoot = (config, pathString) => {
     if (config) {
-        const fullPath = path_1.default.join(config.app_root, pathString);
-        return fullPath;
+        const appRoot = config.app_root || './';
+        return path_1.default.join(appRoot, pathString);
     }
     else {
-        throw new Error('No config file found');
+        return (0, throw_error_1.default)('No config file found');
     }
 };
 exports.default = getPathFromRoot;

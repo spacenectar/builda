@@ -1,13 +1,14 @@
 import path from 'path';
 
 import { ConfigFile } from '@typedefs/config-file';
+import throwError from './throw-error';
 
 const getPathFromRoot = (config: ConfigFile, pathString: string) => {
   if (config) {
-    const fullPath = path.join(config.app_root, pathString);
-    return fullPath;
+    const appRoot = config.app_root || './';
+    return path.join(appRoot, pathString);
   } else {
-    throw new Error('No config file found');
+    return throwError('No config file found');
   }
 };
 

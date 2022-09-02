@@ -8,11 +8,11 @@ const preset_answers_1 = __importDefault(require("../../mocks/preset-answers"));
 const init_1 = __importDefault(require("../init"));
 const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
 describe('init', () => {
-    const CONFIG_FILE = '.builda.json';
+    const CONFIG_FILE = '.builda.js';
     let config = {};
     beforeAll(async () => {
         await (0, init_1.default)({ presetAnswers: preset_answers_1.default });
-        config = (0, get_config_file_1.default)();
+        config = await (0, get_config_file_1.default)();
     });
     test('A config file is produced', () => {
         expect(fs_1.default.existsSync(CONFIG_FILE)).toBe(true);

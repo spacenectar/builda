@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const prettier_1 = __importDefault(require("prettier"));
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
 const globals_1 = __importDefault(require("../data/globals"));
@@ -16,10 +17,19 @@ const OVERWRITE_CONFIG_QUESTION = {
     name: 'replaceConfig',
     type: 'confirm'
 };
-const getAnswers = async () => {
+const getAnswers = async (omitName, omitOutputDir) => {
     return new Promise((resolve) => {
+        const questionList = questions_1.default.filter((question) => {
+            if (omitName && question.name === 'appName') {
+                return false;
+            }
+            if (omitOutputDir && question.name === 'outputDirectory') {
+                return false;
+            }
+            return true;
+        });
         (0, _helpers_1.askQuestion)({
-            questionList: questions_1.default
+            questionList
         }).then((answers) => {
             return resolve(answers);
         });
@@ -71,7 +81,7 @@ const installModules = async (config, answers) => {
     }
     return (0, add_module_1.default)(options);
 };
-const init = async ({ presetAnswers }) => {
+const init = async ({ presetAnswers, appName: applicationName, outputDirectory: outputDir }) => {
     // Check if a config file already exists unless presetAnswers is passed
     let continueProcess = false;
     const scaffoldList = [];
@@ -85,7 +95,7 @@ const init = async ({ presetAnswers }) => {
             return (0, _helpers_1.throwError)(err);
         }
         try {
-            answers = (await getAnswers());
+            answers = (await getAnswers(!!applicationName, !!outputDir));
         }
         catch (err) {
             Promise.reject(err);
@@ -96,11 +106,13 @@ const init = async ({ presetAnswers }) => {
         continueProcess = true;
         answers = presetAnswers;
     }
-    if (!answers.appName) {
+    const appName = applicationName || answers.appName;
+    const outputDirectory = outputDir || answers.outputDirectory;
+    if (!appName) {
         Promise.reject('No app name provided');
         return (0, _helpers_1.throwError)('App name is required');
     }
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         var _a;
         if (continueProcess === true) {
             fs_1.default.mkdirSync(buildaDir, { recursive: true });
@@ -115,23 +127,32 @@ const init = async ({ presetAnswers }) => {
                 });
             }
             const config = {
-                name: answers.appName
+                name: appName,
+                app_root: outputDirectory
             };
-            await installModules(config, answers)
+            installModules(config, answers)
                 .then((response) => {
-                const scaffoldScriptsList = scaffoldList.map((scaffoldType) => [
-                    scaffoldType,
-                    {
-                        output_dir: `${answers.outputDirectory}/${(0, string_functions_1.pluralise)(scaffoldType)}`,
-                        use: response.module.name
-                    }
-                ]);
-                const scaffoldScripts = Object.fromEntries(scaffoldScriptsList);
-                const updatedConfig = Object.assign(Object.assign({}, response.config), { scaffold_scripts: scaffoldScripts });
-                const configString = JSON.stringify(updatedConfig, null, 2);
-                writeConfig(configFileName, configString)
+                let scaffoldScripts = ``;
+                scaffoldList.forEach((scaffoldItem) => {
+                    scaffoldScripts += `${scaffoldItem}: {\n`;
+                    scaffoldScripts += `  use: '${response.module.name}',\n`;
+                    scaffoldScripts += `output_dir: \`\${appRoot}/${(0, string_functions_1.pluralise)(scaffoldItem)}\`,\n`;
+                    scaffoldScripts += `},\n`;
+                });
+                let configString = `\nconst appRoot = '${outputDirectory}';\n\n`;
+                configString += `module.exports = {\n`;
+                configString += `  name: '${appName}',\n`;
+                configString += `  app_root: appRoot,\n`;
+                configString += `  scaffold_scripts: {\n${scaffoldScripts}},\n`;
+                configString += `}`;
+                writeConfig(configFileName, prettier_1.default.format(configString, {
+                    singleQuote: true,
+                    trailingComma: 'none',
+                    parser: 'typescript'
+                }))
                     .then(() => {
                     (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
+                    (0, _helpers_1.printMessage)(`Check your ${configFileName} file to ensure all settings are correct. Output paths may need some tweaking.`, 'notice');
                     (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
                     resolve();
                 })

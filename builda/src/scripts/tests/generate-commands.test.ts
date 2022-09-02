@@ -4,8 +4,8 @@ import generateCommands from '@scripts/generate-commands';
 describe('generateCommands', () => {
   let commands = {};
 
-  beforeEach(() => {
-    const config = getConfigFile();
+  beforeEach(async () => {
+    const config = await getConfigFile();
     commands = generateCommands(config);
   });
 

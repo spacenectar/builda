@@ -5,32 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.syncWatched = void 0;
-const fs_1 = __importDefault(require("fs"));
 const glob_1 = __importDefault(require("glob"));
-const path_1 = __importDefault(require("path"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
-const checkAndCopyFiles = (sourcePath, destinationPath, fileName) => {
-    // If it's a directory, copy the directory to the destination
-    if (fs_1.default.lstatSync(sourcePath).isDirectory()) {
-        return fs_1.default.cpSync(sourcePath, path_1.default.join(destinationPath, fileName), {
-            recursive: true,
-            force: true
-        });
-    }
-    // If it's a file, copy it to the destination
-    if (fs_1.default.lstatSync(sourcePath).isFile()) {
-        return fs_1.default.copyFileSync(sourcePath, path_1.default.join(destinationPath, fileName));
-    }
-};
-const syncWatched = (config) => {
+const syncWatched = (prefabName, config) => {
     const { buildaDir } = globals_1.default;
     if (config) {
         const { watched } = config;
         if (watched) {
             watched.forEach((source) => {
                 const sourcePath = (0, _helpers_1.getPathFromRoot)(config, source);
-                const destinationPath = `${buildaDir}/modules/prefab/test`;
+                const destinationPath = `${buildaDir}/modules/prefab/${prefabName}`;
                 // Check if source is a file, directory or glob pattern
                 // If it's a glob pattern, copy the files that match the pattern to the destination
                 if (source.includes('*')) {
@@ -48,6 +33,7 @@ const syncWatched = (config) => {
                         }
                     });
                 }
+                // If it's not a glob pattern, check if it's a file or directory and copy it to the destination
                 return checkAndCopyFiles(sourcePath, destinationPath, source);
             });
         }

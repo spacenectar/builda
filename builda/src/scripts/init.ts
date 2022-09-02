@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import prettier from 'prettier';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
 import { pluralise } from '@helpers/string-functions';
@@ -30,10 +31,20 @@ const OVERWRITE_CONFIG_QUESTION = {
   type: 'confirm' as QuestionType
 };
 
-const getAnswers = async () => {
+const getAnswers = async (omitName: boolean, omitOutputDir: boolean) => {
   return new Promise((resolve) => {
+    const questionList: Question[] = questions.filter((question) => {
+      if (omitName && question.name === 'appName') {
+        return false;
+      }
+      if (omitOutputDir && question.name === 'outputDirectory') {
+        return false;
+      }
+      return true;
+    });
+
     askQuestion({
-      questionList: questions as Question[]
+      questionList
     }).then((answers) => {
       return resolve(answers);
     });
@@ -102,7 +113,17 @@ const installModules = async (
   return addModule(options);
 };
 
-const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
+type TInitOptions = {
+  presetAnswers?: Answers;
+  appName?: string;
+  outputDirectory?: string;
+};
+
+const init = async ({
+  presetAnswers,
+  appName: applicationName,
+  outputDirectory: outputDir
+}: TInitOptions) => {
   // Check if a config file already exists unless presetAnswers is passed
   let continueProcess = false;
   const scaffoldList: string[] = [];
@@ -116,7 +137,7 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
       return throwError(err);
     }
     try {
-      answers = (await getAnswers()) as Answers;
+      answers = (await getAnswers(!!applicationName, !!outputDir)) as Answers;
     } catch (err) {
       Promise.reject(err);
       throwError(err);
@@ -126,12 +147,15 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
     answers = presetAnswers;
   }
 
-  if (!answers.appName) {
+  const appName = applicationName || answers.appName;
+  const outputDirectory = outputDir || answers.outputDirectory;
+
+  if (!appName) {
     Promise.reject('No app name provided');
     return throwError('App name is required');
   }
 
-  return new Promise<void>(async (resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     if (continueProcess === true) {
       fs.mkdirSync(buildaDir, { recursive: true });
 
@@ -147,34 +171,44 @@ const init = async ({ presetAnswers }: { presetAnswers?: Answers }) => {
           });
       }
       const config = {
-        name: answers.appName
+        name: appName,
+        app_root: outputDirectory
       } as ConfigFile;
 
-      await installModules(config, answers)
+      installModules(config, answers)
         .then((response) => {
-          const scaffoldScriptsList = scaffoldList.map(
-            (scaffoldType: string) => [
-              scaffoldType,
-              {
-                output_dir: `${answers.outputDirectory}/${pluralise(
-                  scaffoldType
-                )}`,
-                use: response.module.name
-              }
-            ]
-          );
+          let scaffoldScripts = ``;
 
-          const scaffoldScripts = Object.fromEntries(scaffoldScriptsList);
+          scaffoldList.forEach((scaffoldItem) => {
+            scaffoldScripts += `${scaffoldItem}: {\n`;
+            scaffoldScripts += `  use: '${response.module.name}',\n`;
+            scaffoldScripts += `output_dir: \`\${appRoot}/${pluralise(
+              scaffoldItem
+            )}\`,\n`;
+            scaffoldScripts += `},\n`;
+          });
 
-          const updatedConfig = {
-            ...response.config,
-            scaffold_scripts: scaffoldScripts
-          };
+          let configString = `\nconst appRoot = '${outputDirectory}';\n\n`;
+          configString += `module.exports = {\n`;
+          configString += `  name: '${appName}',\n`;
+          configString += `  app_root: appRoot,\n`;
+          configString += `  scaffold_scripts: {\n${scaffoldScripts}},\n`;
+          configString += `}`;
 
-          const configString = JSON.stringify(updatedConfig, null, 2);
-          writeConfig(configFileName, configString)
+          writeConfig(
+            configFileName,
+            prettier.format(configString, {
+              singleQuote: true,
+              trailingComma: 'none',
+              parser: 'typescript'
+            })
+          )
             .then(() => {
               printMessage('\rInitialisation complete', 'success');
+              printMessage(
+                `Check your ${configFileName} file to ensure all settings are correct. Output paths may need some tweaking.`,
+                'notice'
+              );
               printMessage(
                 `Visit ${websiteUrl}/setup for instructions on what to do next`,
                 'notice'

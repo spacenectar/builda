@@ -7,13 +7,12 @@ const { configFileName } = globals;
 
 const configFile = path.resolve(configFileName);
 
-const getConfigFile = () => {
+const getConfigFile = async () => {
   if (fs.existsSync(configFile)) {
-    const config = fs.readFileSync(configFile, 'utf8');
-    return JSON.parse(config);
-  } else {
-    return null;
+    const config = await import(configFile);
+    return config;
   }
+  return null;
 };
 
 export default getConfigFile;

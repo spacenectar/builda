@@ -7,8 +7,8 @@ const get_config_file_1 = __importDefault(require("../../helpers/get-config-file
 const generate_commands_1 = __importDefault(require("../generate-commands"));
 describe('generateCommands', () => {
     let commands = {};
-    beforeEach(() => {
-        const config = (0, get_config_file_1.default)();
+    beforeEach(async () => {
+        const config = await (0, get_config_file_1.default)();
         commands = (0, generate_commands_1.default)(config);
     });
     test('config file is parsed and commands extracted', () => {
