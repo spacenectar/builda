@@ -54,7 +54,7 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
     .forEach(async (file: string) => {
       // Download the file
       await axios
-        .get(`${modulePath}/${file}`)
+        .get(`${modulePath}/files/${file}`)
         .then((response) => {
           const content =
             file === 'registry.json'
@@ -82,7 +82,7 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
 
 export type AddModulesResponse = {
   module: ModuleRegistry;
-  config: Partial<ConfigFile>;
+  config: ConfigFile;
 };
 
 export const addModule = async ({
@@ -90,7 +90,7 @@ export const addModule = async ({
   path,
   official
 }: {
-  config: Partial<ConfigFile>;
+  config: ConfigFile;
   path: string;
   official?: boolean;
 }): Promise<AddModulesResponse> => {
@@ -110,7 +110,11 @@ export const addModule = async ({
     }
 
     if (moduleType === 'remote') {
-      module = await addRemoteModule(convertRegistryPathToUrl(newPath));
+      module = await addRemoteModule(convertRegistryPathToUrl(newPath, config));
+    }
+
+    if (moduleType === 'custom') {
+      module = await addRemoteModule(convertRegistryPathToUrl(newPath, config));
     }
 
     if (module?.name) {
@@ -135,6 +139,10 @@ export const addModule = async ({
           config.prefabs = {};
         }
       }
+
+      //TODO: This is now failing because the config file is no longer just json.
+      // I will probably need to write a helper function to update the config file
+      // or there will be a lot of code duplication.
 
       // Write the config file
       fs.writeFile(

@@ -1,16 +1,22 @@
 // Detects if a path is a local path or a remote path.
 
-export const detectPathType = (path: string) => {
+export const detectPathType = (pathString: string) => {
   if (
-    path.startsWith('/') ||
-    path.startsWith('./') ||
-    path.startsWith('..') ||
-    path.startsWith('~')
+    pathString.startsWith('/') ||
+    pathString.startsWith('./') ||
+    pathString.startsWith('..') ||
+    pathString.startsWith('~')
   ) {
     return 'local';
-  } else {
-    return 'remote';
   }
+
+  const customMatcherRegex = /[a-zA-Z0-9]:/;
+
+  if (customMatcherRegex.test(pathString)) {
+    return 'custom';
+  }
+
+  return 'remote';
 };
 
 export default detectPathType;

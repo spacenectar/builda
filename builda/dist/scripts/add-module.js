@@ -41,7 +41,7 @@ const addRemoteModule = async (modulePath) => {
         .forEach(async (file) => {
         // Download the file
         await axios_1.default
-            .get(`${modulePath}/${file}`)
+            .get(`${modulePath}/files/${file}`)
             .then((response) => {
             const content = file === 'registry.json'
                 ? JSON.stringify(response.data, null, 2)
@@ -73,7 +73,10 @@ const addModule = async ({ config, path, official }) => {
             module = await addLocalModule(newPath);
         }
         if (moduleType === 'remote') {
-            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath));
+            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath, config));
+        }
+        if (moduleType === 'custom') {
+            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath, config));
         }
         if (module === null || module === void 0 ? void 0 : module.name) {
             const type = module.type;
@@ -95,6 +98,9 @@ const addModule = async ({ config, path, official }) => {
                     config.prefabs = {};
                 }
             }
+            //TODO: This is now failing because the config file is no longer just json.
+            // I will probably need to write a helper function to update the config file
+            // or there will be a lot of code duplication.
             // Write the config file
             fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
                 if (err) {

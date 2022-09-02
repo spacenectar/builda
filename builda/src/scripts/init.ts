@@ -92,10 +92,7 @@ const writeConfig = async (filename: string, contents: string) => {
   });
 };
 
-const installModules = async (
-  config: Partial<ConfigFile>,
-  answers: Answers
-) => {
+const installModules = async (config: ConfigFile, answers: Answers) => {
   printMessage('Installing initial scaffold...\r', 'notice');
   let options = {
     config,

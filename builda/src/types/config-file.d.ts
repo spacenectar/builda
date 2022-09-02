@@ -5,6 +5,9 @@ import { ModuleConfig } from './module-config';
 export interface ConfigFile {
   name: string;
   app_root: string;
+  resolve?: {
+    [key: string]: string;
+  };
   watched: string[];
   scaffold_scripts: {
     [key: string]: ScaffoldScriptContents;

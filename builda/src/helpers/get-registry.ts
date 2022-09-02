@@ -1,7 +1,6 @@
 import axios from 'axios';
 import fs from 'fs';
 
-import convertRegistryPathToUrl from './convert-registry-path-to-url';
 import detectPathType from './detect-path-type';
 import throwError from './throw-error';
 
@@ -13,14 +12,14 @@ export const getRegistry = async (registryPath: string) => {
   }
 
   return axios
-    .get(`${convertRegistryPathToUrl(registryPath)}/registry.json`)
+    .get(`${registryPath}/registry.json`)
     .then((response) => {
       return response.data;
     })
     .catch((error) => {
-      if (error.response.status === 404) {
+      if (error.status === 404) {
         throwError(
-          `No module found at ${registryPath} \n If you want to use a custom registry, please use the full url (including http(s)://)`
+          `\nNo module found at ${registryPath} \n If you want to use a custom registry, please use the full url (including http(s)://)\n or add a custom resolver (see https://builda.app/docs/custom-resolver)`
         );
       }
       throwError(error);
