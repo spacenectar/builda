@@ -14,28 +14,40 @@ export const addRemoteModule = async (
   // get the directory contents
   const registry = await getRegistry(modulePath);
   const outputPath = `${globals.buildaDir}/modules/${registry.type}s/${registry.name}`;
-  // Download the tarball
-  const response = await axios.get(`${modulePath}/files.tar`, {
-    responseType: 'stream'
-  });
-  // Write the tarball to the output directory
-  await createDir(outputPath)
-    .then(() => {
-      response.data.pipe(fs.createWriteStream(`${outputPath}/files.tar`));
-    })
-    .catch(() => {
-      throwError(`Could not download ${modulePath}`);
-    });
-  // Extract the tarball
-  await tar.extract({
-    file: `${outputPath}/files.tar`,
-    cwd: outputPath
-  });
-  // Remove the tarball
-  fs.unlinkSync(`${outputPath}/files.tar`);
 
-  // Write the registry to the output directory
-  fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
+  await createDir(outputPath);
+
+  // Download the tarball
+  await axios
+    .get(`${modulePath}/files.tgz`, {
+      responseType: 'stream'
+    })
+    .then((res) =>
+      res.data.pipe(fs.createWriteStream(`${outputPath}/files.tgz`))
+    )
+    .then(() => {
+      tar
+        .extract({
+          file: `${outputPath}/files.tgz`,
+          cwd: outputPath
+        })
+        .then(() => {
+          // Remove the tarball
+          fs.unlinkSync(`${outputPath}/files.tgz`);
+        })
+        .catch((err) => {
+          throwError(err);
+        });
+    })
+    .catch((err) => {
+      throwError(
+        `There was an error downloading the tarball. Please check the URL and try again.\n\n${err}`
+      );
+    })
+    .finally(() => {
+      // Write the registry to the output directory
+      fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
+    });
 
   return registry;
 };

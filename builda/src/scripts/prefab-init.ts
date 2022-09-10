@@ -10,7 +10,8 @@ import {
   addRemoteModule,
   detectPathType,
   convertRegistryPathToUrl,
-  writeFile
+  writeFile,
+  createDir
 } from '@helpers';
 import ModuleRegistry from '@typedefs/module-registry';
 
@@ -55,11 +56,10 @@ const questions = [
     }
   },
   {
-    type: 'choice',
+    type: 'checkbox',
     name: 'yarnOrNpm',
     message: 'Which package manager would you like to use?',
-    choices: ['yarn', 'npm'],
-    default: 'npm'
+    choices: ['yarn', 'npm']
   }
 ];
 
@@ -133,16 +133,19 @@ export const prefabInit = async ({
   const prefabPath = pathName || answers.pathName;
   const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
 
+  await createDir(outputDir);
   // check if the root directory is empty
   const rootDir = path.resolve(outputDir);
 
   if (fs.readdirSync(rootDir).length !== 0) {
     throwError(
-      'The app directory is not empty. It is not recommended to install a prefab into an existing project.'
+      `The directory: '${rootDir}' is not empty. It is not recommended to install a prefab into an existing project.`
     );
   } else {
     // The directory is empty, so we can continue
-    fs.mkdirSync(`${buildaDir}/modules/prefabs`, { recursive: true });
+    fs.mkdirSync(`${rootDir}/${buildaDir}/modules/prefabs`, {
+      recursive: true
+    });
 
     let module = {} as ModuleRegistry;
     const moduleType = detectPathType(prefabPath);

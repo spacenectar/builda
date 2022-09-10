@@ -74,11 +74,10 @@ const questions = [
         }
     },
     {
-        type: 'choice',
+        type: 'checkbox',
         name: 'yarnOrNpm',
         message: 'Which package manager would you like to use?',
-        choices: ['yarn', 'npm'],
-        default: 'npm'
+        choices: ['yarn', 'npm']
     }
 ];
 const getAnswers = async (omitName, omitOutputDir, omitPathName, omitYarnOrNpm) => {
@@ -113,14 +112,17 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
     const outputDir = outputDirectory || answers.outputDirectory;
     const prefabPath = pathName || answers.pathName;
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
+    await (0, _helpers_1.createDir)(outputDir);
     // check if the root directory is empty
     const rootDir = path_1.default.resolve(outputDir);
     if (fs_1.default.readdirSync(rootDir).length !== 0) {
-        (0, _helpers_1.throwError)('The app directory is not empty. It is not recommended to install a prefab into an existing project.');
+        (0, _helpers_1.throwError)(`The directory: '${rootDir}' is not empty. It is not recommended to install a prefab into an existing project.`);
     }
     else {
         // The directory is empty, so we can continue
-        fs_1.default.mkdirSync(`${buildaDir}/modules/prefabs`, { recursive: true });
+        fs_1.default.mkdirSync(`${rootDir}/${buildaDir}/modules/prefabs`, {
+            recursive: true
+        });
         let module = {};
         const moduleType = (0, _helpers_1.detectPathType)(prefabPath);
         if (moduleType === 'local') {

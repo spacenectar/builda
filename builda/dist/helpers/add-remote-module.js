@@ -15,27 +15,34 @@ const addRemoteModule = async (modulePath) => {
     // get the directory contents
     const registry = await (0, get_registry_1.default)(modulePath);
     const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
+    await (0, create_dir_1.default)(outputPath);
     // Download the tarball
-    const response = await axios_1.default.get(`${modulePath}/files.tar`, {
+    await axios_1.default
+        .get(`${modulePath}/files.tgz`, {
         responseType: 'stream'
-    });
-    // Write the tarball to the output directory
-    await (0, create_dir_1.default)(outputPath)
-        .then(() => {
-        response.data.pipe(fs_1.default.createWriteStream(`${outputPath}/files.tar`));
     })
-        .catch(() => {
-        (0, throw_error_1.default)(`Could not download ${modulePath}`);
+        .then((res) => res.data.pipe(fs_1.default.createWriteStream(`${outputPath}/files.tgz`)))
+        .then(() => {
+        tar_1.default
+            .extract({
+            file: `${outputPath}/files.tgz`,
+            cwd: outputPath
+        })
+            .then(() => {
+            // Remove the tarball
+            fs_1.default.unlinkSync(`${outputPath}/files.tgz`);
+        })
+            .catch((err) => {
+            (0, throw_error_1.default)(err);
+        });
+    })
+        .catch((err) => {
+        (0, throw_error_1.default)(`There was an error downloading the tarball. Please check the URL and try again.\n\n${err}`);
+    })
+        .finally(() => {
+        // Write the registry to the output directory
+        fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });
-    // Extract the tarball
-    await tar_1.default.extract({
-        file: `${outputPath}/files.tar`,
-        cwd: outputPath
-    });
-    // Remove the tarball
-    fs_1.default.unlinkSync(`${outputPath}/files.tar`);
-    // Write the registry to the output directory
-    fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     return registry;
 };
 exports.addRemoteModule = addRemoteModule;

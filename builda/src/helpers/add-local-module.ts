@@ -16,16 +16,18 @@ export const addLocalModule = async (
   const registry = await getRegistry(modulePath);
   // Set the output path
   const outputPath = `${globals.buildaDir}/modules/${registry.type}s/${registry.name}`;
+  await createDir(outputPath);
   // Is there a tarball?
-  const tarball = fs.existsSync(`${modulePath}/files.tar`);
-  // If there is a tarball, extract it
+  const tarball = fs.existsSync(`${modulePath}/files.tgz`);
+  // If there is a tarball, copy it to the output path and then extract it
   if (tarball) {
+    fs.copyFileSync(`${modulePath}/files.tgz`, `${outputPath}/files.tgz`);
     await tar.extract({
-      file: `${modulePath}/files.tar`,
+      file: `${outputPath}/files.tgz`,
       cwd: outputPath
     });
     // Remove the tarball
-    fs.unlinkSync(`${modulePath}/files.tar`);
+    fs.unlinkSync(`${outputPath}/files.tgz`);
   } else {
     // get the directory contents
     const files = fs.readdirSync(modulePath);
