@@ -25,6 +25,8 @@ interface Answers {
   customScaffoldList: string;
 }
 
+const configFilePath = path.join(buildaDir, configFileName);
+
 const OVERWRITE_CONFIG_QUESTION = {
   message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
   name: 'replaceConfig',
@@ -51,19 +53,9 @@ const getAnswers = async (omitName: boolean, omitOutputDir: boolean) => {
   });
 };
 
-const checkExistingConfig = async (
-  fileName: string,
-  debug: boolean
-): Promise<boolean> => {
+const checkExistingConfig = async (): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    if (fs.existsSync(path.join(fileName))) {
-      if (debug) {
-        // Preset answers were passed so we are in debug/test mode
-        reject(false);
-        return throwError(
-          `You already have a ${fileName} file. Process Aborted.`
-        );
-      }
+    if (fs.existsSync(configFilePath)) {
       return askQuestion(OVERWRITE_CONFIG_QUESTION).then(
         ({ replaceConfig }) => {
           if (replaceConfig) {
@@ -128,7 +120,7 @@ const init = async ({
 
   if (!presetAnswers) {
     try {
-      continueProcess = await checkExistingConfig(configFileName, false);
+      continueProcess = await checkExistingConfig();
     } catch (err) {
       Promise.reject(err);
       return throwError(err);
@@ -178,26 +170,25 @@ const init = async ({
 
           scaffoldList.forEach((scaffoldItem) => {
             scaffoldScripts += `${scaffoldItem}: {\n`;
-            scaffoldScripts += `  use: '${response.module.name}',\n`;
-            scaffoldScripts += `output_dir: \`\${appRoot}/${pluralise(
+            scaffoldScripts += `  "use": "${response.module.name}",\n`;
+            scaffoldScripts += `"output_dir": "{{app_root}}/${pluralise(
               scaffoldItem
-            )}\`,\n`;
+            )}",\n`;
             scaffoldScripts += `},\n`;
           });
 
-          let configString = `\nconst appRoot = '${outputDirectory}';\n\n`;
-          configString += `module.exports = {\n`;
-          configString += `  name: '${appName}',\n`;
-          configString += `  app_root: appRoot,\n`;
-          configString += `  scaffold_scripts: {\n${scaffoldScripts}},\n`;
+          let configString = `{\n\n`;
+          configString += `  "name": "${appName}",\n`;
+          configString += `  "app_root": "${outputDirectory}",\n`;
+          configString += `  "scaffold_scripts": {\n${scaffoldScripts}},\n`;
           configString += `}`;
 
           writeConfig(
-            configFileName,
+            configFilePath,
             prettier.format(configString, {
               singleQuote: true,
               trailingComma: 'none',
-              parser: 'typescript'
+              parser: 'json'
             })
           )
             .then(() => {

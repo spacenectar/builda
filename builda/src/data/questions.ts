@@ -21,14 +21,14 @@ export default [
     choices: [
       {
         name: 'Default React (typescript)',
-        value: 'default-ts'
+        value: 'scaffold-default-ts'
       },
       {
         name: 'Default React (javascript)',
-        value: 'default-js'
+        value: 'scaffold-default-js'
       },
       {
-        name: 'Custom module',
+        name: 'Custom scaffold',
         value: 'custom'
       }
     ],
@@ -45,7 +45,12 @@ export default [
     type: 'checkbox',
     name: 'scaffoldSelection',
     message: 'Select one or more scaffold types you wish to use',
-    default: ['component'],
+    validate: (answer: string[]) => {
+      if (answer.length < 1) {
+        return 'You must choose at least one scaffold type. See https://builda.io/docs/scaffold-types for more info.';
+      }
+      return true;
+    },
     choices: [
       'component',
       'atom',

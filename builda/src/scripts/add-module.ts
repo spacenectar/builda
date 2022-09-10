@@ -87,34 +87,30 @@ export type AddModulesResponse = {
 
 export const addModule = async ({
   config,
-  path,
-  official
+  path
 }: {
   config: ConfigFile;
   path: string;
-  official?: boolean;
 }): Promise<AddModulesResponse> => {
   let module = {} as ModuleRegistry;
   if (config) {
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = `${globals.buildaDir}/modules`;
 
-    const newPath = official ? `${globals.websiteUrl}/modules/${path}` : path;
-
     await createDir(moduleDirPath);
 
-    const moduleType = detectPathType(newPath);
+    const moduleType = detectPathType(path);
 
     if (moduleType === 'local') {
-      module = await addLocalModule(newPath);
+      module = await addLocalModule(path);
     }
 
     if (moduleType === 'remote') {
-      module = await addRemoteModule(convertRegistryPathToUrl(newPath, config));
+      module = await addRemoteModule(convertRegistryPathToUrl(path, config));
     }
 
     if (moduleType === 'custom') {
-      module = await addRemoteModule(convertRegistryPathToUrl(newPath, config));
+      module = await addRemoteModule(convertRegistryPathToUrl(path, config));
     }
 
     if (module?.name) {
@@ -139,10 +135,6 @@ export const addModule = async ({
           config.prefabs = {};
         }
       }
-
-      //TODO: This is now failing because the config file is no longer just json.
-      // I will probably need to write a helper function to update the config file
-      // or there will be a lot of code duplication.
 
       // Write the config file
       fs.writeFile(

@@ -61,22 +61,21 @@ const addRemoteModule = async (modulePath) => {
     });
     return registry;
 };
-const addModule = async ({ config, path, official }) => {
+const addModule = async ({ config, path }) => {
     let module = {};
     if (config) {
         // Check the module directory exists and create it if it doesn't
         const moduleDirPath = `${globals_1.default.buildaDir}/modules`;
-        const newPath = official ? `${globals_1.default.websiteUrl}/modules/${path}` : path;
         await (0, _helpers_1.createDir)(moduleDirPath);
-        const moduleType = (0, _helpers_1.detectPathType)(newPath);
+        const moduleType = (0, _helpers_1.detectPathType)(path);
         if (moduleType === 'local') {
-            module = await addLocalModule(newPath);
+            module = await addLocalModule(path);
         }
         if (moduleType === 'remote') {
-            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath, config));
+            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(path, config));
         }
         if (moduleType === 'custom') {
-            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(newPath, config));
+            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(path, config));
         }
         if (module === null || module === void 0 ? void 0 : module.name) {
             const type = module.type;
@@ -98,9 +97,6 @@ const addModule = async ({ config, path, official }) => {
                     config.prefabs = {};
                 }
             }
-            //TODO: This is now failing because the config file is no longer just json.
-            // I will probably need to write a helper function to update the config file
-            // or there will be a lot of code duplication.
             // Write the config file
             fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
                 if (err) {

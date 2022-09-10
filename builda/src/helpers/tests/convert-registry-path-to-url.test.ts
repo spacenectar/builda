@@ -7,6 +7,13 @@ describe('convertRegistryPathToUrl() function', () => {
   beforeAll(async () => {
     config = await getConfigFile();
   });
+
+  test('should return a path to a registry.json file on the builda repository when builda: is provided', () => {
+    const registryPath = 'builda:scaffold-default-js';
+    const expected = 'https://builda.app/modules/scaffold-default-js';
+    expect(convertRegistryPathToUrl(registryPath, config)).toEqual(expected);
+  });
+
   test('should return a raw path to a registry.json file when a github repo folder path is provided', () => {
     const registryPath =
       'https://github.com/test-path/builda/tree/master/scaffolds/component-with-storybook';
@@ -50,5 +57,11 @@ describe('convertRegistryPathToUrl() function', () => {
     expect(convertRegistryPathToUrl(registryPath, customConfig)).toEqual(
       expected
     );
+  });
+
+  test('should return a path to a registry.json file when a non-matching http or https url is provided', () => {
+    const registryPath = 'http://test.com/blah';
+    const expected = 'http://test.com/blah';
+    expect(convertRegistryPathToUrl(registryPath, config)).toEqual(expected);
   });
 });

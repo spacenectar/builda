@@ -8,9 +8,14 @@ describe('detectPathType', () => {
   });
 
   test("should return 'remote' when a remote path is provided", () => {
-    const path =
-      'https://thisurlaintreal.com';
+    const path = 'https://thisurlaintreal.com';
     const expected = 'remote';
+    expect(detectPathType(path)).toEqual(expected);
+  });
+
+  test("should return 'custom' when a custom path is provided", () => {
+    const path = 'builda:scaffold-default-js';
+    const expected = 'custom';
     expect(detectPathType(path)).toEqual(expected);
   });
 });

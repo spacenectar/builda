@@ -12,6 +12,7 @@ const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
 const add_module_1 = __importDefault(require("./add-module"));
+const configFilePath = path_1.default.join(buildaDir, configFileName);
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
     name: 'replaceConfig',
@@ -35,14 +36,9 @@ const getAnswers = async (omitName, omitOutputDir) => {
         });
     });
 };
-const checkExistingConfig = async (fileName, debug) => {
+const checkExistingConfig = async () => {
     return new Promise((resolve, reject) => {
-        if (fs_1.default.existsSync(path_1.default.join(fileName))) {
-            if (debug) {
-                // Preset answers were passed so we are in debug/test mode
-                reject(false);
-                return (0, _helpers_1.throwError)(`You already have a ${fileName} file. Process Aborted.`);
-            }
+        if (fs_1.default.existsSync(configFilePath)) {
             return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
                 if (replaceConfig) {
                     return resolve(true);
@@ -88,7 +84,7 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
     let answers = {};
     if (!presetAnswers) {
         try {
-            continueProcess = await checkExistingConfig(configFileName, false);
+            continueProcess = await checkExistingConfig();
         }
         catch (err) {
             Promise.reject(err);
@@ -135,20 +131,19 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
                 let scaffoldScripts = ``;
                 scaffoldList.forEach((scaffoldItem) => {
                     scaffoldScripts += `${scaffoldItem}: {\n`;
-                    scaffoldScripts += `  use: '${response.module.name}',\n`;
-                    scaffoldScripts += `output_dir: \`\${appRoot}/${(0, string_functions_1.pluralise)(scaffoldItem)}\`,\n`;
+                    scaffoldScripts += `  "use": "${response.module.name}",\n`;
+                    scaffoldScripts += `"output_dir": "{{app_root}}/${(0, string_functions_1.pluralise)(scaffoldItem)}",\n`;
                     scaffoldScripts += `},\n`;
                 });
-                let configString = `\nconst appRoot = '${outputDirectory}';\n\n`;
-                configString += `module.exports = {\n`;
-                configString += `  name: '${appName}',\n`;
-                configString += `  app_root: appRoot,\n`;
-                configString += `  scaffold_scripts: {\n${scaffoldScripts}},\n`;
+                let configString = `{\n\n`;
+                configString += `  "name": "${appName}",\n`;
+                configString += `  "app_root": "${outputDirectory}",\n`;
+                configString += `  "scaffold_scripts": {\n${scaffoldScripts}},\n`;
                 configString += `}`;
-                writeConfig(configFileName, prettier_1.default.format(configString, {
+                writeConfig(configFilePath, prettier_1.default.format(configString, {
                     singleQuote: true,
                     trailingComma: 'none',
-                    parser: 'typescript'
+                    parser: 'json'
                 }))
                     .then(() => {
                     (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');

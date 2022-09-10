@@ -26,8 +26,8 @@ export const convertRegistryPathToUrl = (
 
   if (pathMatcher.length > 0 && customMatcherKeys?.includes(pathMatcher[0])) {
     const slug = newPath.split(':').pop();
-    for (let i = 0; i < customMatcherKeys.length; i++) {
-      if (pathMatcher[0] === customMatcherKeys[i] && config.resolve) {
+    for (const element of customMatcherKeys) {
+      if (pathMatcher[0] === element && config.resolve) {
         newPath = urlWithProtocol(`${config.resolve[pathMatcher[0]]}/${slug}`);
       }
     }
@@ -40,6 +40,14 @@ export const convertRegistryPathToUrl = (
       'https://raw.githubusercontent.com/'
     );
     return `${updatedPath}/master`;
+  }
+
+  if (newPath.startsWith('builda:')) {
+    const updatedPath = newPath.replace(
+      'builda:',
+      'https://builda.app/modules/'
+    );
+    return `${updatedPath}`;
   }
 
   if (newPath.startsWith('bitbucket:')) {
@@ -58,8 +66,7 @@ export const convertRegistryPathToUrl = (
     return newPath.replace('src', 'raw');
   }
 
-  // If no custom matcher is provided, assume it's pointing to the builda repository
-  newPath = `https://builda.app/modules/${newPath}`;
+  // If no custom matcher is provided just return the path
 
   return newPath;
 };

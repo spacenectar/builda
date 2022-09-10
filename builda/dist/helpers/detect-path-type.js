@@ -9,8 +9,9 @@ const detectPathType = (pathString) => {
         pathString.startsWith('~')) {
         return 'local';
     }
+    const httpMatcher = /^https?:\/\//;
     const customMatcherRegex = /[a-zA-Z0-9]:/;
-    if (customMatcherRegex.test(pathString)) {
+    if (!httpMatcher.test(pathString) && customMatcherRegex.test(pathString)) {
         return 'custom';
     }
     return 'remote';
