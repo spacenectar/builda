@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import prettier from 'prettier';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
 import { pluralise } from '@helpers/string-functions';
+
+import addModule from './add-module';
 
 import globals from '@data/globals';
 import questions from '@data/questions';
@@ -13,8 +14,10 @@ const { configFileName, buildaDir, websiteUrl } = globals;
 // Types
 import { QuestionType } from '@typedefs/question-type';
 import { Question } from 'inquirer';
-import addModule from './add-module';
 import { ConfigFile } from '@typedefs/config-file';
+import ScaffoldScriptConfig, {
+  ScaffoldScriptContent
+} from '@typedefs/scaffold-script-config';
 
 interface Answers {
   appName: string;
@@ -166,31 +169,24 @@ const init = async ({
 
       installModules(config, answers)
         .then((response) => {
-          let scaffoldScripts = ``;
+          const scaffoldScripts = {} as ScaffoldScriptConfig<
+            Omit<ScaffoldScriptContent, 'substitute'>
+          >;
 
           scaffoldList.forEach((scaffoldItem) => {
-            scaffoldScripts += `${scaffoldItem}: {\n`;
-            scaffoldScripts += `  "use": "${response.module.name}",\n`;
-            scaffoldScripts += `"output_dir": "{{app_root}}/${pluralise(
-              scaffoldItem
-            )}",\n`;
-            scaffoldScripts += `},\n`;
+            scaffoldScripts[scaffoldItem] = {
+              use: response.module.name,
+              output_dir: `{{app_root}}/${pluralise(scaffoldItem)}`
+            };
           });
 
-          let configString = `{\n\n`;
-          configString += `  "name": "${appName}",\n`;
-          configString += `  "app_root": "${outputDirectory}",\n`;
-          configString += `  "scaffold_scripts": {\n${scaffoldScripts}},\n`;
-          configString += `}`;
+          const configString = { ...config };
+          configString.scaffold_scripts = {
+            ...configString.scaffold_scripts,
+            ...scaffoldScripts
+          };
 
-          writeConfig(
-            configFilePath,
-            prettier.format(configString, {
-              singleQuote: true,
-              trailingComma: 'none',
-              parser: 'json'
-            })
-          )
+          writeConfig(configFilePath, JSON.stringify(configString, null, 2))
             .then(() => {
               printMessage('\rInitialisation complete', 'success');
               printMessage(

@@ -4,7 +4,7 @@ exports.presetAnswers = void 0;
 exports.presetAnswers = {
     appName: 'test',
     outputDirectory: './experiments',
-    installDefaultModule: 'default-ts',
+    installDefaultModule: 'builda:scaffold-default-ts',
     scaffoldUrl: '',
     scaffoldSelection: ['atom', 'component'],
     customScaffoldList: 'test'

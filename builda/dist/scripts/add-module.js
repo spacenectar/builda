@@ -39,9 +39,12 @@ const addRemoteModule = async (modulePath) => {
     files
         .filter((file) => !ignoreFiles.includes(file))
         .forEach(async (file) => {
+        const srcPath = file === 'registry.json'
+            ? `${modulePath}/${file}`
+            : `${modulePath}/files/${file}`;
         // Download the file
         await axios_1.default
-            .get(`${modulePath}/files/${file}`)
+            .get(srcPath)
             .then((response) => {
             const content = file === 'registry.json'
                 ? JSON.stringify(response.data, null, 2)
@@ -61,7 +64,8 @@ const addRemoteModule = async (modulePath) => {
     });
     return registry;
 };
-const addModule = async ({ config, path }) => {
+const addModule = async ({ config, path, update = false }) => {
+    var _a, _b;
     let module = {};
     if (config) {
         // Check the module directory exists and create it if it doesn't
@@ -81,14 +85,21 @@ const addModule = async ({ config, path }) => {
             const type = module.type;
             const name = module.name;
             const version = module.version;
-            // User has never installed any modules.
-            if (!config.scaffold_scripts) {
-                config.scaffold_scripts = {};
-            }
             if (type === 'scaffold') {
                 // User has never installed any scaffolds.
                 if (!(config === null || config === void 0 ? void 0 : config.scaffolds)) {
                     config.scaffolds = {};
+                }
+                // User has installed this scaffold before.
+                if (((_a = config === null || config === void 0 ? void 0 : config.scaffolds) === null || _a === void 0 ? void 0 : _a[name]) && !update) {
+                    (0, _helpers_1.throwError)(`Scaffold already installed, perhaps you meant 'builda update ${name}?'`);
+                }
+                else {
+                    // User has never installed this scaffold before.
+                    config.scaffolds[name] = {
+                        version,
+                        location: path
+                    };
                 }
             }
             if (type === 'prefab') {
@@ -96,13 +107,25 @@ const addModule = async ({ config, path }) => {
                 if (!(config === null || config === void 0 ? void 0 : config.prefabs)) {
                     config.prefabs = {};
                 }
+                // User has installed this prefab before.
+                if (((_b = config === null || config === void 0 ? void 0 : config.prefabs) === null || _b === void 0 ? void 0 : _b[name]) && !update) {
+                    (0, _helpers_1.throwError)(`Prefab already installed, perhaps you meant 'builda update ${name}?'`);
+                }
+                else {
+                    // User has never installed this prefab before.
+                    config.prefabs[name] = {
+                        version,
+                        location: path,
+                        output_dir: '{{app_root}}'
+                    };
+                }
             }
             // Write the config file
             fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
                 if (err) {
                     (0, _helpers_1.throwError)(err.message);
                 }
-                (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: ${name}@${version} installed`, 'success');
+                (0, _helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: '${name}@${version}' installed`, 'success');
             });
             return {
                 module,

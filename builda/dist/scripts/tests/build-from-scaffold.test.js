@@ -9,10 +9,10 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
-const CONFIG_FILE = '.builda.js';
+const CONFIG_FILE = 'config.json';
 const CONFIG_FOLDER = '.builda';
 const command = {
-    use: 'default-ts',
+    use: 'scaffold-default-ts',
     output_dir: './experiments/atoms',
     substitute: []
 };

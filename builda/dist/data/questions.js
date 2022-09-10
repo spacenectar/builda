@@ -20,11 +20,11 @@ exports.default = [
         choices: [
             {
                 name: 'Default React (typescript)',
-                value: 'scaffold-default-ts'
+                value: 'builda:scaffold-default-ts'
             },
             {
                 name: 'Default React (javascript)',
-                value: 'scaffold-default-js'
+                value: 'builda:scaffold-default-js'
             },
             {
                 name: 'Custom scaffold',

@@ -5,13 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const prettier_1 = __importDefault(require("prettier"));
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
+const add_module_1 = __importDefault(require("./add-module"));
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
-const add_module_1 = __importDefault(require("./add-module"));
 const configFilePath = path_1.default.join(buildaDir, configFileName);
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
@@ -128,23 +127,16 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
             };
             installModules(config, answers)
                 .then((response) => {
-                let scaffoldScripts = ``;
+                const scaffoldScripts = {};
                 scaffoldList.forEach((scaffoldItem) => {
-                    scaffoldScripts += `${scaffoldItem}: {\n`;
-                    scaffoldScripts += `  "use": "${response.module.name}",\n`;
-                    scaffoldScripts += `"output_dir": "{{app_root}}/${(0, string_functions_1.pluralise)(scaffoldItem)}",\n`;
-                    scaffoldScripts += `},\n`;
+                    scaffoldScripts[scaffoldItem] = {
+                        use: response.module.name,
+                        output_dir: `{{app_root}}/${(0, string_functions_1.pluralise)(scaffoldItem)}`
+                    };
                 });
-                let configString = `{\n\n`;
-                configString += `  "name": "${appName}",\n`;
-                configString += `  "app_root": "${outputDirectory}",\n`;
-                configString += `  "scaffold_scripts": {\n${scaffoldScripts}},\n`;
-                configString += `}`;
-                writeConfig(configFilePath, prettier_1.default.format(configString, {
-                    singleQuote: true,
-                    trailingComma: 'none',
-                    parser: 'json'
-                }))
+                const configString = Object.assign({}, config);
+                configString.scaffold_scripts = Object.assign(Object.assign({}, configString.scaffold_scripts), scaffoldScripts);
+                writeConfig(configFilePath, JSON.stringify(configString, null, 2))
                     .then(() => {
                     (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
                     (0, _helpers_1.printMessage)(`Check your ${configFileName} file to ensure all settings are correct. Output paths may need some tweaking.`, 'notice');

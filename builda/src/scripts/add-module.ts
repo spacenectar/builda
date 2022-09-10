@@ -52,9 +52,13 @@ const addRemoteModule = async (modulePath: string): Promise<ModuleRegistry> => {
   files
     .filter((file: string) => !ignoreFiles.includes(file))
     .forEach(async (file: string) => {
+      const srcPath =
+        file === 'registry.json'
+          ? `${modulePath}/${file}`
+          : `${modulePath}/files/${file}`;
       // Download the file
       await axios
-        .get(`${modulePath}/files/${file}`)
+        .get(srcPath)
         .then((response) => {
           const content =
             file === 'registry.json'
@@ -87,10 +91,12 @@ export type AddModulesResponse = {
 
 export const addModule = async ({
   config,
-  path
+  path,
+  update = false
 }: {
   config: ConfigFile;
   path: string;
+  update?: boolean;
 }): Promise<AddModulesResponse> => {
   let module = {} as ModuleRegistry;
   if (config) {
@@ -118,21 +124,41 @@ export const addModule = async ({
       const name = module.name;
       const version = module.version;
 
-      // User has never installed any modules.
-      if (!config.scaffold_scripts) {
-        config.scaffold_scripts = {};
-      }
-
       if (type === 'scaffold') {
         // User has never installed any scaffolds.
         if (!config?.scaffolds) {
           config.scaffolds = {};
+        }
+        // User has installed this scaffold before.
+        if (config?.scaffolds?.[name] && !update) {
+          throwError(
+            `Scaffold already installed, perhaps you meant 'builda update ${name}?'`
+          );
+        } else {
+          // User has never installed this scaffold before.
+          config.scaffolds[name] = {
+            version,
+            location: path
+          };
         }
       }
       if (type === 'prefab') {
         // User has never installed any prefabs.
         if (!config?.prefabs) {
           config.prefabs = {};
+        }
+        // User has installed this prefab before.
+        if (config?.prefabs?.[name] && !update) {
+          throwError(
+            `Prefab already installed, perhaps you meant 'builda update ${name}?'`
+          );
+        } else {
+          // User has never installed this prefab before.
+          config.prefabs[name] = {
+            version,
+            location: path,
+            output_dir: '{{app_root}}'
+          };
         }
       }
 
@@ -145,7 +171,7 @@ export const addModule = async ({
             throwError(err.message);
           }
           printMessage(
-            `${changeCase(type, 'pascal')}: ${name}@${version} installed`,
+            `${changeCase(type, 'pascal')}: '${name}@${version}' installed`,
             'success'
           );
         }

@@ -20,6 +20,7 @@ import buildFromScaffold from '@scripts/build-from-scaffold';
 import addModule from '@scripts/add-module';
 import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
+import { updateModule } from '@scripts/update-module';
 
 const args = hideBin(process.argv);
 
@@ -109,6 +110,11 @@ const CREATE_CONFIG_QUESTION = {
   if (argv._[0].toString() === 'add') {
     const module = argv._[1].toString();
     return addModule({ config, path: module });
+  }
+
+  if (argv._[0].toString() === 'update') {
+    const module = argv._[1].toString();
+    return updateModule({ config, module });
   }
 
   const commands = config ? generateCommands(config) : {};

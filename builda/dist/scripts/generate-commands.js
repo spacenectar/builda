@@ -6,8 +6,8 @@ const generateCommands = (config) => {
     if (config) {
         Object.entries(config.scaffold_scripts).forEach((script) => {
             const name = script[0];
-            const { use, output_dir, substitute } = script[1];
-            commands[name] = { use, output_dir, substitute };
+            const { use, output_dir } = script[1];
+            commands[name] = { use, output_dir };
         });
         return commands;
     }

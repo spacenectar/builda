@@ -1,7 +1,7 @@
 export const presetAnswers = {
   appName: 'test',
   outputDirectory: './experiments',
-  installDefaultModule: 'default-ts',
+  installDefaultModule: 'builda:scaffold-default-ts',
   scaffoldUrl: '',
   scaffoldSelection: ['atom', 'component'],
   customScaffoldList: 'test'

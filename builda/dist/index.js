@@ -18,6 +18,7 @@ const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaf
 const add_module_1 = __importDefault(require("./scripts/add-module"));
 const watch_1 = __importDefault(require("./scripts/watch"));
 const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
+const update_module_1 = require("./scripts/update-module");
 const args = (0, helpers_1.hideBin)(process.argv);
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
@@ -89,6 +90,10 @@ const CREATE_CONFIG_QUESTION = {
     if (argv._[0].toString() === 'add') {
         const module = argv._[1].toString();
         return (0, add_module_1.default)({ config, path: module });
+    }
+    if (argv._[0].toString() === 'update') {
+        const module = argv._[1].toString();
+        return (0, update_module_1.updateModule)({ config, module });
     }
     const commands = config ? (0, generate_commands_1.default)(config) : {};
     const commandString = process.argv[2].replace('--', '');

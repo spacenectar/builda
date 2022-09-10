@@ -14,16 +14,16 @@ describe('generateCommands', () => {
     test('config file is parsed and commands extracted', () => {
         expect(commands).toEqual({
             atom: {
-                use: 'default-ts',
-                output_dir: './experiments/atoms'
+                use: 'scaffold-default-ts',
+                output_dir: '{{app_root}}/atoms'
             },
             component: {
-                use: 'default-ts',
-                output_dir: './experiments/components'
+                use: 'scaffold-default-ts',
+                output_dir: '{{app_root}}/components'
             },
             test: {
-                use: 'default-ts',
-                output_dir: './experiments/tests'
+                use: 'scaffold-default-ts',
+                output_dir: '{{app_root}}/tests'
             }
         });
     });

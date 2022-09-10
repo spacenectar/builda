@@ -6,7 +6,6 @@ class CustomSequencer extends Sequencer {
 
     const order = [
       'helpers/tests/convert-numbers-to-words.test.ts',
-      'helpers/tests/convert-registry-path-to-url.test.ts',
       'helpers/tests/convert-symbols-to-words.test.ts',
       'helpers/tests/detect-case.test.ts',
       'helpers/tests/detect-path-type.test.ts',
@@ -15,6 +14,7 @@ class CustomSequencer extends Sequencer {
       'scripts/tests/init.test.ts',
       'scripts/tests/generate-scaffold-registry.test.ts',
       'scripts/tests/generate-commands.test.ts',
+      'helpers/tests/convert-registry-path-to-url.test.ts',
       'scripts/tests/build-from-scaffold.test.ts'
     ];
 
