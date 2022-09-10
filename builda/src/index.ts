@@ -111,7 +111,7 @@ const CREATE_CONFIG_QUESTION = {
   if (argv.prefab) {
     const name = argv.name || argv.n || '';
     const output = argv.root || argv.r || '';
-    const pathName = argv.path || argv.p || '';
+    const pathName = argv.prefabPath || argv.pp || '';
     const packageManager = argv.packageManager || argv.pm || '';
 
     return prefabInit({

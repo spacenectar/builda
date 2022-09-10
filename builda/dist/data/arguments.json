@@ -4,6 +4,27 @@
         "required": false,
         "boolean": true
     },
+    "prefab": {
+        "description": "Generate a project from a prefab",
+        "required": false,
+        "boolean": true
+    },
+    "prefabPath": {
+        "description": "Path to the prefab",
+        "required": false,
+        "string": true,
+        "alias": "pp"
+    },
+    "packageManager": {
+        "description": "Package manager to use",
+        "required": false,
+        "string": true,
+        "alias": "pm",
+        "choices": [
+            "npm",
+            "yarn"
+        ]
+    },
     "name": {
         "description": "The name of the project",
         "required": false,

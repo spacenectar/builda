@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -6,7 +29,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.prefabInit = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const execa_1 = require("execa");
 const globals_1 = __importDefault(require("../data/globals"));
 const _helpers_1 = require("../helpers/index.js");
 const defaultRequiredFiles = ['package.json', 'README.md'];
@@ -149,13 +171,14 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             (0, _helpers_1.printMessage)('Initializing your application...', 'notice');
             // Run package manager install
             if (fs_1.default.existsSync('package.json')) {
+                const { execa } = await Promise.resolve().then(() => __importStar(require('execa')));
                 if (packageManagerType === 'yarn') {
                     (0, _helpers_1.printMessage)('Running yarn install...', 'notice');
-                    await (0, execa_1.execa)('yarn', ['install'], { cwd: rootDir });
+                    await execa('yarn', ['install'], { cwd: rootDir });
                 }
                 if (packageManagerType === 'npm') {
                     (0, _helpers_1.printMessage)('Running npm install...', 'notice');
-                    await (0, execa_1.execa)('npm', ['install'], { cwd: rootDir });
+                    await execa('npm', ['install'], { cwd: rootDir });
                 }
             }
             (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');

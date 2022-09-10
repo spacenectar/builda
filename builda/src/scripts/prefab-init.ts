@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { execa } from 'execa';
 
 import globals from '@data/globals';
 import {
@@ -205,6 +204,7 @@ export const prefabInit = async ({
       // Run package manager install
 
       if (fs.existsSync('package.json')) {
+        const { execa } = await import('execa');
         if (packageManagerType === 'yarn') {
           printMessage('Running yarn install...', 'notice');
           await execa('yarn', ['install'], { cwd: rootDir });

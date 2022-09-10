@@ -63,6 +63,7 @@
     "glob": "^8.0.3",
     "inquirer": "8.2.4",
     "js-yaml": "^4.1.0",
+    "jszip": "^3.10.1",
     "markdownlint": "^0.25.1",
     "yargs": "^17.4.1"
   },
