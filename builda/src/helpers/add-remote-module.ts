@@ -7,6 +7,7 @@ import ModuleRegistry from '@typedefs/module-registry';
 import getRegistry from './get-registry';
 import createDir from './create-dir';
 import throwError from './throw-error';
+import printMessage from './print-message';
 
 export const addRemoteModule = async (
   modulePath: string
@@ -20,24 +21,29 @@ export const addRemoteModule = async (
   // Download the tarball
   await axios
     .get(`${modulePath}/files.tgz`, {
-      responseType: 'stream'
+      responseType: 'arraybuffer',
+      headers: {
+        'Content-Type': 'application/gzip'
+      }
     })
     .then((res) =>
-      res.data.pipe(fs.createWriteStream(`${outputPath}/files.tgz`))
+      fs.writeFileSync(`${outputPath}/files.tgz`, res.data, {
+        encoding: 'binary'
+      })
     )
-    .then(() => {
-      tar
-        .extract({
-          file: `${outputPath}/files.tgz`,
-          cwd: outputPath
-        })
-        .then(() => {
-          // Remove the tarball
+    .then(async () => {
+      if (fs.existsSync(`${outputPath}/files.tgz`)) {
+        printMessage('Extracting module files...', 'notice');
+        try {
+          await tar.extract({
+            file: `${outputPath}/files.tgz`,
+            cwd: outputPath
+          });
           fs.unlinkSync(`${outputPath}/files.tgz`);
-        })
-        .catch((err) => {
+        } catch (err) {
           throwError(err);
-        });
+        }
+      }
     })
     .catch((err) => {
       throwError(
@@ -45,10 +51,11 @@ export const addRemoteModule = async (
       );
     })
     .finally(() => {
+      printMessage('Copying the registry file...', 'notice');
       // Write the registry to the output directory
       fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });
-
+  printMessage('Done.', 'success');
   return registry;
 };
 

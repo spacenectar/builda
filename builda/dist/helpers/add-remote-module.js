@@ -11,6 +11,7 @@ const globals_1 = __importDefault(require("../data/globals"));
 const get_registry_1 = __importDefault(require("./get-registry"));
 const create_dir_1 = __importDefault(require("./create-dir"));
 const throw_error_1 = __importDefault(require("./throw-error"));
+const print_message_1 = __importDefault(require("./print-message"));
 const addRemoteModule = async (modulePath) => {
     // get the directory contents
     const registry = await (0, get_registry_1.default)(modulePath);
@@ -19,30 +20,38 @@ const addRemoteModule = async (modulePath) => {
     // Download the tarball
     await axios_1.default
         .get(`${modulePath}/files.tgz`, {
-        responseType: 'stream'
+        responseType: 'arraybuffer',
+        headers: {
+            'Content-Type': 'application/gzip'
+        }
     })
-        .then((res) => res.data.pipe(fs_1.default.createWriteStream(`${outputPath}/files.tgz`)))
-        .then(() => {
-        tar_1.default
-            .extract({
-            file: `${outputPath}/files.tgz`,
-            cwd: outputPath
-        })
-            .then(() => {
-            // Remove the tarball
-            fs_1.default.unlinkSync(`${outputPath}/files.tgz`);
-        })
-            .catch((err) => {
-            (0, throw_error_1.default)(err);
-        });
+        .then((res) => fs_1.default.writeFileSync(`${outputPath}/files.tgz`, res.data, {
+        encoding: 'binary'
+    }))
+        .then(async () => {
+        if (fs_1.default.existsSync(`${outputPath}/files.tgz`)) {
+            (0, print_message_1.default)('Extracting module files...', 'notice');
+            try {
+                await tar_1.default.extract({
+                    file: `${outputPath}/files.tgz`,
+                    cwd: outputPath
+                });
+                fs_1.default.unlinkSync(`${outputPath}/files.tgz`);
+            }
+            catch (err) {
+                (0, throw_error_1.default)(err);
+            }
+        }
     })
         .catch((err) => {
         (0, throw_error_1.default)(`There was an error downloading the tarball. Please check the URL and try again.\n\n${err}`);
     })
         .finally(() => {
+        (0, print_message_1.default)('Copying the registry file...', 'notice');
         // Write the registry to the output directory
         fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });
+    (0, print_message_1.default)('Done.', 'success');
     return registry;
 };
 exports.addRemoteModule = addRemoteModule;

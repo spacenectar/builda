@@ -37,6 +37,7 @@ const questions = [
         type: 'input',
         name: 'name',
         message: 'What is the name of your application?',
+        default: 'my-app',
         validate: (input) => {
             if (input.length) {
                 return true;
@@ -50,7 +51,7 @@ const questions = [
         type: 'input',
         name: 'outputDirectory',
         message: 'Where would you like to output your application?',
-        default: './',
+        default: './test-path',
         validate: (input) => {
             if (input.length) {
                 return true;
@@ -64,6 +65,7 @@ const questions = [
         type: 'input',
         name: 'pathName',
         message: 'What is the path to the prefab?',
+        default: 'builda:prefab-test',
         validate: (input) => {
             if (input.length) {
                 return true;
@@ -146,8 +148,9 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             (0, _helpers_1.printMessage)('Copying required files to application...', 'notice');
             // Initialise a promise
             const promises = [];
-            const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}`;
+            const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
             // Generate the correct files in the app directory
+            // TODO: We're getting errors. Need to fix this.
             (0, _helpers_1.writeFile)({
                 file: path_1.default.resolve(prefabDir, buildaDir, configFileName),
                 output_dir: buildaDir,
