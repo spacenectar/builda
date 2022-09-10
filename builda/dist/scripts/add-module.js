@@ -4,66 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addModule = void 0;
-const axios_1 = __importDefault(require("axios"));
 const fs_1 = __importDefault(require("fs"));
 // Import helpers
 const _helpers_1 = require("../helpers/index.js");
 // Import data
 const globals_1 = __importDefault(require("../data/globals"));
 // Import ignorefile
-const ignore_file_json_1 = __importDefault(require("../data/ignore-file.json"));
 const string_functions_1 = __importDefault(require("../helpers/string-functions"));
-// Ignore these files
-const ignoreFiles = ignore_file_json_1.default.ignore;
-const addLocalModule = async (modulePath) => {
-    // get the registry data
-    const registry = await (0, _helpers_1.getRegistry)(modulePath);
-    // get the directory contents
-    const files = fs_1.default.readdirSync(modulePath);
-    // filter out the ignore files
-    const filteredFiles = files.filter((file) => !ignoreFiles.includes(file));
-    // write the files to the output directory
-    filteredFiles.forEach(async (file) => {
-        const srcPath = `${modulePath}/${file}`;
-        const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
-        await (0, _helpers_1.createDir)(outputPath).then(() => {
-            fs_1.default.copyFileSync(srcPath, `${outputPath}/${file}`);
-        });
-    });
-    return registry;
-};
-const addRemoteModule = async (modulePath) => {
-    // get the directory contents
-    const registry = await (0, _helpers_1.getRegistry)(modulePath);
-    const files = [...registry.files, 'registry.json'];
-    files
-        .filter((file) => !ignoreFiles.includes(file))
-        .forEach(async (file) => {
-        const srcPath = file === 'registry.json'
-            ? `${modulePath}/${file}`
-            : `${modulePath}/files/${file}`;
-        // Download the file
-        await axios_1.default
-            .get(srcPath)
-            .then((response) => {
-            const content = file === 'registry.json'
-                ? JSON.stringify(response.data, null, 2)
-                : response.data.toString();
-            const fileObject = {
-                name: file,
-                content
-            };
-            const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
-            return (0, _helpers_1.createDir)(outputPath).then(() => {
-                return fs_1.default.writeFileSync(`${outputPath}/${fileObject.name}`, fileObject.content);
-            });
-        })
-            .catch((error) => {
-            (0, _helpers_1.throwError)(error);
-        });
-    });
-    return registry;
-};
 const addModule = async ({ config, path, update = false }) => {
     var _a, _b;
     let module = {};
@@ -73,13 +20,13 @@ const addModule = async ({ config, path, update = false }) => {
         await (0, _helpers_1.createDir)(moduleDirPath);
         const moduleType = (0, _helpers_1.detectPathType)(path);
         if (moduleType === 'local') {
-            module = await addLocalModule(path);
+            module = await (0, _helpers_1.addLocalModule)(path);
         }
         if (moduleType === 'remote') {
-            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(path, config));
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(path, config));
         }
         if (moduleType === 'custom') {
-            module = await addRemoteModule((0, _helpers_1.convertRegistryPathToUrl)(path, config));
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(path, config));
         }
         if (module === null || module === void 0 ? void 0 : module.name) {
             const type = module.type;

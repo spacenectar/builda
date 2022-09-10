@@ -16,6 +16,9 @@ template that contains all the files and directories that you want to create as 
 as a set of variables (called 'substitutions') that you can use to fill in the
 template automatically.
 
+You can also build entire projects using super-powered scaffolds known as 'prefabs'
+(see [Prefabs](#prefabs) below).
+
 ## Screenshots
 
 ### Initialising builda
@@ -30,57 +33,123 @@ The component produced in this animation is available to view here: [Component E
 
 ## Setup
 
+### Installation
+
 You can either install `builda` as a global module or install it locally into your
 project, if you choose to install it locally, you will need to run `npm run builda`
 or `yarn builda` instead of just `builda`.
 
 ![NPM](https://img.shields.io/badge/npm-install_globally-red?style=for-the-badge&logo=npm)
 
-```bash
+```shell
 npm i -g builda
 ```
 
 ![Yarn](https://img.shields.io/badge/yarn-install_globally-yellow?style=for-the-badge&logo=yarn)
 
-```bash
+```shell
 yarn global add builda
 ```
 
 ![NPM](https://img.shields.io/badge/npm-install_locally-red?style=for-the-badge&logo=npm)
 
-```bash
+```shell
 npm i --dev builda
 ```
 
 ![Yarn](https://img.shields.io/badge/yarn-install_locally-yellow?style=for-the-badge&logo=yarn)
 
-```bash
+```shell
 yarn add -d builda
 ```
 
-Then you can initialise builda by typing `builda --init` this will create a `.builda.json`
-file in your project root. (see [Configuration](#configuration) below)
+Then you can initialise builda by typing `builda --init` this will create a `.builda`
+directory in your project root. (see [Configuration](#configuration) below)
 
-## Usage
+### Configuration
 
-Once you have installed builda, you can use it to build your project files.
+> **Note:** If you want to use a prefab, yo do not need to run `builda --init`
+> (see [Prefabs](#prefabs) below)
 
-## Configuration
+You can specify some defaults by updating the `config.json` file in your `.builda`
+directory.
 
-You can specify some defaults by creating a `.builda.json` file in your home directory.
-
-You can create this file manually or by running `builda --init`
+You can create this directory and file manually or by running `builda --init`
 
 [This section is incomplete and will be updated soon](#configuration)
 
-## Generating files
+## Installing modules
+
+Builda has two different types of modules, 'scaffolds' and 'prefabs'.
+
+You can install scaffolds by running `builda install <scaffold-path>`
+
+Installing prefabs is a little different. Instead of installing a prefab,
+you initialise a project using a prefab.
+
+The command to do that is `builda --prefab <prefab-path>`
+
+### Prefixes
+
+You can put the full path to the module as a url if you wish or you can use
+a prefixed path:
+
+e.g. The following command will install the 'arctic-fox' scaffold:
+
+```shell
+builda install builda:arctic-fox
+```
+
+The `builda:` prefix tells builda to look at the module registry on the builda
+trade-store for the appropriate module.
+
+Builda also supports the following prefixes:
+
+#### `github:` prefix to install modules from GitHub.
+
+e.g. The following command will install the 'arctic-fox' scaffold from the GitHub user
+'builda-modules':
+
+```shell
+builda install github:builda-modules/arctic-fox
+```
+
+#### `bitbucket:` prefix to install modules from BitBucket.
+
+e.g. The following command will install the 'arctic-fox' scaffold from the BitBucket user
+'builda-modules':
+
+```shell
+builda install bitbucket:builda-modules/arctic-fox
+```
+
+You can also specify custom prefixes by adding them to the `config.json` file under
+`resolve`:
+
+```json
+{
+  "resolve": {
+    "sn": "https://spacenectar.io/builda/modules"
+  }
+}
+```
+
+Then you could install 'custom-scaffold' from the spacenectar website by running:
+
+```shell
+builda install sn:custom-scaffold
+```
+
+## Usage
+
+### Generating files from scaffolds
 
 When you run `builda --init`, you will generate a list of commands which can be
 used to generate files.
 
 For example, if you generated a `component` scaffold-type, you could run:
 
-```bash
+```shell
 builda component my-example-component
 ```
 
@@ -89,7 +158,7 @@ in the `.builda.json` file under the `component` command.
 
 If you generated an `atom` scaffold-type, you could run:
 
-```bash
+```shell
 builda atom my-example-atom
 ```
 
@@ -100,6 +169,60 @@ This is a powerful feature as not only does it allow you to specify the director
 to generate files in, it also allows you to specify the scaffold to generate from,
 so if you had some components which needed to be typescript and others that
 needed to be javascript, you can specify a different scaffold for each.
+
+## Prefabs
+
+Scaffolds are a great way to build parts of your project, but sometimes you want
+to build out an entire project. This is where prefabs come in.
+
+A prefab is essentially a massive scaffold, which contains all of the
+files and directories that you would need to build a project.
+
+A prefab does differ a little from a scaffold in that it is not designed to be
+modified once it has been created, all prefab files live inside the .builda
+directory and you use a `builda` command to run your application and keep your
+project files in sync.
+
+### Why?
+
+The purpose of a prefab is to effectively turn the core parts of your project
+into a package. This means that you can use the same prefab to build out
+multiple projects and when you want to update that prefab, a single command
+inside any project that uses that prefab will pull in the latest changes.
+
+The core of your application is now basically just config. Leaving you free
+to focus on individual features.
+
+### Ok but what if I want parts of the project to be different?
+
+No problem! You can just copy the files you want to update from the prebabs folder
+into the root of your project. Provided that the paths match up, the files in the
+root will take precedence over the files in the prefab. This of course means that
+these files will no longer receive updates when the prefab is updated and you
+will need to manually update the files in the root if you want them to be updated.
+
+> **COMING SOON:** Prefab migration is on the roadmap. So manually updating the
+> files in the root will eventually be more like a git merge, only requiring manual
+> intervention to resolve conflicts.
+
+### Using prefabs
+
+A prefab is an entire project. So rather than installing a prefab as you do with
+a scaffold. You would initialise builda with the `--prefab` flag and then
+specify the prefab you want to use.
+
+```shell
+builda --prefab builda:prefab-the-burrows
+```
+
+This will build out your new project using the `the-burrows` prefab.
+
+> **COMING SOON:** Prefab partials are on the roadmap. This will allow you to
+> add prefabs to existing projects and have only parts of the project connected
+> to a prefab. This would be useful if you wanted to add a preconfigured
+> package to your project (e.g. storybook) and wanted to keep that preconfiguration
+> in sync with the rest of your projects but still leave the rest of your project
+> as a standalone project.
 
 ## Migrating from Buildcom
 
@@ -121,10 +244,13 @@ you may find that you are better off staying with buildcom for now.
 
 - Add the ability to easily generate your own scaffolds
 
-- Add 'Prefabs' - These will allow you to generate an entire project with a
-  single command (Think 'create-react-app' but even more powerful - watch this space!)
-
 - Create a community marketplace for scaffolds and prefabs.
+
+- Add support for migrating to new prefabs without having to manually update custom
+  files.
+
+- Add prefab partials to allow smaller parts of your project to be prefabs but not
+  the whole project.
 
 - Version control of all scaffolds and prefabs
 
@@ -162,6 +288,3 @@ I have a [Patreon](https://www.patreon.com/stelmosfire) where you can support me
 and help me keep this project alive. At the moment I only have a single 'Offer
 Support' tier but I'm sure I'll be adding more tiers in the future when I get
 around to fleshing out my page.
-
-[next.js](https://nextjs.org/)
-[storybook](https://storybook.js.org/)

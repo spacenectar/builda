@@ -14,6 +14,7 @@ export interface ModuleRegistry {
   keywords?: string[];
   funding?: string[];
   files: string[];
+  required_in_root?: string[];
   dependencies?: {
     [key: string]: string[];
   };

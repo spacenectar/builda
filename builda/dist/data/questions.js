@@ -31,7 +31,8 @@ exports.default = [
                 value: 'custom'
             }
         ],
-        default: 'typescript'
+        default: 'typescript',
+        when: (answers) => answers.buildFromPrefab === false
     },
     {
         type: 'input',

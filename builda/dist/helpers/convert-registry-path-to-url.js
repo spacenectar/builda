@@ -10,21 +10,23 @@ const urlWithProtocol = (url) => {
 };
 const convertRegistryPathToUrl = (registryPath, config) => {
     let newPath = registryPath;
-    const customMatcherKeys = config.resolve
-        ? Object.keys(config.resolve)
-        : undefined;
-    const pathMatcher = newPath.split(':');
-    if (newPath.endsWith('/')) {
-        newPath = newPath.slice(0, -1);
-    }
-    if (pathMatcher.length > 0 && (customMatcherKeys === null || customMatcherKeys === void 0 ? void 0 : customMatcherKeys.includes(pathMatcher[0]))) {
-        const slug = newPath.split(':').pop();
-        for (const element of customMatcherKeys) {
-            if (pathMatcher[0] === element && config.resolve) {
-                newPath = urlWithProtocol(`${config.resolve[pathMatcher[0]]}/${slug}`);
-            }
+    if (config) {
+        const customMatcherKeys = config.resolve
+            ? Object.keys(config.resolve)
+            : undefined;
+        const pathMatcher = newPath.split(':');
+        if (newPath.endsWith('/')) {
+            newPath = newPath.slice(0, -1);
         }
-        return newPath;
+        if (pathMatcher.length > 0 && (customMatcherKeys === null || customMatcherKeys === void 0 ? void 0 : customMatcherKeys.includes(pathMatcher[0]))) {
+            const slug = newPath.split(':').pop();
+            for (const element of customMatcherKeys) {
+                if (pathMatcher[0] === element && config.resolve) {
+                    newPath = urlWithProtocol(`${config.resolve[pathMatcher[0]]}/${slug}`);
+                }
+            }
+            return newPath;
+        }
     }
     if (newPath.startsWith('github:')) {
         const updatedPath = newPath.replace('github:', 'https://raw.githubusercontent.com/');

@@ -4,6 +4,8 @@ export { default as getConfigFile } from './get-config-file';
 export { default as getSubstitutions } from './get-substitutions';
 export { default as getModule } from './get-module';
 export { default as getPathFromRoot } from './get-path-from-root';
+export { default as addLocalModule } from './add-local-module';
+export { default as addRemoteModule } from './add-remote-module';
 export { default as skip } from './skip';
 export { default as printMessage } from './print-message';
 export { default as printLogo } from './print-logo';

@@ -19,6 +19,7 @@ const add_module_1 = __importDefault(require("./scripts/add-module"));
 const watch_1 = __importDefault(require("./scripts/watch"));
 const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
 const update_module_1 = require("./scripts/update-module");
+const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
 const args = (0, helpers_1.hideBin)(process.argv);
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
@@ -85,6 +86,18 @@ const CREATE_CONFIG_QUESTION = {
         return (0, init_1.default)({
             appName: name,
             outputDirectory: output
+        });
+    }
+    if (argv.prefab) {
+        const name = argv.name || argv.n || '';
+        const output = argv.root || argv.r || '';
+        const pathName = argv.path || argv.p || '';
+        const packageManager = argv.packageManager || argv.pm || '';
+        return (0, prefab_init_1.default)({
+            appName: name,
+            outputDirectory: output,
+            pathName: pathName,
+            packageManager: packageManager
         });
     }
     if (argv._[0].toString() === 'add') {

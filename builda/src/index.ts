@@ -21,6 +21,7 @@ import addModule from '@scripts/add-module';
 import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
 import { updateModule } from '@scripts/update-module';
+import prefabInit from '@scripts/prefab-init';
 
 const args = hideBin(process.argv);
 
@@ -104,6 +105,20 @@ const CREATE_CONFIG_QUESTION = {
     return init({
       appName: name as string,
       outputDirectory: output as string
+    });
+  }
+
+  if (argv.prefab) {
+    const name = argv.name || argv.n || '';
+    const output = argv.root || argv.r || '';
+    const pathName = argv.path || argv.p || '';
+    const packageManager = argv.packageManager || argv.pm || '';
+
+    return prefabInit({
+      appName: name as string,
+      outputDirectory: output as string,
+      pathName: pathName as string,
+      packageManager: packageManager as string
     });
   }
 
