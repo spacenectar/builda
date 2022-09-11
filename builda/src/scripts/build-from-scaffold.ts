@@ -8,6 +8,7 @@ import { changeCase } from '@helpers/string-functions';
 import { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
 import { Argv } from '@typedefs/argv';
 import { ConfigFile } from '@typedefs/config-file';
+import path from 'path';
 
 type Props = {
   config: ConfigFile;
@@ -27,11 +28,11 @@ export const buildFromScaffold = ({ config, name, command, args }: Props) => {
     // Create the directory tree if it doesn't exist
     fs.mkdirSync(outputDirectory, { recursive: true });
 
-    const {
-      path: pathstring,
-      registry,
-      files
-    } = getModule('scaffold', config, command);
+    const { path: pathstring, registry } = getModule(
+      'scaffold',
+      config,
+      command
+    );
 
     const substitute = command
       ? getSubstitutions({
@@ -42,8 +43,9 @@ export const buildFromScaffold = ({ config, name, command, args }: Props) => {
         })
       : [];
 
-    files.forEach((file: string) => {
-      const srcPath = `${pathstring}/${file}`;
+    const fullPath = path.resolve(pathstring, 'files');
+    fs.readdirSync(fullPath).forEach((file: string) => {
+      const srcPath = `${fullPath}/${file}`;
       const outputPath = `${outputDirectory}`;
 
       writeFile({

@@ -7,6 +7,7 @@ exports.prefabInit = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const execa_1 = __importDefault(require("execa"));
+const ora_1 = __importDefault(require("ora"));
 const globals_1 = __importDefault(require("../data/globals"));
 const _helpers_1 = require("../helpers/index.js");
 const defaultRequiredFiles = ['package.json', 'README.md'];
@@ -86,6 +87,7 @@ const getAnswers = async (omitName, omitOutputDir, omitPathName, omitYarnOrNpm) 
     });
 };
 const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, packageManager }) => {
+    var _a;
     const { configFileName, buildaDir, websiteUrl } = globals_1.default;
     const answers = presetAnswers ||
         (await getAnswers(!!appName, !!outputDirectory, !!pathName, !!packageManager));
@@ -115,7 +117,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
         if (module === null || module === void 0 ? void 0 : module.name) {
             const prefabName = module.name;
             const version = module.version;
-            const substitute = module.substitute || [];
+            const substitutions = module.substitute || [];
             const requiredFiles = [
                 ...defaultRequiredFiles,
                 ...(module.required_in_root || [])
@@ -124,8 +126,17 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             (0, _helpers_1.printMessage)('Copying required files to application...', 'notice');
             // Initialise a promise
             const promises = [];
+            const substitute = [
+                ...substitutions,
+                {
+                    replace: '%APP_ROOT%',
+                    with: outputDir
+                }
+            ];
             const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
             // Generate the correct files in the app directory
+            const copyFiles = (0, ora_1.default)('Copying files...').start();
+            copyFiles.text = 'Copying configuration file...';
             (0, _helpers_1.writeFile)({
                 file: path_1.default.resolve(prefabDir, buildaDir, configFileName),
                 output_dir: buildaDir,
@@ -133,10 +144,10 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 name
             });
             for (const file of requiredFiles) {
+                copyFiles.text = `Copying ${file}...`;
                 promises.push(new Promise((resolve) => {
                     const filePath = path_1.default.resolve(prefabDir, file);
                     if (fs_1.default.existsSync(filePath)) {
-                        (0, _helpers_1.printMessage)(`Initialising ${file} in project directory`, 'notice');
                         (0, _helpers_1.writeFile)({
                             file: path_1.default.resolve(prefabDir, filePath),
                             output_dir: rootDir,
@@ -147,25 +158,34 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     resolve(filePath);
                 }));
             }
+            copyFiles.succeed('All files copied to application.');
             // Wait for all promises to resolve
             await Promise.all(promises);
-            (0, _helpers_1.printMessage)('Initializing your application...', 'notice');
+            (0, _helpers_1.printMessage)('Installing dependencies...', 'notice');
+            const installDeps = (0, ora_1.default)(`Starting up...`).start();
             // Run package manager install
             if (fs_1.default.existsSync(path_1.default.resolve(rootDir, 'package.json'))) {
-                if (packageManagerType === 'yarn') {
-                    (0, _helpers_1.printMessage)('Running yarn install...', 'notice');
-                    await (0, execa_1.default)('yarn', ['install'], { cwd: rootDir });
+                installDeps.text = `Running ${packageManagerType} install`;
+                try {
+                    installDeps.text = 'Installing... |> ';
+                    const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
+                        cwd: rootDir,
+                        all: true
+                    });
+                    (_a = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _a === void 0 ? void 0 : _a.pipe(process.stdout);
+                    await childProcess;
+                    installDeps.succeed('All dependencies installed.');
                 }
-                if (packageManagerType === 'npm') {
-                    (0, _helpers_1.printMessage)('Running npm install...', 'notice');
-                    await (0, execa_1.default)('npm', ['install'], { cwd: rootDir });
+                catch (error) {
+                    installDeps.fail('Failed to run. Please try running manually.');
+                    return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
                 }
             }
             else {
                 (0, _helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
             }
-            (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
-            (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
+            (0, _helpers_1.printMessage)(`\nYour application, "${name}" has been initialised!`, 'success');
+            return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
         }
     }
 };

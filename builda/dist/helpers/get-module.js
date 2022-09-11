@@ -13,11 +13,9 @@ const getModule = (type, config, command) => {
         const moduleType = `${type}s`;
         const modulePath = path_1.default.resolve(`${globals_1.default.buildaDir}/modules/${moduleType}/${command.use}`);
         const registry = JSON.parse(fs_1.default.readFileSync(`${modulePath}/registry.json`, 'utf8'));
-        const files = registry.files.filter((file) => file !== 'registry.json');
         return {
             path: modulePath,
-            registry,
-            files
+            registry
         };
     }
     throw new Error(`Could not find config file`);

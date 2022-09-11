@@ -23,13 +23,9 @@ export const getModule = (
     const registry = JSON.parse(
       fs.readFileSync(`${modulePath}/registry.json`, 'utf8')
     );
-    const files = registry.files.filter(
-      (file: string) => file !== 'registry.json'
-    );
     return {
       path: modulePath,
-      registry,
-      files
+      registry
     };
   }
   throw new Error(`Could not find config file`);
