@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import execa from 'execa';
 
 import globals from '@data/globals';
 import {
@@ -20,7 +21,7 @@ const defaultRequiredFiles = ['package.json', 'README.md'];
 const questions = [
   {
     type: 'input',
-    name: 'name',
+    name: 'appName',
     message: 'What is the name of your application?',
     default: 'my-app',
     validate: (input: string) => {
@@ -58,10 +59,11 @@ const questions = [
     }
   },
   {
-    type: 'checkbox',
+    type: 'list',
     name: 'yarnOrNpm',
     message: 'Which package manager would you like to use?',
-    choices: ['yarn', 'npm']
+    default: 'npm',
+    choices: ['npm', 'yarn']
   }
 ];
 
@@ -145,10 +147,6 @@ export const prefabInit = async ({
     );
   } else {
     // The directory is empty, so we can continue
-    fs.mkdirSync(`${rootDir}/${buildaDir}/modules/prefabs`, {
-      recursive: true
-    });
-
     let module = {} as ModuleRegistry;
     const moduleType = detectPathType(prefabPath);
 
@@ -180,7 +178,6 @@ export const prefabInit = async ({
 
       const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
       // Generate the correct files in the app directory
-      // TODO: We're getting errors. Need to fix this.
       writeFile({
         file: path.resolve(prefabDir, buildaDir, configFileName),
         output_dir: buildaDir,
@@ -190,8 +187,12 @@ export const prefabInit = async ({
       for (const file of requiredFiles) {
         promises.push(
           new Promise((resolve) => {
-            const filePath = path.resolve(prefabPath, file);
+            const filePath = path.resolve(prefabDir, file);
             if (fs.existsSync(filePath)) {
+              printMessage(
+                `Initialising ${file} in project directory`,
+                'notice'
+              );
               writeFile({
                 file: path.resolve(prefabDir, filePath),
                 output_dir: rootDir,
@@ -209,8 +210,7 @@ export const prefabInit = async ({
       printMessage('Initializing your application...', 'notice');
       // Run package manager install
 
-      if (fs.existsSync('package.json')) {
-        const { execa } = await import('execa');
+      if (fs.existsSync(path.resolve(rootDir, 'package.json'))) {
         if (packageManagerType === 'yarn') {
           printMessage('Running yarn install...', 'notice');
           await execa('yarn', ['install'], { cwd: rootDir });
@@ -219,6 +219,8 @@ export const prefabInit = async ({
           printMessage('Running npm install...', 'notice');
           await execa('npm', ['install'], { cwd: rootDir });
         }
+      } else {
+        printMessage('No package.json found. Skipping install.', 'notice');
       }
 
       printMessage(

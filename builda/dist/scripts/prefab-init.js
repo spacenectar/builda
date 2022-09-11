@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -29,13 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.prefabInit = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const execa_1 = __importDefault(require("execa"));
 const globals_1 = __importDefault(require("../data/globals"));
 const _helpers_1 = require("../helpers/index.js");
 const defaultRequiredFiles = ['package.json', 'README.md'];
 const questions = [
     {
         type: 'input',
-        name: 'name',
+        name: 'appName',
         message: 'What is the name of your application?',
         default: 'my-app',
         validate: (input) => {
@@ -76,10 +54,11 @@ const questions = [
         }
     },
     {
-        type: 'checkbox',
+        type: 'list',
         name: 'yarnOrNpm',
         message: 'Which package manager would you like to use?',
-        choices: ['yarn', 'npm']
+        default: 'npm',
+        choices: ['npm', 'yarn']
     }
 ];
 const getAnswers = async (omitName, omitOutputDir, omitPathName, omitYarnOrNpm) => {
@@ -122,9 +101,6 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
     }
     else {
         // The directory is empty, so we can continue
-        fs_1.default.mkdirSync(`${rootDir}/${buildaDir}/modules/prefabs`, {
-            recursive: true
-        });
         let module = {};
         const moduleType = (0, _helpers_1.detectPathType)(prefabPath);
         if (moduleType === 'local') {
@@ -150,7 +126,6 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             const promises = [];
             const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
             // Generate the correct files in the app directory
-            // TODO: We're getting errors. Need to fix this.
             (0, _helpers_1.writeFile)({
                 file: path_1.default.resolve(prefabDir, buildaDir, configFileName),
                 output_dir: buildaDir,
@@ -159,8 +134,9 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             });
             for (const file of requiredFiles) {
                 promises.push(new Promise((resolve) => {
-                    const filePath = path_1.default.resolve(prefabPath, file);
+                    const filePath = path_1.default.resolve(prefabDir, file);
                     if (fs_1.default.existsSync(filePath)) {
+                        (0, _helpers_1.printMessage)(`Initialising ${file} in project directory`, 'notice');
                         (0, _helpers_1.writeFile)({
                             file: path_1.default.resolve(prefabDir, filePath),
                             output_dir: rootDir,
@@ -175,16 +151,18 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             await Promise.all(promises);
             (0, _helpers_1.printMessage)('Initializing your application...', 'notice');
             // Run package manager install
-            if (fs_1.default.existsSync('package.json')) {
-                const { execa } = await Promise.resolve().then(() => __importStar(require('execa')));
+            if (fs_1.default.existsSync(path_1.default.resolve(rootDir, 'package.json'))) {
                 if (packageManagerType === 'yarn') {
                     (0, _helpers_1.printMessage)('Running yarn install...', 'notice');
-                    await execa('yarn', ['install'], { cwd: rootDir });
+                    await (0, execa_1.default)('yarn', ['install'], { cwd: rootDir });
                 }
                 if (packageManagerType === 'npm') {
                     (0, _helpers_1.printMessage)('Running npm install...', 'notice');
-                    await execa('npm', ['install'], { cwd: rootDir });
+                    await (0, execa_1.default)('npm', ['install'], { cwd: rootDir });
                 }
+            }
+            else {
+                (0, _helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
             }
             (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
             (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
