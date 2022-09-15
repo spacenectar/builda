@@ -1,4 +1,4 @@
-import { ScaffoldScriptContents } from './scaffold-script-config';
+import { BlueprintScriptContents } from './blueprint-script-config';
 import { RunScriptConfig } from './run-script-config';
 import { ModuleConfig } from './module-config';
 
@@ -9,10 +9,10 @@ export interface ConfigFile {
     [key: string]: string;
   };
   watched: string[];
-  scaffold_scripts: {
-    [key: string]: ScaffoldScriptContents;
+  blueprint_scripts: {
+    [key: string]: BlueprintScriptContents;
   };
   run_scripts: RunScriptConfig;
   prefabs: ModuleConfig;
-  scaffolds: ModuleConfig;
+  blueprints: ModuleConfig;
 }

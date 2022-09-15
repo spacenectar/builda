@@ -7,12 +7,12 @@ import globals from '@data/globals';
 // Import types
 
 import { ConfigFile } from '@typedefs/config-file';
-import { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
+import { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
 
 export const getModule = (
-  type: 'scaffold' | 'prefab',
+  type: 'blueprint' | 'prefab',
   config: ConfigFile,
-  command: ScaffoldScriptContent
+  command: BlueprintScriptContent
 ) => {
   if (config) {
     const moduleType = `${type}s`;

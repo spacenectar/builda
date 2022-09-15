@@ -1,10 +1,10 @@
 export const presetAnswers = {
   appName: 'test',
   outputDirectory: './experiments',
-  installDefaultModule: 'builda:scaffold-default-ts',
-  scaffoldUrl: '',
-  scaffoldSelection: ['atom', 'component'],
-  customScaffoldList: 'test'
+  installDefaultModule: 'builda:blueprint-default-ts',
+  blueprintUrl: '',
+  blueprintSelection: ['atom', 'component'],
+  customBlueprintList: 'test'
 };
 
 export default presetAnswers;

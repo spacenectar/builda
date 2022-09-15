@@ -2,11 +2,11 @@ import { ConfigFile } from '@typedefs/config-file';
 
 export const generateCommands = (
   config: ConfigFile
-): ConfigFile['scaffold_scripts'] => {
-  const commands = {} as ConfigFile['scaffold_scripts'];
+): ConfigFile['blueprint_scripts'] => {
+  const commands = {} as ConfigFile['blueprint_scripts'];
   if (config) {
-    Object.entries<ConfigFile['scaffold_scripts']>(
-      config.scaffold_scripts
+    Object.entries<ConfigFile['blueprint_scripts']>(
+      config.blueprint_scripts
     ).forEach((script) => {
       const name = script[0];
       const { use, output_dir } = script[1];

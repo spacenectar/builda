@@ -5,7 +5,7 @@ import { printMessage, getModule, writeFile, getSubstitutions } from '@helpers';
 import { changeCase } from '@helpers/string-functions';
 
 // Import types
-import { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
+import { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
 import { Argv } from '@typedefs/argv';
 import { ConfigFile } from '@typedefs/config-file';
 import path from 'path';
@@ -13,11 +13,11 @@ import path from 'path';
 type Props = {
   config: ConfigFile;
   name: string;
-  command: ScaffoldScriptContent;
+  command: BlueprintScriptContent;
   args?: Argv;
 };
 
-export const buildFromScaffold = ({ config, name, command, args }: Props) => {
+export const buildFromBlueprint = ({ config, name, command, args }: Props) => {
   if (config !== undefined && !!command.use) {
     printMessage(`Building ${Object.keys(command)[0]} '${name}'...`, 'notice');
     const outputDirectory = `${command.output_dir}/${changeCase(
@@ -29,7 +29,7 @@ export const buildFromScaffold = ({ config, name, command, args }: Props) => {
     fs.mkdirSync(outputDirectory, { recursive: true });
 
     const { path: pathstring, registry } = getModule(
-      'scaffold',
+      'blueprint',
       config,
       command
     );
@@ -60,7 +60,7 @@ export const buildFromScaffold = ({ config, name, command, args }: Props) => {
       name,
       version: '1.0.0',
       author: '',
-      scaffold: {
+      blueprint: {
         name: registry.name,
         version: registry.version
       }
@@ -75,4 +75,4 @@ export const buildFromScaffold = ({ config, name, command, args }: Props) => {
   throw new Error('No config file found');
 };
 
-export default buildFromScaffold;
+export default buildFromBlueprint;

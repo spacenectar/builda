@@ -12,10 +12,10 @@ class CustomSequencer extends Sequencer {
       'helpers/tests/get-registry.test.ts',
       'helpers/tests/normalise-case.test.ts',
       'scripts/tests/init.test.ts',
-      'scripts/tests/generate-scaffold-registry.test.ts',
+      'scripts/tests/generate-blueprint-registry.test.ts',
       'scripts/tests/generate-commands.test.ts',
       'helpers/tests/convert-registry-path-to-url.test.ts',
-      'scripts/tests/build-from-scaffold.test.ts'
+      'scripts/tests/build-from-blueprint.test.ts'
     ];
 
     return order.map((test) => {

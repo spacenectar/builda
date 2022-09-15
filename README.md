@@ -11,12 +11,12 @@
 
 Builda is a simple command-line tool to make building project elements fast and easy.
 
-Builda generates files and folders using something called a 'scaffold', this is a
-template that contains all the files and directories that you want to create as well
-as a set of variables (called 'substitutions') that you can use to fill in the
-template automatically.
+Builda generates files and folders using something called a 'blueprint', this is
+a template that contains all the files and directories that you want to create as
+well as a set of variables (called 'substitutions') that you can use to fill in
+the template automatically.
 
-You can also build entire projects using super-powered scaffolds known as 'prefabs'
+You can also build entire projects using super-powered blueprints known as 'prefabs'
 (see [Prefabs](#prefabs) below).
 
 ## Screenshots
@@ -80,9 +80,9 @@ You can create this directory and file manually or by running `builda --init`
 
 ## Installing modules
 
-Builda has two different types of modules, 'scaffolds' and 'prefabs'.
+Builda has two different types of modules, 'blueprints' and 'prefabs'.
 
-You can install scaffolds by running `builda install <scaffold-path>`
+You can install blueprints by running `builda install <blueprint-path>`
 
 Installing prefabs is a little different. Instead of installing a prefab,
 you initialise a project using a prefab.
@@ -94,7 +94,7 @@ The command to do that is `builda --prefab <prefab-path>`
 You can put the full path to the module as a url if you wish or you can use
 a prefixed path:
 
-e.g. The following command will install the 'arctic-fox' scaffold:
+e.g. The following command will install the 'arctic-fox' blueprint:
 
 ```shell
 builda install builda:arctic-fox
@@ -105,19 +105,19 @@ trade-store for the appropriate module.
 
 Builda also supports the following prefixes:
 
-#### `github:` prefix to install modules from GitHub.
+#### `github:` prefix to install modules from GitHub
 
-e.g. The following command will install the 'arctic-fox' scaffold from the GitHub user
-'builda-modules':
+e.g. The following command will install the 'arctic-fox' blueprint from the
+GitHub user 'builda-modules':
 
 ```shell
 builda install github:builda-modules/arctic-fox
 ```
 
-#### `bitbucket:` prefix to install modules from BitBucket.
+#### `bitbucket:` prefix to install modules from BitBucket
 
-e.g. The following command will install the 'arctic-fox' scaffold from the BitBucket user
-'builda-modules':
+e.g. The following command will install the 'arctic-fox' blueprint from the
+BitBucket user 'builda-modules':
 
 ```shell
 builda install bitbucket:builda-modules/arctic-fox
@@ -134,29 +134,29 @@ You can also specify custom prefixes by adding them to the `config.json` file un
 }
 ```
 
-Then you could install 'custom-scaffold' from the spacenectar website by running:
+Then you could install 'custom-blueprint' from the spacenectar website by running:
 
 ```shell
-builda install sn:custom-scaffold
+builda install sn:custom-blueprint
 ```
 
 ## Usage
 
-### Generating files from scaffolds
+### Generating files from blueprints
 
 When you run `builda --init`, you will generate a list of commands which can be
 used to generate files.
 
-For example, if you generated a `component` scaffold-type, you could run:
+For example, if you generated a `component` blueprint-type, you could run:
 
 ```shell
 builda component my-example-component
 ```
 
-This will generate a component called `my-example-component` in the directory specified
-in the `.builda.json` file under the `component` command.
+This will generate a component called `my-example-component` in the directory
+specified in the `.builda.json` file under the `component` command.
 
-If you generated an `atom` scaffold-type, you could run:
+If you generated an `atom` blueprint-type, you could run:
 
 ```shell
 builda atom my-example-atom
@@ -166,19 +166,19 @@ This will generate an atom called `my-example-atom` in the directory specified
 in the `.builda.json` file under the `atom` command.
 
 This is a powerful feature as not only does it allow you to specify the directory
-to generate files in, it also allows you to specify the scaffold to generate from,
+to generate files in, it also allows you to specify the blueprint to generate from,
 so if you had some components which needed to be typescript and others that
-needed to be javascript, you can specify a different scaffold for each.
+needed to be javascript, you can specify a different blueprint for each.
 
 ## Prefabs
 
-Scaffolds are a great way to build parts of your project, but sometimes you want
+Blueprints are a great way to build parts of your project, but sometimes you want
 to build out an entire project. This is where prefabs come in.
 
-A prefab is essentially a massive scaffold, which contains all of the
+A prefab is essentially a massive blueprint, which contains all of the
 files and directories that you would need to build a project.
 
-A prefab does differ a little from a scaffold in that it is not designed to be
+A prefab does differ a little from a blueprint in that it is not designed to be
 modified once it has been created, all prefab files live inside the .builda
 directory and you use a `builda` command to run your application and keep your
 project files in sync.
@@ -208,7 +208,7 @@ will need to manually update the files in the root if you want them to be update
 ### Using prefabs
 
 A prefab is an entire project. So rather than installing a prefab as you do with
-a scaffold. You would initialise builda with the `--prefab` flag and then
+a blueprint. You would initialise builda with the `--prefab` flag and then
 specify the prefab you want to use.
 
 ```shell
@@ -231,20 +231,20 @@ then please be aware that although this is the successor to buildcom,
 it is a completely different package and is not backwards compatible.
 
 If you rely on the legacy buildcom package, you may find that builda covers
-all of the functionality of buildcom and then some. However as this is an early release,
-you may find that you are better off staying with buildcom for now.
+all of the functionality of buildcom and then some. However as this is an early
+release, you may find that you are better off staying with buildcom for now.
 
 ## Roadmap
 
 - Add support for generating multiple components at once
 
-- Add a larger selection of default scaffolds
+- Add a larger selection of default blueprints
 
 - Create a website for builda with full documentation
 
-- Add the ability to easily generate your own scaffolds
+- Add the ability to easily generate your own blueprints
 
-- Create a community marketplace for scaffolds and prefabs.
+- Create a community marketplace for blueprints and prefabs.
 
 - Add support for migrating to new prefabs without having to manually update custom
   files.
@@ -252,7 +252,7 @@ you may find that you are better off staying with buildcom for now.
 - Add prefab partials to allow smaller parts of your project to be prefabs but not
   the whole project.
 
-- Version control of all scaffolds and prefabs
+- Version control of all blueprints and prefabs
 
 - Add a command line only mode which will work without needing to initialise
   builda or even install it locally

@@ -22,23 +22,23 @@ describe('init', () => {
   });
 
   test('The config file contains an "atom" section with the correct values', () => {
-    expect(config.scaffold_scripts.atom).toEqual({
+    expect(config.blueprint_scripts.atom).toEqual({
       output_dir: '{{app_root}}/atoms',
-      use: 'scaffold-default-ts'
+      use: 'blueprint-default-ts'
     });
   });
 
   test('The config file contains an "component" section with the correct values', () => {
-    expect(config.scaffold_scripts.component).toEqual({
+    expect(config.blueprint_scripts.component).toEqual({
       output_dir: '{{app_root}}/components',
-      use: 'scaffold-default-ts'
+      use: 'blueprint-default-ts'
     });
   });
 
   test('The config file contains a "test" section with the correct values', (done) => {
-    expect(config.scaffold_scripts.test).toEqual({
+    expect(config.blueprint_scripts.test).toEqual({
       output_dir: '{{app_root}}/tests',
-      use: 'scaffold-default-ts'
+      use: 'blueprint-default-ts'
     });
     setTimeout(() => done(), 2000);
   });

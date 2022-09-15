@@ -18,7 +18,7 @@
     "jest",
     "storybook",
     "typescript",
-    "scaffold",
+    "blueprint",
     "prefab"
   ],
   "files": [
@@ -28,7 +28,7 @@
     "start": "node dist/index.js",
     "dev": "tsc --watch & tsc-alias -w",
     "debug": "node dist/scripts/debug.js",
-    "generate-scaffold": "node dist/scripts/generate-scaffold-registry.js",
+    "generate-blueprint": "node dist/scripts/generate-blueprint-registry.js",
     "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
     "test": "jest --testSequencer='./config/jest-sequencer.js'",
     "testonly": "jest",

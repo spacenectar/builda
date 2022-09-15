@@ -15,17 +15,17 @@ const { configFileName, buildaDir, websiteUrl } = globals;
 import { QuestionType } from '@typedefs/question-type';
 import { Question } from 'inquirer';
 import { ConfigFile } from '@typedefs/config-file';
-import ScaffoldScriptConfig, {
-  ScaffoldScriptContent
-} from '@typedefs/scaffold-script-config';
+import BlueprintScriptConfig, {
+  BlueprintScriptContent
+} from '@typedefs/blueprint-script-config';
 
 interface Answers {
   appName: string;
   outputDirectory: string;
   installDefaultModule: string;
-  scaffoldUrl: string;
-  scaffoldSelection: string[];
-  customScaffoldList: string;
+  blueprintUrl: string;
+  blueprintSelection: string[];
+  customBlueprintList: string;
 }
 
 const configFilePath = path.join(buildaDir, configFileName);
@@ -88,7 +88,7 @@ const writeConfig = async (filename: string, contents: string) => {
 };
 
 const installModules = async (config: ConfigFile, answers: Answers) => {
-  printMessage('Installing initial scaffold...\r', 'notice');
+  printMessage('Installing initial blueprint...\r', 'notice');
   let options = {
     config,
     path: answers.installDefaultModule,
@@ -98,7 +98,7 @@ const installModules = async (config: ConfigFile, answers: Answers) => {
   if (answers.installDefaultModule === 'custom') {
     options = {
       config,
-      path: answers.scaffoldUrl,
+      path: answers.blueprintUrl,
       official: false
     };
   }
@@ -118,7 +118,7 @@ const init = async ({
 }: TInitOptions) => {
   // Check if a config file already exists unless presetAnswers is passed
   let continueProcess = false;
-  const scaffoldList: string[] = [];
+  const blueprintList: string[] = [];
   let answers = {} as Answers;
 
   if (!presetAnswers) {
@@ -151,15 +151,15 @@ const init = async ({
     if (continueProcess === true) {
       fs.mkdirSync(buildaDir, { recursive: true });
 
-      if (answers.scaffoldSelection?.length) {
-        scaffoldList.push(...answers.scaffoldSelection);
+      if (answers.blueprintSelection?.length) {
+        blueprintList.push(...answers.blueprintSelection);
       }
 
-      if (answers.customScaffoldList) {
-        answers.customScaffoldList
+      if (answers.customBlueprintList) {
+        answers.customBlueprintList
           .split(',')
-          .forEach((scaffoldType: string) => {
-            scaffoldList.push(scaffoldType.trim());
+          .forEach((blueprintType: string) => {
+            blueprintList.push(blueprintType.trim());
           });
       }
       const config = {
@@ -169,21 +169,21 @@ const init = async ({
 
       installModules(config, answers)
         .then((response) => {
-          const scaffoldScripts = {} as ScaffoldScriptConfig<
-            Omit<ScaffoldScriptContent, 'substitute'>
+          const blueprintScripts = {} as BlueprintScriptConfig<
+            Omit<BlueprintScriptContent, 'substitute'>
           >;
 
-          scaffoldList.forEach((scaffoldItem) => {
-            scaffoldScripts[scaffoldItem] = {
+          blueprintList.forEach((blueprintItem) => {
+            blueprintScripts[blueprintItem] = {
               use: response.module.name,
-              output_dir: `{{app_root}}/${pluralise(scaffoldItem)}`
+              output_dir: `{{app_root}}/${pluralise(blueprintItem)}`
             };
           });
 
           const configString = { ...config };
-          configString.scaffold_scripts = {
-            ...configString.scaffold_scripts,
-            ...scaffoldScripts
+          configString.blueprint_scripts = {
+            ...configString.blueprint_scripts,
+            ...blueprintScripts
           };
 
           writeConfig(configFilePath, JSON.stringify(configString, null, 2))

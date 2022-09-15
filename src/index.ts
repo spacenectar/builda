@@ -16,7 +16,7 @@ import type { QuestionType } from '@typedefs/question-type';
 // import scripts
 import init from '@scripts/init';
 import generateCommands from '@scripts/generate-commands';
-import buildFromScaffold from '@scripts/build-from-scaffold';
+import buildFromBlueprint from '@scripts/build-from-blueprint';
 import addModule from '@scripts/add-module';
 import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
@@ -141,7 +141,7 @@ const CREATE_CONFIG_QUESTION = {
   if (command) {
     const name = argv._[1].toString();
 
-    return buildFromScaffold({
+    return buildFromBlueprint({
       config,
       name,
       command,

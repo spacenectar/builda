@@ -1,5 +1,5 @@
 import getConfigFile from '@helpers/get-config-file';
-import buildFromScaffold from '@scripts/build-from-scaffold';
+import buildFromBlueprint from '@scripts/build-from-blueprint';
 import fs from 'fs';
 
 import path from 'path';
@@ -10,7 +10,7 @@ const CONFIG_FILE = 'config.json';
 const CONFIG_FOLDER = '.builda';
 
 const command = {
-  use: 'scaffold-default-ts',
+  use: 'blueprint-default-ts',
   output_dir: './experiments/atoms',
   substitute: []
 };
@@ -28,17 +28,17 @@ afterAll((done) => {
   done();
 });
 
-describe('buildFromScaffold', () => {
+describe('buildFromBlueprint', () => {
   beforeAll(async () => {
     const config = await getConfigFile();
-    buildFromScaffold({
+    buildFromBlueprint({
       config,
       name: 'TestComponent',
       command
     });
   });
 
-  test('Builds a component from a scaffold', () => {
+  test('Builds a component from a blueprint', () => {
     expect(fs.existsSync(FILE_PATH)).toBe(true);
   });
 

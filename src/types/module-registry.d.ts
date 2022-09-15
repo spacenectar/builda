@@ -2,7 +2,7 @@ import TSubstitution from './substitution';
 import ModuleConfig from './module-config';
 export interface ModuleRegistry {
   name: string;
-  type: 'scaffold' | 'prefab';
+  type: 'blueprint' | 'prefab';
   version: string;
   url: string;
   author: {
