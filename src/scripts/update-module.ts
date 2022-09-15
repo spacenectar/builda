@@ -22,8 +22,8 @@ export const updateModule = async ({
     foundModule = config.prefabs[moduleName];
   }
 
-  if (config.scaffolds && config.scaffolds[moduleName]) {
-    foundModule = config.scaffolds[moduleName];
+  if (config.blueprints && config.blueprints[moduleName]) {
+    foundModule = config.blueprints[moduleName];
   }
 
   if (!foundModule) {

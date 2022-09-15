@@ -17,18 +17,18 @@ export default [
     type: 'list',
     name: 'installDefaultModule',
     message:
-      'Which scaffold module do you want to install? (this can be changed later)',
+      'Which blueprint module do you want to install? (this can be changed later)',
     choices: [
       {
         name: 'Default React (typescript)',
-        value: 'builda:scaffold-default-ts'
+        value: 'builda:blueprint-default-ts'
       },
       {
         name: 'Default React (javascript)',
-        value: 'builda:scaffold-default-js'
+        value: 'builda:blueprint-default-js'
       },
       {
-        name: 'Custom scaffold',
+        name: 'Custom blueprint',
         value: 'custom'
       }
     ],
@@ -37,18 +37,18 @@ export default [
   },
   {
     type: 'input',
-    name: 'scaffoldUrl',
-    message: 'What is the path to the custom scaffold module you want to use?',
+    name: 'blueprintUrl',
+    message: 'What is the path to the custom blueprint module you want to use?',
     default: '',
     when: (answers: Answers) => answers.installDefaultModule === 'custom'
   },
   {
     type: 'checkbox',
-    name: 'scaffoldSelection',
-    message: 'Select one or more scaffold types you wish to use',
+    name: 'blueprintSelection',
+    message: 'Select one or more blueprint types you wish to use',
     validate: (answer: string[]) => {
       if (answer.length < 1) {
-        return 'You must choose at least one scaffold type. See https://builda.io/docs/scaffold-types for more info.';
+        return 'You must choose at least one blueprint type. See https://builda.io/docs/blueprint-types for more info.';
       }
       return true;
     },
@@ -64,15 +64,15 @@ export default [
   },
   {
     type: 'confirm',
-    name: 'customScaffold',
-    message: 'Would you like to add your own custom scaffold types?',
+    name: 'customBlueprint',
+    message: 'Would you like to add your own custom blueprint types?',
     default: false
   },
   {
     type: 'input',
-    name: 'customScaffoldList',
-    message: 'Add your custom scaffold types (separated by commas)',
+    name: 'customBlueprintList',
+    message: 'Add your custom blueprint types (separated by commas)',
     default: '',
-    when: (answers: Answers) => answers.customScaffold
+    when: (answers: Answers) => answers.customBlueprint
   }
 ];

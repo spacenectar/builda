@@ -1,6 +1,6 @@
 import throwError from './throw-error';
 
-import type { ScaffoldScriptContent } from '@typedefs/scaffold-script-config';
+import type { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
 import type TSubstitution from '@typedefs/substitution';
 import type { Argv } from '@typedefs/argv';
 import ModuleRegistry from '@typedefs/module-registry';
@@ -8,7 +8,7 @@ import ModuleRegistry from '@typedefs/module-registry';
 type TGetSubstitutions = {
   name: string;
   registry: ModuleRegistry;
-  command: ScaffoldScriptContent;
+  command: BlueprintScriptContent;
   args?: Argv;
 };
 

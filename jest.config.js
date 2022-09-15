@@ -7,7 +7,6 @@ module.exports = {
   maxWorkers: 1,
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/example/',  '<rootDir>/.builda/'],
   moduleNameMapper: {
-    "@scaffold/(.*)": "<rootDir>/src/scaffold/$1",
     "@scripts/(.*)": "<rootDir>/src/scripts/$1",
     "@scripts": "<rootDir>/src/scripts/index.ts",
     "@typedefs/(.*)": "<rootDir>/src/types/$1",
