@@ -11,10 +11,10 @@
 
 Builda is a simple command-line tool to make building project elements fast and easy.
 
-Builda generates files and folders using something called a 'blueprint', this is a
-template that contains all the files and directories that you want to create as well
-as a set of variables (called 'substitutions') that you can use to fill in the
-template automatically.
+Builda generates files and folders using something called a 'blueprint', this is
+a template that contains all the files and directories that you want to create as
+well as a set of variables (called 'substitutions') that you can use to fill in
+the template automatically.
 
 You can also build entire projects using super-powered blueprints known as 'prefabs'
 (see [Prefabs](#prefabs) below).
@@ -105,19 +105,19 @@ trade-store for the appropriate module.
 
 Builda also supports the following prefixes:
 
-#### `github:` prefix to install modules from GitHub.
+#### `github:` prefix to install modules from GitHub
 
-e.g. The following command will install the 'arctic-fox' blueprint from the GitHub user
-'builda-modules':
+e.g. The following command will install the 'arctic-fox' blueprint from the
+GitHub user 'builda-modules':
 
 ```shell
 builda install github:builda-modules/arctic-fox
 ```
 
-#### `bitbucket:` prefix to install modules from BitBucket.
+#### `bitbucket:` prefix to install modules from BitBucket
 
-e.g. The following command will install the 'arctic-fox' blueprint from the BitBucket user
-'builda-modules':
+e.g. The following command will install the 'arctic-fox' blueprint from the
+BitBucket user 'builda-modules':
 
 ```shell
 builda install bitbucket:builda-modules/arctic-fox
@@ -153,8 +153,8 @@ For example, if you generated a `component` blueprint-type, you could run:
 builda component my-example-component
 ```
 
-This will generate a component called `my-example-component` in the directory specified
-in the `.builda.json` file under the `component` command.
+This will generate a component called `my-example-component` in the directory
+specified in the `.builda.json` file under the `component` command.
 
 If you generated an `atom` blueprint-type, you could run:
 
@@ -231,8 +231,8 @@ then please be aware that although this is the successor to buildcom,
 it is a completely different package and is not backwards compatible.
 
 If you rely on the legacy buildcom package, you may find that builda covers
-all of the functionality of buildcom and then some. However as this is an early release,
-you may find that you are better off staying with buildcom for now.
+all of the functionality of buildcom and then some. However as this is an early
+release, you may find that you are better off staying with buildcom for now.
 
 ## Roadmap
 
