@@ -16,8 +16,8 @@ const updateModule = async ({ config, module }) => {
     if (config.prefabs && config.prefabs[moduleName]) {
         foundModule = config.prefabs[moduleName];
     }
-    if (config.scaffolds && config.scaffolds[moduleName]) {
-        foundModule = config.scaffolds[moduleName];
+    if (config.blueprints && config.blueprints[moduleName]) {
+        foundModule = config.blueprints[moduleName];
     }
     if (!foundModule) {
         return (0, throw_error_1.default)(`Module ${module} not found in config. Perhaps you meant to run 'builda add ${module}'?`);

@@ -14,7 +14,7 @@ const globals_1 = __importDefault(require("./data/globals"));
 // import scripts
 const init_1 = __importDefault(require("./scripts/init"));
 const generate_commands_1 = __importDefault(require("./scripts/generate-commands"));
-const build_from_scaffold_1 = __importDefault(require("./scripts/build-from-scaffold"));
+const build_from_blueprint_1 = __importDefault(require("./scripts/build-from-blueprint"));
 const add_module_1 = __importDefault(require("./scripts/add-module"));
 const watch_1 = __importDefault(require("./scripts/watch"));
 const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
@@ -113,7 +113,7 @@ const CREATE_CONFIG_QUESTION = {
     const command = commands[commandString];
     if (command) {
         const name = argv._[1].toString();
-        return (0, build_from_scaffold_1.default)({
+        return (0, build_from_blueprint_1.default)({
             config,
             name,
             command,

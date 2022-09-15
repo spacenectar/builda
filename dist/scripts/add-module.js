@@ -32,18 +32,18 @@ const addModule = async ({ config, path, update = false }) => {
             const type = module.type;
             const name = module.name;
             const version = module.version;
-            if (type === 'scaffold') {
-                // User has never installed any scaffolds.
-                if (!(config === null || config === void 0 ? void 0 : config.scaffolds)) {
-                    config.scaffolds = {};
+            if (type === 'blueprint') {
+                // User has never installed any blueprints.
+                if (!(config === null || config === void 0 ? void 0 : config.blueprints)) {
+                    config.blueprints = {};
                 }
-                // User has installed this scaffold before.
-                if (((_a = config === null || config === void 0 ? void 0 : config.scaffolds) === null || _a === void 0 ? void 0 : _a[name]) && !update) {
-                    (0, _helpers_1.throwError)(`Scaffold already installed, perhaps you meant 'builda update ${name}?'`);
+                // User has installed this blueprint before.
+                if (((_a = config === null || config === void 0 ? void 0 : config.blueprints) === null || _a === void 0 ? void 0 : _a[name]) && !update) {
+                    (0, _helpers_1.throwError)(`Blueprint already installed, perhaps you meant 'builda update ${name}?'`);
                 }
                 else {
-                    // User has never installed this scaffold before.
-                    config.scaffolds[name] = {
+                    // User has never installed this blueprint before.
+                    config.blueprints[name] = {
                         version,
                         location: path
                     };

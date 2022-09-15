@@ -3,19 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildFromScaffold = void 0;
+exports.buildFromBlueprint = void 0;
 const fs_1 = __importDefault(require("fs"));
 // import helpers
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
 const path_1 = __importDefault(require("path"));
-const buildFromScaffold = ({ config, name, command, args }) => {
+const buildFromBlueprint = ({ config, name, command, args }) => {
     if (config !== undefined && !!command.use) {
         (0, _helpers_1.printMessage)(`Building ${Object.keys(command)[0]} '${name}'...`, 'notice');
         const outputDirectory = `${command.output_dir}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         fs_1.default.mkdirSync(outputDirectory, { recursive: true });
-        const { path: pathstring, registry } = (0, _helpers_1.getModule)('scaffold', config, command);
+        const { path: pathstring, registry } = (0, _helpers_1.getModule)('blueprint', config, command);
         const substitute = command
             ? (0, _helpers_1.getSubstitutions)({
                 registry,
@@ -39,7 +39,7 @@ const buildFromScaffold = ({ config, name, command, args }) => {
             name,
             version: '1.0.0',
             author: '',
-            scaffold: {
+            blueprint: {
                 name: registry.name,
                 version: registry.version
             }
@@ -49,5 +49,5 @@ const buildFromScaffold = ({ config, name, command, args }) => {
     }
     throw new Error('No config file found');
 };
-exports.buildFromScaffold = buildFromScaffold;
-exports.default = exports.buildFromScaffold;
+exports.buildFromBlueprint = buildFromBlueprint;
+exports.default = exports.buildFromBlueprint;

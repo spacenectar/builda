@@ -61,7 +61,7 @@ const writeConfig = async (filename, contents) => {
     });
 };
 const installModules = async (config, answers) => {
-    (0, _helpers_1.printMessage)('Installing initial scaffold...\r', 'notice');
+    (0, _helpers_1.printMessage)('Installing initial blueprint...\r', 'notice');
     let options = {
         config,
         path: answers.installDefaultModule,
@@ -70,7 +70,7 @@ const installModules = async (config, answers) => {
     if (answers.installDefaultModule === 'custom') {
         options = {
             config,
-            path: answers.scaffoldUrl,
+            path: answers.blueprintUrl,
             official: false
         };
     }
@@ -79,7 +79,7 @@ const installModules = async (config, answers) => {
 const init = async ({ presetAnswers, appName: applicationName, outputDirectory: outputDir }) => {
     // Check if a config file already exists unless presetAnswers is passed
     let continueProcess = false;
-    const scaffoldList = [];
+    const blueprintList = [];
     let answers = {};
     if (!presetAnswers) {
         try {
@@ -111,14 +111,14 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
         var _a;
         if (continueProcess === true) {
             fs_1.default.mkdirSync(buildaDir, { recursive: true });
-            if ((_a = answers.scaffoldSelection) === null || _a === void 0 ? void 0 : _a.length) {
-                scaffoldList.push(...answers.scaffoldSelection);
+            if ((_a = answers.blueprintSelection) === null || _a === void 0 ? void 0 : _a.length) {
+                blueprintList.push(...answers.blueprintSelection);
             }
-            if (answers.customScaffoldList) {
-                answers.customScaffoldList
+            if (answers.customBlueprintList) {
+                answers.customBlueprintList
                     .split(',')
-                    .forEach((scaffoldType) => {
-                    scaffoldList.push(scaffoldType.trim());
+                    .forEach((blueprintType) => {
+                    blueprintList.push(blueprintType.trim());
                 });
             }
             const config = {
@@ -127,15 +127,15 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
             };
             installModules(config, answers)
                 .then((response) => {
-                const scaffoldScripts = {};
-                scaffoldList.forEach((scaffoldItem) => {
-                    scaffoldScripts[scaffoldItem] = {
+                const blueprintScripts = {};
+                blueprintList.forEach((blueprintItem) => {
+                    blueprintScripts[blueprintItem] = {
                         use: response.module.name,
-                        output_dir: `{{app_root}}/${(0, string_functions_1.pluralise)(scaffoldItem)}`
+                        output_dir: `{{app_root}}/${(0, string_functions_1.pluralise)(blueprintItem)}`
                     };
                 });
                 const configString = Object.assign({}, config);
-                configString.scaffold_scripts = Object.assign(Object.assign({}, configString.scaffold_scripts), scaffoldScripts);
+                configString.blueprint_scripts = Object.assign(Object.assign({}, configString.blueprint_scripts), blueprintScripts);
                 writeConfig(configFilePath, JSON.stringify(configString, null, 2))
                     .then(() => {
                     (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');

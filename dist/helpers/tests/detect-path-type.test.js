@@ -16,7 +16,7 @@ describe('detectPathType', () => {
         expect((0, detect_path_type_1.default)(path)).toEqual(expected);
     });
     test("should return 'custom' when a custom path is provided", () => {
-        const path = 'builda:scaffold-default-js';
+        const path = 'builda:blueprint-default-js';
         const expected = 'custom';
         expect((0, detect_path_type_1.default)(path)).toEqual(expected);
     });

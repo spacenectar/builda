@@ -14,15 +14,15 @@ describe('generateCommands', () => {
     test('config file is parsed and commands extracted', () => {
         expect(commands).toEqual({
             atom: {
-                use: 'scaffold-default-ts',
+                use: 'blueprint-default-ts',
                 output_dir: '{{app_root}}/atoms'
             },
             component: {
-                use: 'scaffold-default-ts',
+                use: 'blueprint-default-ts',
                 output_dir: '{{app_root}}/components'
             },
             test: {
-                use: 'scaffold-default-ts',
+                use: 'blueprint-default-ts',
                 output_dir: '{{app_root}}/tests'
             }
         });
