@@ -4,10 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prefabInit = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const node_fs_1 = __importDefault(require("node:fs"));
+const node_path_1 = __importDefault(require("node:path"));
 const execa_1 = __importDefault(require("execa"));
-const ora_1 = __importDefault(require("ora"));
 const globals_1 = __importDefault(require("../data/globals"));
 const _helpers_1 = require("../helpers/index.js");
 const defaultRequiredFiles = ['package.json', 'README.md'];
@@ -44,7 +43,7 @@ const questions = [
         type: 'input',
         name: 'pathName',
         message: 'What is the path to the prefab?',
-        default: 'builda:prefab-test',
+        default: 'github:builda-modules/prefab-test',
         validate: (input) => {
             if (input.length) {
                 return true;
@@ -97,9 +96,9 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
     await (0, _helpers_1.createDir)(outputDir);
     // check if the root directory is empty
-    const rootDir = path_1.default.resolve(outputDir);
-    if (fs_1.default.readdirSync(rootDir).length !== 0) {
-        (0, _helpers_1.throwError)(`The directory: '${rootDir}' is not empty. It is not recommended to install a prefab into an existing project.`);
+    const rootDir = node_path_1.default.resolve(outputDir);
+    if (node_fs_1.default.readdirSync(rootDir).length !== 0) {
+        return (0, _helpers_1.throwError)(`The directory: '${rootDir}' is not empty. It is not recommended to install a prefab into an existing project.`);
     }
     else {
         // The directory is empty, so we can continue
@@ -135,21 +134,19 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             ];
             const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
             // Generate the correct files in the app directory
-            const copyFiles = (0, ora_1.default)('Copying files...').start();
-            copyFiles.text = 'Copying configuration file...';
+            (0, _helpers_1.printMessage)('Copying files...', 'notice');
             (0, _helpers_1.writeFile)({
-                file: path_1.default.resolve(prefabDir, buildaDir, configFileName),
+                file: node_path_1.default.resolve(prefabDir, buildaDir, configFileName),
                 output_dir: buildaDir,
                 substitute,
                 name
             });
             for (const file of requiredFiles) {
-                copyFiles.text = `Copying ${file}...`;
                 promises.push(new Promise((resolve) => {
-                    const filePath = path_1.default.resolve(prefabDir, file);
-                    if (fs_1.default.existsSync(filePath)) {
+                    const filePath = node_path_1.default.resolve(prefabDir, file);
+                    if (node_fs_1.default.existsSync(filePath)) {
                         (0, _helpers_1.writeFile)({
-                            file: path_1.default.resolve(prefabDir, filePath),
+                            file: node_path_1.default.resolve(prefabDir, filePath),
                             output_dir: rootDir,
                             substitute,
                             name
@@ -158,35 +155,35 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     resolve(filePath);
                 }));
             }
-            copyFiles.succeed('All files copied to application.');
+            (0, _helpers_1.printMessage)('All files copied to application.', 'success');
             // Wait for all promises to resolve
             await Promise.all(promises);
             (0, _helpers_1.printMessage)('Installing dependencies...', 'notice');
-            const installDeps = (0, ora_1.default)(`Starting up...`).start();
+            (0, _helpers_1.spinner)();
             // Run package manager install
-            if (fs_1.default.existsSync(path_1.default.resolve(rootDir, 'package.json'))) {
-                installDeps.text = `Running ${packageManagerType} install`;
+            if (node_fs_1.default.existsSync(node_path_1.default.resolve(rootDir, 'package.json'))) {
+                (0, _helpers_1.printMessage)(`Running ${packageManagerType} install`, 'notice');
                 try {
-                    installDeps.text = 'Installing... |> ';
                     const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
                         cwd: rootDir,
                         all: true
                     });
                     (_a = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _a === void 0 ? void 0 : _a.pipe(process.stdout);
                     await childProcess;
-                    installDeps.succeed('All dependencies installed.');
+                    (0, _helpers_1.printMessage)('All dependencies installed.', 'success');
                 }
                 catch (error) {
-                    installDeps.fail('Failed to run. Please try running manually.');
+                    (0, _helpers_1.printMessage)('Failed to run. Please try running manually.', 'error');
                     return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
                 }
             }
             else {
-                (0, _helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
+                return (0, _helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
             }
             (0, _helpers_1.printMessage)(`\nYour application, "${name}" has been initialised!`, 'success');
             return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
         }
+        return (0, _helpers_1.throwError)('No prefab found');
     }
 };
 exports.prefabInit = prefabInit;

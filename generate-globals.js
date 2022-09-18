@@ -3,6 +3,7 @@
 const fs = require('fs');
 
 const packageJson = require('./package.json');
+
 const { version, repository } = packageJson;
 
 const globals = {

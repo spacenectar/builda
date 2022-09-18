@@ -5,20 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildFromPrefabs = void 0;
+const node_path_1 = __importDefault(require("node:path"));
+const node_fs_1 = __importDefault(require("node:fs"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
 const buildFromPrefabs = (config) => {
     if (config) {
         const { prefabs } = config;
         const { buildaDir } = globals_1.default;
-        const destinationDir = path_1.default.join(buildaDir, 'build');
+        const destinationDir = node_path_1.default.join(buildaDir, 'build');
         if (!prefabs) {
             (0, _helpers_1.throwError)('No prefabs found in config file. Build cannot be run without prefabs');
         }
-        if (!fs_1.default.existsSync(destinationDir)) {
-            fs_1.default.mkdirSync(destinationDir);
+        if (!node_fs_1.default.existsSync(destinationDir)) {
+            node_fs_1.default.mkdirSync(destinationDir);
         }
         // convert the prefabs object to an array
         const prefabArray = Object.keys(prefabs).map((key) => {
@@ -26,14 +26,14 @@ const buildFromPrefabs = (config) => {
         });
         // build each prefab
         prefabArray.forEach((prefab) => {
-            const sourceDir = path_1.default.join(buildaDir, 'modules', 'prefabs', prefab.name);
-            fs_1.default.readdir(sourceDir, (err, files) => {
+            const sourceDir = node_path_1.default.join(buildaDir, 'modules', 'prefabs', prefab.name);
+            node_fs_1.default.readdir(sourceDir, (err, files) => {
                 if (err) {
                     (0, _helpers_1.throwError)(err.message);
                 }
                 else {
                     files.forEach((file) => {
-                        (0, _helpers_1.checkAndCopyPath)(path_1.default.join(sourceDir, file), destinationDir, file);
+                        (0, _helpers_1.checkAndCopyPath)(node_path_1.default.join(sourceDir, file), destinationDir, file);
                     });
                 }
             });

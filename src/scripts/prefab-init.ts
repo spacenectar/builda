@@ -1,7 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import execa from 'execa';
-import ora from 'ora';
 
 import globals from '@data/globals';
 import {
@@ -13,6 +12,7 @@ import {
   detectPathType,
   convertRegistryPathToUrl,
   writeFile,
+  spinner,
   createDir
 } from '@helpers';
 import ModuleRegistry from '@typedefs/module-registry';
@@ -50,7 +50,7 @@ const questions = [
     type: 'input',
     name: 'pathName',
     message: 'What is the path to the prefab?',
-    default: 'builda:prefab-test',
+    default: 'github:builda-modules/prefab-test',
     validate: (input: string) => {
       if (input.length) {
         return true;
@@ -143,7 +143,7 @@ export const prefabInit = async ({
   const rootDir = path.resolve(outputDir);
 
   if (fs.readdirSync(rootDir).length !== 0) {
-    throwError(
+    return throwError(
       `The directory: '${rootDir}' is not empty. It is not recommended to install a prefab into an existing project.`
     );
   } else {
@@ -187,8 +187,8 @@ export const prefabInit = async ({
 
       const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
       // Generate the correct files in the app directory
-      const copyFiles = ora('Copying files...').start();
-      copyFiles.text = 'Copying configuration file...';
+      printMessage('Copying files...', 'notice');
+
       writeFile({
         file: path.resolve(prefabDir, buildaDir, configFileName),
         output_dir: buildaDir,
@@ -196,7 +196,6 @@ export const prefabInit = async ({
         name
       });
       for (const file of requiredFiles) {
-        copyFiles.text = `Copying ${file}...`;
         promises.push(
           new Promise((resolve) => {
             const filePath = path.resolve(prefabDir, file);
@@ -212,34 +211,36 @@ export const prefabInit = async ({
           })
         );
       }
-      copyFiles.succeed('All files copied to application.');
+      printMessage('All files copied to application.', 'success');
 
       // Wait for all promises to resolve
       await Promise.all(promises);
       printMessage('Installing dependencies...', 'notice');
-      const installDeps = ora(`Starting up...`).start();
+      spinner();
       // Run package manager install
 
       if (fs.existsSync(path.resolve(rootDir, 'package.json'))) {
-        installDeps.text = `Running ${packageManagerType} install`;
+        printMessage(`Running ${packageManagerType} install`, 'notice');
         try {
-          installDeps.text = 'Installing... |> ';
           const childProcess = execa(packageManagerType, ['install'], {
             cwd: rootDir,
             all: true
           });
           childProcess?.all?.pipe(process.stdout);
           await childProcess;
-          installDeps.succeed('All dependencies installed.');
+          printMessage('All dependencies installed.', 'success');
         } catch (error) {
-          installDeps.fail('Failed to run. Please try running manually.');
+          printMessage('Failed to run. Please try running manually.', 'error');
           return printMessage(
             `For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`,
             'primary'
           );
         }
       } else {
-        printMessage('No package.json found. Skipping install.', 'notice');
+        return printMessage(
+          'No package.json found. Skipping install.',
+          'notice'
+        );
       }
 
       printMessage(
@@ -251,6 +252,7 @@ export const prefabInit = async ({
         'primary'
       );
     }
+    return throwError('No prefab found');
   }
 };
 

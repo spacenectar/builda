@@ -6,18 +6,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateBlueprintRegistry = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const node_fs_1 = __importDefault(require("node:fs"));
+const node_path_1 = __importDefault(require("node:path"));
 const ignore_file_json_1 = __importDefault(require("../data/ignore-file.json"));
 const generateBlueprintRegistry = (blueprintPath) => {
     const readPath = blueprintPath || './blueprints';
-    return fs_1.default.readdirSync(path_1.default.resolve(readPath)).forEach((file) => {
+    return node_fs_1.default.readdirSync(node_path_1.default.resolve(readPath)).forEach((file) => {
         // Is it a directory?
         const ignore = [...ignore_file_json_1.default.ignore, 'registry.json'];
         if (ignore.includes(file)) {
             return;
         }
-        const isDirectory = fs_1.default.lstatSync(`${readPath}/${file}`).isDirectory();
+        const isDirectory = node_fs_1.default.lstatSync(`${readPath}/${file}`).isDirectory();
         if (isDirectory) {
             // Build a page for the directory
             const page = `
@@ -33,7 +33,7 @@ const generateBlueprintRegistry = (blueprintPath) => {
             },
             "url": "",
             "files": [
-              ${fs_1.default
+              ${node_fs_1.default
                 .readdirSync(`${readPath}/${file}`)
                 .map((f) => {
                 if (!ignore.includes(f)) {
@@ -48,7 +48,7 @@ const generateBlueprintRegistry = (blueprintPath) => {
             ]
           }
       `;
-            fs_1.default.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page, null, 2));
+            node_fs_1.default.writeFileSync(`${readPath}/${file}/registry.json`, JSON.stringify(page, null, 2));
         }
     });
 };

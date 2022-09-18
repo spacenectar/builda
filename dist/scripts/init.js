@@ -3,15 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const node_fs_1 = __importDefault(require("node:fs"));
+const node_path_1 = __importDefault(require("node:path"));
 const _helpers_1 = require("../helpers/index.js");
 const string_functions_1 = require("../helpers/string-functions");
 const add_module_1 = __importDefault(require("./add-module"));
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
-const configFilePath = path_1.default.join(buildaDir, configFileName);
+const configFilePath = node_path_1.default.join(buildaDir, configFileName);
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
     name: 'replaceConfig',
@@ -37,7 +37,7 @@ const getAnswers = async (omitName, omitOutputDir) => {
 };
 const checkExistingConfig = async () => {
     return new Promise((resolve, reject) => {
-        if (fs_1.default.existsSync(configFilePath)) {
+        if (node_fs_1.default.existsSync(configFilePath)) {
             return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
                 if (replaceConfig) {
                     return resolve(true);
@@ -53,7 +53,7 @@ const checkExistingConfig = async () => {
 };
 const writeConfig = async (filename, contents) => {
     return new Promise((resolve) => {
-        fs_1.default.writeFile(filename, contents, (err) => {
+        node_fs_1.default.writeFile(filename, contents, (err) => {
             if (err)
                 throw err;
             return resolve((0, _helpers_1.printMessage)('Created config in project root', 'success'));
@@ -110,7 +110,7 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
     return new Promise((resolve, reject) => {
         var _a;
         if (continueProcess === true) {
-            fs_1.default.mkdirSync(buildaDir, { recursive: true });
+            node_fs_1.default.mkdirSync(buildaDir, { recursive: true });
             if ((_a = answers.blueprintSelection) === null || _a === void 0 ? void 0 : _a.length) {
                 blueprintList.push(...answers.blueprintSelection);
             }

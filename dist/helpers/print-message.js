@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
+const process_1 = __importDefault(require("process"));
 const printMessage = (message, type, returnstring) => {
     let newMessage = null;
     if (type && type === 'error') {
@@ -30,6 +31,6 @@ const printMessage = (message, type, returnstring) => {
     if (!type) {
         newMessage = message;
     }
-    return returnstring ? newMessage : console.log(`${newMessage}\n`);
+    return returnstring ? newMessage : process_1.default.stdout.write(`${newMessage}\n`);
 };
 exports.default = printMessage;

@@ -29,7 +29,7 @@
     "dev": "tsc --watch & tsc-alias -w",
     "debug": "node dist/scripts/debug.js",
     "generate-blueprint": "node dist/scripts/generate-blueprint-registry.js",
-    "build": "rm -rf ./dist && node ./generate-globals && tsc --build",
+    "build": "rm -rf ./dist && node ./generate-globals.js && tsc --build",
     "test": "jest --testSequencer='./config/jest-sequencer.js'",
     "testonly": "jest",
     "copyfiles": "cp -r ./src/data ./dist",
@@ -65,7 +65,6 @@
     "inquirer": "8.2.4",
     "js-yaml": "^4.1.0",
     "markdownlint": "^0.25.1",
-    "ora": "^6.1.2",
     "tar": "^6.1.11",
     "yargs": "^17.4.1"
   },

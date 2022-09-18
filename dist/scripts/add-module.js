@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addModule = void 0;
-const fs_1 = __importDefault(require("fs"));
+const node_fs_1 = __importDefault(require("node:fs"));
 // Import helpers
 const _helpers_1 = require("../helpers/index.js");
 // Import data
@@ -68,7 +68,7 @@ const addModule = async ({ config, path, update = false }) => {
                 }
             }
             // Write the config file
-            fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
+            node_fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
                 if (err) {
                     (0, _helpers_1.throwError)(err.message);
                 }

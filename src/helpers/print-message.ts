@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import process from 'process';
 
 type Types =
   | 'error'
@@ -42,7 +43,7 @@ const printMessage = (message: string, type: Types, returnstring?: boolean) => {
   if (!type) {
     newMessage = message;
   }
-  return returnstring ? newMessage : console.log(`${newMessage}\n`);
+  return returnstring ? newMessage : process.stdout.write(`${newMessage}\n`);
 };
 
 export default printMessage;
