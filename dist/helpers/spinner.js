@@ -13,23 +13,33 @@ const spinners = {
         frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
     }
 };
-const spinner = () => {
+const spinner = ({ mode }) => {
     process_1.default.stdout.write('\x1B[?25l');
     const spin = spinners.dots;
     const spinnerFrames = spin.frames;
     const spinnerTimeInterval = spin.interval;
     let index = 0;
-    setInterval(() => {
-        let now = spinnerFrames[index];
-        if (now == undefined) {
-            index = 0;
-            now = spinnerFrames[index];
+    let timer;
+    if (mode === 'start') {
+        if (timer) {
+            clearInterval(timer);
         }
-        std.write(now);
-        readline_1.default.cursorTo(std, 0, 0);
-        index = index >= spinnerFrames.length ? 0 : index + 1;
-    }, spinnerTimeInterval);
+        timer = setInterval(() => {
+            let now = spinnerFrames[index];
+            if (now == undefined) {
+                index = 0;
+                now = spinnerFrames[index];
+            }
+            readline_1.default.clearLine(std, 0);
+            readline_1.default.cursorTo(std, 0);
+            std.write(now);
+            index = index >= spinnerFrames.length ? 0 : index + 1;
+        }, spinnerTimeInterval);
+    }
+    if (mode === 'stop') {
+        clearInterval(timer);
+        readline_1.default.clearLine(std, 0);
+    }
 };
 exports.spinner = spinner;
-//TODO: Cursor position is not working properly and we need to be able to stop the spinner when we want to
 exports.default = exports.spinner;

@@ -12,7 +12,6 @@ import {
   detectPathType,
   convertRegistryPathToUrl,
   writeFile,
-  spinner,
   createDir
 } from '@helpers';
 import ModuleRegistry from '@typedefs/module-registry';
@@ -172,7 +171,7 @@ export const prefabInit = async ({
         ...(module.required_in_root || [])
       ];
       printMessage(`Installed ${prefabName}@${version}`, 'success');
-      printMessage('Copying required files to application...', 'notice');
+      printMessage('Copying required files to application...', 'copying');
 
       // Initialise a promise
       const promises = [];
@@ -187,8 +186,6 @@ export const prefabInit = async ({
 
       const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
       // Generate the correct files in the app directory
-      printMessage('Copying files...', 'notice');
-
       writeFile({
         file: path.resolve(prefabDir, buildaDir, configFileName),
         output_dir: buildaDir,
@@ -215,12 +212,12 @@ export const prefabInit = async ({
 
       // Wait for all promises to resolve
       await Promise.all(promises);
-      printMessage('Installing dependencies...', 'notice');
-      spinner();
+      printMessage('Installing dependencies...', 'config');
+
       // Run package manager install
 
       if (fs.existsSync(path.resolve(rootDir, 'package.json'))) {
-        printMessage(`Running ${packageManagerType} install`, 'notice');
+        printMessage(`Running ${packageManagerType} install`, 'processing');
         try {
           const childProcess = execa(packageManagerType, ['install'], {
             cwd: rootDir,
@@ -244,7 +241,7 @@ export const prefabInit = async ({
       }
 
       printMessage(
-        `\nYour application, "${name}" has been initialised!`,
+        `Your application, "${name}" has been initialised!`,
         'success'
       );
       return printMessage(

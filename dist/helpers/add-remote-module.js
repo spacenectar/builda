@@ -17,6 +17,7 @@ const addRemoteModule = async (modulePath) => {
     const registry = await (0, get_registry_1.default)(modulePath);
     const outputPath = `${globals_1.default.buildaDir}/modules/${registry.type}s/${registry.name}`;
     await (0, create_dir_1.default)(outputPath);
+    (0, print_message_1.default)(`Downloading ${registry.name}...`, 'downloading');
     // Download the tarball
     await axios_1.default
         .get(`${modulePath}/files.tgz`, {
@@ -30,7 +31,7 @@ const addRemoteModule = async (modulePath) => {
     }))
         .then(async () => {
         if (fs_1.default.existsSync(`${outputPath}/files.tgz`)) {
-            (0, print_message_1.default)('Extracting module files...', 'notice');
+            (0, print_message_1.default)('Extracting module files...', 'config');
             try {
                 await tar_1.default.extract({
                     file: `${outputPath}/files.tgz`,
@@ -47,7 +48,7 @@ const addRemoteModule = async (modulePath) => {
         (0, throw_error_1.default)(`There was an error downloading the tarball. Please check the URL and try again.\n\n${err}`);
     })
         .finally(() => {
-        (0, print_message_1.default)('Copying the registry file...', 'notice');
+        (0, print_message_1.default)('Copying the registry file...', 'copying');
         // Write the registry to the output directory
         fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });

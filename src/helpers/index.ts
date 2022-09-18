@@ -9,7 +9,6 @@ export { default as addRemoteModule } from './add-remote-module';
 export { default as skip } from './skip';
 export { default as printMessage } from './print-message';
 export { default as printLogo } from './print-logo';
-export { default as spinner } from './spinner';
 export { default as nameError } from './throw-error';
 export { default as askQuestion } from './ask-question';
 export { default as throwError } from './throw-error';

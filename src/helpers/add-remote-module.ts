@@ -18,6 +18,7 @@ export const addRemoteModule = async (
 
   await createDir(outputPath);
 
+  printMessage(`Downloading ${registry.name}...`, 'downloading');
   // Download the tarball
   await axios
     .get(`${modulePath}/files.tgz`, {
@@ -33,7 +34,7 @@ export const addRemoteModule = async (
     )
     .then(async () => {
       if (fs.existsSync(`${outputPath}/files.tgz`)) {
-        printMessage('Extracting module files...', 'notice');
+        printMessage('Extracting module files...', 'config');
         try {
           await tar.extract({
             file: `${outputPath}/files.tgz`,
@@ -51,7 +52,7 @@ export const addRemoteModule = async (
       );
     })
     .finally(() => {
-      printMessage('Copying the registry file...', 'notice');
+      printMessage('Copying the registry file...', 'copying');
       // Write the registry to the output directory
       fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });

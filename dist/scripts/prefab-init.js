@@ -122,7 +122,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 ...(module.required_in_root || [])
             ];
             (0, _helpers_1.printMessage)(`Installed ${prefabName}@${version}`, 'success');
-            (0, _helpers_1.printMessage)('Copying required files to application...', 'notice');
+            (0, _helpers_1.printMessage)('Copying required files to application...', 'copying');
             // Initialise a promise
             const promises = [];
             const substitute = [
@@ -134,7 +134,6 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             ];
             const prefabDir = `${buildaDir}/modules/prefabs/${prefabName}/files`;
             // Generate the correct files in the app directory
-            (0, _helpers_1.printMessage)('Copying files...', 'notice');
             (0, _helpers_1.writeFile)({
                 file: node_path_1.default.resolve(prefabDir, buildaDir, configFileName),
                 output_dir: buildaDir,
@@ -158,11 +157,10 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             (0, _helpers_1.printMessage)('All files copied to application.', 'success');
             // Wait for all promises to resolve
             await Promise.all(promises);
-            (0, _helpers_1.printMessage)('Installing dependencies...', 'notice');
-            (0, _helpers_1.spinner)();
+            (0, _helpers_1.printMessage)('Installing dependencies...', 'config');
             // Run package manager install
             if (node_fs_1.default.existsSync(node_path_1.default.resolve(rootDir, 'package.json'))) {
-                (0, _helpers_1.printMessage)(`Running ${packageManagerType} install`, 'notice');
+                (0, _helpers_1.printMessage)(`Running ${packageManagerType} install`, 'processing');
                 try {
                     const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
                         cwd: rootDir,
@@ -180,7 +178,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             else {
                 return (0, _helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
             }
-            (0, _helpers_1.printMessage)(`\nYour application, "${name}" has been initialised!`, 'success');
+            (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
             return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
         }
         return (0, _helpers_1.throwError)('No prefab found');

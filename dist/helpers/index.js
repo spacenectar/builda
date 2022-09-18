@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.spinner = exports.printLogo = exports.printMessage = exports.skip = exports.addRemoteModule = exports.addLocalModule = exports.getPathFromRoot = exports.getModule = exports.getSubstitutions = exports.getConfigFile = exports.detectPathType = exports.checkAndCopyPath = void 0;
+exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.skip = exports.addRemoteModule = exports.addLocalModule = exports.getPathFromRoot = exports.getModule = exports.getSubstitutions = exports.getConfigFile = exports.detectPathType = exports.checkAndCopyPath = void 0;
 var check_and_copy_path_1 = require("./check-and-copy-path");
 Object.defineProperty(exports, "checkAndCopyPath", { enumerable: true, get: function () { return __importDefault(check_and_copy_path_1).default; } });
 var detect_path_type_1 = require("./detect-path-type");
@@ -26,8 +26,6 @@ var print_message_1 = require("./print-message");
 Object.defineProperty(exports, "printMessage", { enumerable: true, get: function () { return __importDefault(print_message_1).default; } });
 var print_logo_1 = require("./print-logo");
 Object.defineProperty(exports, "printLogo", { enumerable: true, get: function () { return __importDefault(print_logo_1).default; } });
-var spinner_1 = require("./spinner");
-Object.defineProperty(exports, "spinner", { enumerable: true, get: function () { return __importDefault(spinner_1).default; } });
 var throw_error_1 = require("./throw-error");
 Object.defineProperty(exports, "nameError", { enumerable: true, get: function () { return __importDefault(throw_error_1).default; } });
 var ask_question_1 = require("./ask-question");
