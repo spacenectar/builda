@@ -41,12 +41,11 @@ const questions = [
             }
         }
     },
-    // TODO: Change these defaults when testing is complete
     {
         type: 'list',
         name: 'yarnOrNpm',
         message: 'Which package manager would you like to use?',
-        default: 'yarn',
+        default: 'npm',
         choices: ['npm', 'yarn']
     },
     {
@@ -131,6 +130,10 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 {
                     replace: '%APP_ROOT%',
                     with: './'
+                },
+                {
+                    replace: '%PACKAGE_MANAGER%',
+                    with: packageManagerType
                 }
             ];
             const fileLoop = async (pathString) => {

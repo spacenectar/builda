@@ -15,15 +15,14 @@ const globals_1 = __importDefault(require("../data/globals"));
 const execute = async (config, command) => {
     var _a;
     if (config) {
-        const { run_scripts } = config;
-        if (!run_scripts) {
-            (0, _helpers_1.throwError)('No run scripts found in config file');
-        }
-        const script = run_scripts[command];
+        const { app_root, package_manager } = config;
+        const buildDir = node_path_1.default.join(app_root, globals_1.default.buildaDir, 'build');
+        const packageJson = require(node_path_1.default.resolve(buildDir, 'package.json'));
+        const script = packageJson.scripts[command];
         if (!script) {
             (0, _helpers_1.throwError)(`No script found with the name '${command}'`);
         }
-        const cwd = node_path_1.default.join(config.app_root, globals_1.default.buildaDir, 'build', script.cwd || '');
+        const cwd = node_path_1.default.resolve(buildDir);
         if (!cwd) {
             (0, _helpers_1.throwError)(`No path found for script '${command}'`);
         }
@@ -31,20 +30,15 @@ const execute = async (config, command) => {
             (0, _helpers_1.throwError)('No command found');
         }
         try {
-            let command = '';
-            if (script.prefix) {
-                command += `${script.prefix} `;
-            }
-            command += script.run;
-            if (script.suffix) {
-                command += ` ${script.suffix}`;
-            }
+            const prefixedCommand = `${package_manager} run ${command}`;
             node_process_1.default.stdout.write(chalk_1.default.magenta('Running with Builda: ') +
-                chalk_1.default.white.bold(`'${command}'`) +
+                chalk_1.default.white.bold(`'${prefixedCommand}'`) +
                 '\n');
             (_a = execa_1.default
-                .command(command, {
-                cwd
+                .command(prefixedCommand, {
+                cwd,
+                shell: true,
+                stdio: 'inherit'
             })
                 .stdout) === null || _a === void 0 ? void 0 : _a.pipe(node_process_1.default.stdout);
         }

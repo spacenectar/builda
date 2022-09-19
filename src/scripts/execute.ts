@@ -13,23 +13,17 @@ import { ConfigFile } from '@typedefs/config-file';
 
 export const execute = async (config: ConfigFile, command: string) => {
   if (config) {
-    const { run_scripts } = config;
-    if (!run_scripts) {
-      throwError('No run scripts found in config file');
-    }
+    const { app_root, package_manager } = config;
 
-    const script = run_scripts[command];
+    const buildDir = path.join(app_root, globals.buildaDir, 'build');
+    const packageJson = require(path.resolve(buildDir, 'package.json'));
+    const script = packageJson.scripts[command];
 
     if (!script) {
       throwError(`No script found with the name '${command}'`);
     }
 
-    const cwd = path.join(
-      config.app_root,
-      globals.buildaDir,
-      'build',
-      script.cwd || ''
-    );
+    const cwd = path.resolve(buildDir);
 
     if (!cwd) {
       throwError(`No path found for script '${command}'`);
@@ -38,27 +32,20 @@ export const execute = async (config: ConfigFile, command: string) => {
     if (!command) {
       throwError('No command found');
     }
+
     try {
-      let command = '';
-
-      if (script.prefix) {
-        command += `${script.prefix} `;
-      }
-
-      command += script.run;
-
-      if (script.suffix) {
-        command += ` ${script.suffix}`;
-      }
+      const prefixedCommand = `${package_manager} run ${command}`;
 
       process.stdout.write(
         chalk.magenta('Running with Builda: ') +
-          chalk.white.bold(`'${command}'`) +
+          chalk.white.bold(`'${prefixedCommand}'`) +
           '\n'
       );
       execa
-        .command(command, {
-          cwd
+        .command(prefixedCommand, {
+          cwd,
+          shell: true,
+          stdio: 'inherit'
         })
         .stdout?.pipe(process.stdout);
     } catch (error) {
