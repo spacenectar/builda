@@ -20,6 +20,7 @@ const watch_1 = __importDefault(require("./scripts/watch"));
 const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
 const update_module_1 = require("./scripts/update-module");
 const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
+const execute_1 = __importDefault(require("./scripts/execute"));
 const args = (0, helpers_1.hideBin)(process.argv);
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
@@ -29,7 +30,6 @@ const parser = (0, yargs_1.default)(args)
     .version()
     .alias('h', 'help')
     .epilogue(`For more information, visit ${websiteUrl}`);
-(0, _helpers_1.printLogo)();
 const CREATE_CONFIG_QUESTION = {
     message: `Would you like to create a ${configFileName} config?`,
     name: 'createConfig',
@@ -40,17 +40,20 @@ const CREATE_CONFIG_QUESTION = {
     const config = await (0, _helpers_1.getConfigFile)();
     if (config) {
         if (args.length === 0) {
+            (0, _helpers_1.printLogo)();
             // No arguments were passed but a config file exists
             (0, _helpers_1.printMessage)('No arguments provided.\r', 'danger');
             parser.showHelp();
             return process.exit(0);
         }
         if (argv.init) {
+            (0, _helpers_1.printLogo)();
             (0, _helpers_1.printMessage)(`A ${configFileName} has been found. Please delete it before continuing.\r`, 'danger');
             return process.exit(0);
         }
     }
     if (args.length === 0 && !argv.manual && !config) {
+        (0, _helpers_1.printLogo)();
         // No arguments were passed but a config file does not exist
         return (0, _helpers_1.askQuestion)(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
             if (createConfig) {
@@ -61,26 +64,37 @@ const CREATE_CONFIG_QUESTION = {
         });
     }
     if (argv.manual) {
+        (0, _helpers_1.printLogo)();
         (0, _helpers_1.printMessage)('Manual mode selected.\r', 'notice');
         (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
         return process.exit(0);
     }
     if (argv.migrate) {
+        (0, _helpers_1.printLogo)();
         // The user wants to migrate an old buildcom config file
         // Go to migrate function
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
     }
     if (argv.watch) {
+        (0, _helpers_1.printLogo)();
         // The user is watching the app for changes
         // Go to watch function
         return (0, watch_1.default)(config);
     }
     if (argv.build) {
+        (0, _helpers_1.printLogo)();
         // The user wants to build the app
         // Go to build function
         return (0, build_from_prefabs_1.default)(config);
     }
+    if (argv.execute || argv.x) {
+        // The user wants to execute a command
+        // Go to execute function
+        const command = (argv.execute || argv.x);
+        return (0, execute_1.default)(config, command);
+    }
     if (argv.init) {
+        (0, _helpers_1.printLogo)();
         const name = argv.name || argv.n || '';
         const output = argv.root || argv.r || '';
         return (0, init_1.default)({
@@ -88,7 +102,8 @@ const CREATE_CONFIG_QUESTION = {
             outputDirectory: output
         });
     }
-    if (argv.prefab) {
+    if (argv.prefab || argv.p) {
+        (0, _helpers_1.printLogo)();
         const name = argv.name || argv.n || '';
         const output = argv.root || argv.r || '';
         const pathName = argv.prefabPath || argv.pp || '';
@@ -101,10 +116,12 @@ const CREATE_CONFIG_QUESTION = {
         });
     }
     if (argv._[0].toString() === 'add') {
+        (0, _helpers_1.printLogo)();
         const module = argv._[1].toString();
-        return (0, add_module_1.default)({ config, path: module });
+        return (0, add_module_1.default)({ config, modulePath: module });
     }
     if (argv._[0].toString() === 'update') {
+        (0, _helpers_1.printLogo)();
         const module = argv._[1].toString();
         return (0, update_module_1.updateModule)({ config, module });
     }
@@ -112,6 +129,7 @@ const CREATE_CONFIG_QUESTION = {
     const commandString = process.argv[2].replace('--', '');
     const command = commands[commandString];
     if (command) {
+        (0, _helpers_1.printLogo)();
         const name = argv._[1].toString();
         return (0, build_from_blueprint_1.default)({
             config,

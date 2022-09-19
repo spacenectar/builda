@@ -23,7 +23,7 @@ const writeFile = ({ file, output_dir, substitute, name }) => {
     // Replace custom substitutions
     if (substitute && substitute.length > 0) {
         substitute.forEach((sub) => {
-            const needle = `%${sub.replace.toUpperCase()}%`;
+            const needle = `${sub.replace.toUpperCase()}`;
             const regex = new RegExp(needle, 'g');
             newContents = newContents.replace(regex, sub.with);
         });

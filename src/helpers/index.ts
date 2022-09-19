@@ -1,6 +1,7 @@
 export { default as checkAndCopyPath } from './check-and-copy-path';
 export { default as detectPathType } from './detect-path-type';
 export { default as getConfigFile } from './get-config-file';
+export { default as copyDir } from './copy-dir';
 export { default as getSubstitutions } from './get-substitutions';
 export { default as getModule } from './get-module';
 export { default as getPathFromRoot } from './get-path-from-root';

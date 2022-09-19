@@ -22,6 +22,7 @@ import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
 import { updateModule } from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
+import execute from '@scripts/execute';
 
 const args = hideBin(process.argv);
 
@@ -35,8 +36,6 @@ const parser = yargs(args)
   .alias('h', 'help')
   .epilogue(`For more information, visit ${websiteUrl}`);
 
-printLogo();
-
 const CREATE_CONFIG_QUESTION = {
   message: `Would you like to create a ${configFileName} config?`,
   name: 'createConfig',
@@ -49,6 +48,7 @@ const CREATE_CONFIG_QUESTION = {
 
   if (config) {
     if (args.length === 0) {
+      printLogo();
       // No arguments were passed but a config file exists
       printMessage('No arguments provided.\r', 'danger');
       parser.showHelp();
@@ -56,6 +56,7 @@ const CREATE_CONFIG_QUESTION = {
     }
 
     if (argv.init) {
+      printLogo();
       printMessage(
         `A ${configFileName} has been found. Please delete it before continuing.\r`,
         'danger'
@@ -65,6 +66,7 @@ const CREATE_CONFIG_QUESTION = {
   }
 
   if (args.length === 0 && !argv.manual && !config) {
+    printLogo();
     // No arguments were passed but a config file does not exist
     return askQuestion(CREATE_CONFIG_QUESTION).then(({ createConfig }) => {
       if (createConfig) {
@@ -76,30 +78,42 @@ const CREATE_CONFIG_QUESTION = {
   }
 
   if (argv.manual) {
+    printLogo();
     printMessage('Manual mode selected.\r', 'notice');
     printMessage('🛠 This route does not exist yet.\r', 'notice');
     return process.exit(0);
   }
 
   if (argv.migrate) {
+    printLogo();
     // The user wants to migrate an old buildcom config file
     // Go to migrate function
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
   }
 
   if (argv.watch) {
+    printLogo();
     // The user is watching the app for changes
     // Go to watch function
     return watch(config);
   }
 
   if (argv.build) {
+    printLogo();
     // The user wants to build the app
     // Go to build function
     return buildFromPrefabs(config);
   }
 
+  if (argv.execute || argv.x) {
+    // The user wants to execute a command
+    // Go to execute function
+    const command = (argv.execute || argv.x) as string;
+    return execute(config, command);
+  }
+
   if (argv.init) {
+    printLogo();
     const name = argv.name || argv.n || '';
     const output = argv.root || argv.r || '';
     return init({
@@ -108,7 +122,8 @@ const CREATE_CONFIG_QUESTION = {
     });
   }
 
-  if (argv.prefab) {
+  if (argv.prefab || argv.p) {
+    printLogo();
     const name = argv.name || argv.n || '';
     const output = argv.root || argv.r || '';
     const pathName = argv.prefabPath || argv.pp || '';
@@ -123,11 +138,13 @@ const CREATE_CONFIG_QUESTION = {
   }
 
   if (argv._[0].toString() === 'add') {
+    printLogo();
     const module = argv._[1].toString();
-    return addModule({ config, path: module });
+    return addModule({ config, modulePath: module });
   }
 
   if (argv._[0].toString() === 'update') {
+    printLogo();
     const module = argv._[1].toString();
     return updateModule({ config, module });
   }
@@ -139,6 +156,7 @@ const CREATE_CONFIG_QUESTION = {
   const command = commands[commandString];
 
   if (command) {
+    printLogo();
     const name = argv._[1].toString();
 
     return buildFromBlueprint({

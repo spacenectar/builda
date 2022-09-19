@@ -1,4 +1,5 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 import axios from 'axios';
 import tar from 'tar';
 
@@ -10,11 +11,13 @@ import throwError from './throw-error';
 import printMessage from './print-message';
 
 export const addRemoteModule = async (
-  modulePath: string
+  modulePath: string,
+  output?: string
 ): Promise<ModuleRegistry> => {
+  const buildaDir = path.join(output || './', globals.buildaDir);
   // get the directory contents
   const registry = await getRegistry(modulePath);
-  const outputPath = `${globals.buildaDir}/modules/${registry.type}s/${registry.name}`;
+  const outputPath = `${buildaDir}/modules/${registry.type}s/${registry.name}`;
 
   await createDir(outputPath);
 
@@ -56,6 +59,7 @@ export const addRemoteModule = async (
       // Write the registry to the output directory
       fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     });
+
   printMessage('Done.', 'success');
   return registry;
 };

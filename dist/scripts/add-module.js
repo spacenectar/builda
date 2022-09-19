@@ -5,28 +5,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addModule = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
+const node_path_1 = __importDefault(require("node:path"));
 // Import helpers
 const _helpers_1 = require("../helpers/index.js");
 // Import data
 const globals_1 = __importDefault(require("../data/globals"));
 // Import ignorefile
 const string_functions_1 = __importDefault(require("../helpers/string-functions"));
-const addModule = async ({ config, path, update = false }) => {
+const addModule = async ({ config, modulePath, update = false, outputDir }) => {
     var _a, _b;
     let module = {};
     if (config) {
+        const outputPath = outputDir || config.app_root || './';
         // Check the module directory exists and create it if it doesn't
-        const moduleDirPath = `${globals_1.default.buildaDir}/modules`;
+        const moduleDirPath = node_path_1.default.join(outputPath, globals_1.default.buildaDir, 'modules');
         await (0, _helpers_1.createDir)(moduleDirPath);
-        const moduleType = (0, _helpers_1.detectPathType)(path);
+        const moduleType = (0, _helpers_1.detectPathType)(modulePath);
         if (moduleType === 'local') {
-            module = await (0, _helpers_1.addLocalModule)(path);
+            module = await (0, _helpers_1.addLocalModule)(modulePath);
         }
         if (moduleType === 'remote') {
-            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(path, config));
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(modulePath, config));
         }
         if (moduleType === 'custom') {
-            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(path, config));
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(modulePath, config));
         }
         if (module === null || module === void 0 ? void 0 : module.name) {
             const type = module.type;
@@ -45,7 +47,7 @@ const addModule = async ({ config, path, update = false }) => {
                     // User has never installed this blueprint before.
                     config.blueprints[name] = {
                         version,
-                        location: path
+                        location: modulePath
                     };
                 }
             }
@@ -62,7 +64,7 @@ const addModule = async ({ config, path, update = false }) => {
                     // User has never installed this prefab before.
                     config.prefabs[name] = {
                         version,
-                        location: path,
+                        location: modulePath,
                         output_dir: '{{app_root}}'
                     };
                 }

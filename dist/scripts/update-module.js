@@ -28,7 +28,7 @@ const updateModule = async ({ config, module }) => {
     }
     const updatedModule = await (0, add_module_1.default)({
         config,
-        path: foundModule.location,
+        modulePath: foundModule.location,
         update: true
     });
     return updatedModule;

@@ -64,14 +64,12 @@ const installModules = async (config, answers) => {
     (0, _helpers_1.printMessage)('Installing initial blueprint...\r', 'notice');
     let options = {
         config,
-        path: answers.installDefaultModule,
-        official: true
+        modulePath: answers.installDefaultModule
     };
     if (answers.installDefaultModule === 'custom') {
         options = {
             config,
-            path: answers.blueprintUrl,
-            official: false
+            modulePath: answers.blueprintUrl
         };
     }
     return (0, add_module_1.default)(options);
