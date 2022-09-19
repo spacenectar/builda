@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 // import helpers
 import { printMessage, getModule, writeFile, getSubstitutions } from '@helpers';

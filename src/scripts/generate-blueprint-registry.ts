@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 // Loop through all files in the 'blueprints' directory and build a page that lists all the files
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import ignoreFiles from '@data/ignore-file.json';
 

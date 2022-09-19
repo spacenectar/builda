@@ -1,7 +1,7 @@
 {
-  "scaffold": {
+  "blueprint": {
     "red-fox": {
-      "url": "https://github.com/builda-modules/scaffold_red-fox",
+      "url": "https://github.com/builda-modules/blueprint_red-fox",
       "host": "github.com",
       "funding": "https://www.patreon.com/builda",
       "author": {
@@ -51,7 +51,7 @@
       ]
     },
     "arctic-fox": {
-      "url": "https://github.com/builda-modules/scaffold_arctic-fox",
+      "url": "https://github.com/builda-modules/blueprint_arctic-fox",
       "host": "github.com",
       "funding": "https://www.patreon.com/builda",
       "author": {

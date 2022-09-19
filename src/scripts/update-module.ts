@@ -40,7 +40,7 @@ export const updateModule = async ({
 
   const updatedModule = await addModule({
     config,
-    path: foundModule.location,
+    modulePath: foundModule.location,
     update: true
   });
 

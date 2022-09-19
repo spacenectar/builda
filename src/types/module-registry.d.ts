@@ -13,11 +13,12 @@ export interface ModuleRegistry {
   };
   keywords?: string[];
   funding?: string[];
-  files: string[];
-  required_in_root?: string[];
+  files?: string[];
+  custom_files?: string[];
   dependencies?: {
     [key: string]: string[];
   };
+  blueprints?: ModuleConfig;
   prefabs?: ModuleConfig;
   substitute?: TSubstitution[];
 }

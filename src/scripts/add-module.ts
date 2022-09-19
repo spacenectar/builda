@@ -1,4 +1,5 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // Import helpers
 import {
@@ -29,32 +30,39 @@ export type AddModulesResponse = {
 
 export const addModule = async ({
   config,
-  path,
-  update = false
+  modulePath,
+  update = false,
+  outputDir
 }: {
   config: ConfigFile;
-  path: string;
+  modulePath: string;
   update?: boolean;
+  outputDir?: string;
 }): Promise<AddModulesResponse> => {
   let module = {} as ModuleRegistry;
   if (config) {
+    const outputPath = outputDir || config.app_root || './';
     // Check the module directory exists and create it if it doesn't
-    const moduleDirPath = `${globals.buildaDir}/modules`;
+    const moduleDirPath = path.join(outputPath, globals.buildaDir, 'modules');
 
     await createDir(moduleDirPath);
 
-    const moduleType = detectPathType(path);
+    const moduleType = detectPathType(modulePath);
 
     if (moduleType === 'local') {
-      module = await addLocalModule(path);
+      module = await addLocalModule(modulePath);
     }
 
     if (moduleType === 'remote') {
-      module = await addRemoteModule(convertRegistryPathToUrl(path, config));
+      module = await addRemoteModule(
+        convertRegistryPathToUrl(modulePath, config)
+      );
     }
 
     if (moduleType === 'custom') {
-      module = await addRemoteModule(convertRegistryPathToUrl(path, config));
+      module = await addRemoteModule(
+        convertRegistryPathToUrl(modulePath, config)
+      );
     }
 
     if (module?.name) {
@@ -76,7 +84,7 @@ export const addModule = async ({
           // User has never installed this blueprint before.
           config.blueprints[name] = {
             version,
-            location: path
+            location: modulePath
           };
         }
       }
@@ -94,7 +102,7 @@ export const addModule = async ({
           // User has never installed this prefab before.
           config.prefabs[name] = {
             version,
-            location: path,
+            location: modulePath,
             output_dir: '{{app_root}}'
           };
         }

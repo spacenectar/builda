@@ -4,7 +4,7 @@ exports.generateCommands = void 0;
 const generateCommands = (config) => {
     const commands = {};
     if (config) {
-        Object.entries(config.scaffold_scripts).forEach((script) => {
+        Object.entries(config.blueprint_scripts).forEach((script) => {
             const name = script[0];
             const { use, output_dir } = script[1];
             commands[name] = { use, output_dir };

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
-const build_from_scaffold_1 = __importDefault(require("../build-from-scaffold"));
+const build_from_blueprint_1 = __importDefault(require("../build-from-blueprint"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const FILE_FOLDER = './experiments';
@@ -12,7 +12,7 @@ const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FILE = 'config.json';
 const CONFIG_FOLDER = '.builda';
 const command = {
-    use: 'scaffold-default-ts',
+    use: 'blueprint-default-ts',
     output_dir: './experiments/atoms',
     substitute: []
 };
@@ -28,16 +28,16 @@ afterAll((done) => {
     }
     done();
 });
-describe('buildFromScaffold', () => {
+describe('buildFromBlueprint', () => {
     beforeAll(async () => {
         const config = await (0, get_config_file_1.default)();
-        (0, build_from_scaffold_1.default)({
+        (0, build_from_blueprint_1.default)({
             config,
             name: 'TestComponent',
             command
         });
     });
-    test('Builds a component from a scaffold', () => {
+    test('Builds a component from a blueprint', () => {
         expect(fs_1.default.existsSync(FILE_PATH)).toBe(true);
     });
     test('The index.tsx file contains the correct data', () => {

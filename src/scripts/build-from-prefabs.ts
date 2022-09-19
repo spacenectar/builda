@@ -1,10 +1,10 @@
 #! /usr/bin/env node
+import path from 'node:path';
+import fs from 'node:fs';
 
 import { throwError, checkAndCopyPath } from '@helpers';
 import type { ConfigFile } from '@typedefs/config-file';
 import globals from '@data/globals';
-import path from 'path';
-import fs from 'fs';
 
 export const buildFromPrefabs = (config: ConfigFile) => {
   if (config) {

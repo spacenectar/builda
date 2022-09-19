@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { askQuestion, printMessage, throwError } from '@helpers';
 import { pluralise } from '@helpers/string-functions';
@@ -91,15 +91,13 @@ const installModules = async (config: ConfigFile, answers: Answers) => {
   printMessage('Installing initial blueprint...\r', 'notice');
   let options = {
     config,
-    path: answers.installDefaultModule,
-    official: true
+    modulePath: answers.installDefaultModule
   };
 
   if (answers.installDefaultModule === 'custom') {
     options = {
       config,
-      path: answers.blueprintUrl,
-      official: false
+      modulePath: answers.blueprintUrl
     };
   }
   return addModule(options);

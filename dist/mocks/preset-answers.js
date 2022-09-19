@@ -4,9 +4,9 @@ exports.presetAnswers = void 0;
 exports.presetAnswers = {
     appName: 'test',
     outputDirectory: './experiments',
-    installDefaultModule: 'builda:scaffold-default-ts',
-    scaffoldUrl: '',
-    scaffoldSelection: ['atom', 'component'],
-    customScaffoldList: 'test'
+    installDefaultModule: 'builda:blueprint-default-ts',
+    blueprintUrl: '',
+    blueprintSelection: ['atom', 'component'],
+    customBlueprintList: 'test'
 };
 exports.default = exports.presetAnswers;

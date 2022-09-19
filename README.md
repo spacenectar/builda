@@ -7,6 +7,9 @@
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
+> **NOTE:** This readme file is a mess as it is a work in progress.
+> Please bear with me, I will clean it up soon.
+
 ## What's this
 
 Builda is a simple command-line tool to make building project elements fast and easy.
@@ -142,6 +145,29 @@ builda install sn:custom-blueprint
 
 ## Usage
 
+### Useful commands
+
+#### `builda --init`
+
+Initialises builda in your project. This will create a `.builda` directory in your
+project root and a `config.json` file inside that. (see [Configuration](#configuration) below)
+
+#### `builda --prefab <prefab-path>`
+
+Initialises a new project using a prefab. (see [Prefabs](#prefabs) below)
+
+#### `builda --exec <command>
+
+Executes a command in the context of the current project. (see [Commands](#commands) below)
+
+#### `builda --index`
+
+Generates an index file any directories specified in 'indexes' in the config file. (see [Indexing](#indexing) below)
+
+#### `builda --help`
+
+Displays the help menu.
+
 ### Generating files from blueprints
 
 When you run `builda --init`, you will generate a list of commands which can be
@@ -169,6 +195,49 @@ This is a powerful feature as not only does it allow you to specify the director
 to generate files in, it also allows you to specify the blueprint to generate from,
 so if you had some components which needed to be typescript and others that
 needed to be javascript, you can specify a different blueprint for each.
+
+## Indexing
+
+Builda can generate an index file for any directories you specify in the config
+file. This is useful if you want to import files from a directory without having
+to specify the full path.
+
+For example, if you have a directory called `components` and you want to import
+a component called `my-component`, you could do this:
+
+```javascript
+import MyComponent from './components/my-component';
+```
+
+But if you have an index file, you can do this:
+
+```javascript
+import { MyComponent } from './components';
+```
+
+Indexing is a little basic at the moment, it just generates an index file which
+exports the default export of any index file it files in the directory
+(excluding the index file itself) and any sub-directories. The name of the
+export is the name of the containing directory.
+
+This will be improved in the future.
+
+### Configuring indexing
+
+To configure indexing, you need to add an `indexes` property to your config file.
+Within this property, you can specify an array of directories to index.
+
+You can also specify a file extension to use for the index file. If you do not
+specify an extension, the default is `.ts`.
+
+```json
+{
+  "indexes": {
+    "directories": ["components", "atoms"],
+    "extension": ".ts"
+  }
+}
+```
 
 ## Prefabs
 
