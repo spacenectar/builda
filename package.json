@@ -1,8 +1,10 @@
 {
   "name": "builda",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "bin": {
-    "builda": "dist/index.js"
+    "builda": "dist/index.js",
+    "bx": "dist/run.js",
+    "bw": "dist/watch.js"
   },
   "main": "dist/index.js",
   "description": "The everything generator",
@@ -70,6 +72,7 @@
   },
   "devDependencies": {
     "@types/diff": "^5.0.2",
+    "@types/glob": "^8.0.0",
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^28.1.4",
     "@types/js-yaml": "^4.0.5",
