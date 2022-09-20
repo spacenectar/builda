@@ -14,8 +14,15 @@ const getRegistry = async (registryPath) => {
     if (pathType === 'local') {
         return JSON.parse(fs_1.default.readFileSync(`${registryPath}/registry.json`, 'utf8'));
     }
+    let url = (0, convert_registry_path_to_url_1.default)(registryPath);
+    if (url.match(/{%FILE_NAME%}/)) {
+        url = url.replace(/{%FILE_NAME%}/, 'registry.json');
+    }
+    else {
+        url = `${url}/registry.json`;
+    }
     return axios_1.default
-        .get(`${(0, convert_registry_path_to_url_1.default)(registryPath)}/registry.json`)
+        .get(url)
         .then((response) => {
         return response.data;
     })

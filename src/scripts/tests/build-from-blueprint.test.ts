@@ -6,7 +6,6 @@ import path from 'path';
 
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
-const CONFIG_FILE = 'config.json';
 const CONFIG_FOLDER = '.builda';
 
 const command = {
@@ -16,9 +15,6 @@ const command = {
 };
 
 afterAll((done) => {
-  if (fs.existsSync(CONFIG_FILE)) {
-    fs.rmSync(path.resolve(CONFIG_FILE));
-  }
   if (fs.existsSync(CONFIG_FOLDER)) {
     fs.rmSync(path.resolve(CONFIG_FOLDER), { recursive: true, force: true });
   }

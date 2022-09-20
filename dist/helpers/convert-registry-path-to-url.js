@@ -11,24 +11,41 @@ const urlWithProtocol = (url) => {
 const convertRegistryPathToUrl = (registryPath, config) => {
     let newPath = registryPath;
     let version = '';
+    if (newPath.startsWith('http') || newPath.startsWith('https')) {
+        if (newPath.includes('github.com')) {
+            return newPath
+                .replace('github.com', 'raw.githubusercontent.com')
+                .replace('/blob', '')
+                .replace('/tree', '');
+        }
+        if (newPath.includes('bitbucket.org')) {
+            return newPath.replace('src', 'raw');
+        }
+        return newPath;
+    }
     if (newPath.includes('@')) {
         const pathParts = registryPath.split('@');
         newPath = pathParts[0];
         version = pathParts[1];
     }
-    if (config) {
+    if (config && config.resolve) {
         const customMatcherKeys = config.resolve
             ? Object.keys(config.resolve)
             : undefined;
         const pathMatcher = newPath.split(':');
+        const pathMatcherKey = pathMatcher[0];
+        const pathMatcherValue = pathMatcher[1];
+        // If there is a trailing slash, remove it
         if (newPath.endsWith('/')) {
             newPath = newPath.slice(0, -1);
         }
-        if (pathMatcher.length > 0 && (customMatcherKeys === null || customMatcherKeys === void 0 ? void 0 : customMatcherKeys.includes(pathMatcher[0]))) {
-            const slug = newPath.split(':').pop();
+        if (pathMatcher.length > 0 && (customMatcherKeys === null || customMatcherKeys === void 0 ? void 0 : customMatcherKeys.includes(pathMatcherKey))) {
             for (const element of customMatcherKeys) {
-                if (pathMatcher[0] === element && config.resolve) {
-                    newPath = urlWithProtocol(`${config.resolve[pathMatcher[0]]}/${slug}`);
+                const newMatcherValue = config.resolve[pathMatcherKey]
+                    .replace('{%REPO_NAME%}', pathMatcherValue)
+                    .replace('{%VERSION%}', version);
+                if (pathMatcherKey === element && config.resolve) {
+                    newPath = urlWithProtocol(`${newMatcherValue}`);
                 }
             }
             return newPath;
@@ -46,17 +63,8 @@ const convertRegistryPathToUrl = (registryPath, config) => {
         const updatedPath = newPath.replace('bitbucket:', 'https://bitbucket.org/');
         return `${updatedPath}/raw${version ? `/${version}` : ''}`;
     }
-    if (newPath.includes('github.com')) {
-        return newPath
-            .replace('github.com', 'raw.githubusercontent.com')
-            .replace('/blob', '')
-            .replace('/tree', '');
-    }
-    if (newPath.includes('bitbucket.org')) {
-        return newPath.replace('src', 'raw');
-    }
-    // If no custom matcher is provided just return the path
-    return newPath;
+    // If no custom matcher is provided and the path doesn't look like a regular url return an empty string
+    return '';
 };
 exports.convertRegistryPathToUrl = convertRegistryPathToUrl;
 exports.default = exports.convertRegistryPathToUrl;

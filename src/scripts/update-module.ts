@@ -61,20 +61,25 @@ export const updateModule = async ({
 
   let newmodule = {} as ModuleRegistry;
 
+  const url = convertRegistryPathToUrl(requestVersion, config);
+
+  // TODO: Add documentation for custom resolvers
+  if (!url) {
+    return throwError(
+      `Could not find resolver for ${requestVersion} in the registry. Please check the URL and try again.`
+    );
+  }
+
   if (moduleType === 'local') {
     newmodule = await addLocalModule(requestVersion);
   }
 
   if (moduleType === 'remote') {
-    newmodule = await addRemoteModule(
-      convertRegistryPathToUrl(requestVersion, config)
-    );
+    newmodule = await addRemoteModule(url);
   }
 
   if (moduleType === 'custom') {
-    newmodule = await addRemoteModule(
-      convertRegistryPathToUrl(requestVersion, config)
-    );
+    newmodule = await addRemoteModule(url);
   }
 
   if (newmodule?.name) {
