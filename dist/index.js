@@ -21,6 +21,7 @@ const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefa
 const update_module_1 = require("./scripts/update-module");
 const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
 const execute_1 = __importDefault(require("./scripts/execute"));
+const generate_indexes_1 = require("./scripts/generate-indexes");
 const args = (0, helpers_1.hideBin)(process.argv);
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
@@ -86,6 +87,12 @@ const CREATE_CONFIG_QUESTION = {
         // The user wants to build the app
         // Go to build function
         return (0, build_from_prefabs_1.default)(config);
+    }
+    if (argv.index) {
+        (0, _helpers_1.printLogo)();
+        // The user wants to generate indexes
+        // Go to generate indexes function
+        return (0, generate_indexes_1.generateIndexes)(config);
     }
     if (argv.execute || argv.x) {
         // The user wants to execute a command

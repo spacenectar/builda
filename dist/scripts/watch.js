@@ -11,10 +11,10 @@ const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
 const watch = (config) => {
     if (config) {
-        const { prefabs, app_root } = config;
+        const { prefab, app_root } = config;
         const cleanRoot = app_root.replace(/\.\//, '');
-        if (!prefabs) {
-            (0, _helpers_1.throwError)('No prefabs found in config file. Watch cannot be run without prefabs');
+        if (!prefab) {
+            (0, _helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
         }
         const watcher = chokidar_1.default.watch(config.app_root, {
             persistent: true

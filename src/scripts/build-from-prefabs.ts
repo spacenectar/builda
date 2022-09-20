@@ -8,13 +8,13 @@ import globals from '@data/globals';
 
 export const buildFromPrefabs = (config: ConfigFile) => {
   if (config) {
-    const { prefabs } = config;
+    const { prefab } = config;
     const { buildaDir } = globals;
     const destinationDir = path.join(buildaDir, 'build');
 
-    if (!prefabs) {
+    if (!prefab) {
       throwError(
-        'No prefabs found in config file. Build cannot be run without prefabs'
+        'No prefab found in config file. Build cannot be run without prefab'
       );
     }
 
@@ -22,26 +22,16 @@ export const buildFromPrefabs = (config: ConfigFile) => {
       fs.mkdirSync(destinationDir);
     }
 
-    // convert the prefabs object to an array
-    const prefabArray = Object.keys(prefabs).map((key) => {
-      return {
-        name: key,
-        ...prefabs[key]
-      };
-    });
-
     // build each prefab
-    prefabArray.forEach((prefab) => {
-      const sourceDir = path.join(buildaDir, 'modules', 'prefabs', prefab.name);
-      fs.readdir(sourceDir, (err, files) => {
-        if (err) {
-          throwError(err.message);
-        } else {
-          files.forEach((file) => {
-            checkAndCopyPath(path.join(sourceDir, file), destinationDir, file);
-          });
-        }
-      });
+    const sourceDir = path.join(buildaDir, 'modules', 'prefab');
+    fs.readdir(sourceDir, (err, files) => {
+      if (err) {
+        throwError(err.message);
+      } else {
+        files.forEach((file) => {
+          checkAndCopyPath(path.join(sourceDir, file), destinationDir, file);
+        });
+      }
     });
   } else {
     throwError('No config file found');

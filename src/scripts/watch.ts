@@ -12,12 +12,12 @@ import type { ConfigFile } from '@typedefs/config-file';
 
 export const watch = (config: ConfigFile) => {
   if (config) {
-    const { prefabs, app_root } = config;
+    const { prefab, app_root } = config;
     const cleanRoot = app_root.replace(/\.\//, '');
 
-    if (!prefabs) {
+    if (!prefab) {
       throwError(
-        'No prefabs found in config file. Watch cannot be run without prefabs'
+        'No prefab found in config file. Watch cannot be run without a prefab'
       );
     }
 

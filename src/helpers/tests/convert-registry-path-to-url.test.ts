@@ -24,36 +24,37 @@ describe('convertRegistryPathToUrl() function', () => {
 
   test('should return a raw path to a registry.json file when a bitbucket repo folder path is provided', () => {
     const registryPath =
-      'https://bitbucket.org/builda/blueprints/src/master/component-with-storybook/';
+      'https://bitbucket.org/builda/blueprints/src/master/component-with-storybook';
     const expected =
       'https://bitbucket.org/builda/blueprints/raw/master/component-with-storybook';
     expect(convertRegistryPathToUrl(registryPath, config)).toEqual(expected);
   });
 
   test('should return a raw path to a registry.json file when a github resolver and repo is provided', () => {
-    const registryPath = 'github:test-path/builda';
+    const registryPath = 'github:test-path/builda@latest';
     const expected =
-      'https://raw.githubusercontent.com/test-path/builda/master';
+      'https://raw.githubusercontent.com/test-path/builda/latest';
     expect(convertRegistryPathToUrl(registryPath, config)).toEqual(expected);
   });
 
   test('should return a raw path to a registry.json file when a bitbucket resolver and repo is provided', () => {
-    const registryPath = 'bitbucket:builda/blueprints';
-    const expected = 'https://bitbucket.org/builda/blueprints/raw/master';
+    const registryPath = 'bitbucket:builda/blueprints/1.1.0';
+    const expected = 'https://bitbucket.org/builda/blueprints/1.1.0/raw';
     expect(convertRegistryPathToUrl(registryPath, config)).toEqual(expected);
   });
 
   test('Should return a path to a registry.json when a custom matcher is provided', () => {
     const customConfig = {
+      ...config,
       resolve: {
         bbcustom:
-          'https://bitbucket.custom.url/projects/builda/repos/component-library/raw/master'
+          'https://bitbucket.custom.url/projects/builda/repos/{%REPO_NAME%}/raw/{%FILE_NAME%}?at=refs/tags/{%VERSION%}'
       }
     } as unknown as ConfigFile;
 
-    const registryPath = 'bbcustom:components';
+    const registryPath = 'bbcustom:component-library@6.7.1';
     const expected =
-      'https://bitbucket.custom.url/projects/builda/repos/component-library/raw/master/components';
+      'https://bitbucket.custom.url/projects/builda/repos/component-library/raw/{%FILE_NAME%}?at=refs/tags/6.7.1';
     expect(convertRegistryPathToUrl(registryPath, customConfig)).toEqual(
       expected
     );

@@ -357,3 +357,27 @@ I have a [Patreon](https://www.patreon.com/stelmosfire) where you can support me
 and help me keep this project alive. At the moment I only have a single 'Offer
 Support' tier but I'm sure I'll be adding more tiers in the future when I get
 around to fleshing out my page.
+
+## How to create a blueprint
+
+Coming soon...
+
+## How to create a prefab
+
+At the moment, this is a manual process. I will be adding a tool to make this
+easier in the future.
+
+### Creating the prefab
+
+A prefab requires the following files and directories:
+
+- registry.json - This is the registry file for the prefab. It is used to
+  register the prefab with builda and to specify the name of the prefab.
+- README.md - This is the readme file for the prefab. It is used to provide
+  information about the prefab and how to use it.
+- A 'files' directory - This is the directory where all of the files for the
+  prefab are stored.
+
+You can add other files and directories to the prefab if you want, but these
+will be ignored by builda. If you don't want to install builda globally, you can
+add a package.json file to the root and install builda as a dev dependency.

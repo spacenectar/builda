@@ -1,0 +1,10 @@
+{
+  "name": "test",
+  "app_root": "./experiments",
+  "blueprints": {
+    "blueprint-default-ts": {
+      "version": "1.0.0",
+      "location": "builda:blueprint-default-ts"
+    }
+  }
+}

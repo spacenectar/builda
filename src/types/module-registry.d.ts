@@ -19,7 +19,6 @@ export interface ModuleRegistry {
     [key: string]: string[];
   };
   blueprints?: ModuleConfig;
-  prefabs?: ModuleConfig;
   substitute?: TSubstitution[];
 }
 
