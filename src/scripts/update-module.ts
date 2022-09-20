@@ -1,6 +1,16 @@
+import fs from 'node:fs';
+import globals from '@data/globals';
+import {
+  addLocalModule,
+  addRemoteModule,
+  convertRegistryPathToUrl,
+  detectPathType,
+  printMessage
+} from '@helpers/index';
+import changeCase from '@helpers/string-functions';
 import throwError from '@helpers/throw-error';
 import { ConfigFile } from '@typedefs/config-file';
-import addModule from './add-module';
+import ModuleRegistry from '@typedefs/module-registry';
 
 export const updateModule = async ({
   config,
@@ -18,8 +28,12 @@ export const updateModule = async ({
 
   let foundModule = null;
 
-  if (config.prefabs && config.prefabs[moduleName]) {
-    foundModule = config.prefabs[moduleName];
+  if (config.prefab) {
+    const splitString = config.prefab.split('@');
+    foundModule = {
+      location: config.prefab,
+      version: splitString ? splitString[1] : ''
+    };
   }
 
   if (config.blueprints && config.blueprints[moduleName]) {
@@ -28,21 +42,76 @@ export const updateModule = async ({
 
   if (!foundModule) {
     return throwError(
-      `Module ${module} not found in config. Perhaps you meant to run 'builda add ${module}'?`
+      `Module ${moduleName} not found in config. Perhaps you meant to run 'builda add ${module}'?`
     );
   }
 
+  const modulePath = foundModule.location;
   const localVersion = foundModule.version;
 
-  if (moduleVersion && moduleVersion === localVersion) {
-    return throwError(`Module ${module} is already at version ${localVersion}`);
+  const requestVersion = `${modulePath.split('@')[0]}@${moduleVersion}`;
+
+  if (moduleVersion && moduleVersion === localVersion && localVersion !== '') {
+    return throwError(
+      `Module ${moduleName} is already at version ${localVersion}`
+    );
   }
 
-  const updatedModule = await addModule({
-    config,
-    modulePath: foundModule.location,
-    update: true
-  });
+  const moduleType = detectPathType(requestVersion);
 
-  return updatedModule;
+  let newmodule = {} as ModuleRegistry;
+
+  if (moduleType === 'local') {
+    newmodule = await addLocalModule(requestVersion);
+  }
+
+  if (moduleType === 'remote') {
+    newmodule = await addRemoteModule(
+      convertRegistryPathToUrl(requestVersion, config)
+    );
+  }
+
+  if (moduleType === 'custom') {
+    newmodule = await addRemoteModule(
+      convertRegistryPathToUrl(requestVersion, config)
+    );
+  }
+
+  if (newmodule?.name) {
+    const type = newmodule.type;
+    const name = newmodule.name;
+    const version = newmodule.version;
+
+    const newConfig = config.default!;
+
+    if (type === 'blueprint') {
+      newConfig.blueprints[name] = {
+        location: requestVersion,
+        version
+      };
+    }
+
+    if (type === 'prefab') {
+      newConfig.prefab = modulePath.split('@')[0];
+    }
+
+    return fs.writeFile(
+      globals.configFileName,
+      JSON.stringify(newConfig, null, 2),
+      (err) => {
+        if (err) {
+          throwError(err.message);
+        }
+        printMessage(
+          `${changeCase(
+            type,
+            'pascal'
+          )}: '${name}' updated to version '${version}'`,
+          'success'
+        );
+      }
+    );
+  }
+
+  return throwError(`Module ${module} not found in config`);
 };

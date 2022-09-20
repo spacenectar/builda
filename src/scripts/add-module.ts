@@ -31,12 +31,10 @@ export type AddModulesResponse = {
 export const addModule = async ({
   config,
   modulePath,
-  update = false,
   outputDir
 }: {
   config: ConfigFile;
   modulePath: string;
-  update?: boolean;
   outputDir?: string;
 }): Promise<AddModulesResponse> => {
   let module = {} as ModuleRegistry;
@@ -76,7 +74,7 @@ export const addModule = async ({
           config.blueprints = {};
         }
         // User has installed this blueprint before.
-        if (config?.blueprints?.[name] && !update) {
+        if (config?.blueprints?.[name]) {
           throwError(
             `Blueprint already installed, perhaps you meant 'builda update ${name}?'`
           );
@@ -89,23 +87,10 @@ export const addModule = async ({
         }
       }
       if (type === 'prefab') {
-        // User has never installed any prefabs.
-        if (!config?.prefabs) {
-          config.prefabs = {};
-        }
         // User has installed this prefab before.
-        if (config?.prefabs?.[name] && !update) {
-          throwError(
-            `Prefab already installed, perhaps you meant 'builda update ${name}?'`
-          );
-        } else {
-          // User has never installed this prefab before.
-          config.prefabs[name] = {
-            version,
-            location: modulePath,
-            output_dir: '{{app_root}}'
-          };
-        }
+        throwError(
+          `You cannot install a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`
+        );
       }
 
       // Write the config file

@@ -3,6 +3,7 @@ import { ModuleConfig } from './module-config';
 import { GenIndexConfig } from './gen-index-config';
 
 export interface ConfigFile {
+  default?: Omit<ConfigFile, 'default'>;
   name: string;
   app_root: string;
   package_manager: 'npm' | 'yarn';
@@ -13,7 +14,7 @@ export interface ConfigFile {
   blueprint_scripts: {
     [key: string]: BlueprintScriptContents;
   };
-  prefabs: ModuleConfig;
+  prefab: string;
   blueprints: ModuleConfig;
   indexes: GenIndexConfig;
 }

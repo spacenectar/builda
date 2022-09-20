@@ -45,7 +45,9 @@ const addLocalModule = async (modulePath, output) => {
     // get the registry data
     const registry = await (0, get_registry_1.default)(modulePath);
     // Set the output path
-    const outputPath = `${buildaDir}/modules/${registry.type}s/${registry.name}`;
+    const outputPath = registry.type === 'blueprint'
+        ? `${buildaDir}/modules/blueprints/${registry.name}`
+        : `${buildaDir}/modules/prefab`;
     await (0, create_dir_1.default)(outputPath);
     // Get the files
     await getFiles(modulePath, outputPath, 'files');

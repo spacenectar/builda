@@ -2,6 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 
 import detectPathType from './detect-path-type';
+import convertRegistryPathToUrl from './convert-registry-path-to-url';
 import throwError from './throw-error';
 
 export const getRegistry = async (registryPath: string) => {
@@ -12,7 +13,7 @@ export const getRegistry = async (registryPath: string) => {
   }
 
   return axios
-    .get(`${registryPath}/registry.json`)
+    .get(`${convertRegistryPathToUrl(registryPath)}/registry.json`)
     .then((response) => {
       return response.data;
     })

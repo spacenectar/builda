@@ -18,3 +18,4 @@ export { default as randomWordGenerator } from './random-word-generator';
 export { default as getRegistry } from './get-registry';
 export { default as convertRegistryPathToUrl } from './convert-registry-path-to-url';
 export { default as writeFile } from './write-file';
+export { default as getDetailsFromPath } from './get-details-from-path';

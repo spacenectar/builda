@@ -14,6 +14,14 @@ export const convertRegistryPathToUrl = (
 ) => {
   let newPath = registryPath;
 
+  let version = '';
+
+  if (newPath.includes('@')) {
+    const pathParts = registryPath.split('@');
+    newPath = pathParts[0];
+    version = pathParts[1];
+  }
+
   if (config) {
     const customMatcherKeys = config.resolve
       ? Object.keys(config.resolve)
@@ -43,7 +51,7 @@ export const convertRegistryPathToUrl = (
       'github:',
       'https://raw.githubusercontent.com/'
     );
-    return `${updatedPath}/master`;
+    return `${updatedPath}${version ? `/${version}` : ''}`;
   }
 
   if (newPath.startsWith('builda:')) {
@@ -56,7 +64,7 @@ export const convertRegistryPathToUrl = (
 
   if (newPath.startsWith('bitbucket:')) {
     const updatedPath = newPath.replace('bitbucket:', 'https://bitbucket.org/');
-    return `${updatedPath}/raw/master`;
+    return `${updatedPath}/raw${version ? `/${version}` : ''}`;
   }
 
   if (newPath.includes('github.com')) {

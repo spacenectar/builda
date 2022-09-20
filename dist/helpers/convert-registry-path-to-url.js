@@ -10,6 +10,12 @@ const urlWithProtocol = (url) => {
 };
 const convertRegistryPathToUrl = (registryPath, config) => {
     let newPath = registryPath;
+    let version = '';
+    if (newPath.includes('@')) {
+        const pathParts = registryPath.split('@');
+        newPath = pathParts[0];
+        version = pathParts[1];
+    }
     if (config) {
         const customMatcherKeys = config.resolve
             ? Object.keys(config.resolve)
@@ -30,7 +36,7 @@ const convertRegistryPathToUrl = (registryPath, config) => {
     }
     if (newPath.startsWith('github:')) {
         const updatedPath = newPath.replace('github:', 'https://raw.githubusercontent.com/');
-        return `${updatedPath}/master`;
+        return `${updatedPath}${version ? `/${version}` : ''}`;
     }
     if (newPath.startsWith('builda:')) {
         const updatedPath = newPath.replace('builda:', 'https://builda.app/modules/');
@@ -38,7 +44,7 @@ const convertRegistryPathToUrl = (registryPath, config) => {
     }
     if (newPath.startsWith('bitbucket:')) {
         const updatedPath = newPath.replace('bitbucket:', 'https://bitbucket.org/');
-        return `${updatedPath}/raw/master`;
+        return `${updatedPath}/raw${version ? `/${version}` : ''}`;
     }
     if (newPath.includes('github.com')) {
         return newPath

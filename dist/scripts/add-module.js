@@ -12,8 +12,8 @@ const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
 // Import ignorefile
 const string_functions_1 = __importDefault(require("../helpers/string-functions"));
-const addModule = async ({ config, modulePath, update = false, outputDir }) => {
-    var _a, _b;
+const addModule = async ({ config, modulePath, outputDir }) => {
+    var _a;
     let module = {};
     if (config) {
         const outputPath = outputDir || config.app_root || './';
@@ -40,7 +40,7 @@ const addModule = async ({ config, modulePath, update = false, outputDir }) => {
                     config.blueprints = {};
                 }
                 // User has installed this blueprint before.
-                if (((_a = config === null || config === void 0 ? void 0 : config.blueprints) === null || _a === void 0 ? void 0 : _a[name]) && !update) {
+                if ((_a = config === null || config === void 0 ? void 0 : config.blueprints) === null || _a === void 0 ? void 0 : _a[name]) {
                     (0, _helpers_1.throwError)(`Blueprint already installed, perhaps you meant 'builda update ${name}?'`);
                 }
                 else {
@@ -52,22 +52,8 @@ const addModule = async ({ config, modulePath, update = false, outputDir }) => {
                 }
             }
             if (type === 'prefab') {
-                // User has never installed any prefabs.
-                if (!(config === null || config === void 0 ? void 0 : config.prefabs)) {
-                    config.prefabs = {};
-                }
                 // User has installed this prefab before.
-                if (((_b = config === null || config === void 0 ? void 0 : config.prefabs) === null || _b === void 0 ? void 0 : _b[name]) && !update) {
-                    (0, _helpers_1.throwError)(`Prefab already installed, perhaps you meant 'builda update ${name}?'`);
-                }
-                else {
-                    // User has never installed this prefab before.
-                    config.prefabs[name] = {
-                        version,
-                        location: modulePath,
-                        output_dir: '{{app_root}}'
-                    };
-                }
+                (0, _helpers_1.throwError)(`You cannot install a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`);
             }
             // Write the config file
             node_fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {

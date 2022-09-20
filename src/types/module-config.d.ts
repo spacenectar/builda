@@ -4,7 +4,7 @@ export type ModuleConfigContents = {
    */
   version?: string;
   /**
-   * The custom resolver to use for the module (e.g. myurl)
+   * The custom resolver to use for the module
    **/
   resolve?: string;
   /**

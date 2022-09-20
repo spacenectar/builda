@@ -17,7 +17,9 @@ const addRemoteModule = async (modulePath, output) => {
     const buildaDir = node_path_1.default.join(output || './', globals_1.default.buildaDir);
     // get the directory contents
     const registry = await (0, get_registry_1.default)(modulePath);
-    const outputPath = `${buildaDir}/modules/${registry.type}s/${registry.name}`;
+    const outputPath = registry.type === 'blueprint'
+        ? `${buildaDir}/modules/blueprints/${registry.name}`
+        : `${buildaDir}/modules/prefab`;
     await (0, create_dir_1.default)(outputPath);
     (0, print_message_1.default)(`Downloading ${registry.name}...`, 'downloading');
     // Download the tarball

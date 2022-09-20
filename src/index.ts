@@ -23,6 +23,7 @@ import buildFromPrefabs from '@scripts/build-from-prefabs';
 import { updateModule } from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
 import execute from '@scripts/execute';
+import { generateIndexes } from '@scripts/generate-indexes';
 
 const args = hideBin(process.argv);
 
@@ -103,6 +104,13 @@ const CREATE_CONFIG_QUESTION = {
     // The user wants to build the app
     // Go to build function
     return buildFromPrefabs(config);
+  }
+
+  if (argv.index) {
+    printLogo();
+    // The user wants to generate indexes
+    // Go to generate indexes function
+    return generateIndexes(config);
   }
 
   if (argv.execute || argv.x) {

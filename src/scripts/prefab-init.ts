@@ -39,7 +39,7 @@ const questions = [
     type: 'input',
     name: 'pathName',
     message: 'What is the path to the prefab?',
-    default: 'github:builda-modules/prefab-test',
+    default: 'github:builda-modules/prefab-test@latest',
     validate: (input: string) => {
       if (input.length) {
         return true;
@@ -167,8 +167,7 @@ export const prefabInit = async ({
       const prefabDir = path.join(
         outputDir,
         buildaDir,
-        'modules/prefabs/',
-        prefabName,
+        'modules/prefab',
         'files'
       );
 
@@ -279,7 +278,7 @@ export const prefabInit = async ({
           if (bp.location === 'prefab') {
             // Copy the 'blueprints' folder from the prefab to the .builda folder
             const blueprintSrc = path.join(
-              workingDir,
+              prefabDir,
               buildaDir,
               'modules',
               'blueprints',
