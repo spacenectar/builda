@@ -28,7 +28,7 @@ interface Answers {
   customBlueprintList: string;
 }
 
-const configFilePath = path.join(buildaDir, configFileName);
+const configFilePath = path.resolve(configFileName);
 
 const OVERWRITE_CONFIG_QUESTION = {
   message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
