@@ -33,13 +33,12 @@
     "test": "jest --testSequencer='./config/jest-sequencer.js'",
     "testonly": "jest",
     "copyfiles": "cp -r ./src/data ./dist",
-    "lint:md": "markdownlint -c .markdownlint.json --fix --ignore node_modules **/*.md",
+    "lint:md": "markdownlint -c .markdownlint.json --fix  **/*.md",
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write .",
     "postbuild": "tsc-alias -p tsconfig.json && yarn copyfiles"
   },
-  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spacenectar/builda"
@@ -54,12 +53,10 @@
   },
   "homepage": "https://www.builda.app",
   "dependencies": {
+    "@types/tar-fs": "^2.0.1",
     "axios": "^0.27.2",
     "chalk": "4.1.2",
     "chokidar": "^3.5.3",
-    "cli-spinners": "^2.7.0",
-    "cross-env": "^7.0.3",
-    "diff": "^5.1.0",
     "execa": "5.1.1",
     "glob": "^8.0.3",
     "inquirer": "8.2.4",
@@ -69,7 +66,6 @@
     "yargs": "^17.4.1"
   },
   "devDependencies": {
-    "@types/diff": "^5.0.2",
     "@types/glob": "^8.0.0",
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^28.1.4",
@@ -77,7 +73,6 @@
     "@types/node": "^17.0.25",
     "@types/pretty": "^2.0.1",
     "@types/tar": "^6.1.2",
-    "@types/tar-fs": "^2.0.1",
     "@types/yargs": "^17.0.10",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
