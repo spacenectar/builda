@@ -8,13 +8,15 @@ import TSubstitution from '@typedefs/substitution';
 
 interface IWriteFileOptions {
   file: string;
+  rename?: string;
   output_dir: string;
   substitute?: TSubstitution[];
-  name: string;
+  name?: string;
 }
 
 export const writeFile = ({
   file,
+  rename,
   output_dir,
   substitute,
   name
@@ -25,14 +27,16 @@ export const writeFile = ({
   const fileContents = fs.readFileSync(path.resolve(file), 'utf8');
 
   // replace the each placeholder with the correctly formatted name
-  let newContents =
-    fileContents &&
+  let newContents = fileContents;
+
+  if (name) {
     fileContents
       .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
       .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
       .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))
       .replace(/%PASCAL_CASE%/g, changeCase(name, 'pascalCase'))
       .replace(/%SENTENCE_CASE%/g, changeCase(name, 'sentenceCase'));
+  }
 
   // Replace custom substitutions
   if (substitute && substitute.length > 0) {
@@ -49,9 +53,9 @@ export const writeFile = ({
 
   // write the new file contents to the output directory
   if (newContents) {
-    return fs.writeFileSync(`${output_dir}/${fileName}`, newContents);
+    return fs.writeFileSync(`${output_dir}/${rename || fileName}`, newContents);
   }
-  throw new Error(`Could not write file ${fileName}`);
+  throw new Error(`Could not write file ${rename || fileName}`);
 };
 
 export default writeFile;
