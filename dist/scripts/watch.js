@@ -9,6 +9,18 @@ exports.watch = void 0;
 const chokidar_1 = __importDefault(require("chokidar"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
+const ignored = [
+    'node_modules',
+    '.builda',
+    '.git',
+    '.DS_Store',
+    '.github',
+    '.vscode',
+    'builda',
+    'npm-debug.log',
+    'yarn-error.log',
+    'yarn-debug.log'
+];
 const watch = (config) => {
     if (config) {
         const { prefab, app_root } = config;
@@ -17,7 +29,8 @@ const watch = (config) => {
             (0, _helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
         }
         const watcher = chokidar_1.default.watch(config.app_root, {
-            persistent: true
+            persistent: true,
+            ignored
         });
         watcher.on('ready', () => {
             (0, _helpers_1.printMessage)('Watching for changes...', 'primary');

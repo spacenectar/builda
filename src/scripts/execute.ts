@@ -17,7 +17,8 @@ export const execute = async (config: ConfigFile, command: string) => {
 
     const buildDir = path.join(app_root, globals.buildaDir, 'build');
     const packageJson = require(path.resolve(buildDir, 'package.json'));
-    const script = packageJson.scripts[command];
+    const scripts = packageJson.scripts;
+    const script = scripts[command];
 
     if (!script) {
       throwError(`No script found with the name '${command}'`);

@@ -18,7 +18,8 @@ const execute = async (config, command) => {
         const { app_root, package_manager } = config;
         const buildDir = node_path_1.default.join(app_root, globals_1.default.buildaDir, 'build');
         const packageJson = require(node_path_1.default.resolve(buildDir, 'package.json'));
-        const script = packageJson.scripts[command];
+        const scripts = packageJson.scripts;
+        const script = scripts[command];
         if (!script) {
             (0, _helpers_1.throwError)(`No script found with the name '${command}'`);
         }

@@ -179,6 +179,15 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             if (node_fs_1.default.existsSync(buildaConfigPath)) {
                 node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootBuildaPath, 'config.json'));
             }
+            // Create a new package.json file in the root directory with updated scripts
+            const packageJson = require(node_path_1.default.resolve(workingDir, 'package.json'));
+            const scripts = packageJson.scripts;
+            const buildaScripts = {};
+            Object.entries(scripts).map(([key]) => {
+                buildaScripts[key] = `builda -x ${key}`;
+            });
+            const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
+            node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
             // Delete the .builda directory from the build directory
             if (node_fs_1.default.existsSync(buildaPath)) {
                 node_fs_1.default.rmSync(buildaPath, { recursive: true });
@@ -226,7 +235,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     (0, _helpers_1.printMessage)(`Running ${packageManagerType} install`, 'processing');
                     try {
                         const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
-                            cwd: workingDir,
+                            cwd: rootDir,
                             all: true
                         });
                         (_a = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _a === void 0 ? void 0 : _a.pipe(process.stdout);
@@ -234,7 +243,8 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                         (0, _helpers_1.printMessage)('All dependencies installed.', 'success');
                     }
                     catch (error) {
-                        (0, _helpers_1.printMessage)('Failed to run. Please try running manually.', 'error');
+                        (0, _helpers_1.printMessage)(`Failed to run. Please try running '${packageManagerType} install' manually.`, 'error');
+                        //TODO : Add this documentation
                         return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
                     }
                 }
@@ -243,7 +253,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 }
             }
             else {
-                (0, _helpers_1.printMessage)(`Dependencies have not been installed. To install dependencies, run: ${packageManagerType} install`, 'notice');
+                (0, _helpers_1.printMessage)(`Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`, 'notice');
             }
             (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
             return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
