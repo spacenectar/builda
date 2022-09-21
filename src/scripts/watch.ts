@@ -22,7 +22,8 @@ export const watch = (config: ConfigFile) => {
     }
 
     const watcher = chokidar.watch(config.app_root, {
-      persistent: true
+      persistent: true,
+      ignored: ['node_modules', '.builda', '.git', '.DS_Store']
     });
 
     watcher.on('ready', () => {

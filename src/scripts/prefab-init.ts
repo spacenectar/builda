@@ -254,6 +254,25 @@ export const prefabInit = async ({
         );
       }
 
+      // Create a new package.json file in the root directory with updated scripts
+      const packageJson = require(path.resolve(workingDir, 'package.json'));
+      const scripts = packageJson.scripts;
+      const buildaScripts = {} as Record<string, string>;
+
+      Object.entries(scripts).map(([key]) => {
+        buildaScripts[key] = `builda -x ${key}`;
+      });
+
+      const newPackageJson = {
+        ...packageJson,
+        scripts: buildaScripts
+      };
+
+      fs.writeFileSync(
+        path.join(rootDir, 'package.json'),
+        JSON.stringify(newPackageJson, null, 2)
+      );
+
       // Delete the .builda directory from the build directory
       if (fs.existsSync(buildaPath)) {
         fs.rmSync(buildaPath, { recursive: true });

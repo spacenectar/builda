@@ -179,6 +179,15 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             if (node_fs_1.default.existsSync(buildaConfigPath)) {
                 node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootBuildaPath, 'config.json'));
             }
+            // Create a new package.json file in the root directory with updated scripts
+            const packageJson = require(node_path_1.default.resolve(workingDir, 'package.json'));
+            const scripts = packageJson.scripts;
+            const buildaScripts = {};
+            Object.entries(scripts).map(([key]) => {
+                buildaScripts[key] = `builda -x ${key}`;
+            });
+            const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
+            node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
             // Delete the .builda directory from the build directory
             if (node_fs_1.default.existsSync(buildaPath)) {
                 node_fs_1.default.rmSync(buildaPath, { recursive: true });

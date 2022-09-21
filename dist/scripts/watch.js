@@ -17,7 +17,8 @@ const watch = (config) => {
             (0, _helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
         }
         const watcher = chokidar_1.default.watch(config.app_root, {
-            persistent: true
+            persistent: true,
+            ignored: ['node_modules', '.builda', '.git', '.DS_Store']
         });
         watcher.on('ready', () => {
             (0, _helpers_1.printMessage)('Watching for changes...', 'primary');
