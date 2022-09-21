@@ -29,8 +29,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const globals_1 = __importDefault(require("../data/globals"));
-const { configFileName, buildaDir } = globals_1.default;
-const configFile = path_1.default.resolve(buildaDir, configFileName);
+const { configFileName } = globals_1.default;
+const configFile = path_1.default.resolve(configFileName);
 const getConfigFile = async () => {
     if (fs_1.default.existsSync(configFile)) {
         const config = await Promise.resolve().then(() => __importStar(require(configFile)));

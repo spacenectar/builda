@@ -51,7 +51,7 @@ const questions = [
     {
         type: 'confirm',
         name: 'autoInstall',
-        message: 'Would you like to auomatically install all dependencies?',
+        message: 'Would you like to automatically install all dependencies?',
         default: true
     }
 ];
@@ -188,8 +188,24 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             const packageJson = require(node_path_1.default.resolve(workingDir, 'package.json'));
             const scripts = packageJson.scripts;
             const buildaScripts = {};
-            Object.entries(scripts).forEach(([key]) => {
-                buildaScripts[key] = `builda -x ${key}`;
+            Object.entries(scripts).forEach(([key, value]) => {
+                if (value.startsWith('builda')) {
+                    // We don't want to replace builda scripts, so we just copy them over
+                    // TODO: Add docs to show that builda scripts should not be used in conjunction with other scripts
+                    // add a suggestion to put the builda script in its own script and call that script from the other
+                    // script using npm-run-all or concurrently
+                    /**
+                     * e.g.
+                     * {
+                     *   "watch": "builda --watch",
+                     *   "dev": "run-p watch other-script"
+                     * }
+                     */
+                    buildaScripts[key] = value;
+                }
+                else {
+                    buildaScripts[key] = `builda -x ${key}`;
+                }
             });
             const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
             node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
@@ -278,7 +294,8 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     try {
                         const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
                             cwd: rootDir,
-                            all: true
+                            all: true,
+                            stdio: 'inherit'
                         });
                         (_a = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _a === void 0 ? void 0 : _a.pipe(process.stdout);
                         await childProcess;
@@ -297,6 +314,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             else {
                 (0, _helpers_1.printMessage)(`Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`, 'notice');
             }
+            (0, execa_1.default)('cd', [name]);
             (0, _helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
             return (0, _helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
         }

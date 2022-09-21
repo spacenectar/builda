@@ -28,7 +28,7 @@ const watch = (config) => {
         });
         watcher.on('change', (pathString) => {
             console.log(`File ${pathString} has been changed`);
-            (0, _helpers_1.checkAndCopyPath)(pathString, `${globals_1.default.buildaDir}/build`, pathString.replace(cleanRoot, ''));
+            (0, _helpers_1.checkAndCopyPath)(pathString, `${globals_1.default.buildaDir}/export`, pathString.replace(cleanRoot, ''));
         });
     }
     else {
