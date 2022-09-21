@@ -262,7 +262,7 @@ export const prefabInit = async ({
       const scripts = packageJson.scripts;
       const buildaScripts = {} as Record<string, string>;
 
-      Object.entries(scripts).map(([key]) => {
+      Object.entries(scripts).forEach(([key]) => {
         buildaScripts[key] = `builda -x ${key}`;
       });
 
@@ -305,20 +305,20 @@ export const prefabInit = async ({
         .then((res) => {
           if (res.status === 200) {
             writeFile({
-              file: res.data,
+              content: res.data,
               rename: buildaReadmeFileName,
               output_dir: rootDir,
-              substitute: readmeSubs,
-              name
+              substitute: readmeSubs
             });
           }
         })
-        .catch(() =>
+        .catch((err) => {
+          console.log(err);
           printMessage(
             `Could not download the getting started file. Visit ${websiteUrl}/docs/getting-started#prefab for assistance`,
             'warning'
-          )
-        );
+          );
+        });
 
       // Delete the .builda directory from the export directory
       if (fs.existsSync(buildaPath)) {
