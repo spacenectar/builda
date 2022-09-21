@@ -20,5 +20,4 @@ jest.config.js
 *.yml
 *.yaml
 
-#Auto-generated files
-/scaffold/**/*
+
