@@ -30,7 +30,7 @@ export const writeFile = ({
   let newContents = fileContents;
 
   if (name) {
-    fileContents
+    newContents = fileContents
       .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
       .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
       .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))

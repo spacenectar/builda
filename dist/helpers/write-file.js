@@ -15,7 +15,7 @@ const writeFile = ({ file, rename, output_dir, substitute, name }) => {
     // replace the each placeholder with the correctly formatted name
     let newContents = fileContents;
     if (name) {
-        fileContents
+        newContents = fileContents
             .replace(/%KEBAB_CASE%/g, (0, string_functions_1.default)(name, 'kebabCase'))
             .replace(/%CAMEL_CASE%/g, (0, string_functions_1.default)(name, 'camelCase'))
             .replace(/%SNAKE_CASE%/g, (0, string_functions_1.default)(name, 'snakeCase'))
