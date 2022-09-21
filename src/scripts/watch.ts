@@ -7,21 +7,11 @@ import chokidar from 'chokidar';
 import { printMessage, throwError, checkAndCopyPath } from '@helpers';
 
 import globals from '@data/globals';
+import ignoredFiles from '@data/ignore-file.json';
 
 import type { ConfigFile } from '@typedefs/config-file';
 
-const ignored = [
-  'node_modules',
-  '.builda',
-  '.git',
-  '.DS_Store',
-  '.github',
-  '.vscode',
-  'builda',
-  'npm-debug.log',
-  'yarn-error.log',
-  'yarn-debug.log'
-];
+const ignored = ignoredFiles.ignore;
 
 export const watch = (config: ConfigFile) => {
   if (config) {
