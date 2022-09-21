@@ -188,7 +188,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             const packageJson = require(node_path_1.default.resolve(workingDir, 'package.json'));
             const scripts = packageJson.scripts;
             const buildaScripts = {};
-            Object.entries(scripts).map(([key]) => {
+            Object.entries(scripts).forEach(([key]) => {
                 buildaScripts[key] = `builda -x ${key}`;
             });
             const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
@@ -219,15 +219,17 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 .then((res) => {
                 if (res.status === 200) {
                     (0, _helpers_1.writeFile)({
-                        file: res.data,
+                        content: res.data,
                         rename: buildaReadmeFileName,
                         output_dir: rootDir,
-                        substitute: readmeSubs,
-                        name
+                        substitute: readmeSubs
                     });
                 }
             })
-                .catch(() => (0, _helpers_1.printMessage)(`Could not download the getting started file. Visit ${websiteUrl}/docs/getting-started#prefab for assistance`, 'warning'));
+                .catch((err) => {
+                console.log(err);
+                (0, _helpers_1.printMessage)(`Could not download the getting started file. Visit ${websiteUrl}/docs/getting-started#prefab for assistance`, 'warning');
+            });
             // Delete the .builda directory from the export directory
             if (node_fs_1.default.existsSync(buildaPath)) {
                 node_fs_1.default.rmSync(buildaPath, { recursive: true });
