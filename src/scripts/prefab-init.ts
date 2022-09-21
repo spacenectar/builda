@@ -340,7 +340,7 @@ export const prefabInit = async ({
           printMessage(`Running ${packageManagerType} install`, 'processing');
           try {
             const childProcess = execa(packageManagerType, ['install'], {
-              cwd: workingDir,
+              cwd: rootDir,
               all: true
             });
             childProcess?.all?.pipe(process.stdout);
@@ -348,9 +348,10 @@ export const prefabInit = async ({
             printMessage('All dependencies installed.', 'success');
           } catch (error) {
             printMessage(
-              'Failed to run. Please try running manually.',
+              `Failed to run. Please try running '${packageManagerType} install' manually.`,
               'error'
             );
+            //TODO : Add this documentation
             return printMessage(
               `For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`,
               'primary'
@@ -364,7 +365,7 @@ export const prefabInit = async ({
         }
       } else {
         printMessage(
-          `Dependencies have not been installed. To install dependencies, run: ${packageManagerType} install`,
+          `Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`,
           'notice'
         );
       }
