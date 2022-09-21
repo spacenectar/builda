@@ -3,9 +3,9 @@ import path from 'path';
 
 import globals from '@data/globals';
 
-const { configFileName, buildaDir } = globals;
+const { configFileName } = globals;
 
-const configFile = path.resolve(buildaDir, configFileName);
+const configFile = path.resolve(configFileName);
 
 const getConfigFile = async () => {
   if (fs.existsSync(configFile)) {
