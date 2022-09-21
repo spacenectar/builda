@@ -51,9 +51,10 @@ const convertRegistryPathToUrl = (registryPath, config) => {
             return newPath;
         }
     }
+    const versionString = version ? `/${version}` : '';
     if (newPath.startsWith('github:')) {
         const updatedPath = newPath.replace('github:', 'https://raw.githubusercontent.com/');
-        return `${updatedPath}${version ? `/${version}` : ''}`;
+        return `${updatedPath}${versionString}`;
     }
     if (newPath.startsWith('builda:')) {
         const updatedPath = newPath.replace('builda:', 'https://builda.app/modules/');
@@ -61,7 +62,7 @@ const convertRegistryPathToUrl = (registryPath, config) => {
     }
     if (newPath.startsWith('bitbucket:')) {
         const updatedPath = newPath.replace('bitbucket:', 'https://bitbucket.org/');
-        return `${updatedPath}/raw${version ? `/${version}` : ''}`;
+        return `${updatedPath}/raw${versionString}`;
     }
     // If no custom matcher is provided and the path doesn't look like a regular url return an empty string
     return '';

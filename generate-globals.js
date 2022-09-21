@@ -9,11 +9,12 @@ const { version, repository } = packageJson;
 const globals = {
   version,
   buildaDir: '.builda',
-  configFileName: 'config.json',
+  configFileName: 'builda.json',
   websiteUrl: 'https://www.builda.app',
+  buildaReadmeFileName: 'getting-started.md',
   repository
 };
 
-const output = `export default ${JSON.stringify(globals)};`;
+const output = `export default ${JSON.stringify(globals, null, 2)};`;
 
 fs.writeFileSync('./src/data/globals.ts', output);

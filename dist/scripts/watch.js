@@ -9,18 +9,8 @@ exports.watch = void 0;
 const chokidar_1 = __importDefault(require("chokidar"));
 const _helpers_1 = require("../helpers/index.js");
 const globals_1 = __importDefault(require("../data/globals"));
-const ignored = [
-    'node_modules',
-    '.builda',
-    '.git',
-    '.DS_Store',
-    '.github',
-    '.vscode',
-    'builda',
-    'npm-debug.log',
-    'yarn-error.log',
-    'yarn-debug.log'
-];
+const ignore_file_json_1 = __importDefault(require("../data/ignore-file.json"));
+const ignored = ignore_file_json_1.default.ignore;
 const watch = (config) => {
     if (config) {
         const { prefab, app_root } = config;

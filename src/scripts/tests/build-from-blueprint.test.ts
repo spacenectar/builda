@@ -7,6 +7,7 @@ import path from 'path';
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FOLDER = '.builda';
+const CONFIG_FILE = 'builda.json';
 
 const command = {
   use: 'blueprint-default-ts',
@@ -15,6 +16,9 @@ const command = {
 };
 
 afterAll((done) => {
+  if (fs.existsSync(CONFIG_FILE)) {
+    fs.rmSync(path.resolve(CONFIG_FILE));
+  }
   if (fs.existsSync(CONFIG_FOLDER)) {
     fs.rmSync(path.resolve(CONFIG_FOLDER), { recursive: true, force: true });
   }

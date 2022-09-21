@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import glob from 'glob';
 import execa from 'execa';
+import axios from 'axios';
 
 import globals from '@data/globals';
 import {
@@ -18,8 +19,6 @@ import {
 } from '@helpers';
 import changeCase from '@helpers/string-functions';
 import ModuleRegistry from '@typedefs/module-registry';
-
-const defaultRequiredFiles = ['.builda', 'package.json', 'README.md'];
 
 const questions = [
   {
@@ -113,7 +112,15 @@ export const prefabInit = async ({
   pathName,
   packageManager
 }: TInitOptions) => {
-  const { buildaDir, websiteUrl } = globals;
+  const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } =
+    globals;
+
+  const defaultRequiredFiles = [
+    buildaDir,
+    `${buildaDir}/${configFileName}`,
+    'package.json',
+    'README.md'
+  ];
 
   const answers =
     presetAnswers ||
@@ -128,7 +135,7 @@ export const prefabInit = async ({
 
   // check if the root directory is empty
   const rootDir = path.resolve(outputDir);
-  const workingDir = path.join(outputDir, buildaDir, 'build');
+  const workingDir = path.join(outputDir, buildaDir, 'export');
 
   if (fs.readdirSync(rootDir).length !== 0) {
     return throwError(
@@ -177,12 +184,12 @@ export const prefabInit = async ({
       ];
       printMessage(`Installed ${prefabName}@${version}`, 'success');
 
-      printMessage('Creating build path...', 'processing');
+      printMessage('Creating export path...', 'processing');
 
-      // Copy the prefab files to the build directory
+      // Copy the prefab files to the export directory
       copyDir(prefabDir, workingDir);
 
-      printMessage('Build path created', 'success');
+      printMessage('Export path created', 'success');
 
       printMessage('Copying required files to application...', 'copying');
 
@@ -243,15 +250,11 @@ export const prefabInit = async ({
       // Copy all required files
       await fileLoop(requiredFiles);
       const buildaPath = path.join(workingDir, buildaDir);
-      const buildaConfigPath = path.resolve(buildaPath, 'config.json');
-      const rootBuildaPath = path.join(rootDir, buildaDir);
+      const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
-      // Copy config.json from working builda directory to root builda directory
+      // Copy config.json from working builda directory to root directory
       if (fs.existsSync(buildaConfigPath)) {
-        fs.copyFileSync(
-          buildaConfigPath,
-          path.join(rootBuildaPath, 'config.json')
-        );
+        fs.copyFileSync(buildaConfigPath, path.join(rootDir, configFileName));
       }
 
       // Create a new package.json file in the root directory with updated scripts
@@ -259,7 +262,7 @@ export const prefabInit = async ({
       const scripts = packageJson.scripts;
       const buildaScripts = {} as Record<string, string>;
 
-      Object.entries(scripts).map(([key]) => {
+      Object.entries(scripts).forEach(([key]) => {
         buildaScripts[key] = `builda -x ${key}`;
       });
 
@@ -273,7 +276,51 @@ export const prefabInit = async ({
         JSON.stringify(newPackageJson, null, 2)
       );
 
-      // Delete the .builda directory from the build directory
+      // Add the default prefab readme to the root directory
+
+      // Download the prefab readme from the builda website (if possible)
+      const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
+
+      const readmeSubs = [
+        {
+          replace: '%PREFAB_NAME%',
+          with: prefabName
+        },
+        {
+          replace: '%PREFAB_URL%',
+          with: module.url
+        },
+        {
+          replace: '%PREFAB_VERSION%',
+          with: version
+        }
+      ];
+
+      await axios
+        .get(prefabReadmeUrl, {
+          headers: {
+            'Content-Type': 'text/plain'
+          }
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            writeFile({
+              content: res.data,
+              rename: buildaReadmeFileName,
+              output_dir: rootDir,
+              substitute: readmeSubs
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          printMessage(
+            `Could not download the getting started file. Visit ${websiteUrl}/docs/getting-started#prefab for assistance`,
+            'warning'
+          );
+        });
+
+      // Delete the .builda directory from the export directory
       if (fs.existsSync(buildaPath)) {
         fs.rmSync(buildaPath, { recursive: true });
       }

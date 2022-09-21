@@ -6,7 +6,7 @@ import { ConfigFile } from '@typedefs/config-file';
 import getConfigFile from '@helpers/get-config-file';
 
 describe('init', () => {
-  const CONFIG_FILE = './.builda/config.json';
+  const CONFIG_FILE = './builda.json';
   let config = {} as ConfigFile;
   beforeAll(async () => {
     await init({ presetAnswers });
