@@ -57,7 +57,7 @@ const questions = [
   {
     type: 'confirm',
     name: 'autoInstall',
-    message: 'Would you like to auomatically install all dependencies?',
+    message: 'Would you like to automatically install all dependencies?',
     default: true
   }
 ];
@@ -259,11 +259,26 @@ export const prefabInit = async ({
 
       // Create a new package.json file in the root directory with updated scripts
       const packageJson = require(path.resolve(workingDir, 'package.json'));
-      const scripts = packageJson.scripts;
+      const scripts = packageJson.scripts as Record<string, string>;
       const buildaScripts = {} as Record<string, string>;
 
-      Object.entries(scripts).forEach(([key]) => {
-        buildaScripts[key] = `builda -x ${key}`;
+      Object.entries(scripts).forEach(([key, value]) => {
+        if (value.startsWith('builda')) {
+          // We don't want to replace builda scripts, so we just copy them over
+          // TODO: Add docs to show that builda scripts should not be used in conjunction with other scripts
+          // add a suggestion to put the builda script in its own script and call that script from the other
+          // script using npm-run-all or concurrently
+          /**
+           * e.g.
+           * {
+           *   "watch": "builda --watch",
+           *   "dev": "run-p watch other-script"
+           * }
+           */
+          buildaScripts[key] = value;
+        } else {
+          buildaScripts[key] = `builda -x ${key}`;
+        }
       });
 
       const newPackageJson = {
@@ -388,7 +403,8 @@ export const prefabInit = async ({
           try {
             const childProcess = execa(packageManagerType, ['install'], {
               cwd: rootDir,
-              all: true
+              all: true,
+              stdio: 'inherit'
             });
             childProcess?.all?.pipe(process.stdout);
             await childProcess;
@@ -416,6 +432,7 @@ export const prefabInit = async ({
           'notice'
         );
       }
+      execa('cd', [name]);
       printMessage(
         `Your application, "${name}" has been initialised!`,
         'success'
