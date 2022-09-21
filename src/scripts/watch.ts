@@ -10,6 +10,19 @@ import globals from '@data/globals';
 
 import type { ConfigFile } from '@typedefs/config-file';
 
+const ignored = [
+  'node_modules',
+  '.builda',
+  '.git',
+  '.DS_Store',
+  '.github',
+  '.vscode',
+  'builda',
+  'npm-debug.log',
+  'yarn-error.log',
+  'yarn-debug.log'
+];
+
 export const watch = (config: ConfigFile) => {
   if (config) {
     const { prefab, app_root } = config;
@@ -23,7 +36,7 @@ export const watch = (config: ConfigFile) => {
 
     const watcher = chokidar.watch(config.app_root, {
       persistent: true,
-      ignored: ['node_modules', '.builda', '.git', '.DS_Store']
+      ignored
     });
 
     watcher.on('ready', () => {
