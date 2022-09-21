@@ -9,7 +9,7 @@ const { version, repository } = packageJson;
 const globals = {
   version,
   buildaDir: '.builda',
-  configFileName: 'config.json',
+  configFileName: 'builda.json',
   websiteUrl: 'https://www.builda.app',
   buildaReadmeFileName: 'getting-started.md',
   repository
