@@ -158,22 +158,18 @@ const CREATE_CONFIG_QUESTION = {
   if (argv.prefab || argv.p) {
     printLogo();
     const name = argv.name || argv.n || '';
-    const output = argv.root || argv.r || '';
     const pathName = argv.prefabPath || argv.pp || '';
     const packageManager = argv.packageManager || argv.pm || '';
 
     return prefabInit({
       appName: name as string,
-      outputDirectory: output as string,
       pathName: pathName as string,
       packageManager: packageManager as string
     });
   }
 
   const commands = config ? generateCommands(config) : {};
-
   const commandString = process.argv[2].replace('--', '');
-
   const command = commands[commandString];
 
   if (command) {
@@ -187,9 +183,6 @@ const CREATE_CONFIG_QUESTION = {
       args: argv
     });
   } else {
-    return printMessage(
-      `'${command}' is not a recognised command.\r`,
-      'danger'
-    );
+    return printMessage(`'${command}' is not a recognised command.`, 'danger');
   }
 })();

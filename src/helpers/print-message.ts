@@ -8,6 +8,7 @@ const dots = {
 };
 
 const std = process.stdout;
+const stderr = process.stderr;
 
 type Types =
   | 'error'
@@ -18,6 +19,7 @@ type Types =
   | 'downloading'
   | 'installing'
   | 'notice'
+  | 'info'
   | 'success'
   | 'watch'
   | 'build'
@@ -63,6 +65,13 @@ const printMessage = (message: string, type: Types, returnstring?: boolean) => {
 
   if (type && type === 'notice') {
     newMessage = chalk.blue(`📝 ${message}`);
+  }
+
+  if (type && type === 'info') {
+    newMessage =
+      chalk.bgHex('#6699CC').white.bold(' \u0069 ') +
+      ' ' +
+      chalk.reset.blue(message);
   }
 
   if (type && type === 'success') {
@@ -118,7 +127,10 @@ const printMessage = (message: string, type: Types, returnstring?: boolean) => {
   if (!type) {
     newMessage = message;
   }
-  return returnstring ? newMessage : std.write(`${newMessage}\n`);
+
+  const returnType = type === 'error' ? stderr : std;
+
+  return returnstring ? newMessage : returnType.write(`${newMessage}\n`);
 };
 
 export default printMessage;

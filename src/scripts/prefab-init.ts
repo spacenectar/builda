@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import glob from 'glob';
+import process from 'node:process';
 import execa from 'execa';
 import axios from 'axios';
 
@@ -15,7 +15,8 @@ import {
   convertRegistryPathToUrl,
   writeFile,
   createDir,
-  copyDir
+  copyDir,
+  loopAndRewriteFiles
 } from '@helpers';
 import changeCase from '@helpers/string-functions';
 import ModuleRegistry from '@typedefs/module-registry';
@@ -100,7 +101,6 @@ type Answers = {
 type TInitOptions = {
   presetAnswers?: Answers;
   appName?: string;
-  outputDirectory?: string;
   pathName?: string;
   packageManager?: string;
 };
@@ -108,7 +108,6 @@ type TInitOptions = {
 export const prefabInit = async ({
   presetAnswers,
   appName,
-  outputDirectory,
   pathName,
   packageManager
 }: TInitOptions) => {
@@ -127,15 +126,18 @@ export const prefabInit = async ({
     ((await getAnswers(!!appName, !!pathName, !!packageManager)) as Answers);
 
   const name = appName || answers.appName;
-  const outputDir = outputDirectory || answers.appName;
   const prefabPath = pathName || answers.pathName;
   const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
 
-  await createDir(outputDir);
+  await createDir(name);
+
+  // Change directory to the new app
+  process.chdir(name);
 
   // check if the root directory is empty
-  const rootDir = path.resolve(outputDir);
-  const workingDir = path.join(outputDir, buildaDir, 'export');
+  const rootDir = process.cwd();
+  const workingDir = path.join(buildaDir, 'export');
+  const prefabDir = path.join(buildaDir, 'modules/prefab/files');
 
   if (fs.readdirSync(rootDir).length !== 0) {
     return throwError(
@@ -149,20 +151,20 @@ export const prefabInit = async ({
     const moduleType = detectPathType(prefabPath);
 
     if (moduleType === 'local') {
-      module = await addLocalModule(prefabPath, outputDir);
+      module = await addLocalModule(prefabPath, rootDir);
     }
 
     if (moduleType === 'remote') {
       module = await addRemoteModule(
         convertRegistryPathToUrl(prefabPath),
-        outputDir
+        rootDir
       );
     }
 
     if (moduleType === 'custom') {
       module = await addRemoteModule(
         convertRegistryPathToUrl(prefabPath),
-        outputDir
+        rootDir
       );
     }
 
@@ -171,16 +173,27 @@ export const prefabInit = async ({
       const version = module.version;
       const substitutions = module.substitute || [];
 
-      const prefabDir = path.join(
-        outputDir,
-        buildaDir,
-        'modules/prefab',
-        'files'
-      );
+      const extraRootfiles =
+        module.filesInRoot
+          ?.filter((file) => {
+            if (!file.rewrite) {
+              return file;
+            }
+            return false;
+          })
+          .map((f) => f.path) || [];
+
+      const extraRootfilesToRewrite =
+        module.filesInRoot?.filter((file) => {
+          if (file.rewrite) {
+            return file;
+          }
+          return false;
+        }) || [];
 
       const requiredFiles = [
         ...defaultRequiredFiles,
-        ...(module.custom_files || [])
+        ...(extraRootfiles || [])
       ];
       printMessage(`Installed ${prefabName}@${version}`, 'success');
 
@@ -209,48 +222,25 @@ export const prefabInit = async ({
         }
       ];
 
-      const fileLoop = async (pathString: string[]) => {
-        const promises = [];
-        for (const file of pathString) {
-          const filePath = path.join(prefabDir, file);
-          // Check if file is glob
-          if (file.includes('*')) {
-            const globFiles = glob.sync(file);
-            promises.push(await fileLoop(globFiles));
-          } else if (fs.lstatSync(filePath).isDirectory()) {
-            const files = fs.readdirSync(filePath);
-            const newFiles = files.map((f) => path.join(file, f));
-            promises.push(await fileLoop(newFiles));
-          } else {
-            promises.push(
-              new Promise((resolve) => {
-                const directoryPathWithoutFile = path.dirname(file);
-                const directoryPath = path.join(
-                  workingDir,
-                  directoryPathWithoutFile
-                );
-                createDir(directoryPath);
-                if (fs.existsSync(filePath)) {
-                  writeFile({
-                    file: filePath,
-                    output_dir: directoryPath,
-                    substitute,
-                    name
-                  });
-                }
-                resolve(filePath);
-              })
-            );
-          }
-        }
-        // Wait for all promises to resolve
-        await Promise.all(promises);
-      };
-
       // Copy all required files
-      await fileLoop(requiredFiles);
+      await loopAndRewriteFiles({ name, paths: requiredFiles, substitute });
       const buildaPath = path.join(workingDir, buildaDir);
       const buildaConfigPath = path.resolve(buildaPath, configFileName);
+
+      // If there are extra files which need to be rewritten, do that now
+      if (extraRootfilesToRewrite.length > 0) {
+        const paths = extraRootfilesToRewrite.map((f) => f.path);
+        const extraSubstitutions = extraRootfilesToRewrite
+          .map((f) => f.substitutions)
+          .flat()
+          .concat(substitutions);
+
+        await loopAndRewriteFiles({
+          name,
+          paths,
+          substitute: extraSubstitutions
+        });
+      }
 
       // Copy config.json from working builda directory to root directory
       if (fs.existsSync(buildaConfigPath)) {
@@ -267,12 +257,13 @@ export const prefabInit = async ({
           value.startsWith('builda') ||
           value.startsWith('run-s') ||
           value.startsWith('run-p') ||
+          value.startsWith('npm-run-all') ||
           value.startsWith('concurrently')
         ) {
-          // We don't want to replace builda, npm-run-all or concurrently scripts, so we just copy them over
+          // We don't want to replace `builda`, `npm-run-all` or `concurrently` scripts, so we just copy them over
           // TODO: Add docs to show that builda scripts should not be used in conjunction with other scripts
           // add a suggestion to put the builda script in its own script and call that script from the other
-          // script using npm-run-all or concurrently
+          // script using one of the supported methods
           /**
            * e.g.
            * {
@@ -297,8 +288,6 @@ export const prefabInit = async ({
       );
 
       // Add the default prefab readme to the root directory
-
-      // Download the prefab readme from the builda website (if possible)
       const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
 
       const readmeSubs = [
@@ -316,6 +305,8 @@ export const prefabInit = async ({
         }
       ];
 
+      // Download the prefab readme and add it to the root directory
+      // If the download fails, we just ignore it and continue with a warning message
       await axios
         .get(prefabReadmeUrl, {
           headers: {
@@ -355,7 +346,7 @@ export const prefabInit = async ({
           const bp = module.blueprints[blueprint];
           printMessage(`installing ${blueprint}`, 'processing');
           const blueprintDest = path.join(
-            outputDir,
+            rootDir,
             buildaDir,
             'modules',
             'blueprints'
@@ -380,12 +371,12 @@ export const prefabInit = async ({
             blueprintPromises.push(
               new Promise((resolve) => {
                 if (bluePrintType === 'local') {
-                  addLocalModule(bp.location, outputDir);
+                  addLocalModule(bp.location, rootDir);
                 }
                 if (bluePrintType === 'remote') {
                   addRemoteModule(
                     convertRegistryPathToUrl(bp.location),
-                    outputDir
+                    rootDir
                   );
                 }
                 resolve(blueprint);
