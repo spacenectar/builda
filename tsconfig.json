@@ -17,32 +17,6 @@
     "useUnknownInCatchVariables": false,
     "outDir": "./dist",
     "baseUrl": "./src",
-    "paths": {
-      "@scaffold/*": [
-        "scaffold/*"
-      ],
-      "@scripts/*": [
-        "scripts/*"
-      ],
-      "@scripts": [
-        "scripts/index.ts"
-      ],
-      "@typedefs/*": [
-        "types/*"
-      ],
-      "@data/*": [
-        "data/*"
-      ],
-      "@helpers/*": [
-        "helpers/*"
-      ],
-      "@helpers": [
-        "helpers/index.ts"
-      ],
-      "@mocks/*": [
-        "mocks/*"
-      ]
-    },
     "incremental": true
   },
   "include": [
