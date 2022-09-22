@@ -1,8 +1,9 @@
 export { project, command as generateProjectCommand } from './project';
 export { execute, command as executeCommand } from './execute';
+export { install, command as installCommand } from './install';
 
 // Legacy code
-import addModule from './add-module';
+
 import buildFromBlueprint from './build-from-blueprint';
 import buildFromPrefabs from './build-from-prefabs';
 import generateCommands from './generate-commands';
@@ -13,7 +14,6 @@ import updateModule from './update-module';
 import watch from './watch';
 
 export {
-  addModule,
   buildFromBlueprint,
   buildFromPrefabs,
   generateCommands,
