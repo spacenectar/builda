@@ -23,6 +23,7 @@ import { command as execute } from 'scripts/execute';
 import { command as install } from 'scripts/install';
 import { command as publish } from 'scripts/publish';
 import { command as update } from 'scripts/update';
+import { command as watch } from 'scripts/watch';
 
 const { websiteUrl } = globals;
 
@@ -40,6 +41,7 @@ const executeCommand = execute();
 const installCommand = install();
 const publishCommand = publish();
 const updateCommand = update();
+const watchCommand = watch();
 
 export const builda = async () => {
   yargs
@@ -48,6 +50,7 @@ export const builda = async () => {
     .command(installCommand)
     .command(publishCommand)
     .command(updateCommand)
+    .command(watchCommand)
     .epilogue(`For more information, visit ${websiteUrl}/docs`)
     .help('h').argv;
 };

@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishModule = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const tar_1 = __importDefault(require("tar"));
 const simple_git_1 = require("simple-git");
@@ -13,7 +12,7 @@ const print_message_1 = __importDefault(require("../../helpers/print-message"));
 const publish_to_trade_store_1 = require("./helpers/publish-to-trade-store");
 const check_path_exists_1 = require("./helpers/check-path-exists");
 const helpers_1 = require("../../helpers");
-const publishModule = async (updateVersion) => {
+exports.default = async (updateVersion) => {
     const registry = await (0, get_registry_1.default)();
     const { name, type, version, tradeStore } = registry;
     const REGISTRYFILE = 'registry.json';
@@ -120,8 +119,3 @@ const publishModule = async (updateVersion) => {
     }
     (0, print_message_1.default)('Module published.', 'success');
 };
-exports.publishModule = publishModule;
-if (require.main === module) {
-    (0, exports.publishModule)();
-}
-exports.default = exports.publishModule;

@@ -18,11 +18,7 @@ export default () => {
       });
     },
     handler: async (argv: any) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
-        return publish(argv.version);
-      }
-      throwError('No config file found');
+      return publish(argv.version);
     }
   };
 };

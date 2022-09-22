@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../helpers");
-const update_1 = __importDefault(require("./update"));
+const watch_1 = __importDefault(require("./watch"));
 exports.default = () => {
     return {
-        cmd: 'update <modulePath>',
-        desc: 'update a module',
-        aliases: ['u'],
+        cmd: 'watch',
+        desc: 'watch your app for changes and rebuild',
+        aliases: ['w'],
         builder: (yargs) => {
             return yargs.option('configPath', {
                 aliases: ['c', 'config'],
@@ -21,7 +21,7 @@ exports.default = () => {
         handler: async (argv) => {
             const config = await (0, helpers_1.getConfigFile)(argv.configPath);
             if (config) {
-                return (0, update_1.default)(argv.version);
+                return (0, watch_1.default)(config);
             }
             (0, helpers_1.throwError)('No config file found');
         }
