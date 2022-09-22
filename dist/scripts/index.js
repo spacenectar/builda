@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.init = exports.generateIndexes = exports.generateCommands = exports.buildFromPrefabs = exports.buildFromBlueprint = exports.watchCommand = exports.watch = exports.updateCommand = exports.update = exports.publishCommand = exports.publish = exports.installCommand = exports.install = exports.executeCommand = exports.execute = exports.generateProjectCommand = exports.project = void 0;
+exports.init = exports.generateCommands = exports.buildFromPrefabs = exports.buildFromBlueprint = exports.indexerCommand = exports.indexer = exports.watchCommand = exports.watch = exports.updateCommand = exports.update = exports.publishCommand = exports.publish = exports.installCommand = exports.install = exports.executeCommand = exports.execute = exports.generateProjectCommand = exports.project = void 0;
 var project_1 = require("./project");
 Object.defineProperty(exports, "project", { enumerable: true, get: function () { return project_1.project; } });
 Object.defineProperty(exports, "generateProjectCommand", { enumerable: true, get: function () { return project_1.command; } });
@@ -22,6 +22,9 @@ Object.defineProperty(exports, "updateCommand", { enumerable: true, get: functio
 var watch_1 = require("./watch");
 Object.defineProperty(exports, "watch", { enumerable: true, get: function () { return watch_1.watch; } });
 Object.defineProperty(exports, "watchCommand", { enumerable: true, get: function () { return watch_1.command; } });
+var indexer_1 = require("./indexer");
+Object.defineProperty(exports, "indexer", { enumerable: true, get: function () { return indexer_1.indexer; } });
+Object.defineProperty(exports, "indexerCommand", { enumerable: true, get: function () { return indexer_1.command; } });
 // Legacy code
 const build_from_blueprint_1 = __importDefault(require("./build-from-blueprint"));
 exports.buildFromBlueprint = build_from_blueprint_1.default;
@@ -29,7 +32,5 @@ const build_from_prefabs_1 = __importDefault(require("./build-from-prefabs"));
 exports.buildFromPrefabs = build_from_prefabs_1.default;
 const generate_commands_1 = __importDefault(require("./generate-commands"));
 exports.generateCommands = generate_commands_1.default;
-const generate_indexes_1 = __importDefault(require("./generate-indexes"));
-exports.generateIndexes = generate_indexes_1.default;
 const init_1 = __importDefault(require("./init"));
 exports.init = init_1.default;

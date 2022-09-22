@@ -9,22 +9,13 @@ exports.builda = void 0;
 const yargs_1 = __importDefault(require("yargs"));
 // import data
 const globals_1 = __importDefault(require("./data/globals"));
-// import scripts
-// import addModule from './scripts/add-module';
-// import buildFromBlueprint from './scripts/build-from-blueprint';
-// import buildFromPrefabs from './scripts/build-from-prefabs';
-// import generateCommands from './scripts/generate-commands';
-// import generateIndexes from './scripts/generate-indexes';
-// import init from './scripts/init';
-// import publishModule from './scripts/publish-module';
-// import updateModule from './scripts/update-module';
-// import watch from './scripts/watch';
 const project_1 = require("./scripts/project");
 const execute_1 = require("./scripts/execute");
 const install_1 = require("./scripts/install");
 const publish_1 = require("./scripts/publish");
 const update_1 = require("./scripts/update");
 const watch_1 = require("./scripts/watch");
+const indexer_1 = require("./scripts/indexer");
 const { websiteUrl } = globals_1.default;
 // const cwd = process.cwd();
 // const isExportDir = cwd.includes(`${globals.buildaDir}/export`);
@@ -39,6 +30,7 @@ const installCommand = (0, install_1.command)();
 const publishCommand = (0, publish_1.command)();
 const updateCommand = (0, update_1.command)();
 const watchCommand = (0, watch_1.command)();
+const indexerCommand = (0, indexer_1.command)();
 const builda = async () => {
     yargs_1.default
         .command(projectCommand)
@@ -47,6 +39,7 @@ const builda = async () => {
         .command(publishCommand)
         .command(updateCommand)
         .command(watchCommand)
+        .command(indexerCommand)
         .epilogue(`For more information, visit ${websiteUrl}/docs`)
         .help('h').argv;
 };
