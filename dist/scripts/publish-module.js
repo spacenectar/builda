@@ -30,7 +30,7 @@ const publishToTradeStore = async () => {
     // TODO: Publish to trade store
     return true;
 };
-const publishModule = async () => {
+const publishModule = async (updateVersion) => {
     const registry = await (0, get_registry_1.default)();
     const { name, type, version, tradeStore } = registry;
     const REGISTRYFILE = 'registry.json';
@@ -45,7 +45,7 @@ const publishModule = async () => {
     if (!type) {
         return (0, print_message_1.default)(`No type entry found in ${REGISTRYFILE}. Please add one.\r`, 'danger');
     }
-    if (!version) {
+    if (!version && !updateVersion) {
         return (0, print_message_1.default)(`No version entry found in ${REGISTRYFILE}. Please add one.\r`, 'danger');
     }
     if (!tradeStore) {
@@ -72,6 +72,10 @@ const publishModule = async () => {
         return (0, print_message_1.default)(`The git repository is not clean. Please commit all changes and try again.\r`, 'danger');
     }
     (0, print_message_1.default)('All checks passed.', 'success');
+    const newVersion = (updateVersion === null || updateVersion === void 0 ? void 0 : updateVersion.replace('v', '')) || version;
+    const newRegistry = Object.assign(Object.assign({}, registry), { version: newVersion });
+    const newRegistryString = JSON.stringify(newRegistry, null, 2);
+    node_fs_1.default.writeFileSync(REGISTRYFILE, newRegistryString);
     // Package the files folder into a tarball
     (0, print_message_1.default)(`Packaging ${name}...`, 'processing');
     // If there is already a tarball, delete it
@@ -93,12 +97,12 @@ const publishModule = async () => {
     (0, print_message_1.default)('Tagging the latest commit...', 'processing');
     // If tag already exists, throw an error
     const tagList = await git.tags();
-    const tagExists = tagList.all.includes(version) || tagList.all.includes(`v${version}`);
+    const tagExists = tagList.all.includes(newVersion) || tagList.all.includes(`v${newVersion}`);
     if (tagExists) {
-        return (0, print_message_1.default)(`A tag with the version number v${version} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`, 'error');
+        return (0, print_message_1.default)(`A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`, 'error');
     }
     // Tag the commit with the current version number
-    await git.addTag(`v${version}`);
+    await git.addTag(`v${newVersion}`);
     let tagString = 'tags';
     if (registry.prerelease) {
         (0, print_message_1.default)('Prerelease entry found in registry.json. Skipping latest tag...', 'info');

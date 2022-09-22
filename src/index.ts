@@ -21,11 +21,11 @@ import buildFromBlueprint from '@scripts/build-from-blueprint';
 import addModule from '@scripts/add-module';
 import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
-import { updateModule } from '@scripts/update-module';
+import updateModule from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
 import execute from '@scripts/execute';
-import { generateIndexes } from '@scripts/generate-indexes';
-import { publishModule } from '@scripts/publish-module';
+import generateIndexes from '@scripts/generate-indexes';
+import publishModule from '@scripts/publish-module';
 
 // Check to see if the command is being run from the root of the project or from the .builda/export directory
 // If it's being run from the export directory, then we need to change the working directory to the root of the project

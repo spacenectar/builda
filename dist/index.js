@@ -19,11 +19,11 @@ const build_from_blueprint_1 = __importDefault(require("./scripts/build-from-blu
 const add_module_1 = __importDefault(require("./scripts/add-module"));
 const watch_1 = __importDefault(require("./scripts/watch"));
 const build_from_prefabs_1 = __importDefault(require("./scripts/build-from-prefabs"));
-const update_module_1 = require("./scripts/update-module");
+const update_module_1 = __importDefault(require("./scripts/update-module"));
 const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
 const execute_1 = __importDefault(require("./scripts/execute"));
-const generate_indexes_1 = require("./scripts/generate-indexes");
-const publish_module_1 = require("./scripts/publish-module");
+const generate_indexes_1 = __importDefault(require("./scripts/generate-indexes"));
+const publish_module_1 = __importDefault(require("./scripts/publish-module"));
 // Check to see if the command is being run from the root of the project or from the .builda/export directory
 // If it's being run from the export directory, then we need to change the working directory to the root of the project
 const cwd = node_process_1.default.cwd();
@@ -78,7 +78,7 @@ const CREATE_CONFIG_QUESTION = {
             (0, _helpers_1.printLogo)();
             // The user wants to generate indexes
             // Go to generate indexes function
-            return (0, generate_indexes_1.generateIndexes)(config);
+            return (0, generate_indexes_1.default)(config);
         }
         if (argv.execute || argv.x) {
             // The user wants to execute a command
@@ -94,7 +94,7 @@ const CREATE_CONFIG_QUESTION = {
         if (argv._[0].toString() === 'update') {
             (0, _helpers_1.printLogo)();
             const module = argv._[1].toString();
-            return (0, update_module_1.updateModule)({ config, module });
+            return (0, update_module_1.default)({ config, module });
         }
     }
     if (args.length === 0 && !argv.manual && !config) {
@@ -145,7 +145,7 @@ const CREATE_CONFIG_QUESTION = {
         (0, _helpers_1.printLogo)();
         // The user wants to publish their module
         // Go to publish function
-        return (0, publish_module_1.publishModule)();
+        return (0, publish_module_1.default)();
     }
     const commands = config ? (0, generate_commands_1.default)(config) : {};
     const commandString = node_process_1.default.argv[2].replace('--', '');

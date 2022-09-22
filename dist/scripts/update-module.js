@@ -75,3 +75,4 @@ const updateModule = async ({ config, module }) => {
     return (0, throw_error_1.default)(`Module ${module} not found in config`);
 };
 exports.updateModule = updateModule;
+exports.default = exports.updateModule;

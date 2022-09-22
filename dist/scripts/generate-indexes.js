@@ -69,3 +69,4 @@ const generateIndexes = (config) => {
     (0, print_message_1.default)('Generating indexes', 'config');
 };
 exports.generateIndexes = generateIndexes;
+exports.default = exports.generateIndexes;
