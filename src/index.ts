@@ -21,10 +21,11 @@ import buildFromBlueprint from '@scripts/build-from-blueprint';
 import addModule from '@scripts/add-module';
 import watch from '@scripts/watch';
 import buildFromPrefabs from '@scripts/build-from-prefabs';
-import { updateModule } from '@scripts/update-module';
+import updateModule from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
 import execute from '@scripts/execute';
-import { generateIndexes } from '@scripts/generate-indexes';
+import generateIndexes from '@scripts/generate-indexes';
+import publishModule from '@scripts/publish-module';
 
 // Check to see if the command is being run from the root of the project or from the .builda/export directory
 // If it's being run from the export directory, then we need to change the working directory to the root of the project
@@ -158,22 +159,26 @@ const CREATE_CONFIG_QUESTION = {
   if (argv.prefab || argv.p) {
     printLogo();
     const name = argv.name || argv.n || '';
-    const output = argv.root || argv.r || '';
     const pathName = argv.prefabPath || argv.pp || '';
     const packageManager = argv.packageManager || argv.pm || '';
 
     return prefabInit({
       appName: name as string,
-      outputDirectory: output as string,
       pathName: pathName as string,
       packageManager: packageManager as string
     });
   }
 
+  if (argv.publish) {
+    printLogo();
+    // The user wants to publish their module
+    // Go to publish function
+    // TODO: Add 'version' argument
+    return publishModule();
+  }
+
   const commands = config ? generateCommands(config) : {};
-
   const commandString = process.argv[2].replace('--', '');
-
   const command = commands[commandString];
 
   if (command) {
@@ -187,9 +192,6 @@ const CREATE_CONFIG_QUESTION = {
       args: argv
     });
   } else {
-    return printMessage(
-      `'${command}' is not a recognised command.\r`,
-      'danger'
-    );
+    return printMessage(`'${command}' is not a recognised command.`, 'danger');
   }
 })();

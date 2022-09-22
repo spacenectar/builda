@@ -81,3 +81,5 @@ export const generateIndexes = (config: ConfigFile) => {
 
   printMessage('Generating indexes', 'config');
 };
+
+export default generateIndexes;

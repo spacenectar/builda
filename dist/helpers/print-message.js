@@ -11,6 +11,7 @@ const dots = {
     frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 };
 const std = process_1.default.stdout;
+const stderr = process_1.default.stderr;
 let timer = undefined;
 const printMessage = (message, type, returnstring) => {
     let newMessage = null;
@@ -40,6 +41,12 @@ const printMessage = (message, type, returnstring) => {
     }
     if (type && type === 'notice') {
         newMessage = chalk_1.default.blue(`📝 ${message}`);
+    }
+    if (type && type === 'info') {
+        newMessage =
+            chalk_1.default.bgHex('#6699CC').white.bold(' \u0069 ') +
+                ' ' +
+                chalk_1.default.reset.blue(message);
     }
     if (type && type === 'success') {
         if (timer !== undefined) {
@@ -87,6 +94,7 @@ const printMessage = (message, type, returnstring) => {
     if (!type) {
         newMessage = message;
     }
-    return returnstring ? newMessage : std.write(`${newMessage}\n`);
+    const returnType = type === 'error' ? stderr : std;
+    return returnstring ? newMessage : returnType.write(`${newMessage}\n`);
 };
 exports.default = printMessage;

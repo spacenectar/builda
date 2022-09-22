@@ -120,3 +120,5 @@ export const updateModule = async ({
 
   return throwError(`Module ${module} not found in config`);
 };
+
+export default updateModule;
