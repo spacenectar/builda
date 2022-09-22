@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import process from 'node:process';
+// import process from 'node:process';
 import yargs from 'yargs';
 
 // import data
@@ -22,6 +22,7 @@ import { command as project } from 'scripts/project';
 import { command as execute } from 'scripts/execute';
 import { command as install } from 'scripts/install';
 import { command as publish } from 'scripts/publish';
+import { command as update } from 'scripts/update';
 
 const { websiteUrl } = globals;
 
@@ -38,6 +39,7 @@ const projectCommand = project();
 const executeCommand = execute();
 const installCommand = install();
 const publishCommand = publish();
+const updateCommand = update();
 
 export const builda = async () => {
   yargs
@@ -45,6 +47,7 @@ export const builda = async () => {
     .command(executeCommand)
     .command(installCommand)
     .command(publishCommand)
+    .command(updateCommand)
     .epilogue(`For more information, visit ${websiteUrl}/docs`)
     .help('h').argv;
 };
