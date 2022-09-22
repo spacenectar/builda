@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
-const generate_commands_1 = __importDefault(require("../generate-commands"));
+const generate_commands_1 = __importDefault(require("../../scripts/generate-commands"));
 describe('generateCommands', () => {
     let commands = {};
     beforeEach(async () => {

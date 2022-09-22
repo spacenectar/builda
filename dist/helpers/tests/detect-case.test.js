@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const string_functions_1 = require("../string-functions");
+const string_functions_1 = require("../../helpers/string-functions");
 describe('detect() function', () => {
     test("should return 'camel' when input is 'myComponent'", () => {
         const string = (0, string_functions_1.detectCase)('myComponent');

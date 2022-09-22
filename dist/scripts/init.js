@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
-const _helpers_1 = require("../helpers/index.js");
+const helpers_1 = require("../helpers");
 const string_functions_1 = require("../helpers/string-functions");
 const add_module_1 = __importDefault(require("./add-module"));
 const globals_1 = __importDefault(require("../data/globals"));
@@ -28,7 +28,7 @@ const getAnswers = async (omitName, omitOutputDir) => {
             }
             return true;
         });
-        (0, _helpers_1.askQuestion)({
+        (0, helpers_1.askQuestion)({
             questionList
         }).then((answers) => {
             return resolve(answers);
@@ -38,16 +38,16 @@ const getAnswers = async (omitName, omitOutputDir) => {
 const checkExistingConfig = async () => {
     return new Promise((resolve, reject) => {
         if (node_fs_1.default.existsSync(configFilePath)) {
-            return (0, _helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
+            return (0, helpers_1.askQuestion)(OVERWRITE_CONFIG_QUESTION).then(({ replaceConfig }) => {
                 if (replaceConfig) {
                     return resolve(true);
                 }
                 reject(false);
-                return (0, _helpers_1.throwError)('Process terminated due to user selection');
+                return (0, helpers_1.throwError)('Process terminated due to user selection');
             });
         }
-        (0, _helpers_1.printMessage)('Starting initialisation...\r', 'success');
-        (0, _helpers_1.printMessage)(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
+        (0, helpers_1.printMessage)('Starting initialisation...\r', 'success');
+        (0, helpers_1.printMessage)(`All answers can be changed later by editing the ${configFileName} file`, 'notice');
         return resolve(true);
     });
 };
@@ -56,12 +56,12 @@ const writeConfig = async (filename, contents) => {
         node_fs_1.default.writeFile(filename, contents, (err) => {
             if (err)
                 throw err;
-            return resolve((0, _helpers_1.printMessage)('Created config in project root', 'success'));
+            return resolve((0, helpers_1.printMessage)('Created config in project root', 'success'));
         });
     });
 };
 const installModules = async (config, answers) => {
-    (0, _helpers_1.printMessage)('Installing initial blueprint...\r', 'notice');
+    (0, helpers_1.printMessage)('Installing initial blueprint...\r', 'notice');
     let options = {
         config,
         modulePath: answers.installDefaultModule
@@ -85,14 +85,14 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
         }
         catch (err) {
             Promise.reject(err);
-            return (0, _helpers_1.throwError)(err);
+            return (0, helpers_1.throwError)(err);
         }
         try {
             answers = (await getAnswers(!!applicationName, !!outputDir));
         }
         catch (err) {
             Promise.reject(err);
-            (0, _helpers_1.throwError)(err);
+            (0, helpers_1.throwError)(err);
         }
     }
     else {
@@ -103,7 +103,7 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
     const outputDirectory = outputDir || answers.outputDirectory;
     if (!appName) {
         Promise.reject('No app name provided');
-        return (0, _helpers_1.throwError)('App name is required');
+        return (0, helpers_1.throwError)('App name is required');
     }
     return new Promise((resolve, reject) => {
         var _a;
@@ -136,19 +136,19 @@ const init = async ({ presetAnswers, appName: applicationName, outputDirectory: 
                 configString.blueprint_scripts = Object.assign(Object.assign({}, configString.blueprint_scripts), blueprintScripts);
                 writeConfig(configFilePath, JSON.stringify(configString, null, 2))
                     .then(() => {
-                    (0, _helpers_1.printMessage)('\rInitialisation complete', 'success');
-                    (0, _helpers_1.printMessage)(`Check your ${configFileName} file to ensure all settings are correct. Output paths may need some tweaking.`, 'notice');
-                    (0, _helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
+                    (0, helpers_1.printMessage)('\rInitialisation complete', 'success');
+                    (0, helpers_1.printMessage)(`Check your ${configFileName} file to ensure all settings are correct. Output paths may need some tweaking.`, 'notice');
+                    (0, helpers_1.printMessage)(`Visit ${websiteUrl}/setup for instructions on what to do next`, 'notice');
                     resolve();
                 })
                     .catch((err) => {
                     reject(err);
-                    (0, _helpers_1.throwError)(err);
+                    (0, helpers_1.throwError)(err);
                 });
             })
                 .catch((err) => {
                 reject(err);
-                (0, _helpers_1.throwError)(err);
+                (0, helpers_1.throwError)(err);
             });
         }
     });

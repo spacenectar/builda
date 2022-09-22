@@ -7,11 +7,11 @@ exports.addModule = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 // Import helpers
-const helpers_1 = require("../helpers");
+const helpers_1 = require("../../helpers");
 // Import data
-const globals_1 = __importDefault(require("../data/globals"));
+const globals_1 = __importDefault(require("../../data/globals"));
 // Import ignorefile
-const string_functions_1 = __importDefault(require("../helpers/string-functions"));
+const string_functions_1 = __importDefault(require("../../helpers/string-functions"));
 const addModule = async ({ config, modulePath, outputDir }) => {
     var _a;
     let module = {};

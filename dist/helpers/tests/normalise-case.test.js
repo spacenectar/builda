@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const string_functions_1 = require("../string-functions");
+const string_functions_1 = require("../../helpers/string-functions");
 describe('normalizeCase() function', () => {
     test("should return 'my component' when input is 'MyComponent'", () => {
         const string = (0, string_functions_1.normalizeCase)('MyComponent');

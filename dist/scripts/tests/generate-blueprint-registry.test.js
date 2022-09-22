@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const generate_blueprint_registry_1 = __importDefault(require("../generate-blueprint-registry"));
+const generate_blueprint_registry_1 = __importDefault(require("../../scripts/generate-blueprint-registry"));
 const blueprintPath = path_1.default.resolve('./src/mocks/blueprints');
 const registryPath = `${blueprintPath}/test-blueprint/registry.json`;
 describe('generateBlueprintRegistry', () => {

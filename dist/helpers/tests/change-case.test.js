@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const string_functions_1 = require("../string-functions");
+const string_functions_1 = require("../../helpers/string-functions");
 describe('changeCase() convert from kebab case', () => {
     test('Kebabcase text renders in sentence case', () => {
         const string = (0, string_functions_1.changeCase)('my-component', 'sentenceCase');

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const get_config_file_1 = __importDefault(require("../../helpers/get-config-file"));
-const build_from_blueprint_1 = __importDefault(require("../build-from-blueprint"));
+const build_from_blueprint_1 = __importDefault(require("../../scripts/build-from-blueprint"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const FILE_FOLDER = './experiments';
