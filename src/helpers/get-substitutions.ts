@@ -1,9 +1,9 @@
 import throwError from './throw-error';
 
-import type { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
-import type TSubstitution from '@typedefs/substitution';
-import type { Argv } from '@typedefs/argv';
-import ModuleRegistry from '@typedefs/module-registry';
+import type { BlueprintScriptContent } from 'types/blueprint-script-config';
+import type TSubstitution from 'types/substitution';
+import type { Argv } from 'types/argv';
+import ModuleRegistry from 'types/module-registry';
 
 type TGetSubstitutions = {
   name: string;

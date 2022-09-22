@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import generateBlueprintRegistry from '@scripts/generate-blueprint-registry';
+import generateBlueprintRegistry from 'scripts/generate-blueprint-registry';
 
 const blueprintPath = path.resolve('./src/mocks/blueprints');
 const registryPath = `${blueprintPath}/test-blueprint/registry.json`;

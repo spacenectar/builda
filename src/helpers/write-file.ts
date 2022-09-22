@@ -4,7 +4,7 @@ import changeCase from './string-functions';
 import prettier from 'prettier';
 
 // Import types
-import TSubstitution from '@typedefs/substitution';
+import TSubstitution from 'types/substitution';
 
 interface IWriteFileOptions {
   file?: string;

@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 import throwError from './throw-error';
 
 const getPathFromRoot = (config: ConfigFile, pathString: string) => {

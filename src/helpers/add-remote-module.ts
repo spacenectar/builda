@@ -3,8 +3,8 @@ import path from 'node:path';
 import axios from 'axios';
 import tar from 'tar';
 
-import globals from '@data/globals';
-import ModuleRegistry from '@typedefs/module-registry';
+import globals from 'data/globals';
+import ModuleRegistry from 'types/module-registry';
 import getRegistry from './get-registry';
 import createDir from './create-dir';
 import throwError from './throw-error';

@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 
 // import helpers
-import { printMessage, getModule, writeFile, getSubstitutions } from '@helpers';
-import { changeCase } from '@helpers/string-functions';
+import { printMessage, getModule, writeFile, getSubstitutions } from 'helpers';
+import { changeCase } from 'helpers/string-functions';
 
 // Import types
-import { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
-import { Argv } from '@typedefs/argv';
-import { ConfigFile } from '@typedefs/config-file';
+import { BlueprintScriptContent } from 'types/blueprint-script-config';
+import { Argv } from 'types/argv';
+import { ConfigFile } from 'types/config-file';
 import path from 'path';
 
 type Props = {

@@ -2,10 +2,10 @@ import path from 'node:path';
 import fs from 'node:fs';
 import glob from 'glob';
 
-import globals from '@data/globals';
+import globals from 'data/globals';
 
 import createDir from './create-dir';
-import TSubstitution from '@typedefs/substitution';
+import TSubstitution from 'types/substitution';
 import writeFile from './write-file';
 
 type FunctionParams = {

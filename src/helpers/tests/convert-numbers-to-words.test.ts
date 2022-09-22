@@ -1,4 +1,4 @@
-import { convertNumbersToWords } from '@helpers/string-functions';
+import { convertNumbersToWords } from 'helpers/string-functions';
 
 describe('normalizeCase() function', () => {
   test("should return 'my three component' when input is 'my 3 component'", () => {

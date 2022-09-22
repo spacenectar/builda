@@ -1,4 +1,4 @@
-import { normalizeCase } from '@helpers/string-functions';
+import { normalizeCase } from 'helpers/string-functions';
 
 describe('normalizeCase() function', () => {
   test("should return 'my component' when input is 'MyComponent'", () => {

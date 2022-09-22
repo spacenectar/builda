@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import ignoreFiles from '@data/ignore-file.json';
+import ignoreFiles from 'data/ignore-file.json';
 
 export const generateBlueprintRegistry = (blueprintPath?: string) => {
   const readPath = blueprintPath || './blueprints';

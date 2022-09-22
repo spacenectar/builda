@@ -1,4 +1,4 @@
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 import { getConfigFile } from '..';
 import { convertRegistryPathToUrl } from '../convert-registry-path-to-url';
 

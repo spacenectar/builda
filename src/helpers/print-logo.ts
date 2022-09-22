@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import globals from '@data/globals';
+import globals from 'data/globals';
 
 export default () => {
   return console.log(

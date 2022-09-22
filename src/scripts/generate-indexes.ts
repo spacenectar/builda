@@ -4,7 +4,7 @@
  * This file automatically generates the index registries for all directories specified in `directories` below. It runs automatically when `yarn preflight` runs or you can run it via `yarn genreg`
  */
 
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 import fs from 'node:fs';
 import path from 'path';
 import printMessage from '../helpers/print-message';

@@ -1,4 +1,4 @@
-import { QuestionType } from '@typedefs/question-type';
+import { QuestionType } from 'types/question-type';
 import inquirer from 'inquirer';
 import type { Question } from 'inquirer';
 

@@ -2,12 +2,12 @@ import fs from 'fs';
 import path from 'path';
 
 // Import globals
-import globals from '@data/globals';
+import globals from 'data/globals';
 
 // Import types
 
-import { ConfigFile } from '@typedefs/config-file';
-import { BlueprintScriptContent } from '@typedefs/blueprint-script-config';
+import { ConfigFile } from 'types/config-file';
+import { BlueprintScriptContent } from 'types/blueprint-script-config';
 
 export const getModule = (
   type: 'blueprint' | 'prefab',

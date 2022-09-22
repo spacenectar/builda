@@ -1,5 +1,5 @@
-import getConfigFile from '@helpers/get-config-file';
-import buildFromBlueprint from '@scripts/build-from-blueprint';
+import getConfigFile from 'helpers/get-config-file';
+import buildFromBlueprint from 'scripts/build-from-blueprint';
 import fs from 'fs';
 
 import path from 'path';

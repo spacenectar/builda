@@ -1,4 +1,4 @@
-import { convertSymbolsToWords } from '@helpers/string-functions';
+import { convertSymbolsToWords } from 'helpers/string-functions';
 
 describe('normalizeCase() function', () => {
   test("should return 'my at component' when input is 'my @ component'", () => {

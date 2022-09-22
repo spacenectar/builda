@@ -1,4 +1,4 @@
-import { detectCase } from '@helpers/string-functions';
+import { detectCase } from 'helpers/string-functions';
 
 describe('detect() function', () => {
   test("should return 'camel' when input is 'myComponent'", () => {

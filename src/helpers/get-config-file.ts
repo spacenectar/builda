@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-import globals from '@data/globals';
-import { ConfigFile } from '@typedefs/config-file';
+import globals from 'data/globals';
+import { ConfigFile } from 'types/config-file';
 
 const getConfigFile = async (
   configPath?: string

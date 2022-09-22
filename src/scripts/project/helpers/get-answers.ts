@@ -1,4 +1,4 @@
-import { askQuestion } from '@helpers';
+import { askQuestion } from 'helpers';
 import questions from './questions';
 
 export const getAnswers = async (

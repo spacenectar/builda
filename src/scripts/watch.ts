@@ -4,12 +4,12 @@
 
 import chokidar from 'chokidar';
 
-import { printMessage, throwError, checkAndCopyPath } from '@helpers';
+import { printMessage, throwError, checkAndCopyPath } from 'helpers';
 
-import globals from '@data/globals';
-import ignoredFiles from '@data/ignore-file.json';
+import globals from 'data/globals';
+import ignoredFiles from 'data/ignore-file.json';
 
-import type { ConfigFile } from '@typedefs/config-file';
+import type { ConfigFile } from 'types/config-file';
 
 const ignored = ignoredFiles.ignore;
 

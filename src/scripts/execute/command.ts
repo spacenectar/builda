@@ -1,9 +1,7 @@
 import yargs from 'yargs';
 import execute from './execute';
 
-import getConfigFile from '@helpers/get-config-file';
-import printMessage from '@helpers/print-message';
-import throwError from '@helpers/throw-error';
+import { getConfigFile, throwError } from 'helpers';
 
 export default () => {
   return {

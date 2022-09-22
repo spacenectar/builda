@@ -5,8 +5,8 @@ import tar from 'tar';
 
 import { simpleGit } from 'simple-git';
 
-import getRegistry from '@helpers/get-registry';
-import printMessage from '@helpers/print-message';
+import getRegistry from 'helpers/get-registry';
+import printMessage from 'helpers/print-message';
 
 /**
  * Packages a module and publishes it to the repository and optionally to the trade store.

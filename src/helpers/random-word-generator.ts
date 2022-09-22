@@ -1,4 +1,4 @@
-import { adjectives, nouns } from '@data/words.json';
+import { adjectives, nouns } from 'data/words.json';
 
 function capitalize(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);

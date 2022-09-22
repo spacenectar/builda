@@ -1,23 +1,23 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { askQuestion, printMessage, throwError } from '@helpers';
-import { pluralise } from '@helpers/string-functions';
+import { askQuestion, printMessage, throwError } from 'helpers';
+import { pluralise } from 'helpers/string-functions';
 
 import addModule from './add-module';
 
-import globals from '@data/globals';
-import questions from '@data/questions';
+import globals from 'data/globals';
+import questions from 'data/questions';
 
 const { configFileName, buildaDir, websiteUrl } = globals;
 
 // Types
-import { QuestionType } from '@typedefs/question-type';
+import { QuestionType } from 'types/question-type';
 import { Question } from 'inquirer';
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 import BlueprintScriptConfig, {
   BlueprintScriptContent
-} from '@typedefs/blueprint-script-config';
+} from 'types/blueprint-script-config';
 
 interface Answers {
   appName: string;

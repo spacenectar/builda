@@ -1,5 +1,5 @@
-import getConfigFile from '@helpers/get-config-file';
-import generateCommands from '@scripts/generate-commands';
+import getConfigFile from 'helpers/get-config-file';
+import generateCommands from 'scripts/generate-commands';
 
 describe('generateCommands', () => {
   let commands = {};

@@ -5,10 +5,10 @@ import process from 'node:process';
 import path from 'node:path';
 import execa from 'execa';
 
-import { throwError } from '@helpers';
+import { throwError } from 'helpers';
 
-import globals from '@data/globals';
-import { ConfigFile } from '@typedefs/config-file';
+import globals from 'data/globals';
+import { ConfigFile } from 'types/config-file';
 
 type TExecute = {
   config: ConfigFile;

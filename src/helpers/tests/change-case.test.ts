@@ -1,4 +1,4 @@
-import { changeCase } from '@helpers/string-functions';
+import { changeCase } from 'helpers/string-functions';
 
 describe('changeCase() convert from kebab case', () => {
   test('Kebabcase text renders in sentence case', () => {

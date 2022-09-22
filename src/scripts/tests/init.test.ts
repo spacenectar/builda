@@ -1,9 +1,9 @@
 import fs from 'fs';
 
-import presetAnswers from '@mocks/preset-answers';
-import init from '@scripts/init';
-import { ConfigFile } from '@typedefs/config-file';
-import getConfigFile from '@helpers/get-config-file';
+import presetAnswers from 'mocks/preset-answers';
+import init from 'scripts/init';
+import { ConfigFile } from 'types/config-file';
+import getConfigFile from 'helpers/get-config-file';
 
 describe('init', () => {
   const CONFIG_FILE = './builda.json';

@@ -1,16 +1,16 @@
 import fs from 'node:fs';
-import globals from '@data/globals';
+import globals from 'data/globals';
 import {
   addLocalModule,
   addRemoteModule,
   convertRegistryPathToUrl,
   detectPathType,
   printMessage
-} from '@helpers/index';
-import changeCase from '@helpers/string-functions';
-import throwError from '@helpers/throw-error';
-import { ConfigFile } from '@typedefs/config-file';
-import ModuleRegistry from '@typedefs/module-registry';
+} from 'helpers/index';
+import changeCase from 'helpers/string-functions';
+import throwError from 'helpers/throw-error';
+import { ConfigFile } from 'types/config-file';
+import ModuleRegistry from 'types/module-registry';
 
 export const updateModule = async ({
   config,

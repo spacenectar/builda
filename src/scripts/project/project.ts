@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
-import globals from '@data/globals';
+import globals from 'data/globals';
 import {
   addLocalModule,
   addRemoteModule,
@@ -16,9 +16,9 @@ import {
   printMessage,
   throwError,
   writeFile
-} from '@helpers';
-import changeCase from '@helpers/string-functions';
-import ModuleRegistry from '@typedefs/module-registry';
+} from 'helpers';
+import changeCase from 'helpers/string-functions';
+import ModuleRegistry from 'types/module-registry';
 
 import { getAnswers } from './helpers/get-answers';
 

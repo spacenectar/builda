@@ -2,11 +2,11 @@ import fs from 'node:fs';
 import tar from 'tar';
 import path from 'node:path';
 
-import ModuleRegistry from '@typedefs/module-registry';
+import ModuleRegistry from 'types/module-registry';
 import createDir from './create-dir';
 import getRegistry from './get-registry';
-import globals from '@data/globals';
-import ignoreFile from '@data/ignore-file.json';
+import globals from 'data/globals';
+import ignoreFile from 'data/ignore-file.json';
 // Ignore these files
 const ignoreFiles = ignoreFile.ignore;
 

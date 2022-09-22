@@ -1,4 +1,4 @@
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 
 export const generateCommands = (
   config: ConfigFile

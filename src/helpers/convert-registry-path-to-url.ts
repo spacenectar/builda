@@ -1,4 +1,4 @@
-import { ConfigFile } from '@typedefs/config-file';
+import { ConfigFile } from 'types/config-file';
 
 const urlWithProtocol = (url: string) => {
   // If a url starts with http or https, return the url unchanged
