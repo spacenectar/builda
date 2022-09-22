@@ -145,6 +145,7 @@ const CREATE_CONFIG_QUESTION = {
         (0, _helpers_1.printLogo)();
         // The user wants to publish their module
         // Go to publish function
+        // TODO: Add 'version' argument
         return (0, publish_module_1.default)();
     }
     const commands = config ? (0, generate_commands_1.default)(config) : {};

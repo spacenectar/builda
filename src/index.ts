@@ -173,6 +173,7 @@ const CREATE_CONFIG_QUESTION = {
     printLogo();
     // The user wants to publish their module
     // Go to publish function
+    // TODO: Add 'version' argument
     return publishModule();
   }
 
