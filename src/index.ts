@@ -25,6 +25,7 @@ import { updateModule } from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
 import execute from '@scripts/execute';
 import { generateIndexes } from '@scripts/generate-indexes';
+import { publishModule } from '@scripts/publish-module';
 
 // Check to see if the command is being run from the root of the project or from the .builda/export directory
 // If it's being run from the export directory, then we need to change the working directory to the root of the project
@@ -166,6 +167,13 @@ const CREATE_CONFIG_QUESTION = {
       pathName: pathName as string,
       packageManager: packageManager as string
     });
+  }
+
+  if (argv.publish) {
+    printLogo();
+    // The user wants to publish their module
+    // Go to publish function
+    return publishModule();
   }
 
   const commands = config ? generateCommands(config) : {};

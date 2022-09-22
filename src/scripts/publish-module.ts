@@ -1,5 +1,8 @@
 #! /usr/bin/env node
 
+import fs from 'node:fs';
+import tar from 'tar';
+
 import { simpleGit } from 'simple-git';
 
 import getRegistry from '@helpers/get-registry';
@@ -8,11 +11,21 @@ import printMessage from '@helpers/print-message';
 /**
  * Packages a module and publishes it to the repository and optionally to the trade store.
  */
+const checkPathExists = (pathString: string, isDir?: boolean) => {
+  // For now, just check if the README file exists
+  if (!fs.existsSync(pathString)) {
+    return {
+      error: true,
+      message: `Cannot find ${
+        isDir && 'a folder called'
+      } '${pathString}' in the current directory.`
+    };
+  }
 
-const checkReadme = () => {
-  // TODO: Check that the readme has content and is properly formatted
-
-  return true;
+  return {
+    error: false,
+    message: ''
+  };
 };
 
 const publishToTradeStore = async () => {
@@ -25,9 +38,14 @@ export const publishModule = async () => {
   const { name, type, version, tradeStore } = registry;
 
   const REGISTRYFILE = 'registry.json';
+  const READMEFILE = 'README.md';
+  const FILESFOLDER = 'files';
 
   if (!registry) {
-    return printMessage(`No ${REGISTRYFILE} file found.`, 'danger');
+    return printMessage(
+      `No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`,
+      'danger'
+    );
   }
 
   if (!name) {
@@ -58,6 +76,12 @@ export const publishModule = async () => {
     );
   }
 
+  const validateFileFolder = checkPathExists(FILESFOLDER, true);
+
+  if (validateFileFolder.error) {
+    return printMessage(validateFileFolder.message, 'danger');
+  }
+
   const isCorrectlyPrefixed = name.startsWith(`${type}-`);
 
   if (!isCorrectlyPrefixed) {
@@ -67,13 +91,10 @@ export const publishModule = async () => {
     );
   }
 
-  const isReadmeValid = checkReadme();
+  const validateReadme = checkPathExists(READMEFILE);
 
-  if (!isReadmeValid) {
-    return printMessage(
-      `The readme file is not valid. Please check the readme file and try again.\r`,
-      'danger'
-    );
+  if (validateReadme.error) {
+    return printMessage(validateReadme.message, 'error');
   }
 
   const git = simpleGit();
@@ -95,12 +116,41 @@ export const publishModule = async () => {
   }
 
   printMessage('All checks passed.', 'success');
-  printMessage('Creating a new commit...', 'processing');
-  // Create a new commit
-  await git.add('.');
-  await git.commit(`v${version}`);
-  printMessage('Commit created.', 'success');
-  printMessage('Tagging the commit...', 'processing');
+
+  // Package the files folder into a tarball
+  printMessage(`Packaging ${name}...`, 'processing');
+  // If there is already a tarball, delete it
+  if (fs.existsSync('files.tgz')) {
+    fs.unlinkSync('files.tgz');
+  }
+
+  // Create the tarball
+  await tar.create(
+    {
+      file: `${FILESFOLDER}.tgz`,
+      gzip: true,
+      cwd: FILESFOLDER
+    },
+    fs.readdirSync(FILESFOLDER)
+  );
+  printMessage('Package created', 'success');
+
+  // Add new tarball to git
+  printMessage(`Adding ${FILESFOLDER}.tgz to git...`, 'processing');
+  await git.add(`${FILESFOLDER}.tgz`);
+  await git.commit(`Adds updated ${FILESFOLDER}.tgz`);
+  printMessage('Added to git', 'success');
+  printMessage('Tagging the latest commit...', 'processing');
+  // If tag already exists, throw an error
+  const tagList = await git.tags();
+  const tagExists =
+    tagList.all.includes(version) || tagList.all.includes(`v${version}`);
+  if (tagExists) {
+    return printMessage(
+      `A tag with the version number v${version} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`,
+      'error'
+    );
+  }
   // Tag the commit with the current version number
   await git.addTag(`v${version}`);
   let tagString = 'tags';
@@ -111,13 +161,22 @@ export const publishModule = async () => {
     );
     tagString = 'tag';
   } else {
-    // Remove the 'latest' tag
-    await git.tag(['-d', 'latest']);
-    // Remove the remote 'latest' tag
-    await git.push('origin', ':latest');
+    // Check if the remote has a latest tag
+    const remoteTags = await git.listRemote(['--tags']);
+    const remoteTagExists = remoteTags.includes('refs/tags/latest');
+    const localTags = await git.tags();
+    const localTagExists = localTags.all.includes('latest');
+    if (remoteTagExists || localTagExists) {
+      // Remove the 'latest' tag
+      await git.tag(['--delete', 'latest']);
+      // Remove the remote 'latest' tag
+      await git.push(['origin', '--delete', 'latest']);
+    }
     // Tag the commit with latest
     await git.addTag('latest');
   }
+  // Push the tags to the remote
+  await git.pushTags('origin');
   printMessage(`${tagString} created.`, 'success');
   printMessage('Pushing changes to git...', 'processing');
   // Push the changes to git

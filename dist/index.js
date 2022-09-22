@@ -23,6 +23,7 @@ const update_module_1 = require("./scripts/update-module");
 const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
 const execute_1 = __importDefault(require("./scripts/execute"));
 const generate_indexes_1 = require("./scripts/generate-indexes");
+const publish_module_1 = require("./scripts/publish-module");
 // Check to see if the command is being run from the root of the project or from the .builda/export directory
 // If it's being run from the export directory, then we need to change the working directory to the root of the project
 const cwd = node_process_1.default.cwd();
@@ -139,6 +140,12 @@ const CREATE_CONFIG_QUESTION = {
             pathName: pathName,
             packageManager: packageManager
         });
+    }
+    if (argv.publish) {
+        (0, _helpers_1.printLogo)();
+        // The user wants to publish their module
+        // Go to publish function
+        return (0, publish_module_1.publishModule)();
     }
     const commands = config ? (0, generate_commands_1.default)(config) : {};
     const commandString = node_process_1.default.argv[2].replace('--', '');
