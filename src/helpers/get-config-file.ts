@@ -2,14 +2,20 @@ import fs from 'fs';
 import path from 'path';
 
 import globals from '@data/globals';
+import { ConfigFile } from '@typedefs/config-file';
 
-const { configFileName } = globals;
+const getConfigFile = async (
+  configPath?: string
+): Promise<ConfigFile | null> => {
+  if (configPath) {
+    const config = require(path.resolve(configPath));
+    return config;
+  }
 
-const configFile = path.resolve(configFileName);
+  const { configFileName } = globals;
 
-const getConfigFile = async () => {
-  if (fs.existsSync(configFile)) {
-    const config = await import(configFile);
+  if (fs.existsSync(configFileName)) {
+    const config = require(path.resolve(configFileName));
     return config;
   }
   return null;
