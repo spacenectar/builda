@@ -1,11 +1,8 @@
 import yargs from 'yargs';
 
 import { getConfigFile, throwError } from 'helpers';
-import globals from 'data/globals';
 
 import publish from './publish';
-
-const { websiteUrl } = globals;
 
 export default () => {
   return {
