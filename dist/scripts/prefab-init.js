@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.prefabInit = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
-const glob_1 = __importDefault(require("glob"));
+const node_process_1 = __importDefault(require("node:process"));
 const execa_1 = __importDefault(require("execa"));
 const axios_1 = __importDefault(require("axios"));
 const globals_1 = __importDefault(require("../data/globals"));
@@ -76,8 +76,8 @@ const getAnswers = async (omitName, omitPathName, omitYarnOrNpm) => {
         });
     });
 };
-const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, packageManager }) => {
-    var _a;
+const prefabInit = async ({ presetAnswers, appName, pathName, packageManager }) => {
+    var _a, _b, _c;
     const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
     const defaultRequiredFiles = [
         buildaDir,
@@ -88,13 +88,15 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
     const answers = presetAnswers ||
         (await getAnswers(!!appName, !!pathName, !!packageManager));
     const name = appName || answers.appName;
-    const outputDir = outputDirectory || answers.appName;
     const prefabPath = pathName || answers.pathName;
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
-    await (0, _helpers_1.createDir)(outputDir);
+    await (0, _helpers_1.createDir)(name);
+    // Change directory to the new app
+    node_process_1.default.chdir(name);
     // check if the root directory is empty
-    const rootDir = node_path_1.default.resolve(outputDir);
-    const workingDir = node_path_1.default.join(outputDir, buildaDir, 'export');
+    const rootDir = node_process_1.default.cwd();
+    const workingDir = node_path_1.default.join(buildaDir, 'export');
+    const prefabDir = node_path_1.default.join(buildaDir, 'modules/prefab/files');
     if (node_fs_1.default.readdirSync(rootDir).length !== 0) {
         return (0, _helpers_1.throwError)(`The directory: '${rootDir}' already exists. It is not recommended to install a prefab into an existing project.`);
     }
@@ -104,22 +106,33 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
         let module = {};
         const moduleType = (0, _helpers_1.detectPathType)(prefabPath);
         if (moduleType === 'local') {
-            module = await (0, _helpers_1.addLocalModule)(prefabPath, outputDir);
+            module = await (0, _helpers_1.addLocalModule)(prefabPath, rootDir);
         }
         if (moduleType === 'remote') {
-            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(prefabPath), outputDir);
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(prefabPath), rootDir);
         }
         if (moduleType === 'custom') {
-            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(prefabPath), outputDir);
+            module = await (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(prefabPath), rootDir);
         }
         if (module === null || module === void 0 ? void 0 : module.name) {
             const prefabName = module.name;
             const version = module.version;
             const substitutions = module.substitute || [];
-            const prefabDir = node_path_1.default.join(outputDir, buildaDir, 'modules/prefab', 'files');
+            const extraRootfiles = ((_a = module.filesInRoot) === null || _a === void 0 ? void 0 : _a.filter((file) => {
+                if (!file.rewrite) {
+                    return file;
+                }
+                return false;
+            }).map((f) => f.path)) || [];
+            const extraRootfilesToRewrite = ((_b = module.filesInRoot) === null || _b === void 0 ? void 0 : _b.filter((file) => {
+                if (file.rewrite) {
+                    return file;
+                }
+                return false;
+            })) || [];
             const requiredFiles = [
                 ...defaultRequiredFiles,
-                ...(module.custom_files || [])
+                ...(extraRootfiles || [])
             ];
             (0, _helpers_1.printMessage)(`Installed ${prefabName}@${version}`, 'success');
             (0, _helpers_1.printMessage)('Creating export path...', 'processing');
@@ -142,44 +155,23 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     with: packageManagerType
                 }
             ];
-            const fileLoop = async (pathString) => {
-                const promises = [];
-                for (const file of pathString) {
-                    const filePath = node_path_1.default.join(prefabDir, file);
-                    // Check if file is glob
-                    if (file.includes('*')) {
-                        const globFiles = glob_1.default.sync(file);
-                        promises.push(await fileLoop(globFiles));
-                    }
-                    else if (node_fs_1.default.lstatSync(filePath).isDirectory()) {
-                        const files = node_fs_1.default.readdirSync(filePath);
-                        const newFiles = files.map((f) => node_path_1.default.join(file, f));
-                        promises.push(await fileLoop(newFiles));
-                    }
-                    else {
-                        promises.push(new Promise((resolve) => {
-                            const directoryPathWithoutFile = node_path_1.default.dirname(file);
-                            const directoryPath = node_path_1.default.join(workingDir, directoryPathWithoutFile);
-                            (0, _helpers_1.createDir)(directoryPath);
-                            if (node_fs_1.default.existsSync(filePath)) {
-                                (0, _helpers_1.writeFile)({
-                                    file: filePath,
-                                    output_dir: directoryPath,
-                                    substitute,
-                                    name
-                                });
-                            }
-                            resolve(filePath);
-                        }));
-                    }
-                }
-                // Wait for all promises to resolve
-                await Promise.all(promises);
-            };
             // Copy all required files
-            await fileLoop(requiredFiles);
+            await (0, _helpers_1.loopAndRewriteFiles)({ name, paths: requiredFiles, substitute });
             const buildaPath = node_path_1.default.join(workingDir, buildaDir);
             const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
+            // If there are extra files which need to be rewritten, do that now
+            if (extraRootfilesToRewrite.length > 0) {
+                const paths = extraRootfilesToRewrite.map((f) => f.path);
+                const extraSubstitutions = extraRootfilesToRewrite
+                    .map((f) => f.substitutions)
+                    .flat()
+                    .concat(substitutions);
+                await (0, _helpers_1.loopAndRewriteFiles)({
+                    name,
+                    paths,
+                    substitute: extraSubstitutions
+                });
+            }
             // Copy config.json from working builda directory to root directory
             if (node_fs_1.default.existsSync(buildaConfigPath)) {
                 node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));
@@ -192,11 +184,12 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 if (value.startsWith('builda') ||
                     value.startsWith('run-s') ||
                     value.startsWith('run-p') ||
+                    value.startsWith('npm-run-all') ||
                     value.startsWith('concurrently')) {
-                    // We don't want to replace builda, npm-run-all or concurrently scripts, so we just copy them over
+                    // We don't want to replace `builda`, `npm-run-all` or `concurrently` scripts, so we just copy them over
                     // TODO: Add docs to show that builda scripts should not be used in conjunction with other scripts
                     // add a suggestion to put the builda script in its own script and call that script from the other
-                    // script using npm-run-all or concurrently
+                    // script using one of the supported methods
                     /**
                      * e.g.
                      * {
@@ -213,7 +206,6 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
             const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
             node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
             // Add the default prefab readme to the root directory
-            // Download the prefab readme from the builda website (if possible)
             const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
             const readmeSubs = [
                 {
@@ -229,6 +221,8 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                     with: version
                 }
             ];
+            // Download the prefab readme and add it to the root directory
+            // If the download fails, we just ignore it and continue with a warning message
             await axios_1.default
                 .get(prefabReadmeUrl, {
                 headers: {
@@ -262,7 +256,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                 for (const blueprint of blueprints) {
                     const bp = module.blueprints[blueprint];
                     (0, _helpers_1.printMessage)(`installing ${blueprint}`, 'processing');
-                    const blueprintDest = node_path_1.default.join(outputDir, buildaDir, 'modules', 'blueprints');
+                    const blueprintDest = node_path_1.default.join(rootDir, buildaDir, 'modules', 'blueprints');
                     (0, _helpers_1.createDir)(blueprintDest);
                     if (bp.location === 'prefab') {
                         // Copy the 'blueprints' folder from the prefab to the .builda folder
@@ -276,10 +270,10 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                         const bluePrintType = (0, _helpers_1.detectPathType)(bp.location);
                         blueprintPromises.push(new Promise((resolve) => {
                             if (bluePrintType === 'local') {
-                                (0, _helpers_1.addLocalModule)(bp.location, outputDir);
+                                (0, _helpers_1.addLocalModule)(bp.location, rootDir);
                             }
                             if (bluePrintType === 'remote') {
-                                (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(bp.location), outputDir);
+                                (0, _helpers_1.addRemoteModule)((0, _helpers_1.convertRegistryPathToUrl)(bp.location), rootDir);
                             }
                             resolve(blueprint);
                         }));
@@ -300,7 +294,7 @@ const prefabInit = async ({ presetAnswers, appName, outputDirectory, pathName, p
                             all: true,
                             stdio: 'inherit'
                         });
-                        (_a = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _a === void 0 ? void 0 : _a.pipe(process.stdout);
+                        (_c = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _c === void 0 ? void 0 : _c.pipe(node_process_1.default.stdout);
                         await childProcess;
                         (0, _helpers_1.printMessage)('All dependencies installed.', 'success');
                     }

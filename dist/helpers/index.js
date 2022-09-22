@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDetailsFromPath = exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.skip = exports.addRemoteModule = exports.addLocalModule = exports.getPathFromRoot = exports.getModule = exports.getSubstitutions = exports.copyDir = exports.getConfigFile = exports.detectPathType = exports.checkAndCopyPath = void 0;
+exports.loopAndRewriteFiles = exports.getDetailsFromPath = exports.writeFile = exports.convertRegistryPathToUrl = exports.getRegistry = exports.randomWordGenerator = exports.createDir = exports.throwError = exports.askQuestion = exports.nameError = exports.printLogo = exports.printMessage = exports.skip = exports.addRemoteModule = exports.addLocalModule = exports.getPathFromRoot = exports.getModule = exports.getSubstitutions = exports.copyDir = exports.getConfigFile = exports.detectPathType = exports.checkAndCopyPath = void 0;
 var check_and_copy_path_1 = require("./check-and-copy-path");
 Object.defineProperty(exports, "checkAndCopyPath", { enumerable: true, get: function () { return __importDefault(check_and_copy_path_1).default; } });
 var detect_path_type_1 = require("./detect-path-type");
@@ -46,3 +46,5 @@ var write_file_1 = require("./write-file");
 Object.defineProperty(exports, "writeFile", { enumerable: true, get: function () { return __importDefault(write_file_1).default; } });
 var get_details_from_path_1 = require("./get-details-from-path");
 Object.defineProperty(exports, "getDetailsFromPath", { enumerable: true, get: function () { return __importDefault(get_details_from_path_1).default; } });
+var loop_and_rewrite_files_1 = require("./loop-and-rewrite-files");
+Object.defineProperty(exports, "loopAndRewriteFiles", { enumerable: true, get: function () { return __importDefault(loop_and_rewrite_files_1).default; } });
