@@ -7,31 +7,9 @@ import { simpleGit } from 'simple-git';
 
 import getRegistry from 'helpers/get-registry';
 import printMessage from 'helpers/print-message';
-
-/**
- * Packages a module and publishes it to the repository and optionally to the trade store.
- */
-const checkPathExists = (pathString: string, isDir?: boolean) => {
-  // For now, just check if the README file exists
-  if (!fs.existsSync(pathString)) {
-    return {
-      error: true,
-      message: `Cannot find ${
-        isDir && 'a folder called'
-      } '${pathString}' in the current directory.`
-    };
-  }
-
-  return {
-    error: false,
-    message: ''
-  };
-};
-
-const publishToTradeStore = async () => {
-  // TODO: Publish to trade store
-  return true;
-};
+import { publishToTradeStore } from './helpers/publish-to-trade-store';
+import { checkPathExists } from './helpers/check-path-exists';
+import { throwError } from 'helpers';
 
 export const publishModule = async (updateVersion?: string) => {
   const registry = await getRegistry();
@@ -42,31 +20,21 @@ export const publishModule = async (updateVersion?: string) => {
   const FILESFOLDER = 'files';
 
   if (!registry) {
-    return printMessage(
-      `No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`,
-      'danger'
+    throwError(
+      `No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`
     );
   }
 
   if (!name) {
-    return printMessage(
-      `No name entry found in ${REGISTRYFILE}. Please add one.\r`,
-      'danger'
-    );
+    throwError(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
   }
 
   if (!type) {
-    return printMessage(
-      `No type entry found in ${REGISTRYFILE}. Please add one.\r`,
-      'danger'
-    );
+    throwError(`No type entry found in ${REGISTRYFILE}. Please add one.\r`);
   }
 
   if (!version && !updateVersion) {
-    return printMessage(
-      `No version entry found in ${REGISTRYFILE}. Please add one.\r`,
-      'danger'
-    );
+    throwError(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
   }
 
   if (!tradeStore) {
@@ -79,39 +47,36 @@ export const publishModule = async (updateVersion?: string) => {
   const validateFileFolder = checkPathExists(FILESFOLDER, true);
 
   if (validateFileFolder.error) {
-    return printMessage(validateFileFolder.message, 'danger');
+    throwError(validateFileFolder.message);
   }
 
   const isCorrectlyPrefixed = name.startsWith(`${type}-`);
 
   if (!isCorrectlyPrefixed) {
-    return printMessage(
-      `The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`,
-      'danger'
+    throwError(
+      `The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`
     );
   }
 
   const validateReadme = checkPathExists(READMEFILE);
 
   if (validateReadme.error) {
-    return printMessage(validateReadme.message, 'error');
+    throwError(validateReadme.message);
   }
 
   const git = simpleGit();
 
   if (!git.checkIsRepo()) {
-    return printMessage(
-      `This is not a git repository. Please initialise git and try again.\r`,
-      'danger'
+    throwError(
+      `This is not a git repository. Please initialise git and try again.\r`
     );
   }
 
   const status = await git.status();
 
   if (!status.isClean()) {
-    return printMessage(
-      `The git repository is not clean. Please commit all changes and try again.\r`,
-      'danger'
+    throwError(
+      `The git repository is not clean. Please commit all changes and try again.\r`
     );
   }
 
@@ -157,9 +122,8 @@ export const publishModule = async (updateVersion?: string) => {
   const tagExists =
     tagList.all.includes(newVersion) || tagList.all.includes(`v${newVersion}`);
   if (tagExists) {
-    return printMessage(
-      `A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`,
-      'error'
+    throwError(
+      `A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`
     );
   }
   // Tag the commit with the current version number
@@ -200,7 +164,7 @@ export const publishModule = async (updateVersion?: string) => {
     publishToTradeStore();
   }
 
-  return printMessage('Module published.', 'success');
+  printMessage('Module published.', 'success');
 };
 
 if (require.main === module) {

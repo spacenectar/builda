@@ -21,6 +21,7 @@ import globals from 'data/globals';
 import { command as project } from 'scripts/project';
 import { command as execute } from 'scripts/execute';
 import { command as install } from 'scripts/install';
+import { command as publish } from 'scripts/publish';
 
 const { websiteUrl } = globals;
 
@@ -36,12 +37,14 @@ const { websiteUrl } = globals;
 const projectCommand = project();
 const executeCommand = execute();
 const installCommand = install();
+const publishCommand = publish();
 
 export const builda = async () => {
   yargs
     .command(projectCommand)
     .command(executeCommand)
     .command(installCommand)
+    .command(publishCommand)
     .epilogue(`For more information, visit ${websiteUrl}/docs`)
     .help('h').argv;
 };

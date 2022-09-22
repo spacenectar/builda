@@ -21,6 +21,7 @@ const globals_1 = __importDefault(require("./data/globals"));
 const project_1 = require("./scripts/project");
 const execute_1 = require("./scripts/execute");
 const install_1 = require("./scripts/install");
+const publish_1 = require("./scripts/publish");
 const { websiteUrl } = globals_1.default;
 // const cwd = process.cwd();
 // const isExportDir = cwd.includes(`${globals.buildaDir}/export`);
@@ -32,11 +33,13 @@ const { websiteUrl } = globals_1.default;
 const projectCommand = (0, project_1.command)();
 const executeCommand = (0, execute_1.command)();
 const installCommand = (0, install_1.command)();
+const publishCommand = (0, publish_1.command)();
 const builda = async () => {
     yargs_1.default
         .command(projectCommand)
         .command(executeCommand)
         .command(installCommand)
+        .command(publishCommand)
         .epilogue(`For more information, visit ${websiteUrl}/docs`)
         .help('h').argv;
 };
