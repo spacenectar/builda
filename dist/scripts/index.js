@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.updateModule = exports.publishModule = exports.init = exports.generateIndexes = exports.generateCommands = exports.buildFromPrefabs = exports.buildFromBlueprint = exports.installCommand = exports.install = exports.executeCommand = exports.execute = exports.generateProjectCommand = exports.project = void 0;
+exports.watch = exports.init = exports.generateIndexes = exports.generateCommands = exports.buildFromPrefabs = exports.buildFromBlueprint = exports.updateCommand = exports.update = exports.publishCommand = exports.publish = exports.installCommand = exports.install = exports.executeCommand = exports.execute = exports.generateProjectCommand = exports.project = void 0;
 var project_1 = require("./project");
 Object.defineProperty(exports, "project", { enumerable: true, get: function () { return project_1.project; } });
 Object.defineProperty(exports, "generateProjectCommand", { enumerable: true, get: function () { return project_1.command; } });
@@ -13,6 +13,12 @@ Object.defineProperty(exports, "executeCommand", { enumerable: true, get: functi
 var install_1 = require("./install");
 Object.defineProperty(exports, "install", { enumerable: true, get: function () { return install_1.install; } });
 Object.defineProperty(exports, "installCommand", { enumerable: true, get: function () { return install_1.command; } });
+var publish_1 = require("./publish");
+Object.defineProperty(exports, "publish", { enumerable: true, get: function () { return publish_1.publish; } });
+Object.defineProperty(exports, "publishCommand", { enumerable: true, get: function () { return publish_1.command; } });
+var update_1 = require("./update");
+Object.defineProperty(exports, "update", { enumerable: true, get: function () { return update_1.update; } });
+Object.defineProperty(exports, "updateCommand", { enumerable: true, get: function () { return update_1.command; } });
 // Legacy code
 const build_from_blueprint_1 = __importDefault(require("./build-from-blueprint"));
 exports.buildFromBlueprint = build_from_blueprint_1.default;
@@ -24,9 +30,5 @@ const generate_indexes_1 = __importDefault(require("./generate-indexes"));
 exports.generateIndexes = generate_indexes_1.default;
 const init_1 = __importDefault(require("./init"));
 exports.init = init_1.default;
-const publish_module_1 = __importDefault(require("./publish-module"));
-exports.publishModule = publish_module_1.default;
-const update_module_1 = __importDefault(require("./update-module"));
-exports.updateModule = update_module_1.default;
 const watch_1 = __importDefault(require("./watch"));
 exports.watch = watch_1.default;

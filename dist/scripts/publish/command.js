@@ -4,9 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../helpers");
-const globals_1 = __importDefault(require("../../data/globals"));
 const publish_1 = __importDefault(require("./publish"));
-const { websiteUrl } = globals_1.default;
 exports.default = () => {
     return {
         cmd: 'publish',
