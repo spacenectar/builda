@@ -38,7 +38,7 @@ export const watch = (config: ConfigFile) => {
       console.log(`File ${pathString} has been changed`);
       checkAndCopyPath(
         pathString,
-        `${globals.buildaDir}/build`,
+        `${globals.buildaDir}/export`,
         pathString.replace(cleanRoot, '')
       );
     });

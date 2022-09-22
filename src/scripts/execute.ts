@@ -15,7 +15,7 @@ export const execute = async (config: ConfigFile, command: string) => {
   if (config) {
     const { app_root, package_manager } = config;
 
-    const buildDir = path.join(app_root, globals.buildaDir, 'build');
+    const buildDir = path.join(app_root, globals.buildaDir, 'export');
     const packageJson = require(path.resolve(buildDir, 'package.json'));
     const scripts = packageJson.scripts;
     const script = scripts[command];
@@ -45,7 +45,6 @@ export const execute = async (config: ConfigFile, command: string) => {
       execa
         .command(prefixedCommand, {
           cwd,
-          shell: true,
           stdio: 'inherit'
         })
         .stdout?.pipe(process.stdout);

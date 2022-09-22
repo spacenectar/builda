@@ -11,7 +11,7 @@ const add_module_1 = __importDefault(require("./add-module"));
 const globals_1 = __importDefault(require("../data/globals"));
 const questions_1 = __importDefault(require("../data/questions"));
 const { configFileName, buildaDir, websiteUrl } = globals_1.default;
-const configFilePath = node_path_1.default.join(buildaDir, configFileName);
+const configFilePath = node_path_1.default.resolve(configFileName);
 const OVERWRITE_CONFIG_QUESTION = {
     message: `Do you really want to replace your ${configFileName} file? You will lose all your current settings.`,
     name: 'replaceConfig',

@@ -2,6 +2,7 @@
 
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import process from 'node:process';
 
 // import helpers
 import { printMessage, askQuestion, getConfigFile, printLogo } from '@helpers';
@@ -24,6 +25,16 @@ import { updateModule } from '@scripts/update-module';
 import prefabInit from '@scripts/prefab-init';
 import execute from '@scripts/execute';
 import { generateIndexes } from '@scripts/generate-indexes';
+
+// Check to see if the command is being run from the root of the project or from the .builda/export directory
+// If it's being run from the export directory, then we need to change the working directory to the root of the project
+
+const cwd = process.cwd();
+const isExportDir = cwd.includes(`${globals.buildaDir}/export`);
+
+if (isExportDir) {
+  process.chdir('../..');
+}
 
 const args = hideBin(process.argv);
 
@@ -48,6 +59,7 @@ const CREATE_CONFIG_QUESTION = {
   const config = await getConfigFile();
 
   if (config) {
+    // The following commands are available when a config file is present
     if (args.length === 0) {
       printLogo();
       // No arguments were passed but a config file exists
@@ -64,6 +76,45 @@ const CREATE_CONFIG_QUESTION = {
       );
       return process.exit(0);
     }
+    if (argv.watch || argv.w) {
+      printLogo();
+      // The user is watching the app for changes
+      // Go to watch function
+      return watch(config);
+    }
+
+    if (argv.build) {
+      printLogo();
+      // The user wants to build the app
+      // Go to build function
+      return buildFromPrefabs(config);
+    }
+
+    if (argv.index) {
+      printLogo();
+      // The user wants to generate indexes
+      // Go to generate indexes function
+      return generateIndexes(config);
+    }
+
+    if (argv.execute || argv.x) {
+      // The user wants to execute a command
+      // Go to execute function
+      const command = (argv.execute || argv.x) as string;
+      return execute(config, command);
+    }
+
+    if (argv._[0].toString() === 'add') {
+      printLogo();
+      const module = argv._[1].toString();
+      return addModule({ config, modulePath: module });
+    }
+
+    if (argv._[0].toString() === 'update') {
+      printLogo();
+      const module = argv._[1].toString();
+      return updateModule({ config, module });
+    }
   }
 
   if (args.length === 0 && !argv.manual && !config) {
@@ -78,6 +129,8 @@ const CREATE_CONFIG_QUESTION = {
     });
   }
 
+  // The following commands are available without a config file
+
   if (argv.manual) {
     printLogo();
     printMessage('Manual mode selected.\r', 'notice');
@@ -90,34 +143,6 @@ const CREATE_CONFIG_QUESTION = {
     // The user wants to migrate an old buildcom config file
     // Go to migrate function
     return printMessage('🛠 This route does not exist yet.\r', 'notice');
-  }
-
-  if (argv.watch) {
-    printLogo();
-    // The user is watching the app for changes
-    // Go to watch function
-    return watch(config);
-  }
-
-  if (argv.build) {
-    printLogo();
-    // The user wants to build the app
-    // Go to build function
-    return buildFromPrefabs(config);
-  }
-
-  if (argv.index) {
-    printLogo();
-    // The user wants to generate indexes
-    // Go to generate indexes function
-    return generateIndexes(config);
-  }
-
-  if (argv.execute || argv.x) {
-    // The user wants to execute a command
-    // Go to execute function
-    const command = (argv.execute || argv.x) as string;
-    return execute(config, command);
   }
 
   if (argv.init) {
@@ -143,18 +168,6 @@ const CREATE_CONFIG_QUESTION = {
       pathName: pathName as string,
       packageManager: packageManager as string
     });
-  }
-
-  if (argv._[0].toString() === 'add') {
-    printLogo();
-    const module = argv._[1].toString();
-    return addModule({ config, modulePath: module });
-  }
-
-  if (argv._[0].toString() === 'update') {
-    printLogo();
-    const module = argv._[1].toString();
-    return updateModule({ config, module });
   }
 
   const commands = config ? generateCommands(config) : {};

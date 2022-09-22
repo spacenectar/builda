@@ -16,7 +16,7 @@ const execute = async (config, command) => {
     var _a;
     if (config) {
         const { app_root, package_manager } = config;
-        const buildDir = node_path_1.default.join(app_root, globals_1.default.buildaDir, 'build');
+        const buildDir = node_path_1.default.join(app_root, globals_1.default.buildaDir, 'export');
         const packageJson = require(node_path_1.default.resolve(buildDir, 'package.json'));
         const scripts = packageJson.scripts;
         const script = scripts[command];
@@ -38,7 +38,6 @@ const execute = async (config, command) => {
             (_a = execa_1.default
                 .command(prefixedCommand, {
                 cwd,
-                shell: true,
                 stdio: 'inherit'
             })
                 .stdout) === null || _a === void 0 ? void 0 : _a.pipe(node_process_1.default.stdout);

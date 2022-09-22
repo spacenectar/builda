@@ -6,6 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const yargs_1 = __importDefault(require("yargs"));
 const helpers_1 = require("yargs/helpers");
+const node_process_1 = __importDefault(require("node:process"));
 // import helpers
 const _helpers_1 = require("./helpers/index.js");
 // import data
@@ -22,7 +23,14 @@ const update_module_1 = require("./scripts/update-module");
 const prefab_init_1 = __importDefault(require("./scripts/prefab-init"));
 const execute_1 = __importDefault(require("./scripts/execute"));
 const generate_indexes_1 = require("./scripts/generate-indexes");
-const args = (0, helpers_1.hideBin)(process.argv);
+// Check to see if the command is being run from the root of the project or from the .builda/export directory
+// If it's being run from the export directory, then we need to change the working directory to the root of the project
+const cwd = node_process_1.default.cwd();
+const isExportDir = cwd.includes(`${globals_1.default.buildaDir}/export`);
+if (isExportDir) {
+    node_process_1.default.chdir('../..');
+}
+const args = (0, helpers_1.hideBin)(node_process_1.default.argv);
 const { configFileName, websiteUrl } = globals_1.default;
 const parser = (0, yargs_1.default)(args)
     .usage('Usage: $0 [options]')
@@ -40,17 +48,52 @@ const CREATE_CONFIG_QUESTION = {
     const argv = await parser.argv;
     const config = await (0, _helpers_1.getConfigFile)();
     if (config) {
+        // The following commands are available when a config file is present
         if (args.length === 0) {
             (0, _helpers_1.printLogo)();
             // No arguments were passed but a config file exists
             (0, _helpers_1.printMessage)('No arguments provided.\r', 'danger');
             parser.showHelp();
-            return process.exit(0);
+            return node_process_1.default.exit(0);
         }
         if (argv.init) {
             (0, _helpers_1.printLogo)();
             (0, _helpers_1.printMessage)(`A ${configFileName} has been found. Please delete it before continuing.\r`, 'danger');
-            return process.exit(0);
+            return node_process_1.default.exit(0);
+        }
+        if (argv.watch || argv.w) {
+            (0, _helpers_1.printLogo)();
+            // The user is watching the app for changes
+            // Go to watch function
+            return (0, watch_1.default)(config);
+        }
+        if (argv.build) {
+            (0, _helpers_1.printLogo)();
+            // The user wants to build the app
+            // Go to build function
+            return (0, build_from_prefabs_1.default)(config);
+        }
+        if (argv.index) {
+            (0, _helpers_1.printLogo)();
+            // The user wants to generate indexes
+            // Go to generate indexes function
+            return (0, generate_indexes_1.generateIndexes)(config);
+        }
+        if (argv.execute || argv.x) {
+            // The user wants to execute a command
+            // Go to execute function
+            const command = (argv.execute || argv.x);
+            return (0, execute_1.default)(config, command);
+        }
+        if (argv._[0].toString() === 'add') {
+            (0, _helpers_1.printLogo)();
+            const module = argv._[1].toString();
+            return (0, add_module_1.default)({ config, modulePath: module });
+        }
+        if (argv._[0].toString() === 'update') {
+            (0, _helpers_1.printLogo)();
+            const module = argv._[1].toString();
+            return (0, update_module_1.updateModule)({ config, module });
         }
     }
     if (args.length === 0 && !argv.manual && !config) {
@@ -61,44 +104,21 @@ const CREATE_CONFIG_QUESTION = {
                 return (0, init_1.default)({});
             }
             (0, _helpers_1.printMessage)('Process terminated due to user selection', 'error');
-            return process.exit(0);
+            return node_process_1.default.exit(0);
         });
     }
+    // The following commands are available without a config file
     if (argv.manual) {
         (0, _helpers_1.printLogo)();
         (0, _helpers_1.printMessage)('Manual mode selected.\r', 'notice');
         (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
-        return process.exit(0);
+        return node_process_1.default.exit(0);
     }
     if (argv.migrate) {
         (0, _helpers_1.printLogo)();
         // The user wants to migrate an old buildcom config file
         // Go to migrate function
         return (0, _helpers_1.printMessage)('🛠 This route does not exist yet.\r', 'notice');
-    }
-    if (argv.watch) {
-        (0, _helpers_1.printLogo)();
-        // The user is watching the app for changes
-        // Go to watch function
-        return (0, watch_1.default)(config);
-    }
-    if (argv.build) {
-        (0, _helpers_1.printLogo)();
-        // The user wants to build the app
-        // Go to build function
-        return (0, build_from_prefabs_1.default)(config);
-    }
-    if (argv.index) {
-        (0, _helpers_1.printLogo)();
-        // The user wants to generate indexes
-        // Go to generate indexes function
-        return (0, generate_indexes_1.generateIndexes)(config);
-    }
-    if (argv.execute || argv.x) {
-        // The user wants to execute a command
-        // Go to execute function
-        const command = (argv.execute || argv.x);
-        return (0, execute_1.default)(config, command);
     }
     if (argv.init) {
         (0, _helpers_1.printLogo)();
@@ -122,18 +142,8 @@ const CREATE_CONFIG_QUESTION = {
             packageManager: packageManager
         });
     }
-    if (argv._[0].toString() === 'add') {
-        (0, _helpers_1.printLogo)();
-        const module = argv._[1].toString();
-        return (0, add_module_1.default)({ config, modulePath: module });
-    }
-    if (argv._[0].toString() === 'update') {
-        (0, _helpers_1.printLogo)();
-        const module = argv._[1].toString();
-        return (0, update_module_1.updateModule)({ config, module });
-    }
     const commands = config ? (0, generate_commands_1.default)(config) : {};
-    const commandString = process.argv[2].replace('--', '');
+    const commandString = node_process_1.default.argv[2].replace('--', '');
     const command = commands[commandString];
     if (command) {
         (0, _helpers_1.printLogo)();
