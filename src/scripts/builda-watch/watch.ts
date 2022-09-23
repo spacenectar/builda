@@ -1,12 +1,13 @@
 #! /usr/bin/env node
 
-// Watch for changes in the specified directories and run the 'sync-watched' script when changes are detected
+// Watch for changes in the specified directories and run the 'build' script when changes are detected
 
 import chokidar from 'chokidar';
 
-import { printMessage, throwError, checkAndCopyPath } from 'helpers';
+import { printMessage, throwError } from 'helpers';
 
-import globals from 'data/globals';
+import { buildaBuild } from 'scripts/builda-build';
+
 import ignoredFiles from 'data/ignore-file.json';
 
 import type { ConfigFile } from 'types/config-file';
@@ -14,8 +15,7 @@ import type { ConfigFile } from 'types/config-file';
 const ignored = ignoredFiles.ignore;
 
 export default (config: ConfigFile) => {
-  const { prefab, app_root } = config;
-  const cleanRoot = app_root.replace(/\.\//, '');
+  const { prefab } = config;
 
   if (!prefab) {
     throwError(
@@ -35,10 +35,6 @@ export default (config: ConfigFile) => {
 
   watcher.on('change', (pathString) => {
     console.log(`File ${pathString} has been changed`);
-    checkAndCopyPath(
-      pathString,
-      `${globals.buildaDir}/export`,
-      pathString.replace(cleanRoot, '')
-    );
+    buildaBuild({ config, prod: false, onlyPath: pathString });
   });
 };
