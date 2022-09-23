@@ -14,17 +14,9 @@ import { command as updateCommand } from 'scripts/builda-update';
 import { command as watchCommand } from 'scripts/builda-watch';
 import { command as indexerCommand } from 'scripts/builda-indexer';
 import { command as newCommand } from 'scripts/builda-new';
+import { command as buildCommand } from 'scripts/builda-build';
 
 const { websiteUrl } = globals;
-
-// const cwd = process.cwd();
-// const isExportDir = cwd.includes(`${globals.buildaDir}/export`);
-
-// const CREATE_CONFIG_QUESTION = {
-//   message: `Would you like to create a ${configFileName} config?`,
-//   name: 'createConfig',
-//   type: 'confirm' as QuestionType
-// };
 
 export const builda = async () => {
   yargs
@@ -36,6 +28,7 @@ export const builda = async () => {
     .command(watchCommand())
     .command(indexerCommand())
     .command(newCommand())
+    .command(buildCommand())
     .epilogue(`For more information, visit ${websiteUrl}/docs`)
     .help('h').argv;
 };
