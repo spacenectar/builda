@@ -2,35 +2,37 @@ import throwError from './throw-error';
 
 import type { BlueprintScriptContent } from 'types/blueprint-script-config';
 import type TSubstitution from 'types/substitution';
-import type { Argv } from 'types/argv';
 import ModuleRegistry from 'types/module-registry';
 
 type TGetSubstitutions = {
   name: string;
   registry: ModuleRegistry;
-  command: BlueprintScriptContent;
-  args?: Argv;
+  script: BlueprintScriptContent;
+  sub?: {
+    replace: string;
+    with: string;
+  };
 };
 
 export const getSubstitutions = ({
   name,
   registry,
-  command,
-  args
+  script,
+  sub
 }: TGetSubstitutions): TSubstitution[] => {
   const substitutions = [] as TSubstitution[];
 
   const substitute =
-    command?.substitute && command.substitute?.length > 0
-      ? command?.substitute
+    script?.substitute && script.substitute?.length > 0
+      ? script?.substitute
       : registry?.substitute;
 
   if (substitute && substitute.length) {
     substitute.forEach((sub: TSubstitution) => {
-      const defaultString = sub.with === 'command' ? name : sub.with;
-      const replaceString = (args?.replace as string) || sub.replace;
-      const argString = args?.with as string;
-      const withString = argString || defaultString || '';
+      const defaultString = sub.with === 'script' ? name : sub.with;
+      const replaceString = (sub?.replace as string) || sub.replace;
+      const subtring = sub?.with as string;
+      const withString = subtring || defaultString || '';
       // No substitution was provided but the config requires one
       if (!defaultString && !replaceString && sub.required) {
         throwError(

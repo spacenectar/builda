@@ -6,7 +6,7 @@ export type ModuleConfigContents = {
   /**
    * The custom resolver to use for the module
    **/
-  resolve?: string;
+  resolve?: string | { url: string; type: string };
   /**
    * The location of the module. This can be a local path, a remote url, a resolver or 'prefab' (if preinstalled inside a prefab)
    */

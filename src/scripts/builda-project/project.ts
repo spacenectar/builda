@@ -79,16 +79,9 @@ export default async ({
     module = await addLocalModule(prefabPath, rootDir);
   }
 
-  if (moduleType === 'remote') {
+  if (moduleType === 'remote' || moduleType === 'custom') {
     module = await addRemoteModule(
-      convertRegistryPathToUrl(prefabPath),
-      rootDir
-    );
-  }
-
-  if (moduleType === 'custom') {
-    module = await addRemoteModule(
-      convertRegistryPathToUrl(prefabPath),
+      convertRegistryPathToUrl({ registryPath: prefabPath }) as string,
       rootDir
     );
   }
@@ -299,7 +292,12 @@ export default async ({
               addLocalModule(bp.location, rootDir);
             }
             if (bluePrintType === 'remote') {
-              addRemoteModule(convertRegistryPathToUrl(bp.location), rootDir);
+              addRemoteModule(
+                convertRegistryPathToUrl({
+                  registryPath: bp.location
+                }) as string,
+                rootDir
+              );
             }
             resolve(blueprint);
           })

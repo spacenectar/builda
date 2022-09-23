@@ -6,13 +6,14 @@ import yargs from 'yargs';
 // import data
 import globals from 'data/globals';
 
-import { command as project } from 'scripts/project';
-import { command as execute } from 'scripts/execute';
-import { command as install } from 'scripts/install';
-import { command as publish } from 'scripts/publish';
-import { command as update } from 'scripts/update';
-import { command as watch } from 'scripts/watch';
-import { command as indexer } from 'scripts/indexer';
+import { command as projectCommand } from 'scripts/builda-project';
+import { command as executeCommand } from 'scripts/builda-execute';
+import { command as installCommand } from 'scripts/builda-install';
+import { command as publishCommand } from 'scripts/builda-publish';
+import { command as updateCommand } from 'scripts/builda-update';
+import { command as watchCommand } from 'scripts/builda-watch';
+import { command as indexerCommand } from 'scripts/builda-indexer';
+import { command as newCommand } from 'scripts/builda-new';
 
 const { websiteUrl } = globals;
 
@@ -25,23 +26,16 @@ const { websiteUrl } = globals;
 //   type: 'confirm' as QuestionType
 // };
 
-const projectCommand = project();
-const executeCommand = execute();
-const installCommand = install();
-const publishCommand = publish();
-const updateCommand = update();
-const watchCommand = watch();
-const indexerCommand = indexer();
-
 export const builda = async () => {
   yargs
-    .command(projectCommand)
-    .command(executeCommand)
-    .command(installCommand)
-    .command(publishCommand)
-    .command(updateCommand)
-    .command(watchCommand)
-    .command(indexerCommand)
+    .command(projectCommand())
+    .command(executeCommand())
+    .command(installCommand())
+    .command(publishCommand())
+    .command(updateCommand())
+    .command(watchCommand())
+    .command(indexerCommand())
+    .command(newCommand())
     .epilogue(`For more information, visit ${websiteUrl}/docs`)
     .help('h').argv;
 };

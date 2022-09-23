@@ -51,13 +51,19 @@ export default async ({
 
   if (moduleType === 'remote') {
     module = await addRemoteModule(
-      convertRegistryPathToUrl(modulePath, config)
+      convertRegistryPathToUrl({
+        registryPath: modulePath,
+        config
+      }) as string
     );
   }
 
   if (moduleType === 'custom') {
     module = await addRemoteModule(
-      convertRegistryPathToUrl(modulePath, config)
+      convertRegistryPathToUrl({
+        registryPath: modulePath,
+        config
+      }) as string
     );
   }
 

@@ -1,14 +1,13 @@
+import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
 
-import { getConfigFile, throwError } from 'helpers';
-
-import indexer from './indexer';
+import buildaWatch from './watch';
 
 export default () => {
   return {
-    cmd: 'indexer',
-    desc: 'Generate an index file for the specified directories',
-    aliases: ['i'],
+    cmd: 'watch',
+    desc: 'watch your app for changes and rebuild',
+    aliases: ['w'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
@@ -20,7 +19,7 @@ export default () => {
     handler: async (argv: any) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
-        return indexer(config);
+        return buildaWatch(config);
       }
       throwError('No config file found');
     }

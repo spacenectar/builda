@@ -1,4 +1,6 @@
+import { type } from 'os';
 import { ConfigFile } from 'types/config-file';
+import throwError from './throw-error';
 
 const urlWithProtocol = (url: string) => {
   // If a url starts with http or https, return the url unchanged
@@ -8,25 +10,42 @@ const urlWithProtocol = (url: string) => {
   return `https://${url}`;
 };
 
-export const convertRegistryPathToUrl = (
-  registryPath: string,
-  config?: ConfigFile
-) => {
+type TConvertRegistryPathToUrl = {
+  registryPath: string;
+  config?: ConfigFile;
+  withType?: boolean;
+};
+
+type TReturnWithType = {
+  url: string;
+  type: string;
+};
+
+export const convertRegistryPathToUrl = ({
+  registryPath,
+  config,
+  withType = false
+}: TConvertRegistryPathToUrl): TReturnWithType | string => {
   let newPath = registryPath;
 
   let version = '';
 
   if (newPath.startsWith('http') || newPath.startsWith('https')) {
+    let type = 'http';
+    let url = newPath;
     if (newPath.includes('github.com')) {
-      return newPath
+      type = 'git';
+      url = newPath
         .replace('github.com', 'raw.githubusercontent.com')
         .replace('/blob', '')
         .replace('/tree', '');
     }
     if (newPath.includes('bitbucket.org')) {
-      return newPath.replace('src', 'raw');
+      type = 'git';
+      url = newPath.replace('src', 'raw');
     }
-    return newPath;
+
+    return withType ? { type, url } : url;
   }
 
   if (newPath.includes('@')) {
@@ -36,53 +55,86 @@ export const convertRegistryPathToUrl = (
   }
 
   if (config && config.resolve) {
+    let url = newPath;
     const customMatcherKeys = config.resolve
       ? Object.keys(config.resolve)
       : undefined;
 
-    const pathMatcher = newPath.split(':');
+    const pathMatcher = url.split(':');
     const pathMatcherKey = pathMatcher[0];
     const pathMatcherValue = pathMatcher[1];
 
     // If there is a trailing slash, remove it
-    if (newPath.endsWith('/')) {
-      newPath = newPath.slice(0, -1);
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
     }
 
     if (pathMatcher.length > 0 && customMatcherKeys?.includes(pathMatcherKey)) {
+      let type = 'unknown';
       for (const element of customMatcherKeys) {
-        const newMatcherValue = config.resolve[pathMatcherKey]
+        const matched = config.resolve[pathMatcherKey];
+        type = typeof matched !== 'string' ? matched.type : type;
+        const resolveUrl = typeof matched === 'string' ? matched : matched.url;
+        const newMatcherValue = resolveUrl
           .replace('{%REPO_NAME%}', pathMatcherValue)
           .replace('{%VERSION%}', version);
         if (pathMatcherKey === element && config.resolve) {
-          newPath = urlWithProtocol(`${newMatcherValue}`);
+          url = urlWithProtocol(`${newMatcherValue}`);
         }
       }
-      return newPath;
+      return withType ? { type, url } : url;
     }
+    throwError('Invalid registry path');
   }
 
   const versionString = version ? `/${version}` : '';
 
+  const useResolver = ({
+    currentPath,
+    name,
+    versionString,
+    updatedPath,
+    withType
+  }: {
+    currentPath: string;
+    name: string;
+    versionString: string;
+    updatedPath: string;
+    withType: boolean;
+  }) => {
+    const url = currentPath.replace(`${name}:`, updatedPath) + versionString;
+
+    return withType ? { type: name, url } : url;
+  };
+
   if (newPath.startsWith('github:')) {
-    const updatedPath = newPath.replace(
-      'github:',
-      'https://raw.githubusercontent.com/'
-    );
-    return `${updatedPath}${versionString}`;
+    return useResolver({
+      currentPath: newPath,
+      name: 'github',
+      versionString,
+      updatedPath: 'https://raw.githubusercontent.com/',
+      withType
+    });
   }
 
   if (newPath.startsWith('builda:')) {
-    const updatedPath = newPath.replace(
-      'builda:',
-      'https://builda.app/modules/'
-    );
-    return `${updatedPath}`;
+    return useResolver({
+      currentPath: newPath,
+      name: 'builda',
+      versionString,
+      updatedPath: 'https://builda.app/modules/',
+      withType
+    });
   }
 
   if (newPath.startsWith('bitbucket:')) {
-    const updatedPath = newPath.replace('bitbucket:', 'https://bitbucket.org/');
-    return `${updatedPath}/raw${versionString}`;
+    return useResolver({
+      currentPath: newPath,
+      name: 'bitbucket',
+      versionString,
+      updatedPath: 'https://bitbucket.org/raw',
+      withType
+    });
   }
 
   // If no custom matcher is provided and the path doesn't look like a regular url return an empty string

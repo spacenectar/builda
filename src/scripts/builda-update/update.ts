@@ -58,7 +58,10 @@ export default async ({
 
     let newmodule = {} as ModuleRegistry;
 
-    const url = convertRegistryPathToUrl(requestVersion, config);
+    const url = convertRegistryPathToUrl({
+      registryPath: requestVersion,
+      config
+    }) as string;
 
     // TODO: Add documentation for custom resolvers
     if (!url) {

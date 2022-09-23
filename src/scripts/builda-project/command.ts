@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import project from './project';
+import buildaProject from './project';
 
 export default () => {
   return {
@@ -39,7 +39,7 @@ export default () => {
         packageManager: argv.packageManager,
         autoInstall: argv.autoInstall
       };
-      await project({ ...args });
+      await buildaProject({ ...args });
     }
   };
 };

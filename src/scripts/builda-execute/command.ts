@@ -1,21 +1,17 @@
 import yargs from 'yargs';
+import buildaExecute from './execute';
 
 import { getConfigFile, throwError } from 'helpers';
-import globals from 'data/globals';
-
-import install from './install';
-
-const { websiteUrl } = globals;
 
 export default () => {
   return {
-    cmd: 'install <modulePath>',
-    desc: 'install a module',
-    aliases: ['i'],
+    cmd: 'execute <command>',
+    desc: 'Execute a command from within the export directory',
+    aliases: ['x', 'exec'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
-        .positional('modulePath', {
-          describe: `The path to the module (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
+        .positional('command', {
+          describe: 'The name of the command',
           type: 'string',
           demandOption: true
         })
@@ -29,7 +25,7 @@ export default () => {
     handler: async (argv: any) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
-        return install({ config, modulePath: argv.modulePath });
+        return buildaExecute({ config, command: argv.command });
       }
       throwError('No config file found');
     }

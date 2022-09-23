@@ -1,5 +1,5 @@
 import getConfigFile from 'helpers/get-config-file';
-import buildFromBlueprint from 'scripts/build-from-blueprint';
+import new from 'scripts/new/new';
 import fs from 'fs';
 
 import path from 'path';
@@ -31,7 +31,7 @@ afterAll((done) => {
 describe('buildFromBlueprint', () => {
   beforeAll(async () => {
     const config = await getConfigFile();
-    buildFromBlueprint({
+    new({
       config,
       name: 'TestComponent',
       command

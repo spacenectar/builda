@@ -1,14 +1,12 @@
 import yargs from 'yargs';
 
-import { getConfigFile, throwError } from 'helpers';
-
-import publish from './publish';
+import buildaPublish from './publish';
 
 export default () => {
   return {
     cmd: 'publish',
     desc: 'publish a module',
-    aliases: ['i'],
+    aliases: ['pub', 'push'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('version', {
         aliases: ['v', 'ver'],
@@ -18,7 +16,7 @@ export default () => {
       });
     },
     handler: async (argv: any) => {
-      return publish(argv.version);
+      return buildaPublish(argv.version);
     }
   };
 };

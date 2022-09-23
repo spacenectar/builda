@@ -8,7 +8,7 @@ export interface ConfigFile {
   app_root: string;
   package_manager: 'npm' | 'yarn';
   resolve?: {
-    [key: string]: string;
+    [key: string]: string | { url: string; type: string };
   };
   watched: string[];
   blueprint_scripts: {
