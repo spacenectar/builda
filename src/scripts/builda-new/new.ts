@@ -5,22 +5,27 @@ import { printMessage, getModule, writeFile, getSubstitutions } from 'helpers';
 import { changeCase } from 'helpers/string-functions';
 
 // Import types
-import { BlueprintScriptContent } from 'types/blueprint-script-config';
-import { Argv } from 'types/argv';
 import { ConfigFile } from 'types/config-file';
 import path from 'path';
+import generateCommands from './helpers/generate-commands';
 
 type Props = {
   config: ConfigFile;
   name: string;
-  command: BlueprintScriptContent;
-  args?: Argv;
+  scriptName: string;
+  subString?: string;
 };
 
-export const buildFromBlueprint = ({ config, name, command, args }: Props) => {
-  if (config !== undefined && !!command.use) {
-    printMessage(`Building ${Object.keys(command)[0]} '${name}'...`, 'notice');
-    const outputDirectory = `${command.output_dir}/${changeCase(
+export default ({ config, name, scriptName, subString }: Props) => {
+  const commands = config ? generateCommands(config) : {};
+  const script = commands[scriptName];
+
+  if (!!script.use) {
+    printMessage(
+      `Building new ${Object.keys(script)[0]}: '${name}'...`,
+      'notice'
+    );
+    const outputDirectory = `${script.output_dir}/${changeCase(
       name,
       'kebabCase'
     )}`;
@@ -31,15 +36,21 @@ export const buildFromBlueprint = ({ config, name, command, args }: Props) => {
     const { path: pathstring, registry } = getModule(
       'blueprint',
       config,
-      command
+      script
     );
 
-    const substitute = command
+    const splitSubString = subString?.split(':') || [];
+    const sub =
+      splitSubString.length === 2
+        ? { replace: splitSubString[0], with: splitSubString[1] }
+        : undefined;
+
+    const substitute = script
       ? getSubstitutions({
           registry,
           name,
-          command,
-          args
+          script,
+          sub
         })
       : [];
 
@@ -72,7 +83,4 @@ export const buildFromBlueprint = ({ config, name, command, args }: Props) => {
       JSON.stringify(componentRegistry, null, 2)
     );
   }
-  throw new Error('No config file found');
 };
-
-export default buildFromBlueprint;
