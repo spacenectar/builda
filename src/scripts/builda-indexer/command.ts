@@ -3,11 +3,12 @@ import yargs from 'yargs';
 import { getConfigFile, throwError } from 'helpers';
 
 import buildaIndexer from './indexer';
+import chalk from 'chalk';
 
 export default () => {
   return {
-    cmd: 'indexer',
-    desc: 'Generate an index file for the specified directories',
+    command: chalk.green('indexer'),
+    desc: chalk.white('Generate an index file for the specified directories'),
     aliases: ['index'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('configPath', {

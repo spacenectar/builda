@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
 
@@ -5,12 +6,12 @@ import buildaUpdate from './update';
 
 export default () => {
   return {
-    cmd: 'update <module>',
-    desc: 'update a module',
+    command: `${chalk.green('update')} ${chalk.blue('<moduleName>')}`,
+    desc: chalk.white('update a module'),
     aliases: ['u'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
-        .positional('module', {
+        .positional('moduleName', {
           describe: 'The name of the module',
           type: 'string'
         })
@@ -26,7 +27,7 @@ export default () => {
       if (config) {
         return buildaUpdate({
           config,
-          module: argv.module
+          module: argv.moduleName
         });
       }
       throwError('No config file found');

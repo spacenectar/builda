@@ -1,0 +1,104 @@
+{
+  "blueprint": {
+    "red-fox": {
+      "url": "https://github.com/builda-modules/blueprint_red-fox",
+      "host": "github.com",
+      "funding": "https://www.patreon.com/builda",
+      "author": {
+        "name": "Alex Foxleigh",
+        "builda_user": "foxleigh81"
+      },
+      "keywords": [
+        "react",
+        "storybook",
+        "storybook-mdx",
+        "typescript",
+        "scss",
+        "scss-modules"
+      ],
+      "files": [
+        "index.stories.mdx",
+        "index.tsx",
+        "styles.module.scss"
+      ],
+      "dependencies": {
+        "react": "^17.0.0",
+        "typescript": "^4.5.0",
+        "storybook": "^6.0.0",
+        "storybook-addon-essentials": "^6.0.0",
+        "sass": "^1.0.0"
+      },
+      "prefabs": [
+        {
+          "name": "the-burrows",
+          "version": "^1.0.0"
+        }
+      ],
+      "substitute": [
+        {
+          "replace": "PREFIX",
+          "required": true,
+          "with": "command"
+        },
+        {
+          "replace": "TYPE",
+          "with": "component"
+        }
+      ],
+      "versions": [
+        "1.0.0",
+        "1.0.1"
+      ]
+    },
+    "arctic-fox": {
+      "url": "https://github.com/builda-modules/blueprint_arctic-fox",
+      "host": "github.com",
+      "funding": "https://www.patreon.com/builda",
+      "author": {
+        "name": "Alex Foxleigh",
+        "builda_user": "foxleigh81"
+      },
+      "keywords": [
+        "react",
+        "storybook",
+        "storybook-mdx",
+        "typescript",
+        "scss",
+        "scss-modules"
+      ],
+      "files": [
+        "index.stories.mdx",
+        "index.tsx",
+        "styles.module.scss"
+      ],
+      "dependencies": {
+        "react": "^17.0.0",
+        "typescript": "^4.5.0",
+        "storybook": "^6.0.0",
+        "storybook-addon-essentials": "^6.0.0",
+        "sass": "^1.0.0",
+        "next": "^12.0.0"
+      },
+      "prefabs": [
+        {
+          "name": "the-burrows",
+          "version": "^1.0.0"
+        }
+      ],
+      "substitute": [
+        {
+          "replace": "PREFIX",
+          "required": true,
+          "with": "command"
+        },
+        {
+          "replace": "TYPE",
+          "with": "component"
+        }
+      ],
+      "versions": [
+        "1.0.0"
+      ]
+    }
+  }
+}

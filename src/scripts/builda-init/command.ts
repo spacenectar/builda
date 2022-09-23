@@ -1,12 +1,14 @@
-import { getConfigFile, throwError } from 'helpers';
+import chalk from 'chalk';
+import { getConfigFile } from 'helpers';
 import yargs from 'yargs';
 
 import buildaInit from './init';
 
 export default () => {
   return {
-    cmd: 'init',
-    desc: 'Initialise builda',
+    command: chalk.green('init'),
+    desc: chalk.white('Initialise builda'),
+    aliases: ['$0'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
@@ -16,11 +18,8 @@ export default () => {
       });
     },
     handler: async (argv: any) => {
-      const config = await getConfigFile();
-      if (!config) {
-        return buildaInit();
-      }
-      throwError('A builda config already exists.');
+      const config = await getConfigFile(argv.configPath);
+      return buildaInit({ config: config || undefined });
     }
   };
 };

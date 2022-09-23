@@ -18,7 +18,7 @@ export const getRegistry = async (registryPath?: string) => {
     );
   }
 
-  let url = convertRegistryPathToUrl(registryPath);
+  let url = convertRegistryPathToUrl({ registryPath }) as string;
 
   if (url.match(/{%FILE_NAME%}/)) {
     url = url.replace(/{%FILE_NAME%}/, REGISTRYFILE);

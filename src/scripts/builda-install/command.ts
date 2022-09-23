@@ -4,14 +4,14 @@ import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
 import buildaInstall from './install';
+import chalk from 'chalk';
 
 const { websiteUrl } = globals;
 
 export default () => {
   return {
-    cmd: 'install <modulePath>',
-    desc: 'install a module',
-    aliases: ['i'],
+    command: `${chalk.green('install')} ${chalk.blue('<modulePath>')}`,
+    desc: 'Installs a module',
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('modulePath', {

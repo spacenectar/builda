@@ -1,11 +1,12 @@
+import chalk from 'chalk';
 import yargs from 'yargs';
 
 import buildaPublish from './publish';
 
 export default () => {
   return {
-    cmd: 'publish',
-    desc: 'publish a module',
+    command: chalk.green('publish'),
+    desc: chalk.white('publish a module'),
     aliases: ['pub', 'push'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('version', {

@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { ConfigFile } from 'types/config-file';
 import throwError from './throw-error';
 

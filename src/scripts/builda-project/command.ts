@@ -1,11 +1,13 @@
 import yargs from 'yargs';
+import chalk from 'chalk';
+
 import buildaProject from './project';
 
 export default () => {
   return {
-    cmd: 'project [appName]',
-    desc: 'Generate a new app from a prefab',
-    aliases: ['app'],
+    command: `${chalk.green('project')} ${chalk.blue('[appName]')}`,
+    desc: chalk.white('Generate a new app from a prefab'),
+    aliases: ['app', '--app', '--project'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('appName', {

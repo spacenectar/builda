@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
 
@@ -5,8 +6,8 @@ import buildaWatch from './watch';
 
 export default () => {
   return {
-    cmd: 'watch',
-    desc: 'watch your app for changes and rebuild',
+    command: chalk.green('watch'),
+    desc: chalk.white('Watches your app for changes and rebuilds'),
     aliases: ['w'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('configPath', {

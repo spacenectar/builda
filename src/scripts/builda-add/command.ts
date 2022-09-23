@@ -4,18 +4,18 @@ import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
 import buildaAdd from './add';
+import chalk from 'chalk';
 
 const { websiteUrl } = globals;
 
 export default () => {
   return {
-    cmd: 'add <modulePath>',
-    desc: 'add a module',
-    aliases: ['i'],
+    command: `${chalk.green('add')} ${chalk.blue('<blueprintPath>')}`,
+    desc: chalk.white('Adds a new blueprint'),
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
-        .positional('modulePath', {
-          describe: `The path to the module (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
+        .positional('blueprintPath', {
+          describe: `The path to the blueprint (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
           type: 'string',
           demandOption: true
         })
@@ -29,7 +29,7 @@ export default () => {
     handler: async (argv: any) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
-        return buildaAdd({ config, modulePath: argv.modulePath });
+        return buildaAdd({ config, modulePath: argv.blueprintPath });
       }
       throwError('No config file found');
     }
