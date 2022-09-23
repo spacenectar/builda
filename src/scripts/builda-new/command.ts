@@ -5,11 +5,11 @@ import buildaNew from './new';
 
 export default () => {
   return {
-    cmd: 'new <script> <name>',
+    cmd: 'new <scriptName>',
     desc: 'Create something new from a blueprint',
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
-        .positional('script', {
+        .positional('scriptName', {
           describe: 'The scaffold script to run',
           type: 'string'
         })
@@ -36,7 +36,7 @@ export default () => {
       if (config) {
         return buildaNew({
           config,
-          script: argv.script,
+          scriptName: argv.scriptName,
           name: argv.name
         });
       }

@@ -9,14 +9,14 @@ import { ConfigFile } from 'types/config-file';
 import path from 'path';
 import generateCommands from './helpers/generate-commands';
 
-type Props = {
+type TNew = {
   config: ConfigFile;
   name: string;
   scriptName: string;
   subString?: string;
 };
 
-export default ({ config, name, scriptName, subString }: Props) => {
+export default ({ config, name, scriptName, subString }: TNew) => {
   const commands = config ? generateCommands(config) : {};
   const script = commands[scriptName];
 

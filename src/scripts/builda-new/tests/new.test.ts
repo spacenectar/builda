@@ -1,5 +1,5 @@
 import getConfigFile from 'helpers/get-config-file';
-import new from 'scripts/new/new';
+import buildaNew from '../new';
 import fs from 'fs';
 
 import path from 'path';
@@ -8,12 +8,6 @@ const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
 const CONFIG_FOLDER = '.builda';
 const CONFIG_FILE = 'builda.json';
-
-const command = {
-  use: 'blueprint-default-ts',
-  output_dir: './experiments/atoms',
-  substitute: []
-};
 
 afterAll((done) => {
   if (fs.existsSync(CONFIG_FILE)) {
@@ -31,11 +25,13 @@ afterAll((done) => {
 describe('buildFromBlueprint', () => {
   beforeAll(async () => {
     const config = await getConfigFile();
-    new({
-      config,
-      name: 'TestComponent',
-      command
-    });
+    if (config) {
+      buildaNew({
+        config,
+        name: 'TestComponent',
+        scriptName: 'atom'
+      });
+    }
   });
 
   test('Builds a component from a blueprint', () => {
