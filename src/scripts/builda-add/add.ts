@@ -73,17 +73,17 @@ export default async ({
     const version = module.version;
 
     if (type === 'blueprint') {
-      // User has never installed any blueprints.
+      // User has never added any blueprints.
       if (!config?.blueprints) {
         config.blueprints = {};
       }
-      // User has installed this blueprint before.
+      // User has added this blueprint before.
       if (config?.blueprints?.[name]) {
         throwError(
-          `Blueprint already installed, perhaps you meant 'builda update ${name}?'`
+          `Blueprint already added, perhaps you meant 'builda update ${name}?'`
         );
       } else {
-        // User has never installed this blueprint before.
+        // User has never added this blueprint before.
         config.blueprints[name] = {
           version,
           location: modulePath
@@ -91,9 +91,9 @@ export default async ({
       }
     }
     if (type === 'prefab') {
-      // User has installed this prefab before.
+      // User has added this prefab before.
       throwError(
-        `You cannot install a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`
+        `You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`
       );
     }
 
@@ -106,7 +106,7 @@ export default async ({
           throwError(err.message);
         }
         printMessage(
-          `${changeCase(type, 'pascal')}: '${name}@${version}' installed`,
+          `${changeCase(type, 'pascal')}: '${name}@${version}' added`,
           'success'
         );
       }

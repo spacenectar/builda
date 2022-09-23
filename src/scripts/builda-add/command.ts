@@ -3,14 +3,14 @@ import yargs from 'yargs';
 import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
-import buildaInstall from './install';
+import buildaAdd from './add';
 
 const { websiteUrl } = globals;
 
 export default () => {
   return {
-    cmd: 'install <modulePath>',
-    desc: 'install a module',
+    cmd: 'add <modulePath>',
+    desc: 'add a module',
     aliases: ['i'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
@@ -29,7 +29,7 @@ export default () => {
     handler: async (argv: any) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
-        return buildaInstall({ config, modulePath: argv.modulePath });
+        return buildaAdd({ config, modulePath: argv.modulePath });
       }
       throwError('No config file found');
     }

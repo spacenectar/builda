@@ -1,6 +1,6 @@
 export { buildaProject, command as projectCommand } from './builda-project';
 export { buildaExecute, command as executeCommand } from './builda-execute';
-export { buildaInstall, command as installCommand } from './builda-install';
+export { buildaAdd, command as addCommand } from './builda-add';
 export { buildaPublish, command as publishCommand } from './builda-publish';
 export { buildaUpdate, command as updateCommand } from './builda-update';
 export { buildaWatch, command as watchCommand } from './builda-watch';
