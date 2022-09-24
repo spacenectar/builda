@@ -23,27 +23,45 @@ export const detectCase = (input: string) => {
   return 'unknown';
 };
 
+const removeExtraSpaces = (input: string) => {
+  return input.replace(/\s{2,}/g, ' ').trim();
+};
+
 export const normalizeCase = (input: string) => {
   const caseType = detectCase(input);
   const words = input.split(/(?=[A-Z:])/).filter((word) => word !== ':');
   const lowerCasedWords = words.slice(1).map((word) => word.toLowerCase());
-  switch (caseType) {
-    case 'snake':
-      return input.replace(/_/g, ' ').toLowerCase().replace(/:/g, ' ');
-    case 'pascal':
-      return input
-        .split(/(?=[A-Z])/)
-        .map((word) => word.toLowerCase())
-        .join(' ');
-    case 'camel':
-      lowerCasedWords.unshift(words[0].toLowerCase());
-      return lowerCasedWords.join(' ');
-    case 'kebab':
-      return input.replace(/-/g, ' ').replace(/:/g, ' ').toLowerCase();
-    case 'sentence':
-    default:
-      return input.replace(/:/g, '');
+
+  if (caseType === 'snake') {
+    const str = input.replace(/_/g, ' ').toLowerCase().replace(/:/g, ' ');
+    return removeExtraSpaces(str);
   }
+
+  if (caseType === 'pascal') {
+    const str = input
+      .split(/(?=[A-Z])/)
+      .map((word) => word.toLowerCase())
+      .join(' ')
+      .replace(/:/g, ' ');
+    return removeExtraSpaces(str);
+  }
+
+  if (caseType === 'camel') {
+    lowerCasedWords.unshift(words[0].toLowerCase());
+    const str = lowerCasedWords.join(' ');
+    return removeExtraSpaces(str);
+  }
+
+  if (caseType === 'kebab') {
+    const str = input.replace(/-/g, ' ').replace(/:/g, ' ').toLowerCase();
+    return removeExtraSpaces(str);
+  }
+
+  if (caseType === 'sentence') {
+    return removeExtraSpaces(input.replace(/:/g, ''));
+  }
+
+  return input;
 };
 
 export const convertNumbersToWords = (input: string) => {
@@ -65,10 +83,12 @@ export const convertNumbersToWords = (input: string) => {
   const numbers = input.match(findNumbers);
   const individualNumbers = numbers ? numbers[0].split('') : [];
   if (individualNumbers) {
-    const numberString = individualNumbers.map((number) => {
-      const numberIndex = parseInt(number, 10);
-      return words[numberIndex];
-    }).join('');
+    const numberString = individualNumbers
+      .map((number) => {
+        const numberIndex = parseInt(number, 10);
+        return words[numberIndex];
+      })
+      .join('');
     return input.replace(findNumbers, numberString);
   }
   // No numbers found, return input
@@ -135,6 +155,6 @@ export const pluralise = (input: string) => {
     return input;
   }
   return input + 's';
-}
+};
 
 export default changeCase;
