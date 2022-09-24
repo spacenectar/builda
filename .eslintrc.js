@@ -18,10 +18,7 @@ module.exports = {
       env: {
         browser: true
       },
-      extends: [
-        'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended'
-      ]
+      extends: ['plugin:@typescript-eslint/recommended']
     },
     {
       files: ['**/*.json'],
@@ -32,5 +29,12 @@ module.exports = {
     browser: true,
     node: true
   },
-  ignorePatterns: ['**/venv/*, **/*.test.*, **/*.spec.*']
+  ignorePatterns: [
+    '**/*.test.*',
+    '**/mocks/*',
+    '**/dist/*',
+    '**/node_modules/*',
+    '**/example/*',
+    '**/.builda/*'
+  ]
 };

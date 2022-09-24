@@ -1,17 +1,23 @@
+import { replaceRootDir, throwError } from 'helpers';
 import { ConfigFile } from 'types/config-file';
 
 export const generateCommands = (
   config: ConfigFile
-): ConfigFile['blueprint_scripts'] => {
-  const commands = {} as ConfigFile['blueprint_scripts'];
-  Object.entries<ConfigFile['blueprint_scripts']>(
-    config.blueprint_scripts
-  ).forEach((script) => {
-    const name = script[0];
-    const { use, output_dir } = script[1];
-    commands[name] = { use, output_dir };
-  });
-  return commands;
+): ConfigFile['blueprintScripts'] => {
+  if (config.blueprintScripts) {
+    const commands = {} as ConfigFile['blueprintScripts'];
+    const scriptArray = Object.entries(config.blueprintScripts);
+
+    scriptArray.forEach((script) => {
+      const name = script[0];
+      const { use, outputDir } = script[1];
+      const updatedOutputDir = replaceRootDir(outputDir, config);
+      commands![name] = { use, outputDir: updatedOutputDir };
+    });
+    return commands;
+  } else {
+    return throwError('No "blueprintScripts" entry found in config file');
+  }
 };
 
 export default generateCommands;

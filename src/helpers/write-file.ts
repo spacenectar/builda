@@ -10,7 +10,7 @@ interface IWriteFileOptions {
   file?: string;
   rename?: string;
   content?: string;
-  output_dir: string;
+  outputDir: string;
   substitute?: TSubstitution[];
   name?: string;
 }
@@ -19,7 +19,7 @@ export const writeFile = ({
   file,
   rename,
   content,
-  output_dir,
+  outputDir,
   substitute,
   name
 }: IWriteFileOptions) => {
@@ -57,7 +57,7 @@ export const writeFile = ({
 
   // write the new file contents to the output directory
   if (newContent) {
-    return fs.writeFileSync(`${output_dir}/${rename || fileName}`, newContent);
+    return fs.writeFileSync(`${outputDir}/${rename || fileName}`, newContent);
   }
   throw new Error(`Could not write file ${rename || fileName}`);
 };

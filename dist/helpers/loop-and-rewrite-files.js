@@ -35,7 +35,7 @@ const loopAndRewriteFiles = async ({ name, paths, substitute }) => {
                 if (node_fs_1.default.existsSync(filePath)) {
                     (0, write_file_1.default)({
                         file: filePath,
-                        output_dir: directoryPath,
+                        outputDir: directoryPath,
                         substitute,
                         name
                     });

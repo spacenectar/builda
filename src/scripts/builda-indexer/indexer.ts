@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 
+import { throwError } from 'helpers';
 import fs from 'node:fs';
 import path from 'path';
 import { ConfigFile } from 'types/config-file';
-import printMessage from '../../helpers/print-message';
+import { printMessage, getSiteLink } from 'helpers';
 import { generateLines } from './helpers/generate-lines';
 
 const message = `/**
@@ -17,35 +18,47 @@ const message = `/**
 export default (config: ConfigFile) => {
   const { indexes } = config;
 
-  const { directories, indexExt } = indexes;
+  if (!indexes) {
+    throwError(
+      `No indexes entry found in the config file. Index files cannot be generated. See ${getSiteLink(
+        'docs/config',
+        'indexes'
+      )} for more information.`
+    );
+  } else {
+    const { directories, indexExt } = indexes;
 
-  const ext = indexExt || 'ts';
+    const ext = indexExt || 'ts';
 
-  directories.forEach((directory) => {
-    let checkedDir = directory;
-    let subdirs = [];
-    let lines = '';
+    directories.forEach((directory: string) => {
+      let checkedDir = directory;
+      let subdirs = [];
+      let lines = '';
 
-    if (directory.includes('*')) {
-      checkedDir = directory.replace('/*', '');
-      // scan directory for subdirectories
-      subdirs = fs.readdirSync(path.resolve(checkedDir));
-      subdirs.forEach((dir) => {
-        const pathString = path.resolve(`${checkedDir}/${dir}`);
-        return (lines += `${generateLines({
-          directory: pathString,
-          parent: dir
-        })}\n`);
-      });
-    } else {
-      lines = generateLines({ directory });
-    }
+      if (directory.includes('*')) {
+        checkedDir = directory.replace('/*', '');
+        // scan directory for subdirectories
+        subdirs = fs.readdirSync(path.resolve(checkedDir));
+        subdirs.forEach((dir) => {
+          const pathString = path.resolve(`${checkedDir}/${dir}`);
+          return (lines += `${generateLines({
+            directory: pathString,
+            parent: dir
+          })}\n`);
+        });
+      } else {
+        lines = generateLines({ directory });
+      }
 
-    const fileContents = `${message}\n\n${lines}`;
-    if (lines) {
-      fs.writeFileSync(path.resolve(checkedDir, `index.${ext}`), fileContents);
-    }
-  });
+      const fileContents = `${message}\n\n${lines}`;
+      if (lines) {
+        fs.writeFileSync(
+          path.resolve(checkedDir, `index.${ext}`),
+          fileContents
+        );
+      }
+    });
 
-  printMessage('Generating indexes', 'config');
+    printMessage('Generating indexes', 'config');
+  }
 };

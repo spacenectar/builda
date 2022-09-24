@@ -1,0 +1,48 @@
+{
+  "name": "%APP_NAME%",
+  "app_root": "%APP_ROOT%",
+  "packageManager": "%packageManager%",
+  "prefab": "github:builda-modules/prefab-test@latest",
+  "blueprints": {
+    "component": {
+      "location": "prefab"
+    },
+    "page": {
+      "location": "prefab"
+    }
+  },
+  "blueprintScripts": {
+    "atom": {
+      "outputPath": "{app_root}/components/atoms",
+      "use": "component"
+    },
+    "molecule": {
+      "outputPath": "{app_root}/components/molecules",
+      "use": "component"
+    },
+    "organism": {
+      "outputPath": "{app_root}/components/organisms",
+      "use": "component"
+    },
+    "partial": {
+      "outputPath": "{app_root}/components/partials",
+      "use": "component"
+    },
+    "page": {
+      "outputPath": "{app_root}/pages",
+      "use": "page"
+    },
+    "input": {
+      "outputPath": "{app_root}/components/inputs",
+      "use": "component"
+    }
+  },
+  "indexes": {
+    "directories": [
+      "{app_root}/components/*",
+      "{app_root}/lib/helpers",
+      "{app_root}/lib/hooks",
+      "{app_root}/lib/context"
+    ]
+  }
+}

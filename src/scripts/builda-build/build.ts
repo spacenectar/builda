@@ -28,8 +28,8 @@ type TBuild = {
 };
 
 export default async ({ config, prod, onlyPath }: TBuild) => {
-  const { prefab, app_root } = config;
-  const root = app_root ? app_root : process.cwd();
+  const { prefab, rootDir } = config;
+  const root = rootDir ? rootDir : process.cwd();
 
   if (!prefab) {
     throwError(

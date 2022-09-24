@@ -1,0 +1,74 @@
+import ContextMenu from './index';
+import { useState } from 'react';
+import { BiLink } from 'react-icons/bi';
+import { Button } from 'components';
+export const links = [
+  {
+    label: 'Home',
+    href: '/'
+  },
+  {
+    label: 'About',
+    href: '/about'
+  },
+  {
+    label: 'Contact',
+    href: '/contact'
+  }
+];
+
+export const linksWithIcons = [
+  {
+    label: 'Home',
+    href: '/',
+    icon: <BiLink />
+  },
+  {
+    label: 'About',
+    href: '/about',
+    icon: <BiLink />
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+    icon: <BiLink />
+  }
+];
+
+<Meta title="organism/ContextMenu" />
+
+# App header
+
+<Description of={ContextMenu} />
+
+<Canvas withSource="open">
+  <Story name="Default">
+    <ContextMenu links={links} showMenu />
+  </Story>
+</Canvas>
+
+The menu can also display icons next to each link if required.
+
+<Canvas withSource="open">
+  <Story name="With Icons">
+    <ContextMenu links={linksWithIcons} showMenu />
+  </Story>
+</Canvas>
+
+Here is an example of the menu which is closed by default.
+
+<Canvas withSource="open">
+  <Story name="Closed by default">
+    {() => {
+      const [isOpen, setIsOpen] = useState(false);
+      return (
+        <>
+          <Button onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? 'Close' : 'Open'} menu
+          </Button>
+          <ContextMenu links={linksWithIcons} showMenu={isOpen} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

@@ -4,7 +4,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
-  silent: false,
+  silent: true,
   maxWorkers: 1,
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/', '<rootDir>/example/',  '<rootDir>/.builda/'],
   modulePaths: ['<rootDir>/src/'],

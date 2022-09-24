@@ -1,36 +1,36 @@
-import getConfigFile from 'helpers/get-config-file';
 import buildaNew from '../new';
 import fs from 'fs';
 
 import path from 'path';
+import config from 'mocks/builda.json';
+import registry from 'mocks/.builda/modules/blueprints/component/registry.json';
 
 const FILE_FOLDER = './experiments';
-const FILE_PATH = `${FILE_FOLDER}/atoms/test-component/index.tsx`;
-const CONFIG_FOLDER = '.builda';
-const CONFIG_FILE = 'builda.json';
+const FILE_PATH = `${FILE_FOLDER}/components/atoms/test-component/index.tsx`;
 
-afterAll((done) => {
-  if (fs.existsSync(CONFIG_FILE)) {
-    fs.rmSync(path.resolve(CONFIG_FILE));
-  }
-  if (fs.existsSync(CONFIG_FOLDER)) {
-    fs.rmSync(path.resolve(CONFIG_FOLDER), { recursive: true, force: true });
-  }
-  if (fs.existsSync(FILE_FOLDER)) {
-    fs.rmSync(path.resolve(FILE_FOLDER), { recursive: true, force: true });
-  }
-  done();
+jest.mock('helpers/get-module', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      path: 'src/mocks/.builda/modules/blueprints/component',
+      registry
+    };
+  });
 });
 
 describe('buildFromBlueprint', () => {
   beforeAll(async () => {
-    const config = await getConfigFile();
-    if (config) {
-      buildaNew({
-        config,
-        name: 'TestComponent',
-        scriptName: 'atom'
-      });
+    buildaNew({
+      config,
+      name: 'TestComponent',
+      scriptName: 'atom'
+    });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+    jest.resetModules();
+    if (fs.existsSync(FILE_FOLDER)) {
+      fs.rmSync(FILE_FOLDER, { recursive: true });
     }
   });
 
@@ -42,7 +42,7 @@ describe('buildFromBlueprint', () => {
     const file = fs.readFileSync(path.resolve(FILE_PATH), 'utf8');
     expect(file).toContain('export const TestComponent: React.FC<Props> = ({');
     expect(file).toContain(
-      "<div className={`'test-component' ${className}`} {...props}>"
+      ' <div className={`${styles["test-component"]} ${className}`} {...props}>'
     );
     expect(file).toContain('export default TestComponent;');
   });

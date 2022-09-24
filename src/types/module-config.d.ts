@@ -14,7 +14,7 @@ export type ModuleConfigContents = {
   /**
    * If the module should have a custom output directory, specify it here (relative to the app_root)
    */
-  output_dir?: string;
+  outputDir?: string;
 };
 
 export type ModuleConfig = {

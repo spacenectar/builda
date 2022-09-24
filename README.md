@@ -150,19 +150,22 @@ builda install sn:custom-blueprint
 #### `builda --init`
 
 Initialises builda in your project. This will create a `.builda` directory in your
-project root and a `config.json` file inside that. (see [Configuration](#configuration) below)
+project root and a `config.json` file inside that.
+(see [Configuration](#configuration) below)
 
 #### `builda --prefab <prefab-path>`
 
 Initialises a new project using a prefab. (see [Prefabs](#prefabs) below)
 
-#### `builda --exec <command>
+#### `builda --exec <command>`
 
-Executes a command in the context of the current project. (see [Commands](#commands) below)
+Executes a command in the context of the current project.
+(see [Commands](#commands) below)
 
 #### `builda --index`
 
-Generates an index file any directories specified in 'indexes' in the config file. (see [Indexing](#indexing) below)
+Generates an index file any directories specified in 'indexes' in the config
+file. (see [Indexing](#indexing) below)
 
 #### `builda --help`
 
@@ -292,6 +295,22 @@ This will build out your new project using the `the-burrows` prefab.
 > package to your project (e.g. storybook) and wanted to keep that preconfiguration
 > in sync with the rest of your projects but still leave the rest of your project
 > as a standalone project.
+
+## Commands
+
+Builda can also be used to run commands in the context of your project. This is
+useful if you want to run a command that is not a blueprint or prefab.
+
+Most commonly, you would not need to run this command directly as this is generally
+handled by the prefab developer. But if you want to run a command that is not
+included in the prefab, you can do this by running:
+
+```shell
+builda exec <command>
+```
+
+This will find the matching script in the `.builda/export/pacakge.json` file and
+run it in the context of your project.
 
 ## Migrating from Buildcom
 

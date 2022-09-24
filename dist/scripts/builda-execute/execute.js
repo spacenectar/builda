@@ -15,8 +15,8 @@ const globals_1 = __importDefault(require("../../data/globals"));
  */
 exports.default = async ({ config, command }) => {
     var _a;
-    const { app_root, package_manager } = config;
-    const buildDir = node_path_1.default.join(app_root, globals_1.default.buildaDir, 'export');
+    const { rootDir, packageManager } = config;
+    const buildDir = node_path_1.default.join(rootDir, globals_1.default.buildaDir, 'export');
     const packageJson = require(node_path_1.default.resolve(buildDir, 'package.json'));
     const scripts = packageJson.scripts;
     const script = scripts[command];
@@ -31,7 +31,7 @@ exports.default = async ({ config, command }) => {
         (0, helpers_1.throwError)('No command found');
     }
     try {
-        const prefixedCommand = `${package_manager} run ${command}`;
+        const prefixedCommand = `${packageManager} run ${command}`;
         node_process_1.default.stdout.write(chalk_1.default.magenta('Running with Builda: ') +
             chalk_1.default.white.bold(`'${prefixedCommand}'`) +
             '\n');

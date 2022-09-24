@@ -11,9 +11,11 @@
     "root": "docs",
     "gettingStarted": "getting-started",
     "prefabs": "prefabs",
+    "config": "config-file",
     "blueprints": "blueprints",
     "telemetry": "telemetry",
     "init": "initialise-a-project",
-    "resolvers": "resolvers"
+    "resolvers": "resolvers",
+    "indexes": "indexes"
   }
 }

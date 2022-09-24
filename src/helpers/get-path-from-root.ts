@@ -5,7 +5,7 @@ import throwError from './throw-error';
 
 const getPathFromRoot = (config: ConfigFile, pathString: string) => {
   if (config) {
-    const appRoot = config.app_root || './';
+    const appRoot = config.rootDir || './';
     return path.join(appRoot, pathString);
   } else {
     return throwError('No config file found');

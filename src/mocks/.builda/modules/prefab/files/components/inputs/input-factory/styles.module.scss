@@ -1,0 +1,28 @@
+.input-container {
+  @include utils.statuses('colour', '.status-message');
+
+  display: flex;
+  flex-direction: column;
+  margin-bottom: margin(2);
+  position: relative;
+
+  .status-message {
+    margin-top: margin(0.5);
+  }
+
+  .helper-text-top,
+  .helper-text-bottom {
+    @include fs-input-label();
+
+    color: $col-label-text;
+  }
+
+  .helper-text-top {
+    margin-bottom: margin(0.5);
+    margin-top: -#{margin(0.5)};
+  }
+
+  .helper-text-bottom {
+    margin-top: margin(0.5);
+  }
+}

@@ -7,7 +7,7 @@ const path_1 = __importDefault(require("path"));
 const throw_error_1 = __importDefault(require("./throw-error"));
 const getPathFromRoot = (config, pathString) => {
     if (config) {
-        const appRoot = config.app_root || './';
+        const appRoot = config.rootDir || './';
         return path_1.default.join(appRoot, pathString);
     }
     else {

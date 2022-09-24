@@ -19,9 +19,9 @@ type TExecute = {
  * Takes a command as an argument and prepends the builda directory to the command
  */
 export default async ({ config, command }: TExecute) => {
-  const { app_root, package_manager } = config;
+  const { rootDir, packageManager } = config;
 
-  const buildDir = path.join(app_root, globals.buildaDir, 'export');
+  const buildDir = path.join(rootDir, globals.buildaDir, 'export');
   const packageJson = require(path.resolve(buildDir, 'package.json'));
   const scripts = packageJson.scripts;
   const script = scripts[command];
@@ -41,7 +41,7 @@ export default async ({ config, command }: TExecute) => {
   }
 
   try {
-    const prefixedCommand = `${package_manager} run ${command}`;
+    const prefixedCommand = `${packageManager} run ${command}`;
 
     process.stdout.write(
       chalk.magenta('Running with Builda: ') +

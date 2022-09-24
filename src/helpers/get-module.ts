@@ -10,7 +10,7 @@ import { ConfigFile } from 'types/config-file';
 import { BlueprintScriptContent } from 'types/blueprint-script-config';
 
 export const getModule = (
-  type: 'blueprint' | 'prefab',
+  type: string,
   config: ConfigFile,
   command: BlueprintScriptContent
 ) => {

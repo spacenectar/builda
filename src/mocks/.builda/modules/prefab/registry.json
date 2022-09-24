@@ -1,0 +1,1 @@
+{"name":"prefab-test","type":"prefab","version":"0.0.5","author":{"name":"Alex Foxleigh","builda_user":"foxleigh81"},"funding":"https://www.patreon.com/builda","url":"https://github.com/builda-modules/prefab-test","custom_files":["pages/home/*"],"blueprints":{"component":{"location":"prefab"},"page":{"location":"prefab"}}}

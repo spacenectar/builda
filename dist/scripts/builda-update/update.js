@@ -43,7 +43,6 @@ exports.default = async ({ config, module }) => {
             (0, throw_error_1.default)(registry.error);
         }
         const url = registry.url;
-        // TODO: Add documentation for custom resolvers
         if (!url) {
             (0, throw_error_1.default)(`Could not find resolver for ${requestVersion} in the registry. Please check the URL and try again.`);
         }
@@ -56,6 +55,9 @@ exports.default = async ({ config, module }) => {
             const name = newmodule.name;
             const version = newmodule.version;
             const newConfig = config.default;
+            if (!newConfig.blueprints) {
+                newConfig.blueprints = {};
+            }
             if (type === 'blueprint') {
                 newConfig.blueprints[name] = {
                     location: requestVersion,

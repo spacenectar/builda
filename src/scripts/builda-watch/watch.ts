@@ -23,7 +23,7 @@ export default (config: ConfigFile) => {
     );
   }
 
-  const watcher = chokidar.watch(config.app_root, {
+  const watcher = chokidar.watch(config.rootDir, {
     persistent: true,
     ignored
   });

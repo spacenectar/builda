@@ -1,0 +1,122 @@
+.modal-blackout {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: $modal-blackout;
+
+  &.enter {
+    backdrop-filter: blur(0) grayscale(0);
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  &.enter-active,
+  &.enter-done {
+    backdrop-filter: blur(5px) grayscale(1);
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: background-color 0.5s ease-in-out,
+      backdrop-filter 0.5s ease-in-out;
+  }
+
+  &.exit {
+    backdrop-filter: blur(5px) grayscale(1);
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  &.exit-active {
+    backdrop-filter: blur(0) grayscale(0);
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.5s ease-in-out,
+      backdrop-filter 0.5s ease-in-out;
+  }
+}
+
+.enter {
+  .modal-wrapper {
+    transform: translateX(200%);
+  }
+
+  .modal-close {
+    opacity: 0;
+  }
+}
+
+.enter-active {
+  .modal-wrapper {
+    transform: translateX(0);
+    transition: transform 0.8s ease-in-out;
+  }
+
+  .modal-close {
+    opacity: 1;
+    transition: opacity 1s ease-in;
+  }
+}
+
+.exit {
+  .modal-wrapper {
+    transform: translateX(0);
+  }
+
+  .modal-close {
+    opacity: 1;
+  }
+}
+
+.exit-active {
+  .modal-wrapper {
+    transform: translateX(-200%);
+    transition: transform 0.8s ease-in-out;
+  }
+
+  .modal-close {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+}
+
+.modal-wrapper {
+  @include utils.card();
+
+  align-items: center;
+  box-shadow: 0 0.5rem 1rem rgba($col-grey-700, 0.5);
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  justify-content: center;
+  max-height: 80vh;
+  max-width: 50vw;
+  min-width: 20vw;
+  position: relative;
+  width: max-content;
+}
+
+.modal-close {
+  background: $col-secondary;
+  right: -15px;
+  top: -15px;
+  position: absolute;
+  z-index: $modal-level + 1;
+
+  svg {
+    color: $col-light;
+    font-size: 2.2rem;
+  }
+
+  &:hover {
+    @include animations.wobble();
+  }
+}
+
+.modal-content {
+  height: max-content;
+  max-height: 100%;
+  padding: padding(2);
+  position: relative;
+  width: 100%;
+  z-index: $modal-level;
+}

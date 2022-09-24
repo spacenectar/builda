@@ -1,0 +1,12 @@
+/**
+  In order to avoid issues with z-index, we have create a set of variables that can be used to set the z-index of the element.
+  Please do not use any other z-index than the ones below but feel free to add your own if needed.
+*/
+
+$above-all: 9999;
+
+$modal-level: 9998;
+$modal-sub-level: 9997;
+$modal-blackout: 9996;
+
+$context-menu-level: 9995;

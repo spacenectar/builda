@@ -10,11 +10,11 @@ const string_functions_1 = require("../../helpers/string-functions");
 const path_1 = __importDefault(require("path"));
 const generate_commands_1 = __importDefault(require("./helpers/generate-commands"));
 exports.default = ({ config, name, scriptName, subString }) => {
-    const commands = config ? (0, generate_commands_1.default)(config) : {};
-    const script = commands[scriptName];
+    const commands = (0, generate_commands_1.default)(config);
+    const script = commands === null || commands === void 0 ? void 0 : commands[scriptName];
     if (!!script.use) {
-        (0, helpers_1.printMessage)(`Building new ${Object.keys(script)[0]}: '${name}'...`, 'notice');
-        const outputDirectory = `${script.output_dir}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
+        (0, helpers_1.printMessage)(`Building new ${scriptName}: '${name}'...`, 'notice');
+        const outputDirectory = `${script.outputDir}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         node_fs_1.default.mkdirSync(outputDirectory, { recursive: true });
         const { path: pathstring, registry } = (0, helpers_1.getModule)('blueprint', config, script);
@@ -36,7 +36,7 @@ exports.default = ({ config, name, scriptName, subString }) => {
             const outputPath = `${outputDirectory}`;
             (0, helpers_1.writeFile)({
                 file: srcPath,
-                output_dir: outputPath,
+                outputDir: outputPath,
                 substitute,
                 name
             });

@@ -51,7 +51,7 @@ export const loopAndRewriteFiles = async ({
           if (fs.existsSync(filePath)) {
             writeFile({
               file: filePath,
-              output_dir: directoryPath,
+              outputDir: directoryPath,
               substitute,
               name
             });

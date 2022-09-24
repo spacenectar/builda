@@ -15,7 +15,7 @@ exports.default = (config) => {
     if (!prefab) {
         (0, helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
     }
-    const watcher = chokidar_1.default.watch(config.app_root, {
+    const watcher = chokidar_1.default.watch(config.rootDir, {
         persistent: true,
         ignored
     });

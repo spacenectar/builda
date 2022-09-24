@@ -91,7 +91,7 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
             with: './'
         },
         {
-            replace: '%PACKAGE_MANAGER%',
+            replace: '%packageManager%',
             with: packageManagerType
         }
     ];
@@ -174,7 +174,7 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
             (0, helpers_1.writeFile)({
                 content: res.data,
                 rename: buildaReadmeFileName,
-                output_dir: rootDir,
+                outputDir: rootDir,
                 substitute: readmeSubs
             });
         }

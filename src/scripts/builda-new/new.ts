@@ -17,15 +17,12 @@ type TNew = {
 };
 
 export default ({ config, name, scriptName, subString }: TNew) => {
-  const commands = config ? generateCommands(config) : {};
-  const script = commands[scriptName];
+  const commands = generateCommands(config);
+  const script = commands?.[scriptName];
 
   if (!!script.use) {
-    printMessage(
-      `Building new ${Object.keys(script)[0]}: '${name}'...`,
-      'notice'
-    );
-    const outputDirectory = `${script.output_dir}/${changeCase(
+    printMessage(`Building new ${scriptName}: '${name}'...`, 'notice');
+    const outputDirectory = `${script.outputDir}/${changeCase(
       name,
       'kebabCase'
     )}`;
@@ -61,7 +58,7 @@ export default ({ config, name, scriptName, subString }: TNew) => {
 
       writeFile({
         file: srcPath,
-        output_dir: outputPath,
+        outputDir: outputPath,
         substitute,
         name
       });

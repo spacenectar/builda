@@ -5,16 +5,16 @@ import { GenIndexConfig } from './gen-index-config';
 export interface ConfigFile {
   default?: Omit<ConfigFile, 'default'>;
   name: string;
-  app_root: string;
-  package_manager: 'npm' | 'yarn';
+  rootDir: string;
+  packageManager: string;
   resolvers?: {
     [key: string]: string;
   };
-  watched: string[];
-  blueprint_scripts: {
+  watched?: string[];
+  blueprintScripts?: {
     [key: string]: BlueprintScriptContents;
   };
-  prefab: string;
-  blueprints: ModuleConfig;
-  indexes: GenIndexConfig;
+  prefab?: string;
+  blueprints?: ModuleConfig;
+  indexes?: GenIndexConfig;
 }

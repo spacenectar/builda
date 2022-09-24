@@ -36,7 +36,7 @@ export default async ({ config }: { config: ConfigFile }) => {
   // If the project uses blueprints, install the blueprints that are not already
   // part of the prefab
   if (blueprints) {
-    const blueprintsArray = Object.keys(config.blueprints).filter(
+    const blueprintsArray = Object.keys(blueprints).filter(
       (blueprint) => blueprints[blueprint].location !== 'prefab'
     );
     for (const blueprint of blueprintsArray) {

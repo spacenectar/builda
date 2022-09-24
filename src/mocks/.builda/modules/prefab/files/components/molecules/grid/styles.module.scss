@@ -1,0 +1,31 @@
+.grid {
+  --grid-columns: 1;
+  --grid-rows: 1;
+  --grid-col-gap: 1rem;
+  --grid-row-gap: 1rem;
+
+  display: grid;
+  column-gap: var(--grid-col-gap);
+  row-gap: var(--grid-row-gap);
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+
+  @include mq($bp-medium-small) {
+    grid-template-columns: repeat(2, 1fr);
+    &.grid-columns-1 {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  @include mq($bp-medium) {
+    grid-template-columns: repeat(3, 1fr);
+    &.grid-columns-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @include mq($bp-large) {
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+  }
+}
+

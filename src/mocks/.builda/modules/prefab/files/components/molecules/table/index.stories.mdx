@@ -1,0 +1,113 @@
+import Table from './index';
+import TableBody from './components/table-body';
+import TableCell from './components/table-cell';
+import TableRow from './components/table-row';
+import TableHead from './components/table-head';
+
+export const TableContent = () => {
+  return (
+    <>
+      <Table.Head>
+        <Table.Row>
+          <Table.Cell th>Name</Table.Cell>
+          <Table.Cell th>Age</Table.Cell>
+        </Table.Row>
+      </Table.Head>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>John Smith</Table.Cell>
+          <Table.Cell>30</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Petunia Mablethorpe</Table.Cell>
+          <Table.Cell>20</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Pansy Parkinson</Table.Cell>
+          <Table.Cell>30</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </>
+  );
+};
+
+<Meta
+  title="molecule/Table"
+  component={Table}
+  parameters={{ status: { type: 'beta' } }}
+  args={{
+    children: <TableContent />
+  }}
+  subcomponents={{
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell
+  }}
+/>
+
+export const Template = (args) => <Table {...args} />;
+
+# Table
+
+The Table component is used to display a table of data. In order to use all of the features of the Table component, you will need to use the `Table.Head`, `Table.Body`, `Table.Row`, and `Table.Cell` components.
+
+<Tip>
+  It is strongly recommended that you use the{' '}
+  <a href="?path=/docs/organism-tablegenerator--default-story">TableFactory</a>{' '}
+  component to generate the table, instead of using the Table component
+  directly. This will ensure that the table is styled correctly and is able to
+  use all available features, such as sorting and filtering.
+</Tip>
+
+<Tip type="danger">
+  If you are manually creating the table, you should add the `contextHeading`
+  prop to each instance of `TableCell`, otherwise it will not work correctly at
+  smaller layouts. These examples have been built without the contextHeading
+  props, try it at a smaller layout to see what happens.
+</Tip>
+
+<Canvas withSource="open">
+  <Story name="Default">{Template.bind({})}</Story>
+</Canvas>
+
+## Striped
+
+<Canvas withSource="open">
+  <Story name="Striped" args={{ striped: true }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Solid Header
+
+<Canvas withSource="open">
+  <Story name="Solid Header" args={{ solidHeader: true }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Solid Header and striped
+
+When the table heaer is solid, the even numbered rows will be striped instead of the odd numbered rows.
+
+<Canvas withSource="open">
+  <Story
+    name="Solid Header and striped"
+    args={{ solidHeader: true, striped: true }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Full-width table
+
+<Canvas withSource="open">
+  <Story name="Full width" args={{ fullWidth: true }}>
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Table} />

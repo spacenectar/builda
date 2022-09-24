@@ -1,29 +1,40 @@
-import getConfigFile from 'helpers/get-config-file';
 import generateCommands from 'scripts/builda-new/helpers/generate-commands';
 
+import config from 'mocks/builda.json';
+import { ConfigFile } from 'types/config-file';
+
 describe('generateCommands', () => {
-  let commands = {};
+  let commands = {} as ConfigFile['blueprintScripts'];
 
   beforeEach(async () => {
-    const config = await getConfigFile();
-    if (config) {
-      commands = generateCommands(config);
-    }
+    commands = generateCommands(config);
   });
 
   test('config file is parsed and commands extracted', () => {
     expect(commands).toEqual({
       atom: {
-        use: 'blueprint-default-ts',
-        output_dir: '{{app_root}}/atoms'
+        outputDir: './experiments/components/atoms',
+        use: 'component'
       },
-      component: {
-        use: 'blueprint-default-ts',
-        output_dir: '{{app_root}}/components'
+      molecule: {
+        outputDir: './experiments/components/molecules',
+        use: 'component'
       },
-      test: {
-        use: 'blueprint-default-ts',
-        output_dir: '{{app_root}}/tests'
+      organism: {
+        outputDir: './experiments/components/organisms',
+        use: 'component'
+      },
+      partial: {
+        outputDir: './experiments/components/partials',
+        use: 'component'
+      },
+      page: {
+        outputDir: './experiments/pages',
+        use: 'page'
+      },
+      input: {
+        outputDir: './experiments/components/inputs',
+        use: 'component'
       }
     });
   });

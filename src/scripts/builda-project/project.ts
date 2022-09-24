@@ -135,7 +135,7 @@ export default async ({
       with: './'
     },
     {
-      replace: '%PACKAGE_MANAGER%',
+      replace: '%packageManager%',
       with: packageManagerType
     }
   ];
@@ -236,7 +236,7 @@ export default async ({
         writeFile({
           content: res.data,
           rename: buildaReadmeFileName,
-          output_dir: rootDir,
+          outputDir: rootDir,
           substitute: readmeSubs
         });
       }
