@@ -1,13 +1,9 @@
 import { adjectives, nouns } from 'data/words.json';
 
-function capitalize(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-const randomWordGenerator = () => {
+const randomNameGenerator = () => {
   const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
   const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  return `${capitalize(adjective)}${capitalize(noun)}`;
+  return `${adjective.toLowerCase()}-${noun.toLowerCase()}`;
 };
 
-export default randomWordGenerator;
+export default randomNameGenerator;
