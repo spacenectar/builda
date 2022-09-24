@@ -101,9 +101,10 @@ export interface ModuleRegistry {
     [key: string]: string;
   };
   /**
-   * If the module is a prefab and has any required blueprints which are not built into the prefab, you can add them here
+   * If the module is a prefab and requires blueprints or has it's own blueprints, you should add them here
    * if the module is a blueprint, this field is ignored
    * @example "github:cool-developer/blueprint-cool-module@3.0.0"
+   * @example "internal:blueprint-name"
    * @optional
    */
   blueprints?: ModuleConfig;
