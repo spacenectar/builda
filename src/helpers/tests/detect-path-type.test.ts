@@ -13,9 +13,9 @@ describe('detectPathType', () => {
     expect(detectPathType(path)).toEqual(expected);
   });
 
-  test("should return 'custom' when a custom path is provided", () => {
-    const path = 'builda:blueprint-default-js';
-    const expected = 'custom';
+  test("should return 'remote' when a resolver path is provided", () => {
+    const path = '$builda:blueprint-default-js';
+    const expected = 'remote';
     expect(detectPathType(path)).toEqual(expected);
   });
 });
