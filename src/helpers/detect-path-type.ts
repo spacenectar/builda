@@ -10,13 +10,6 @@ export const detectPathType = (pathString: string) => {
     return 'local';
   }
 
-  const httpMatcher = /^https?:\/\//;
-  const customMatcherRegex = /[a-zA-Z0-9]:/;
-
-  if (!httpMatcher.test(pathString) && customMatcherRegex.test(pathString)) {
-    return 'custom';
-  }
-
   return 'remote';
 };
 
