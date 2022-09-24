@@ -1,12 +1,12 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { randomWordGenerator } from 'helpers';
+import { randomNameGenerator } from 'helpers';
 
 import showHelp from './show-help';
 
 export default async () => {
-  const suggestedName = randomWordGenerator();
+  const suggestedName = randomNameGenerator();
   return inquirer.prompt([
     {
       type: 'input',
