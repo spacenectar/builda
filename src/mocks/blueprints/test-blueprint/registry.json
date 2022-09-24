@@ -1,1 +1,12 @@
-"\n          {\n            \"name\": \"test-blueprint\",\n            \"type\": \"blueprint\",\n            \"version\": \"1.0.0\",\n            \"author\": {\n              \"name\": \"\",\n              \"builda_user:\": \"\",\n              \"email\": \"\",\n              \"website\": \"\"\n            },\n            \"url\": \"\",\n            \"files\": [\n              \"files\"\n            ]\n          }\n      "
+{
+  "name": "test-blueprint",
+  "type": "blueprint",
+  "version": "1.0.0",
+  "author": {
+    "name": "Test user",
+    "builda_user:": "test_user",
+    "email": "test@test.user",
+    "website": "http://www.test.user"
+  },
+  "url": "http://test.url"
+}
