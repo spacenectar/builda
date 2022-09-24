@@ -19,21 +19,18 @@ exports.default = async ({ config, modulePath, fromScript }) => {
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = node_path_1.default.join(outputPath, globals_1.default.buildaDir, 'modules');
     await (0, helpers_1.createDir)(moduleDirPath);
-    const moduleType = (0, helpers_1.detectPathType)(modulePath);
-    if (moduleType === 'local') {
+    if ((0, helpers_1.detectPathType)(modulePath) === 'remote') {
+        const registry = (0, helpers_1.convertRegistryPathToUrl)({
+            registryPath: modulePath,
+            config
+        }).url;
+        if (!registry) {
+            (0, helpers_1.throwError)('No registry found');
+        }
+        module = await (0, helpers_1.addRemoteModule)(registry);
+    }
+    else {
         module = await (0, helpers_1.addLocalModule)(modulePath);
-    }
-    if (moduleType === 'remote') {
-        module = await (0, helpers_1.addRemoteModule)((0, helpers_1.convertRegistryPathToUrl)({
-            registryPath: modulePath,
-            config
-        }));
-    }
-    if (moduleType === 'custom') {
-        module = await (0, helpers_1.addRemoteModule)((0, helpers_1.convertRegistryPathToUrl)({
-            registryPath: modulePath,
-            config
-        }));
     }
     /**
      * The following should only run if the command is being run directly from the CLI
@@ -50,7 +47,7 @@ exports.default = async ({ config, modulePath, fromScript }) => {
                 }
                 // User has added this blueprint before.
                 if ((_a = config === null || config === void 0 ? void 0 : config.blueprints) === null || _a === void 0 ? void 0 : _a[name]) {
-                    (0, helpers_1.throwError)(`Blueprint already added, perhaps you meant 'builda update ${name}?'`);
+                    (0, helpers_1.throwError)(`A blueprint called ${name} already exists. Perhaps you meant 'builda update ${name}?'`);
                 }
                 else {
                     // User has never added this blueprint before.
@@ -62,7 +59,7 @@ exports.default = async ({ config, modulePath, fromScript }) => {
             }
             if (type === 'prefab') {
                 // User has added this prefab before.
-                (0, helpers_1.throwError)(`You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`);
+                (0, helpers_1.throwError)(`You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda project' instead.`);
             }
             // Write the config file
             node_fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {

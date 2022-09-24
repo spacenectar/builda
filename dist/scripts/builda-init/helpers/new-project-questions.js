@@ -8,7 +8,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../../helpers");
 const show_help_1 = __importDefault(require("./show-help"));
 exports.default = async () => {
-    const suggestedName = (0, helpers_1.randomWordGenerator)();
+    const suggestedName = (0, helpers_1.randomNameGenerator)();
     return inquirer_1.default.prompt([
         {
             type: 'input',

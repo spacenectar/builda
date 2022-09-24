@@ -54,28 +54,17 @@ export default async ({
 
   await createDir(moduleDirPath);
 
-  const moduleType = detectPathType(modulePath);
-
-  if (moduleType === 'local') {
+  if (detectPathType(modulePath) === 'remote') {
+    const registry = convertRegistryPathToUrl({
+      registryPath: modulePath,
+      config
+    }).url;
+    if (!registry) {
+      throwError('No registry found');
+    }
+    module = await addRemoteModule(registry);
+  } else {
     module = await addLocalModule(modulePath);
-  }
-
-  if (moduleType === 'remote') {
-    module = await addRemoteModule(
-      convertRegistryPathToUrl({
-        registryPath: modulePath,
-        config
-      }) as string
-    );
-  }
-
-  if (moduleType === 'custom') {
-    module = await addRemoteModule(
-      convertRegistryPathToUrl({
-        registryPath: modulePath,
-        config
-      }) as string
-    );
   }
 
   /**
@@ -95,7 +84,7 @@ export default async ({
         // User has added this blueprint before.
         if (config?.blueprints?.[name]) {
           throwError(
-            `Blueprint already added, perhaps you meant 'builda update ${name}?'`
+            `A blueprint called ${name} already exists. Perhaps you meant 'builda update ${name}?'`
           );
         } else {
           // User has never added this blueprint before.
@@ -108,7 +97,7 @@ export default async ({
       if (type === 'prefab') {
         // User has added this prefab before.
         throwError(
-          `You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda --prefab' instead.`
+          `You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda project' instead.`
         );
       }
 

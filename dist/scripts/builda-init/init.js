@@ -11,11 +11,18 @@ const globals_1 = __importDefault(require("../../data/globals"));
 const show_help_1 = __importDefault(require("./helpers/show-help"));
 const existing_project_questions_1 = __importDefault(require("./helpers/existing-project-questions"));
 const new_project_questions_1 = __importDefault(require("./helpers/new-project-questions"));
+const prefab_questions_1 = __importDefault(require("./helpers/prefab-questions"));
+const blueprint_questions_1 = __importDefault(require("./helpers/blueprint-questions"));
 // Starts a guided setup process to initialise a project
 exports.default = async ({ config }) => {
-    const { buildaDir, configFileName, websiteUrl } = globals_1.default;
+    const { buildaDir, configFileName } = globals_1.default;
+    let answers = {
+        projectName: '',
+        appRoot: '',
+        packageManager: ''
+    };
     (0, show_help_1.default)('This is a guided setup process to initialise a project.\nIf you get stuck, visit ' +
-        chalk_1.default.blue.underline(`http://${websiteUrl}/docs/initialise-a-project`) +
+        chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/init')) +
         chalk_1.default.white(' for more information.\nYou can exit the process at any time by pressing Ctrl+C.'));
     if (config) {
         if (config.prefab) {
@@ -67,89 +74,25 @@ exports.default = async ({ config }) => {
     ]);
     if (projectType === 'new') {
         (0, show_help_1.default)("A fresh start! Let's get you set up with a new project.\n\n" +
-            'You can choose to use a prefab to get started quickly, or you can set up a project from scratch.\n' +
-            "If you don't have a prefab in mind or if you are unsure what a prefab is, take a look at " +
-            chalk_1.default.blue.underline(`http://${websiteUrl}/docs/prefabs`) +
-            '.');
-        // If the project is new, ask the user if they want to use a prefab
-        const { usePrefab } = await inquirer_1.default.prompt([
-            {
-                type: 'confirm',
-                name: 'usePrefab',
-                message: 'Do you want to set the project up using a prefab?\n ',
-                default: true
-            }
-        ]);
-        if (usePrefab) {
-            const { prefabChoice } = await inquirer_1.default.prompt([
-                {
-                    type: 'list',
-                    name: 'prefabChoice',
-                    message: 'Do you have a prefab url or do you want to choose from a list?',
-                    choices: [
-                        {
-                            name: 'I have a prefab url',
-                            value: 'url'
-                        },
-                        {
-                            name: 'I want to choose from a list',
-                            value: 'list'
-                        }
-                    ]
-                }
-            ]);
-            let prefab = '';
-            if (prefabChoice === 'url') {
-                (0, show_help_1.default)('The url should point to the folder that the prefabs registry.json file is in.\nIt can be a regular link or use a resolver\n.' +
-                    chalk_1.default.blue.underline(`http://${websiteUrl}/docs/resolvers`));
-                const { prefabUrl } = await inquirer_1.default.prompt([
-                    {
-                        type: 'input',
-                        name: 'prefabUrl',
-                        message: 'Enter the prefab url:'
-                    }
-                ]);
-                prefab = prefabUrl;
-            }
-            if (prefabChoice === 'list') {
-                (0, show_help_1.default)('This list is not exhaustive. You can find more prefabs at ' +
-                    chalk_1.default.blue.underline(`http://${websiteUrl}/trade-store`));
-                const { prefabList } = await inquirer_1.default.prompt([
-                    {
-                        type: 'list',
-                        name: 'prefabList',
-                        message: 'Choose a prefab:',
-                        choices: [
-                            {
-                                name: 'Fake prefab 1',
-                                value: ''
-                            },
-                            {
-                                name: 'Fake prefab 2',
-                                value: ''
-                            },
-                            {
-                                name: 'Fake prefab 3',
-                                value: ''
-                            }
-                        ]
-                    }
-                ]);
-                prefab = prefabList;
-            }
-            console.log(prefab);
+            'You can choose to use a prefab to get started quickly, or you can set up a project from scratch.');
+        const prefabAnswers = await (0, prefab_questions_1.default)(answers);
+        if (prefabAnswers.usePrefab) {
+            answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
         }
         else {
             (0, show_help_1.default)('You can set up a project from scratch by answering a few questions about your project.\n' +
-                'If you are unsure about any of these, you can always change them later by editing the builda.json file.');
+                `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
         }
-        const { projectName, appRoot, packageManager } = await (0, new_project_questions_1.default)();
-        console.log(projectName, appRoot, packageManager);
+        const newProjectAnswers = await (0, new_project_questions_1.default)();
+        answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     }
     else {
         (0, show_help_1.default)('You can add builda to an existing project by answering a few questions about your project.\n' +
-            'If you are unsure about any of these, you can always change them later by editing the builda.json file.');
-        const { projectName, appRoot, packageManager } = await (0, existing_project_questions_1.default)();
-        console.log(projectName, appRoot, packageManager);
+            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+        const existingProjectAnswers = await (0, existing_project_questions_1.default)();
+        answers = Object.assign(Object.assign({}, answers), existingProjectAnswers);
     }
+    const blueprintAnswers = await (0, blueprint_questions_1.default)(answers);
+    answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
+    console.log(answers);
 };

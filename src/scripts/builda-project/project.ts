@@ -73,17 +73,17 @@ export default async ({
 
   // The directory is empty, so we can continue
   let module = {} as ModuleRegistry;
-  const moduleType = detectPathType(prefabPath);
 
-  if (moduleType === 'local') {
+  if (detectPathType(prefabPath) === 'remote') {
+    const registry = convertRegistryPathToUrl({
+      registryPath: prefabPath
+    }).url;
+    if (!registry) {
+      throwError('No registry found');
+    }
+    module = await addRemoteModule(registry, rootDir);
+  } else {
     module = await addLocalModule(prefabPath, rootDir);
-  }
-
-  if (moduleType === 'remote' || moduleType === 'custom') {
-    module = await addRemoteModule(
-      convertRegistryPathToUrl({ registryPath: prefabPath }) as string,
-      rootDir
-    );
   }
 
   if (!module?.name) {
@@ -292,12 +292,14 @@ export default async ({
               addLocalModule(bp.location, rootDir);
             }
             if (bluePrintType === 'remote') {
-              addRemoteModule(
-                convertRegistryPathToUrl({
-                  registryPath: bp.location
-                }) as string,
-                rootDir
-              );
+              const registry = convertRegistryPathToUrl({
+                registryPath: bp.location
+              }).url;
+              if (!registry) {
+                throwError('No registry found');
+              }
+
+              addRemoteModule(registry, rootDir);
             }
             resolve(blueprint);
           })

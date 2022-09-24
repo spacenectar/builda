@@ -43,12 +43,17 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
     await (0, helpers_1.createDir)(workingDir);
     // The directory is empty, so we can continue
     let module = {};
-    const moduleType = (0, helpers_1.detectPathType)(prefabPath);
-    if (moduleType === 'local') {
-        module = await (0, helpers_1.addLocalModule)(prefabPath, rootDir);
+    if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
+        const registry = (0, helpers_1.convertRegistryPathToUrl)({
+            registryPath: prefabPath
+        }).url;
+        if (!registry) {
+            (0, helpers_1.throwError)('No registry found');
+        }
+        module = await (0, helpers_1.addRemoteModule)(registry, rootDir);
     }
-    if (moduleType === 'remote' || moduleType === 'custom') {
-        module = await (0, helpers_1.addRemoteModule)((0, helpers_1.convertRegistryPathToUrl)({ registryPath: prefabPath }), rootDir);
+    else {
+        module = await (0, helpers_1.addLocalModule)(prefabPath, rootDir);
     }
     if (!(module === null || module === void 0 ? void 0 : module.name)) {
         (0, helpers_1.throwError)('No prefab found');
@@ -208,9 +213,13 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
                         (0, helpers_1.addLocalModule)(bp.location, rootDir);
                     }
                     if (bluePrintType === 'remote') {
-                        (0, helpers_1.addRemoteModule)((0, helpers_1.convertRegistryPathToUrl)({
+                        const registry = (0, helpers_1.convertRegistryPathToUrl)({
                             registryPath: bp.location
-                        }), rootDir);
+                        }).url;
+                        if (!registry) {
+                            (0, helpers_1.throwError)('No registry found');
+                        }
+                        (0, helpers_1.addRemoteModule)(registry, rootDir);
                     }
                     resolve(blueprint);
                 }));

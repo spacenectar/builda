@@ -54,14 +54,18 @@ export default async ({
       throwError(`Module ${moduleName} is already at version ${localVersion}`);
     }
 
-    const moduleType = detectPathType(requestVersion);
-
     let newmodule = {} as ModuleRegistry;
 
-    const url = convertRegistryPathToUrl({
+    const registry = convertRegistryPathToUrl({
       registryPath: requestVersion,
       config
-    }) as string;
+    });
+
+    if (registry.error) {
+      throwError(registry.error);
+    }
+
+    const url = registry.url;
 
     // TODO: Add documentation for custom resolvers
     if (!url) {
@@ -70,17 +74,10 @@ export default async ({
       );
     }
 
-    if (moduleType === 'local') {
-      newmodule = await addLocalModule(requestVersion);
-    }
-
-    if (moduleType === 'remote') {
-      newmodule = await addRemoteModule(url);
-    }
-
-    if (moduleType === 'custom') {
-      newmodule = await addRemoteModule(url);
-    }
+    newmodule =
+      detectPathType(requestVersion) === 'remote'
+        ? await addRemoteModule(url)
+        : await addLocalModule(requestVersion);
 
     if (newmodule?.name) {
       const type = newmodule.type;

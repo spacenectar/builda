@@ -1,0 +1,19 @@
+{
+    "root": {
+        "root": "/"
+    },
+    "tradeStore": {
+        "root": "trade-store",
+        "prefabs": "prefabs",
+        "blueprints": "blueprints"
+    },
+    "docs": {
+        "root": "docs",
+        "gettingStarted": "getting-started",
+        "prefabs": "prefabs",
+        "blueprints": "blueprints",
+        "telemetry": "telemetry",
+        "init": "initialise-a-project",
+        "resolvers": "resolvers"
+    }
+}

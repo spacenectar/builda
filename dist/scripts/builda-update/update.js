@@ -34,25 +34,23 @@ exports.default = async ({ config, module }) => {
             localVersion !== '') {
             (0, throw_error_1.default)(`Module ${moduleName} is already at version ${localVersion}`);
         }
-        const moduleType = (0, index_1.detectPathType)(requestVersion);
         let newmodule = {};
-        const url = (0, index_1.convertRegistryPathToUrl)({
+        const registry = (0, index_1.convertRegistryPathToUrl)({
             registryPath: requestVersion,
             config
         });
+        if (registry.error) {
+            (0, throw_error_1.default)(registry.error);
+        }
+        const url = registry.url;
         // TODO: Add documentation for custom resolvers
         if (!url) {
             (0, throw_error_1.default)(`Could not find resolver for ${requestVersion} in the registry. Please check the URL and try again.`);
         }
-        if (moduleType === 'local') {
-            newmodule = await (0, index_1.addLocalModule)(requestVersion);
-        }
-        if (moduleType === 'remote') {
-            newmodule = await (0, index_1.addRemoteModule)(url);
-        }
-        if (moduleType === 'custom') {
-            newmodule = await (0, index_1.addRemoteModule)(url);
-        }
+        newmodule =
+            (0, index_1.detectPathType)(requestVersion) === 'remote'
+                ? await (0, index_1.addRemoteModule)(url)
+                : await (0, index_1.addLocalModule)(requestVersion);
         if (newmodule === null || newmodule === void 0 ? void 0 : newmodule.name) {
             const type = newmodule.type;
             const name = newmodule.name;
