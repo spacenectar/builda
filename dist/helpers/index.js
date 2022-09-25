@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getConfigFile = exports.askQuestion = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.prefabQuestions = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = exports.writeLogFile = exports.writeFile = exports.replaceRootDir = exports.loopAndRewriteFiles = exports.createDir = exports.copyDir = exports.checkAndCopyPath = exports.getSubstitutions = exports.validateModulePath = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.urlWithProtocol = exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normaliseCase = exports.detectPathType = exports.getSiteLink = exports.randomNameGenerator = exports.getPathFromRoot = void 0;
+exports.getConfigFile = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.prefabQuestions = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = exports.writeLogFile = exports.writeFile = exports.replaceRootDir = exports.loopAndRewriteFiles = exports.createDir = exports.copyDir = exports.checkAndCopyPath = exports.getSubstitutions = exports.validateModulePath = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.urlWithProtocol = exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normaliseCase = exports.detectPathType = exports.getSiteLink = exports.randomNameGenerator = exports.getPathFromRoot = void 0;
 // String helpers
 var get_path_from_root_1 = require("./string/get-path-from-root");
 Object.defineProperty(exports, "getPathFromRoot", { enumerable: true, get: function () { return __importDefault(get_path_from_root_1).default; } });
@@ -78,7 +78,5 @@ Object.defineProperty(exports, "existingProjectQuestions", { enumerable: true, g
 var new_project_questions_1 = require("./questions/new-project-questions");
 Object.defineProperty(exports, "newProjectQuestions", { enumerable: true, get: function () { return __importDefault(new_project_questions_1).default; } });
 // Misc helpers
-var ask_question_1 = require("./ask-question");
-Object.defineProperty(exports, "askQuestion", { enumerable: true, get: function () { return __importDefault(ask_question_1).default; } });
 var get_config_file_1 = require("./get-config-file");
 Object.defineProperty(exports, "getConfigFile", { enumerable: true, get: function () { return __importDefault(get_config_file_1).default; } });

@@ -43,5 +43,4 @@ export { default as existingProjectQuestions } from './questions/existing-projec
 export { default as newProjectQuestions } from './questions/new-project-questions';
 
 // Misc helpers
-export { default as askQuestion } from './ask-question';
 export { default as getConfigFile } from './get-config-file';
