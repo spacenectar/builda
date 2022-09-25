@@ -1,19 +1,19 @@
 import fs from 'node:fs';
+import EventEmitter from 'node:events';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { printMessage, printSiteLink } from 'helpers';
+import { printMessage, printSiteLink, showHelp } from 'helpers';
 
 import type { ConfigFile } from 'types/config-file';
 
 import globals from 'data/globals';
 
-import showHelp from './helpers/show-help';
+import existingProjectQuestions from 'helpers/questions/existing-project-questions';
+import newProjectQuestions from 'helpers/questions/new-project-questions';
+import prefabQuestions from 'helpers/questions/prefab-questions';
+import blueprintQuestions from 'helpers/questions/blueprint-questions';
 
-import existingProjectQuestions from './helpers/existing-project-questions';
-import newProjectQuestions from './helpers/new-project-questions';
-import prefabQuestions from './helpers/prefab-questions';
-import blueprintQuestions from './helpers/blueprint-questions';
 import { TAnswers } from 'types/init-answers';
 
 type TInit = {
@@ -22,6 +22,11 @@ type TInit = {
 
 // Starts a guided setup process to initialise a project
 export default async ({ config }: TInit) => {
+  // WORKAROUND: This is a workaround for a bug in inquirer that causes the
+  // event listeners to not be removed until the process exits
+  // This number should be incremented if the number of questions exceeds 50
+  EventEmitter.defaultMaxListeners = 50;
+
   const { buildaDir, configFileName } = globals;
 
   let answers: TAnswers = {
@@ -113,7 +118,7 @@ export default async ({ config }: TInit) => {
           value: 'existing'
         },
         {
-          name: 'I want to creae my own prefab',
+          name: 'I want to create my own prefab',
           value: 'prefab'
         },
         {
