@@ -5,17 +5,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const execa_1 = __importDefault(require("execa"));
+const inquirer_1 = __importDefault(require("inquirer"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const globals_1 = __importDefault(require("data/globals"));
 const helpers_1 = require("helpers");
-const get_answers_1 = require("./helpers/get-answers");
 /**
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-exports.default = async ({ presetAnswers, appName, pathName, packageManager }) => {
+exports.default = async ({ appName, pathName, packageManager }) => {
     var _a, _b, _c;
     const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
     const defaultRequiredFiles = [
@@ -24,8 +24,28 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
         'package.json',
         'README.md'
     ];
-    const answers = presetAnswers ||
-        (await (0, get_answers_1.getAnswers)(!!appName, !!pathName, !!packageManager));
+    let answers = {};
+    const { usePrefab } = await inquirer_1.default.prompt([
+        {
+            type: 'confirm',
+            name: 'usePrefab',
+            message: `Do you want to set the project up using a prefab?`,
+            default: true
+        }
+    ]);
+    if (usePrefab) {
+        const prefabAnswers = await (0, helpers_1.prefabQuestions)(answers);
+        answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
+    }
+    else {
+        (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
+            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+    }
+    if (answers.prefab) {
+        (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
+    }
+    const newProjectAnswers = await (0, helpers_1.newProjectQuestions)();
+    answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = appName || answers.appName;
     const prefabPath = pathName || answers.pathName;
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
@@ -116,7 +136,10 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
         node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));
     }
     // Create a new package.json file in the root directory with updated scripts
-    const packageJson = require(node_path_1.default.resolve(workingDir, 'package.json'));
+    const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(workingDir, 'package.json'), {
+        encoding: 'utf8'
+    });
+    const packageJson = JSON.parse(packageJsonFile);
     const scripts = packageJson.scripts;
     const buildaScripts = {};
     Object.entries(scripts).forEach(([key, value]) => {

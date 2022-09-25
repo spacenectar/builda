@@ -14,7 +14,7 @@ import newProjectQuestions from 'helpers/questions/new-project-questions';
 import prefabQuestions from 'helpers/questions/prefab-questions';
 import blueprintQuestions from 'helpers/questions/blueprint-questions';
 
-import { TAnswers } from 'types/init-answers';
+import { TFlatObject } from 'types/flat-object';
 
 type TInit = {
   config?: ConfigFile;
@@ -29,7 +29,7 @@ export default async ({ config }: TInit) => {
 
   const { buildaDir, configFileName } = globals;
 
-  let answers: TAnswers = {
+  let answers: TFlatObject = {
     projectName: '',
     appRoot: '',
     packageManager: ''

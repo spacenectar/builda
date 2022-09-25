@@ -11,7 +11,8 @@ const validateBlueprint = async (input, answers) => {
     const moduleValid = await (0, helpers_1.validateModulePath)(input, answers);
     if (moduleValid === true) {
         if (answers.prefabRegistry) {
-            const { blueprints } = answers.prefabRegistry;
+            const registry = answers.prefabRegistry;
+            const blueprints = registry.blueprints;
             if (blueprints && blueprints[input]) {
                 return 'A blueprint with that name already exists';
             }
@@ -28,11 +29,12 @@ exports.default = async (answers) => {
             type: 'confirm',
             name: 'addBlueprints',
             message: () => {
-                var _a, _b;
                 let blueprintList = [];
-                if (answers.prefab && !!((_a = answers.prefabRegistry) === null || _a === void 0 ? void 0 : _a.blueprints)) {
-                    blueprintList = Object.keys(answers.prefabRegistry.blueprints);
-                    (0, helpers_1.showHelp)(`You are generating this project from the ${chalk_1.default.blue((_b = answers.prefabRegistry) === null || _b === void 0 ? void 0 : _b.name)} prefab.\n\nIt comes with the following blueprints:\n\n\t` +
+                const registry = answers.prefabRegistry;
+                const blueprints = registry.blueprints;
+                if (answers.prefab && !!blueprints) {
+                    blueprintList = Object.keys(blueprints);
+                    (0, helpers_1.showHelp)(`You are generating this project from the ${chalk_1.default.blue(registry.name)} prefab.\n\nIt comes with the following blueprints:\n\n\t` +
                         blueprintList
                             .map((blueprint) => chalk_1.default.blue(blueprint))
                             .join('\n\t') +

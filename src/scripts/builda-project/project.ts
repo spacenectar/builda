@@ -1,5 +1,6 @@
 import axios from 'axios';
 import execa from 'execa';
+import inquirer from 'inquirer';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
@@ -16,21 +17,27 @@ import {
   printMessage,
   throwError,
   writeFile,
-  changeCase
+  changeCase,
+  newProjectQuestions,
+  prefabQuestions,
+  showHelp
 } from 'helpers';
 
-import { getAnswers } from './helpers/get-answers';
-
 import ModuleRegistry from 'types/module-registry';
-import { TAnswers } from './types/answers';
-import { TGenerateProject } from './types/props';
+import { TFlatObject } from 'types/flat-object';
+
+export type TGenerateProject = {
+  appName?: string;
+  pathName?: string;
+  packageManager?: string;
+  autoInstall?: boolean;
+};
 
 /**
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
 export default async ({
-  presetAnswers,
   appName,
   pathName,
   packageManager
@@ -45,13 +52,42 @@ export default async ({
     'README.md'
   ];
 
-  const answers =
-    presetAnswers ||
-    ((await getAnswers(!!appName, !!pathName, !!packageManager)) as TAnswers);
+  let answers = {} as TFlatObject;
 
-  const name = appName || answers.appName;
-  const prefabPath = pathName || answers.pathName;
-  const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
+  const { usePrefab } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'usePrefab',
+      message: `Do you want to set the project up using a prefab?`,
+      default: true
+    }
+  ]);
+
+  if (usePrefab) {
+    const prefabAnswers = await prefabQuestions(answers);
+    answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
+  } else {
+    showHelp(
+      'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
+        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
+    );
+  }
+
+  if (answers.prefab) {
+    showHelp(
+      'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
+      'success'
+    );
+  }
+
+  const newProjectAnswers = await newProjectQuestions();
+
+  answers = { ...answers, ...newProjectAnswers };
+
+  const name = appName || (answers.appName as string);
+  const prefabPath = pathName || (answers.pathName as string);
+  const packageManagerType =
+    packageManager || (answers.yarnOrNpm as string) || 'npm';
 
   await createDir(name);
 
@@ -166,7 +202,14 @@ export default async ({
   }
 
   // Create a new package.json file in the root directory with updated scripts
-  const packageJson = require(path.resolve(workingDir, 'package.json'));
+  const packageJsonFile = fs.readFileSync(
+    path.resolve(workingDir, 'package.json'),
+    {
+      encoding: 'utf8'
+    }
+  );
+  const packageJson = JSON.parse(packageJsonFile);
+
   const scripts = packageJson.scripts as Record<string, string>;
   const buildaScripts = {} as Record<string, string>;
 

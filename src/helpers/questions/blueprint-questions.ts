@@ -8,16 +8,17 @@ import {
   showHelp
 } from 'helpers';
 
-import { TAnswers } from 'types/init-answers';
+import { TFlatObject } from 'types/flat-object';
 
 import suggestedBlueprints from 'data/suggested-blueprints.json';
 
-const validateBlueprint = async (input: string, answers: TAnswers) => {
+const validateBlueprint = async (input: string, answers: TFlatObject) => {
   const moduleValid = await validateModulePath(input, answers);
 
   if (moduleValid === true) {
     if (answers.prefabRegistry) {
-      const { blueprints } = answers.prefabRegistry;
+      const registry = answers.prefabRegistry as TFlatObject;
+      const blueprints = registry.blueprints as TFlatObject;
       if (blueprints && blueprints[input]) {
         return 'A blueprint with that name already exists';
       }
@@ -27,7 +28,7 @@ const validateBlueprint = async (input: string, answers: TAnswers) => {
   return moduleValid;
 };
 
-export default async (answers: TAnswers) => {
+export default async (answers: TFlatObject) => {
   showHelp(
     "These questions are all about adding blueprints to your project.\r\n\nIf you're not sure what a blueprint is" +
       printSiteLink({ link: 'docs/blueprints' })
@@ -38,11 +39,13 @@ export default async (answers: TAnswers) => {
       name: 'addBlueprints',
       message: () => {
         let blueprintList = [];
-        if (answers.prefab && !!answers.prefabRegistry?.blueprints) {
-          blueprintList = Object.keys(answers.prefabRegistry.blueprints);
+        const registry = answers.prefabRegistry as TFlatObject;
+        const blueprints = registry.blueprints as TFlatObject;
+        if (answers.prefab && !!blueprints) {
+          blueprintList = Object.keys(blueprints);
           showHelp(
             `You are generating this project from the ${chalk.blue(
-              answers.prefabRegistry?.name
+              registry.name
             )} prefab.\n\nIt comes with the following blueprints:\n\n\t` +
               blueprintList
                 .map((blueprint) => chalk.blue(blueprint))

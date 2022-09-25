@@ -8,11 +8,11 @@ import {
   validateModulePath
 } from 'helpers';
 
-import { TAnswers } from 'types/init-answers';
+import { TFlatObject } from 'types/flat-object';
 
 import suggestedPrefabs from 'data/suggested-prefabs.json';
 
-export default async (answers: TAnswers) => {
+export default async (answers: TFlatObject) => {
   showHelp(
     "These questions are all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
       chalk.blue.underline(getSiteLink('docs/prefabs')) +
