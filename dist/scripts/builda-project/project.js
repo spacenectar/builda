@@ -8,9 +8,8 @@ const execa_1 = __importDefault(require("execa"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
-const globals_1 = __importDefault(require("../../data/globals"));
-const helpers_1 = require("../../helpers");
-const string_functions_1 = __importDefault(require("../../helpers/string-functions"));
+const globals_1 = __importDefault(require("data/globals"));
+const helpers_1 = require("helpers");
 const get_answers_1 = require("./helpers/get-answers");
 /**
  * Generate a new project from a prefab
@@ -84,7 +83,7 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
         ...substitutions,
         {
             replace: '%APP_NAME%',
-            with: (0, string_functions_1.default)(name, 'kebabCase')
+            with: (0, helpers_1.changeCase)(name, 'kebabCase')
         },
         {
             replace: '%APP_ROOT%',

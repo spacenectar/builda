@@ -7,8 +7,8 @@ import {
   detectPathType,
   printMessage
 } from 'helpers/index';
-import changeCase from 'helpers/string-functions';
-import throwError from 'helpers/throw-error';
+import changeCase from 'helpers/string/change-case';
+import throwError from 'helpers/console/throw-error';
 import { ConfigFile } from 'types/config-file';
 import ModuleRegistry from 'types/module-registry';
 

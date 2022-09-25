@@ -6,9 +6,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chokidar_1 = __importDefault(require("chokidar"));
-const helpers_1 = require("../../helpers");
-const builda_build_1 = require("../../scripts/builda-build");
-const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
+const helpers_1 = require("helpers");
+const builda_build_1 = require("scripts/builda-build");
+const ignore_file_json_1 = __importDefault(require("data/ignore-file.json"));
 const ignored = ignore_file_json_1.default.ignore;
 exports.default = (config) => {
     const { prefab } = config;

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
 const execute_1 = __importDefault(require("./execute"));
-const helpers_1 = require("../../helpers");
+const helpers_1 = require("helpers");
 exports.default = () => {
     return {
         command: `${chalk_1.default.green('execute')} ${chalk_1.default.blue('<command>')}`,

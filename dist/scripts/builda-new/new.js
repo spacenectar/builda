@@ -5,8 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 // import helpers
-const helpers_1 = require("../../helpers");
-const string_functions_1 = require("../../helpers/string-functions");
+const helpers_1 = require("helpers");
 const path_1 = __importDefault(require("path"));
 const generate_commands_1 = __importDefault(require("./helpers/generate-commands"));
 exports.default = ({ config, name, scriptName, subString }) => {
@@ -14,7 +13,7 @@ exports.default = ({ config, name, scriptName, subString }) => {
     const script = commands === null || commands === void 0 ? void 0 : commands[scriptName];
     if (!!script.use) {
         (0, helpers_1.printMessage)(`Building new ${scriptName}: '${name}'...`, 'notice');
-        const outputDirectory = `${script.outputDir}/${(0, string_functions_1.changeCase)(name, 'kebabCase')}`;
+        const outputDirectory = `${script.outputDir}/${(0, helpers_1.changeCase)(name, 'kebabCase')}`;
         // Create the directory tree if it doesn't exist
         node_fs_1.default.mkdirSync(outputDirectory, { recursive: true });
         const { path: pathstring, registry } = (0, helpers_1.getModule)('blueprint', config, script);

@@ -5,8 +5,7 @@ import tar from 'tar';
 
 import { simpleGit } from 'simple-git';
 
-import getRegistry from 'helpers/get-registry';
-import printMessage from 'helpers/print-message';
+import { getRegistry, printMessage } from 'helpers';
 import { publishToTradeStore } from './helpers/publish-to-trade-store';
 import { checkPathExists } from './helpers/check-path-exists';
 import { throwError } from 'helpers';

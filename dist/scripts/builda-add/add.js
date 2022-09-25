@@ -7,11 +7,9 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 // Import helpers
-const helpers_1 = require("../../helpers");
+const helpers_1 = require("helpers");
 // Import data
-const globals_1 = __importDefault(require("../../data/globals"));
-// Import ignorefile
-const string_functions_1 = __importDefault(require("../../helpers/string-functions"));
+const globals_1 = __importDefault(require("data/globals"));
 exports.default = async ({ config, modulePath, fromScript }) => {
     var _a;
     let module = {};
@@ -66,7 +64,7 @@ exports.default = async ({ config, modulePath, fromScript }) => {
                 if (err) {
                     (0, helpers_1.throwError)(err.message);
                 }
-                (0, helpers_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: '${name}@${version}' added`, 'success');
+                (0, helpers_1.printMessage)(`${(0, helpers_1.changeCase)(type, 'pascal')}: '${name}@${version}' added`, 'success');
             });
         }
         else {

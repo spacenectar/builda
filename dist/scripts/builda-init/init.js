@@ -4,17 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
+const node_events_1 = __importDefault(require("node:events"));
 const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-const helpers_1 = require("../../helpers");
-const globals_1 = __importDefault(require("../../data/globals"));
-const show_help_1 = __importDefault(require("./helpers/show-help"));
-const existing_project_questions_1 = __importDefault(require("./helpers/existing-project-questions"));
-const new_project_questions_1 = __importDefault(require("./helpers/new-project-questions"));
-const prefab_questions_1 = __importDefault(require("./helpers/prefab-questions"));
-const blueprint_questions_1 = __importDefault(require("./helpers/blueprint-questions"));
+const helpers_1 = require("helpers");
+const globals_1 = __importDefault(require("data/globals"));
+const existing_project_questions_1 = __importDefault(require("helpers/questions/existing-project-questions"));
+const new_project_questions_1 = __importDefault(require("helpers/questions/new-project-questions"));
+const prefab_questions_1 = __importDefault(require("helpers/questions/prefab-questions"));
+const blueprint_questions_1 = __importDefault(require("helpers/questions/blueprint-questions"));
 // Starts a guided setup process to initialise a project
 exports.default = async ({ config }) => {
+    // WORKAROUND: This is a workaround for a bug in inquirer that causes the
+    // event listeners to not be removed until the process exits
+    // This number should be incremented if the number of questions exceeds 50
+    node_events_1.default.defaultMaxListeners = 50;
     const { buildaDir, configFileName } = globals_1.default;
     let answers = {
         projectName: '',
@@ -23,7 +27,7 @@ exports.default = async ({ config }) => {
     };
     if (config) {
         if (config.prefab) {
-            (0, show_help_1.default)('This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.', 'error');
+            (0, helpers_1.showHelp)('This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.', 'error');
             const { installInstead } = await inquirer_1.default.prompt([
                 {
                     type: 'confirm',
@@ -37,7 +41,7 @@ exports.default = async ({ config }) => {
             }
             process.exit(1);
         }
-        (0, show_help_1.default)('It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
+        (0, helpers_1.showHelp)('It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
             chalk_1.default.yellow('Be careful though') +
             ', this will delete any existing config file and your' +
             buildaDir +
@@ -63,7 +67,7 @@ exports.default = async ({ config }) => {
             node_fs_1.default.rmdirSync(buildaDir, { recursive: true });
         }
     }
-    (0, show_help_1.default)('Welcome to ' +
+    (0, helpers_1.showHelp)('Welcome to ' +
         chalk_1.default.magenta('Builda') +
         ' This is a guided setup process help you get your project up and running.' +
         (0, helpers_1.printSiteLink)({
@@ -87,7 +91,7 @@ exports.default = async ({ config }) => {
                     value: 'existing'
                 },
                 {
-                    name: 'I want to creae my own prefab',
+                    name: 'I want to create my own prefab',
                     value: 'prefab'
                 },
                 {
@@ -98,7 +102,7 @@ exports.default = async ({ config }) => {
         }
     ]);
     if (initType === 'new') {
-        (0, show_help_1.default)("A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch.");
+        (0, helpers_1.showHelp)("A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch.");
         const { usePrefab } = await inquirer_1.default.prompt([
             {
                 type: 'confirm',
@@ -112,17 +116,17 @@ exports.default = async ({ config }) => {
             answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
         }
         else {
-            (0, show_help_1.default)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
+            (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
                 `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
         }
         if (answers.prefab) {
-            (0, show_help_1.default)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
+            (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
         }
         const newProjectAnswers = await (0, new_project_questions_1.default)();
         answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     }
     if (initType === 'existing') {
-        (0, show_help_1.default)('You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
+        (0, helpers_1.showHelp)('You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
         const existingProjectAnswers = await (0, existing_project_questions_1.default)();
         answers = Object.assign(Object.assign({}, answers), existingProjectAnswers);
@@ -132,12 +136,12 @@ exports.default = async ({ config }) => {
         answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
     }
     if (initType === 'prefab') {
-        (0, show_help_1.default)('You can create your own prefab by answering a few questions about your project.\r\n\n' +
+        (0, helpers_1.showHelp)('You can create your own prefab by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'prefab' }));
     }
     if (initType === 'blueprint') {
-        (0, show_help_1.default)('You can create your own blueprint by answering a few questions about your project.\r\n\n' +
+        (0, helpers_1.showHelp)('You can create your own blueprint by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'blueprint' }));
     }

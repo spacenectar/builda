@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
-const globals_1 = __importDefault(require("../../data/globals"));
-const index_1 = require("../../helpers/index");
-const string_functions_1 = __importDefault(require("../../helpers/string-functions"));
-const throw_error_1 = __importDefault(require("../../helpers/throw-error"));
+const globals_1 = __importDefault(require("data/globals"));
+const index_1 = require("helpers/index");
+const change_case_1 = __importDefault(require("helpers/string/change-case"));
+const throw_error_1 = __importDefault(require("helpers/console/throw-error"));
 exports.default = async ({ config, module }) => {
     const moduleName = module.split('@')[0];
     const moduleVersion = module.split('@')[1] || 'latest';
@@ -71,7 +71,7 @@ exports.default = async ({ config, module }) => {
                 if (err) {
                     (0, throw_error_1.default)(err.message);
                 }
-                (0, index_1.printMessage)(`${(0, string_functions_1.default)(type, 'pascal')}: '${name}' updated to version '${version}'`, 'success');
+                (0, index_1.printMessage)(`${(0, change_case_1.default)(type, 'pascal')}: '${name}' updated to version '${version}'`, 'success');
             });
         }
     }

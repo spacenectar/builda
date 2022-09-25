@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const generate_commands_1 = __importDefault(require("../../../scripts/builda-new/helpers/generate-commands"));
-const builda_json_1 = __importDefault(require("../../../mocks/builda.json"));
+const generate_commands_1 = __importDefault(require("scripts/builda-new/helpers/generate-commands"));
+const builda_json_1 = __importDefault(require("mocks/builda.json"));
 describe('generateCommands', () => {
     let commands = {};
     beforeEach(async () => {

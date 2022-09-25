@@ -1,8 +1,13 @@
 import fs from 'node:fs';
 
 // import helpers
-import { printMessage, getModule, writeFile, getSubstitutions } from 'helpers';
-import { changeCase } from 'helpers/string-functions';
+import {
+  printMessage,
+  getModule,
+  writeFile,
+  getSubstitutions,
+  changeCase
+} from 'helpers';
 
 // Import types
 import { ConfigFile } from 'types/config-file';

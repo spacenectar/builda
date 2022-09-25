@@ -3,8 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("../../helpers");
-const globals_1 = __importDefault(require("../../data/globals"));
+const helpers_1 = require("helpers");
+const globals_1 = __importDefault(require("data/globals"));
 const add_1 = __importDefault(require("./add"));
 const chalk_1 = __importDefault(require("chalk"));
 const { websiteUrl } = globals_1.default;

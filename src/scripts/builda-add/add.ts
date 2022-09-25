@@ -10,7 +10,8 @@ import {
   addRemoteModule,
   createDir,
   convertRegistryPathToUrl,
-  printMessage
+  printMessage,
+  changeCase
 } from 'helpers';
 
 // Import data
@@ -18,10 +19,6 @@ import globals from 'data/globals';
 
 // Import types
 import ModuleRegistry from 'types/module-registry';
-
-// Import ignorefile
-
-import changeCase from 'helpers/string-functions';
 import { ConfigFile } from 'types/config-file';
 
 export type AddModulesResponse = {

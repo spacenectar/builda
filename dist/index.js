@@ -8,18 +8,18 @@ exports.builda = void 0;
 const yargs_1 = __importDefault(require("yargs"));
 const chalk_1 = __importDefault(require("chalk"));
 // import data
-const globals_1 = __importDefault(require("./data/globals"));
-const builda_project_1 = require("./scripts/builda-project");
-const builda_execute_1 = require("./scripts/builda-execute");
-const builda_install_1 = require("./scripts/builda-install");
-const builda_add_1 = require("./scripts/builda-add");
-const builda_publish_1 = require("./scripts/builda-publish");
-const builda_update_1 = require("./scripts/builda-update");
-const builda_watch_1 = require("./scripts/builda-watch");
-const builda_indexer_1 = require("./scripts/builda-indexer");
-const builda_new_1 = require("./scripts/builda-new");
-const builda_build_1 = require("./scripts/builda-build");
-const builda_init_1 = require("./scripts/builda-init");
+const globals_1 = __importDefault(require("data/globals"));
+const builda_project_1 = require("scripts/builda-project");
+const builda_execute_1 = require("scripts/builda-execute");
+const builda_install_1 = require("scripts/builda-install");
+const builda_add_1 = require("scripts/builda-add");
+const builda_publish_1 = require("scripts/builda-publish");
+const builda_update_1 = require("scripts/builda-update");
+const builda_watch_1 = require("scripts/builda-watch");
+const builda_indexer_1 = require("scripts/builda-indexer");
+const builda_new_1 = require("scripts/builda-new");
+const builda_build_1 = require("scripts/builda-build");
+const builda_init_1 = require("scripts/builda-init");
 const { websiteUrl } = globals_1.default;
 const builda = async () => {
     yargs_1.default

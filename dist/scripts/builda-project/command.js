@@ -19,7 +19,7 @@ exports.default = () => {
                 .option('pathName', {
                 alias: 'p',
                 default: '',
-                describe: 'The path to the app',
+                describe: 'The path to the prefab (url or local path)',
                 type: 'string'
             })
                 .option('packageManager', {

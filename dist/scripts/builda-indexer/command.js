@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("../../helpers");
+const helpers_1 = require("helpers");
 const indexer_1 = __importDefault(require("./indexer"));
 const chalk_1 = __importDefault(require("chalk"));
 exports.default = () => {

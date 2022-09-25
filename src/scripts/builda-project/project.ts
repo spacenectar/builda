@@ -15,13 +15,13 @@ import {
   loopAndRewriteFiles,
   printMessage,
   throwError,
-  writeFile
+  writeFile,
+  changeCase
 } from 'helpers';
-import changeCase from 'helpers/string-functions';
-import ModuleRegistry from 'types/module-registry';
 
 import { getAnswers } from './helpers/get-answers';
 
+import ModuleRegistry from 'types/module-registry';
 import { TAnswers } from './types/answers';
 import { TGenerateProject } from './types/props';
 

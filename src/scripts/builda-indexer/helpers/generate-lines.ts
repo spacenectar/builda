@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'path';
-import changeCase from 'helpers/string-functions';
+import { changeCase } from 'helpers/string';
 
 export const generateLines = ({
   directory,

@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const new_1 = __importDefault(require("../new"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const builda_json_1 = __importDefault(require("../../../mocks/builda.json"));
-const registry_json_1 = __importDefault(require("../../../mocks/.builda/modules/blueprints/component/registry.json"));
+const builda_json_1 = __importDefault(require("mocks/builda.json"));
+const registry_json_1 = __importDefault(require("mocks/.builda/modules/blueprints/component/registry.json"));
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/components/atoms/test-component/index.tsx`;
 jest.mock('helpers/get-module', () => {

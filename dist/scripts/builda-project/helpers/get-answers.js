@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAnswers = void 0;
-const helpers_1 = require("../../../helpers");
+const helpers_1 = require("helpers");
 const questions_1 = __importDefault(require("./questions"));
 const getAnswers = async (omitName, omitPathName, omitYarnOrNpm) => {
     return new Promise((resolve) => {

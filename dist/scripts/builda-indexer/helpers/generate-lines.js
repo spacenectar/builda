@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateLines = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const path_1 = __importDefault(require("path"));
-const string_functions_1 = __importDefault(require("../../../helpers/string-functions"));
+const string_1 = require("helpers/string");
 const generateLines = ({ directory, parent }) => {
     const dir = node_fs_1.default.readdirSync(path_1.default.resolve(directory));
     // If dir is empty, do nothing
@@ -15,10 +15,10 @@ const generateLines = ({ directory, parent }) => {
             .map((file) => {
             const pathString = parent ? `${parent}/${file}` : file;
             if (!file.match(/\.[jt]sx$/)) {
-                return `export { default as ${(0, string_functions_1.default)(file, 'pascalCase')} } from './${pathString}';`;
+                return `export { default as ${(0, string_1.changeCase)(file, 'pascalCase')} } from './${pathString}';`;
             }
             const fileNoExt = path_1.default.parse(file).name;
-            const varName = (0, string_functions_1.default)(fileNoExt, 'camelCase');
+            const varName = (0, string_1.changeCase)(fileNoExt, 'camelCase');
             return `export { default as ${varName} } from './${fileNoExt}';`;
         })
             .filter((item) => item)
