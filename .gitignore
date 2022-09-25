@@ -3,7 +3,7 @@
 node_modules
 npm-debug.log
 ./components
-log.txt
+logfile.txt
 .nyc_output/
 coverage/
 ./src/helpers/globals.ts
