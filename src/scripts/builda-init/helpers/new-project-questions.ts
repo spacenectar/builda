@@ -5,8 +5,16 @@ import { randomNameGenerator } from 'helpers';
 
 import showHelp from './show-help';
 
-export default async () => {
+export default async (hasPrefab?: boolean) => {
   const suggestedName = randomNameGenerator();
+
+  if (hasPrefab) {
+    showHelp(
+      'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
+      'success'
+    );
+  }
+
   return inquirer.prompt([
     {
       type: 'input',
@@ -22,7 +30,7 @@ export default async () => {
       name: 'appRoot',
       message: () => {
         showHelp(
-          "The app root is the directory where your app files are stored.\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\nIf you're not sure, just press enter to use the current working directory."
+          "The app root is the directory where your app files are stored.\n\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory."
         );
         return 'What is the root directory of your app?';
       },

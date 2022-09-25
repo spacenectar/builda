@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.writeFile = exports.validateModulePath = exports.throwError = exports.nameError = exports.skip = exports.replaceRootDir = exports.randomNameGenerator = exports.printMessage = exports.printLogo = exports.loopAndRewriteFiles = exports.getSubstitutions = exports.getSiteLink = exports.getRegistry = exports.getPathFromRoot = exports.getModule = exports.getDetailsFromPath = exports.getConfigFile = exports.detectPathType = exports.createDir = exports.copyDir = exports.convertRegistryPathToUrl = exports.checkAndCopyPath = exports.askQuestion = exports.addRemoteModule = exports.addLocalModule = void 0;
+exports.printSiteLink = exports.writeFile = exports.validateModulePath = exports.throwError = exports.nameError = exports.skip = exports.replaceRootDir = exports.randomNameGenerator = exports.printMessage = exports.printLogo = exports.loopAndRewriteFiles = exports.getSubstitutions = exports.getSiteLink = exports.getRegistry = exports.getPathFromRoot = exports.getModule = exports.getDetailsFromPath = exports.getConfigFile = exports.detectPathType = exports.createDir = exports.copyDir = exports.convertRegistryPathToUrl = exports.checkAndCopyPath = exports.askQuestion = exports.addRemoteModule = exports.addLocalModule = void 0;
 var add_local_module_1 = require("./add-local-module");
 Object.defineProperty(exports, "addLocalModule", { enumerable: true, get: function () { return __importDefault(add_local_module_1).default; } });
 var add_remote_module_1 = require("./add-remote-module");
@@ -53,3 +53,5 @@ var validate_module_path_1 = require("./validate-module-path");
 Object.defineProperty(exports, "validateModulePath", { enumerable: true, get: function () { return __importDefault(validate_module_path_1).default; } });
 var write_file_1 = require("./write-file");
 Object.defineProperty(exports, "writeFile", { enumerable: true, get: function () { return __importDefault(write_file_1).default; } });
+var print_site_link_1 = require("./print-site-link");
+Object.defineProperty(exports, "printSiteLink", { enumerable: true, get: function () { return __importDefault(print_site_link_1).default; } });

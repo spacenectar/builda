@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { printMessage, getSiteLink } from 'helpers';
+import { printMessage, printSiteLink } from 'helpers';
 
 import type { ConfigFile } from 'types/config-file';
 
@@ -30,24 +30,30 @@ export default async ({ config }: TInit) => {
     packageManager: ''
   };
 
-  showHelp(
-    'This is a guided setup process to initialise a project.\nIf you get stuck, visit ' +
-      chalk.blue.underline(getSiteLink('docs/init')) +
-      chalk.white(
-        ' for more information.\nYou can exit the process at any time by pressing Ctrl+C.'
-      )
-  );
-
   if (config) {
     if (config.prefab) {
       showHelp(
-        'This project was generated from a prefab and cannot be reinitialised.',
+        'This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.',
         'error'
       );
+
+      const { installInstead } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'installInstead',
+          message: 'Run install instead?',
+          default: false
+        }
+      ]);
+
+      if (installInstead) {
+        return console.log('Running install instead...');
+      }
+
       process.exit(1);
     }
     showHelp(
-      'It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\n' +
+      'It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
         chalk.yellow('Be careful though') +
         ', this will delete any existing config file and your' +
         buildaDir +
@@ -79,55 +85,109 @@ export default async ({ config }: TInit) => {
     }
   }
 
-  const { projectType } = await inquirer.prompt([
+  showHelp(
+    'Welcome to ' +
+      chalk.magenta('Builda') +
+      ' This is a guided setup process help you get your project up and running.' +
+      printSiteLink({
+        link: 'docs/init',
+        endText: 'if you get stuck.\n\n'
+      }) +
+      chalk.white('You can exit the process at any time by pressing Ctrl+C.'),
+    'builda'
+  );
+
+  // Ask the user what they want to do
+  const { initType } = await inquirer.prompt([
     {
       type: 'list',
-      name: 'projectType',
-      message:
-        'Is this a new project or are you adding Builda to an existing project?',
+      name: 'initType',
+      message: 'What would you like to do?',
       choices: [
         {
-          name: 'New project',
+          name: 'I want to start a new project',
           value: 'new'
         },
         {
-          name: 'Existing project',
+          name: 'I want to use blueprints in an existing project',
           value: 'existing'
+        },
+        {
+          name: 'I want to creae my own prefab',
+          value: 'prefab'
+        },
+        {
+          name: 'I want to create my own blueprint',
+          value: 'blueprint'
         }
       ]
     }
   ]);
 
-  if (projectType === 'new') {
+  if (initType === 'new') {
     showHelp(
-      "A fresh start! Let's get you set up with a new project.\n\n" +
-        'You can choose to use a prefab to get started quickly, or you can set up a project from scratch.'
+      "A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch."
     );
 
-    const prefabAnswers = await prefabQuestions(answers);
+    const { usePrefab } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'usePrefab',
+        message: `Do you want to set the project up using a prefab?`,
+        default: true
+      }
+    ]);
 
-    if (prefabAnswers.usePrefab) {
+    if (usePrefab) {
+      const prefabAnswers = await prefabQuestions(answers);
       answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
     } else {
       showHelp(
-        'You can set up a project from scratch by answering a few questions about your project.\n' +
+        'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
           `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
       );
     }
+
+    if (answers.prefab) {
+      showHelp(
+        'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
+        'success'
+      );
+    }
+
     const newProjectAnswers = await newProjectQuestions();
     answers = { ...answers, ...newProjectAnswers };
-  } else {
+  }
+
+  if (initType === 'existing') {
     showHelp(
-      'You can add builda to an existing project by answering a few questions about your project.\n' +
+      'You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
         `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
     );
     const existingProjectAnswers = await existingProjectQuestions();
     answers = { ...answers, ...existingProjectAnswers };
   }
 
-  const blueprintAnswers = await blueprintQuestions(answers);
+  if (initType === 'new' || initType === 'existing') {
+    const blueprintAnswers = await blueprintQuestions(answers);
+    answers = { ...answers, ...blueprintAnswers };
+  }
 
-  answers = { ...answers, ...blueprintAnswers };
+  if (initType === 'prefab') {
+    showHelp(
+      'You can create your own prefab by answering a few questions about your project.\r\n\n' +
+        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
+        printSiteLink({ link: 'docs/build-a-module', anchor: 'prefab' })
+    );
+  }
+
+  if (initType === 'blueprint') {
+    showHelp(
+      'You can create your own blueprint by answering a few questions about your project.\r\n\n' +
+        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
+        printSiteLink({ link: 'docs/build-a-module', anchor: 'blueprint' })
+    );
+  }
 
   console.log(answers);
 };

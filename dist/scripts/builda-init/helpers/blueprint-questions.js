@@ -22,9 +22,8 @@ const validateBlueprint = async (input, answers) => {
     return moduleValid;
 };
 exports.default = async (answers) => {
-    (0, show_help_1.default)("This section is all about adding blueprints to your project.\nIf you're not sure what a blueprint is, visit " +
-        chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/blueprints')) +
-        chalk_1.default.white(' for more information.'));
+    (0, show_help_1.default)("This section is all about adding blueprints to your project.\r\n\nIf you're not sure what a blueprint is" +
+        (0, helpers_1.printSiteLink)({ link: 'docs/blueprints' }));
     return inquirer_1.default.prompt([
         {
             type: 'confirm',
@@ -34,11 +33,11 @@ exports.default = async (answers) => {
                 let blueprintList = [];
                 if (answers.prefab && !!((_a = answers.prefabRegistry) === null || _a === void 0 ? void 0 : _a.blueprints)) {
                     blueprintList = Object.keys(answers.prefabRegistry.blueprints);
-                    (0, show_help_1.default)(`You are generating this project from the ${chalk_1.default.blue((_b = answers.prefabRegistry) === null || _b === void 0 ? void 0 : _b.name)} prefab.\nIt comes with the following blueprints:\n` +
+                    (0, show_help_1.default)(`You are generating this project from the ${chalk_1.default.blue((_b = answers.prefabRegistry) === null || _b === void 0 ? void 0 : _b.name)} prefab.\n\nIt comes with the following blueprints:\n\n\t` +
                         blueprintList
                             .map((blueprint) => chalk_1.default.blue(blueprint))
-                            .join('\n') +
-                        'ensure that any additional blueprints you add are compatible with this prefab.', 'warning');
+                            .join('\n\t') +
+                        '\n\nEnsure that any additional blueprints you add are compatible with this prefab.', 'warning');
                 }
                 return `Do you want to add any ${blueprintList.length ? 'additional' : ''} blueprints to your project?`;
             },

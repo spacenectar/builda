@@ -9,16 +9,10 @@ const helpers_1 = require("../../../helpers");
 const show_help_1 = __importDefault(require("./show-help"));
 const helpers_2 = require("../../../helpers");
 exports.default = async (answers) => {
-    (0, show_help_1.default)("This section is all about building a project from a prefab.\nIf you're not sure what a prefab is, visit " +
+    (0, show_help_1.default)("This section is all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
         chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/prefabs')) +
         chalk_1.default.white(' for more information.'));
     return inquirer_1.default.prompt([
-        {
-            type: 'confirm',
-            name: 'usePrefab',
-            message: `Do you want to set the project up using a prefab?`,
-            default: true
-        },
         {
             type: 'list',
             name: 'prefabChoice',
@@ -38,8 +32,8 @@ exports.default = async (answers) => {
             type: 'input',
             name: 'prefabUrl',
             message: () => {
-                (0, show_help_1.default)('The url should point to the folder that the prefabs registry.json file is in.\nIt can be a regular link or use a resolver\n. See' +
-                    chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/resolvers')));
+                (0, show_help_1.default)('The url should point to the folder that the prefabs registry.json file is in. It can be a regular link or use a resolver.' +
+                    (0, helpers_1.printSiteLink)({ link: 'docs/resolvers' }));
                 return 'Enter the prefab url:';
             },
             when: (answers) => answers.prefabChoice === 'url',

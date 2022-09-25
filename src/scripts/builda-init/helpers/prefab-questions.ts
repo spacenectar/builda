@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { getSiteLink } from 'helpers';
+import { getSiteLink, printSiteLink } from 'helpers';
 
 import showHelp from './show-help';
 
@@ -10,17 +10,11 @@ import { validateModulePath } from 'helpers';
 
 export default async (answers: TAnswers) => {
   showHelp(
-    "This section is all about building a project from a prefab.\nIf you're not sure what a prefab is, visit " +
+    "This section is all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
       chalk.blue.underline(getSiteLink('docs/prefabs')) +
       chalk.white(' for more information.')
   );
   return inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'usePrefab',
-      message: `Do you want to set the project up using a prefab?`,
-      default: true
-    },
     {
       type: 'list',
       name: 'prefabChoice',
@@ -41,8 +35,8 @@ export default async (answers: TAnswers) => {
       name: 'prefabUrl',
       message: () => {
         showHelp(
-          'The url should point to the folder that the prefabs registry.json file is in.\nIt can be a regular link or use a resolver\n. See' +
-            chalk.blue.underline(getSiteLink('docs/resolvers'))
+          'The url should point to the folder that the prefabs registry.json file is in. It can be a regular link or use a resolver.' +
+            printSiteLink({ link: 'docs/resolvers' })
         );
         return 'Enter the prefab url:';
       },

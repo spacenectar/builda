@@ -135,7 +135,7 @@ export default async ({
       with: './'
     },
     {
-      replace: '%packageManager%',
+      replace: '%PACKAGE_MANAGER%',
       with: packageManagerType
     }
   ];

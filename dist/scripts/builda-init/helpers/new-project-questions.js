@@ -7,8 +7,11 @@ const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../../helpers");
 const show_help_1 = __importDefault(require("./show-help"));
-exports.default = async () => {
+exports.default = async (hasPrefab) => {
     const suggestedName = (0, helpers_1.randomNameGenerator)();
+    if (hasPrefab) {
+        (0, show_help_1.default)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
+    }
     return inquirer_1.default.prompt([
         {
             type: 'input',
@@ -21,7 +24,7 @@ exports.default = async () => {
             type: 'input',
             name: 'appRoot',
             message: () => {
-                (0, show_help_1.default)("The app root is the directory where your app files are stored.\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\nIf you're not sure, just press enter to use the current working directory.");
+                (0, show_help_1.default)("The app root is the directory where your app files are stored.\n\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory.");
                 return 'What is the root directory of your app?';
             },
             default: './'

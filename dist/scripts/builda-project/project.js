@@ -91,7 +91,7 @@ exports.default = async ({ presetAnswers, appName, pathName, packageManager }) =
             with: './'
         },
         {
-            replace: '%packageManager%',
+            replace: '%PACKAGE_MANAGER%',
             with: packageManagerType
         }
     ];

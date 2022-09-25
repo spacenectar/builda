@@ -1,7 +1,7 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { getSiteLink, validateModulePath } from 'helpers';
+import { getSiteLink, printSiteLink, validateModulePath } from 'helpers';
 
 import showHelp from './show-help';
 import { TAnswers } from 'types/init-answers';
@@ -24,9 +24,8 @@ const validateBlueprint = async (input: string, answers: TAnswers) => {
 
 export default async (answers: TAnswers) => {
   showHelp(
-    "This section is all about adding blueprints to your project.\nIf you're not sure what a blueprint is, visit " +
-      chalk.blue.underline(getSiteLink('docs/blueprints')) +
-      chalk.white(' for more information.')
+    "This section is all about adding blueprints to your project.\r\n\nIf you're not sure what a blueprint is" +
+      printSiteLink({ link: 'docs/blueprints' })
   );
   return inquirer.prompt([
     {
@@ -39,11 +38,11 @@ export default async (answers: TAnswers) => {
           showHelp(
             `You are generating this project from the ${chalk.blue(
               answers.prefabRegistry?.name
-            )} prefab.\nIt comes with the following blueprints:\n` +
+            )} prefab.\n\nIt comes with the following blueprints:\n\n\t` +
               blueprintList
                 .map((blueprint) => chalk.blue(blueprint))
-                .join('\n') +
-              'ensure that any additional blueprints you add are compatible with this prefab.',
+                .join('\n\t') +
+              '\n\nEnsure that any additional blueprints you add are compatible with this prefab.',
             'warning'
           );
         }

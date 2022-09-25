@@ -22,3 +22,4 @@ export { default as skip } from './skip';
 export { default as nameError, default as throwError } from './throw-error';
 export { default as validateModulePath } from './validate-module-path';
 export { default as writeFile } from './write-file';
+export { default as printSiteLink } from './print-site-link';
