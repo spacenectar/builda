@@ -10,7 +10,7 @@ const builda_json_1 = __importDefault(require("mocks/builda.json"));
 const registry_json_1 = __importDefault(require("mocks/.builda/modules/blueprints/component/registry.json"));
 const FILE_FOLDER = './experiments';
 const FILE_PATH = `${FILE_FOLDER}/components/atoms/test-component/index.tsx`;
-jest.mock('helpers/get-module', () => {
+jest.mock('helpers/module/get-module', () => {
     return jest.fn().mockImplementation(() => {
         return {
             path: 'src/mocks/.builda/modules/blueprints/component',

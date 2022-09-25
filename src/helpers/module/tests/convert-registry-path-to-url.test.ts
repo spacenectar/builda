@@ -34,7 +34,7 @@ describe('convertRegistryPathToUrl resolver urls', () => {
 
   test('should return a path to a registry.json file on the builda repository when builda: is provided', () => {
     const registryPath = '$builda:blueprint-default-js';
-    const expected = 'https://builda.app/modules/blueprint-default-js';
+    const expected = 'https://builda.app/modules/blueprint-default-js/latest';
     expect(convertRegistryPathToUrl({ registryPath }).url).toEqual(expected);
   });
 
