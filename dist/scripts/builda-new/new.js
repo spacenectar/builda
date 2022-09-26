@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 // import helpers
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 const path_1 = __importDefault(require("path"));
 const generate_commands_1 = __importDefault(require("./helpers/generate-commands"));
 exports.default = ({ config, name, scriptName, subString }) => {

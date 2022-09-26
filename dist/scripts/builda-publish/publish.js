@@ -7,10 +7,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 const tar_1 = __importDefault(require("tar"));
 const simple_git_1 = require("simple-git");
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 const publish_to_trade_store_1 = require("./helpers/publish-to-trade-store");
 const check_path_exists_1 = require("./helpers/check-path-exists");
-const helpers_2 = require("helpers");
 exports.default = async (updateVersion) => {
     const registry = await (0, helpers_1.getRegistry)();
     const { name, type, version, tradeStore } = registry;
@@ -18,39 +17,39 @@ exports.default = async (updateVersion) => {
     const READMEFILE = 'README.md';
     const FILESFOLDER = 'files';
     if (!registry) {
-        (0, helpers_2.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
+        (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
     }
     if (!name) {
-        (0, helpers_2.throwError)(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
+        (0, helpers_1.throwError)(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
     }
     if (!type) {
-        (0, helpers_2.throwError)(`No type entry found in ${REGISTRYFILE}. Please add one.\r`);
+        (0, helpers_1.throwError)(`No type entry found in ${REGISTRYFILE}. Please add one.\r`);
     }
     if (!version && !updateVersion) {
-        (0, helpers_2.throwError)(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
+        (0, helpers_1.throwError)(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
     }
     if (!tradeStore) {
         (0, helpers_1.printMessage)(`No tradeStore entry found in ${REGISTRYFILE}.\nThis module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`, 'info');
     }
     const validateFileFolder = (0, check_path_exists_1.checkPathExists)(FILESFOLDER, true);
     if (validateFileFolder.error) {
-        (0, helpers_2.throwError)(validateFileFolder.message);
+        (0, helpers_1.throwError)(validateFileFolder.message);
     }
     const isCorrectlyPrefixed = name.startsWith(`${type}-`);
     if (!isCorrectlyPrefixed) {
-        (0, helpers_2.throwError)(`The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`);
+        (0, helpers_1.throwError)(`The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`);
     }
     const validateReadme = (0, check_path_exists_1.checkPathExists)(READMEFILE);
     if (validateReadme.error) {
-        (0, helpers_2.throwError)(validateReadme.message);
+        (0, helpers_1.throwError)(validateReadme.message);
     }
     const git = (0, simple_git_1.simpleGit)();
     if (!git.checkIsRepo()) {
-        (0, helpers_2.throwError)(`This is not a git repository. Please initialise git and try again.\r`);
+        (0, helpers_1.throwError)(`This is not a git repository. Please initialise git and try again.\r`);
     }
     const status = await git.status();
     if (!status.isClean()) {
-        (0, helpers_2.throwError)(`The git repository is not clean. Please commit all changes and try again.\r`);
+        (0, helpers_1.throwError)(`The git repository is not clean. Please commit all changes and try again.\r`);
     }
     (0, helpers_1.printMessage)('All checks passed.', 'success');
     const newVersion = (updateVersion === null || updateVersion === void 0 ? void 0 : updateVersion.replace('v', '')) || version;
@@ -80,7 +79,7 @@ exports.default = async (updateVersion) => {
     const tagList = await git.tags();
     const tagExists = tagList.all.includes(newVersion) || tagList.all.includes(`v${newVersion}`);
     if (tagExists) {
-        (0, helpers_2.throwError)(`A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`);
+        (0, helpers_1.throwError)(`A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`);
     }
     // Tag the commit with the current version number
     await git.addTag(`v${newVersion}`);

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertRegistryPathToUrl = void 0;
-const resolvers_json_1 = __importDefault(require("data/resolvers.json"));
+const resolvers_json_1 = __importDefault(require("../../data/resolvers.json"));
 const use_resolver_1 = __importDefault(require("./use-resolver"));
 const convertRegistryPathToUrl = ({ registryPath, config }) => {
     let newPath = registryPath;

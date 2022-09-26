@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-const helpers_1 = require("helpers");
-const suggested_prefabs_json_1 = __importDefault(require("data/suggested-prefabs.json"));
+const helpers_1 = require("../../helpers");
+const suggested_prefabs_json_1 = __importDefault(require("../../data/suggested-prefabs.json"));
 exports.default = async (answers) => {
     (0, helpers_1.showHelp)("These questions are all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
         chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/prefabs')) +

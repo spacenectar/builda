@@ -21,7 +21,7 @@ import { command as initCommand } from 'scripts/builda-init';
 const { websiteUrl } = globals;
 
 export const builda = async () => {
-  yargs
+  return yargs
     .scriptName(chalk.magenta('builda'))
     .usage(`$0 ${chalk.green('<cmd>')} [args]`)
     .help()

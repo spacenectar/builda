@@ -6,9 +6,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 // Run a build
-const helpers_1 = require("helpers");
-const globals_1 = __importDefault(require("data/globals"));
-const ignore_file_json_1 = __importDefault(require("data/ignore-file.json"));
+const helpers_1 = require("../../helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
+const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
 const ignored = ignore_file_json_1.default.ignore;
 exports.default = async ({ config, prod, onlyPath }) => {
     const { prefab, rootDir } = config;

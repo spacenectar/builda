@@ -3,15 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("helpers");
-const globals_1 = __importDefault(require("data/globals"));
+const helpers_1 = require("../../helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
 const install_1 = __importDefault(require("./install"));
 const chalk_1 = __importDefault(require("chalk"));
 const { websiteUrl } = globals_1.default;
 exports.default = () => {
     return {
         command: `${chalk_1.default.green('install')} ${chalk_1.default.blue('<modulePath>')}`,
-        desc: 'Installs a module',
+        desc: chalk_1.default.white('Adds a new blueprint'),
         builder: (yargs) => {
             return yargs
                 .positional('modulePath', {

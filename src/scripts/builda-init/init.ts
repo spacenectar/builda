@@ -3,18 +3,24 @@ import EventEmitter from 'node:events';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { printMessage, printSiteLink, showHelp } from 'helpers';
+import {
+  printMessage,
+  printSiteLink,
+  showHelp,
+  createConfigFile
+} from 'helpers';
 
 import type { ConfigFile } from 'types/config-file';
 
 import globals from 'data/globals';
 
 import existingProjectQuestions from 'helpers/questions/existing-project-questions';
-import newProjectQuestions from 'helpers/questions/new-project-questions';
-import prefabQuestions from 'helpers/questions/prefab-questions';
 import blueprintQuestions from 'helpers/questions/blueprint-questions';
 
+import { buildaProject } from 'scripts/builda-project';
+
 import { TFlatObject } from 'types/flat-object';
+import { buildaAdd } from 'scripts/builda-add';
 
 type TInit = {
   config?: ConfigFile;
@@ -60,7 +66,7 @@ export default async ({ config }: TInit) => {
     showHelp(
       'It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
         chalk.yellow('Be careful though') +
-        ', this will delete any existing config file and your' +
+        ', continuing will instantly delete any existing config file and your' +
         buildaDir +
         ' directory.',
       'warning'
@@ -86,7 +92,7 @@ export default async ({ config }: TInit) => {
     fs.unlinkSync(configFileName);
     // And delete the builda directory
     if (fs.existsSync(buildaDir)) {
-      fs.rmdirSync(buildaDir, { recursive: true });
+      fs.rmSync(buildaDir, { recursive: true });
     }
   }
 
@@ -114,7 +120,7 @@ export default async ({ config }: TInit) => {
           value: 'new'
         },
         {
-          name: 'I want to use blueprints in an existing project',
+          name: 'I want to add builda to an existing project',
           value: 'existing'
         },
         {
@@ -134,34 +140,7 @@ export default async ({ config }: TInit) => {
       "A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch."
     );
 
-    const { usePrefab } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'usePrefab',
-        message: `Do you want to set the project up using a prefab?`,
-        default: true
-      }
-    ]);
-
-    if (usePrefab) {
-      const prefabAnswers = await prefabQuestions(answers);
-      answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
-    } else {
-      showHelp(
-        'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-          `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
-      );
-    }
-
-    if (answers.prefab) {
-      showHelp(
-        'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
-        'success'
-      );
-    }
-
-    const newProjectAnswers = await newProjectQuestions();
-    answers = { ...answers, ...newProjectAnswers };
+    buildaProject({});
   }
 
   if (initType === 'existing') {
@@ -171,11 +150,24 @@ export default async ({ config }: TInit) => {
     );
     const existingProjectAnswers = await existingProjectQuestions();
     answers = { ...answers, ...existingProjectAnswers };
-  }
-
-  if (initType === 'new' || initType === 'existing') {
     const blueprintAnswers = await blueprintQuestions(answers);
     answers = { ...answers, ...blueprintAnswers };
+
+    const config: ConfigFile = {
+      name: answers.projectName as string,
+      rootDir: answers.appRoot as string,
+      packageManager: answers.packageManager as string
+    };
+
+    createConfigFile(config);
+
+    const blueprints =
+      answers.blueprintUrls ||
+      (answers.blueprintList as Array<string>).join('');
+
+    console.log(blueprints);
+
+    buildaAdd({ config, modulePath: blueprints as string });
   }
 
   if (initType === 'prefab') {
@@ -184,6 +176,9 @@ export default async ({ config }: TInit) => {
         `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
         printSiteLink({ link: 'docs/build-a-module', anchor: 'prefab' })
     );
+
+    console.log('Coming soon...');
+    process.exit(0);
   }
 
   if (initType === 'blueprint') {
@@ -192,7 +187,7 @@ export default async ({ config }: TInit) => {
         `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
         printSiteLink({ link: 'docs/build-a-module', anchor: 'blueprint' })
     );
+    console.log('Coming soon...');
+    process.exit(0);
   }
-
-  console.log(answers);
 };

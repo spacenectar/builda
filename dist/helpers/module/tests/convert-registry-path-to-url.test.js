@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../../helpers");
 const convert_registry_path_to_url_1 = require("../convert-registry-path-to-url");
 describe('convertRegistryPathToUrl http urls', () => {
     test('should return a raw path to a registry.json file when a github repo folder path is provided', () => {

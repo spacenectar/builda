@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 exports.default = async (hasPrefab) => {
     const suggestedName = (0, helpers_1.randomNameGenerator)();
     if (hasPrefab) {

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.writeFile = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const string_1 = require("helpers/string");
+const string_1 = require("../../helpers/string");
 const prettier_1 = __importDefault(require("prettier"));
 const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     const fileName = file === null || file === void 0 ? void 0 : file.split('/').pop();

@@ -7,12 +7,12 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_events_1 = __importDefault(require("node:events"));
 const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-const helpers_1 = require("helpers");
-const globals_1 = __importDefault(require("data/globals"));
-const existing_project_questions_1 = __importDefault(require("helpers/questions/existing-project-questions"));
-const new_project_questions_1 = __importDefault(require("helpers/questions/new-project-questions"));
-const prefab_questions_1 = __importDefault(require("helpers/questions/prefab-questions"));
-const blueprint_questions_1 = __importDefault(require("helpers/questions/blueprint-questions"));
+const helpers_1 = require("../../helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
+const existing_project_questions_1 = __importDefault(require("../../helpers/questions/existing-project-questions"));
+const blueprint_questions_1 = __importDefault(require("../../helpers/questions/blueprint-questions"));
+const builda_project_1 = require("../../scripts/builda-project");
+const builda_add_1 = require("../../scripts/builda-add");
 // Starts a guided setup process to initialise a project
 exports.default = async ({ config }) => {
     // WORKAROUND: This is a workaround for a bug in inquirer that causes the
@@ -43,7 +43,7 @@ exports.default = async ({ config }) => {
         }
         (0, helpers_1.showHelp)('It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
             chalk_1.default.yellow('Be careful though') +
-            ', this will delete any existing config file and your' +
+            ', continuing will instantly delete any existing config file and your' +
             buildaDir +
             ' directory.', 'warning');
         // If a config file already exists, ask the user if they want to overwrite it
@@ -64,7 +64,7 @@ exports.default = async ({ config }) => {
         node_fs_1.default.unlinkSync(configFileName);
         // And delete the builda directory
         if (node_fs_1.default.existsSync(buildaDir)) {
-            node_fs_1.default.rmdirSync(buildaDir, { recursive: true });
+            node_fs_1.default.rmSync(buildaDir, { recursive: true });
         }
     }
     (0, helpers_1.showHelp)('Welcome to ' +
@@ -87,7 +87,7 @@ exports.default = async ({ config }) => {
                     value: 'new'
                 },
                 {
-                    name: 'I want to use blueprints in an existing project',
+                    name: 'I want to add builda to an existing project',
                     value: 'existing'
                 },
                 {
@@ -103,47 +103,38 @@ exports.default = async ({ config }) => {
     ]);
     if (initType === 'new') {
         (0, helpers_1.showHelp)("A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch.");
-        const { usePrefab } = await inquirer_1.default.prompt([
-            {
-                type: 'confirm',
-                name: 'usePrefab',
-                message: `Do you want to set the project up using a prefab?`,
-                default: true
-            }
-        ]);
-        if (usePrefab) {
-            const prefabAnswers = await (0, prefab_questions_1.default)(answers);
-            answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
-        }
-        else {
-            (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-                `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
-        }
-        if (answers.prefab) {
-            (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
-        }
-        const newProjectAnswers = await (0, new_project_questions_1.default)();
-        answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
+        (0, builda_project_1.buildaProject)({});
     }
     if (initType === 'existing') {
         (0, helpers_1.showHelp)('You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
         const existingProjectAnswers = await (0, existing_project_questions_1.default)();
         answers = Object.assign(Object.assign({}, answers), existingProjectAnswers);
-    }
-    if (initType === 'new' || initType === 'existing') {
         const blueprintAnswers = await (0, blueprint_questions_1.default)(answers);
         answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
+        const config = {
+            name: answers.projectName,
+            rootDir: answers.appRoot,
+            packageManager: answers.packageManager
+        };
+        (0, helpers_1.createConfigFile)(config);
+        const blueprints = answers.blueprintUrls ||
+            answers.blueprintList.join('');
+        console.log(blueprints);
+        (0, builda_add_1.buildaAdd)({ config, modulePath: blueprints });
     }
     if (initType === 'prefab') {
         (0, helpers_1.showHelp)('You can create your own prefab by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'prefab' }));
+        console.log('Coming soon...');
+        process.exit(0);
     }
     if (initType === 'blueprint') {
         (0, helpers_1.showHelp)('You can create your own blueprint by answering a few questions about your project.\r\n\n' +
             `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'blueprint' }));
+        console.log('Coming soon...');
+        process.exit(0);
     }
-    console.log(answers);
 };

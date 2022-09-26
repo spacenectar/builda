@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 exports.default = async () => {
     const packageJson = () => {
         try {

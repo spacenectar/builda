@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useResolver = void 0;
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 const useResolver = ({ currentPath, version, resolvers }) => {
     const name = currentPath.split(':')[0].replace('$', '').toLowerCase();
     const resolved = resolvers[name];

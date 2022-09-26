@@ -7,7 +7,7 @@ exports.getModule = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 // Import globals
-const globals_1 = __importDefault(require("data/globals"));
+const globals_1 = __importDefault(require("../../data/globals"));
 const getModule = (type, config, command) => {
     if (config) {
         const moduleType = `${type}s`;

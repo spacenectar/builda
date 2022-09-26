@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 const convert_registry_path_to_url_1 = __importDefault(require("./convert-registry-path-to-url"));
 exports.default = async (url, returnVal) => {
     const registryUrl = (0, convert_registry_path_to_url_1.default)({

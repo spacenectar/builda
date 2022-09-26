@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 // Import globals
-const globals_1 = __importDefault(require("data/globals"));
+const globals_1 = __importDefault(require("../../data/globals"));
 // Import scripts
-const scripts_1 = require("scripts");
-const helpers_1 = require("helpers");
+const scripts_1 = require("../../scripts");
+const helpers_1 = require("../../helpers");
 exports.default = async ({ config }) => {
     // If the project is a prefab project, install the prefab files
     const { prefab, blueprints } = config;

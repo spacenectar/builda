@@ -8,8 +8,8 @@ const chalk_1 = __importDefault(require("chalk"));
 const node_process_1 = __importDefault(require("node:process"));
 const node_path_1 = __importDefault(require("node:path"));
 const execa_1 = __importDefault(require("execa"));
-const helpers_1 = require("helpers");
-const globals_1 = __importDefault(require("data/globals"));
+const helpers_1 = require("../../helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
 /**
  * Takes a command as an argument and prepends the builda directory to the command
  */

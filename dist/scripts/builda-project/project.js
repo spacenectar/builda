@@ -9,8 +9,8 @@ const inquirer_1 = __importDefault(require("inquirer"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
-const globals_1 = __importDefault(require("data/globals"));
-const helpers_1 = require("helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
+const helpers_1 = require("../../helpers");
 /**
  * Generate a new project from a prefab
  * @param { TGenerateProject }

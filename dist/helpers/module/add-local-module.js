@@ -7,9 +7,9 @@ exports.addLocalModule = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const tar_1 = __importDefault(require("tar"));
 const node_path_1 = __importDefault(require("node:path"));
-const helpers_1 = require("helpers");
-const globals_1 = __importDefault(require("data/globals"));
-const ignore_file_json_1 = __importDefault(require("data/ignore-file.json"));
+const helpers_1 = require("../../helpers");
+const globals_1 = __importDefault(require("../../data/globals"));
+const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
 // Ignore these files
 const ignoreFiles = ignore_file_json_1.default.ignore;
 const getFiles = async (modulePath, outputPath, location) => {

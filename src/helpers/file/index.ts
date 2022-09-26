@@ -5,3 +5,5 @@ export { default as loopAndRewriteFiles } from './loop-and-rewrite-files';
 export { default as replaceRootDir } from './replace-root-dir';
 export { default as writeFile } from './write-file';
 export { default as writeLogFile } from './write-log-file';
+export { default as getConfigFile } from './get-config-file';
+export { default as createConfigFile } from './create-config-file';

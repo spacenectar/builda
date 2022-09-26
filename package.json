@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "tsc --watch",
+    "dev": "yarn build && concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",
     "debug": "node dist/scripts/debug.js",
     "generate-blueprint": "node dist/scripts/generate-blueprint-registry.js",
     "build": "rm -rf ./dist && node ./generate-globals.js && tsc --build",
@@ -36,7 +36,7 @@
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "postbuild": "yarn copyfiles",
+    "postbuild": "tsc-alias && yarn copyfiles",
     "preflight": "yarn build && yarn lint:md && yarn lint:json && yarn prettier-write && yarn test"
   },
   "repository": {
@@ -75,6 +75,7 @@
     "@types/yargs": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "concurrently": "^7.4.0",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-output": "^3.0.1",
@@ -86,6 +87,7 @@
     "prettier": "^2.6.2",
     "pretty": "^2.0.0",
     "ts-jest": "^28.0.5",
+    "tsc-alias": "^1.7.0",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"
   },

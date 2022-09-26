@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateLines = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const path_1 = __importDefault(require("path"));
-const string_1 = require("helpers/string");
+const string_1 = require("../../../helpers/string");
 const generateLines = ({ directory, parent }) => {
     const dir = node_fs_1.default.readdirSync(path_1.default.resolve(directory));
     // If dir is empty, do nothing

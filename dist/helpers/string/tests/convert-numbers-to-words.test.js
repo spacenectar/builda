@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const convert_numbers_to_words_1 = require("helpers/string/convert-numbers-to-words");
+const convert_numbers_to_words_1 = require("../../../helpers/string/convert-numbers-to-words");
 describe('normalizeCase() function', () => {
     test("should return 'my three component' when input is 'my 3 component'", () => {
         const string = (0, convert_numbers_to_words_1.convertNumbersToWords)('my 3 component');

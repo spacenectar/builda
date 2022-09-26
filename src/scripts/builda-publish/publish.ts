@@ -5,10 +5,9 @@ import tar from 'tar';
 
 import { simpleGit } from 'simple-git';
 
-import { getRegistry, printMessage } from 'helpers';
+import { getRegistry, printMessage, throwError } from 'helpers';
 import { publishToTradeStore } from './helpers/publish-to-trade-store';
 import { checkPathExists } from './helpers/check-path-exists';
-import { throwError } from 'helpers';
 
 export default async (updateVersion?: string) => {
   const registry = await getRegistry();

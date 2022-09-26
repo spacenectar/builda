@@ -8,13 +8,14 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const axios_1 = __importDefault(require("axios"));
 const tar_1 = __importDefault(require("tar"));
-const globals_1 = __importDefault(require("data/globals"));
+const globals_1 = __importDefault(require("../../data/globals"));
 const get_registry_1 = __importDefault(require("./get-registry"));
-const helpers_1 = require("helpers");
+const helpers_1 = require("../../helpers");
 const addRemoteModule = async (modulePath, output) => {
     const buildaDir = node_path_1.default.join(output || './', globals_1.default.buildaDir);
     // get the directory contents
     const registry = await (0, get_registry_1.default)(modulePath);
+    console.log({ registry });
     const outputPath = registry.type === 'blueprint'
         ? `${buildaDir}/modules/blueprints/${registry.name}`
         : `${buildaDir}/modules/prefab`;

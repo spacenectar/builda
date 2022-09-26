@@ -20,7 +20,7 @@ export const getRegistry = async (registryPath?: string) => {
     );
   }
 
-  let resolved = convertRegistryPathToUrl({ registryPath });
+  const resolved = convertRegistryPathToUrl({ registryPath });
 
   if (resolved.error) {
     throwError(resolved.error);

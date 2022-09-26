@@ -11,7 +11,7 @@ const { websiteUrl } = globals;
 export default () => {
   return {
     command: `${chalk.green('install')} ${chalk.blue('<modulePath>')}`,
-    desc: 'Installs a module',
+    desc: chalk.white('Adds a new blueprint'),
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('modulePath', {

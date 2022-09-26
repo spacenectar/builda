@@ -40,7 +40,7 @@ export default async (answers: TFlatObject) => {
       message: () => {
         let blueprintList = [];
         const registry = answers.prefabRegistry as TFlatObject;
-        const blueprints = registry.blueprints as TFlatObject;
+        const blueprints = registry?.blueprints as TFlatObject;
         if (answers.prefab && !!blueprints) {
           blueprintList = Object.keys(blueprints);
           showHelp(
@@ -78,15 +78,15 @@ export default async (answers: TFlatObject) => {
     },
     {
       type: 'input',
-      name: 'blueprintUrl',
+      name: 'blueprintUrls',
       message:
-        'Enter the blueprint url(s) (if adding more than one, please separate them with commas):',
+        'Enter the blueprint url(s) (if adding more than one, please separate them with a space):',
       when: (answers) => answers.blueprintChoice === 'url',
       validate: async (input) => {
         if (!input) {
           return 'You must enter at least one url';
         }
-        const urls = input.split(',');
+        const urls = input.split(' ');
         for (const url of urls) {
           // Check that the blueprints are valid and don't already exist
           const moduleValid = await validateBlueprint(url, answers);

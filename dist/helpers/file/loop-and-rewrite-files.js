@@ -7,7 +7,7 @@ exports.loopAndRewriteFiles = void 0;
 const node_path_1 = __importDefault(require("node:path"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const glob_1 = __importDefault(require("glob"));
-const globals_1 = __importDefault(require("data/globals"));
+const globals_1 = __importDefault(require("../../data/globals"));
 const create_dir_1 = __importDefault(require("./create-dir"));
 const write_file_1 = __importDefault(require("./write-file"));
 const loopAndRewriteFiles = async ({ name, paths, substitute }) => {
