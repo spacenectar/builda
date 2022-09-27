@@ -1,29 +1,79 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertNumbersToWords = void 0;
+const ONES = [
+    'Zero',
+    'One',
+    'Two',
+    'Three',
+    'Four',
+    'Five',
+    'Six',
+    'Seven',
+    'Eight',
+    'Nine'
+];
+const TEENS = [
+    'Ten',
+    'Eleven',
+    'Twelve',
+    'Thirteen',
+    'Fourteen',
+    'Fifteen',
+    'Sixteen',
+    'Seventeen',
+    'Eighteen',
+    'Nineteen'
+];
+const TENS = [
+    '',
+    '',
+    'Twenty',
+    'Thirty',
+    'Fourty',
+    'Fifty',
+    'Sixty',
+    'Seventy',
+    'Eighty',
+    'Ninety'
+];
 const convertNumbersToWords = (input) => {
-    const words = [
-        ':Zero',
-        ':One',
-        ':Two',
-        ':Three',
-        ':Four',
-        ':Five',
-        ':Six',
-        ':Seven',
-        ':Eight',
-        ':Nine'
-    ];
     const findNumbers = /\d+/g;
     const numbers = input.match(findNumbers);
-    const individualNumbers = numbers ? numbers[0].split('') : [];
-    if (individualNumbers) {
-        const numberString = individualNumbers
+    if (numbers) {
+        const numberString = numbers
             .map((number) => {
             const numberIndex = parseInt(number, 10);
-            return words[numberIndex];
+            if (numberIndex < 10) {
+                return ':' + ONES[numberIndex];
+            }
+            if (numberIndex < 20) {
+                return ':' + TEENS[numberIndex - 10];
+            }
+            if (numberIndex < 100) {
+                return (':' + TENS[Math.floor(numberIndex / 10)] + ONES[numberIndex % 10]);
+            }
+            if (numberIndex < 1000) {
+                const isWholeHundred = numberIndex % 100 === 0;
+                let numberString = ':' + ONES[Math.floor(numberIndex / 100)] + ':Hundred';
+                if (!isWholeHundred) {
+                    numberString +=
+                        ':And:' +
+                            TENS[Math.floor((numberIndex % 100) / 10)] +
+                            ':' +
+                            ONES[numberIndex % 10];
+                }
+                return numberString;
+            }
+            if (numberIndex < 1000000) {
+                return ((0, exports.convertNumbersToWords)(Math.floor(numberIndex / 1000).toString()) +
+                    ':Thousand' +
+                    (0, exports.convertNumbersToWords)((numberIndex % 1000).toString()));
+            }
+            throw new Error('Numbers larger than 1 million are not supported');
         })
-            .join('');
+            .join(':');
+        // The colon is used to assist with the regex in the changeCase function
         return input.replace(findNumbers, numberString);
     }
     // No numbers found, return input

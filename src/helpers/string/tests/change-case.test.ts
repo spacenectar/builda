@@ -25,6 +25,12 @@ describe('changeCase() convert from kebab case', () => {
     const string = changeCase('my-1-component', 'sentenceCase');
     expect(string).toEqual('My one component');
   });
+  test('Kebabcase text can handle large numbers', () => {
+    const string = changeCase('my-1145-component', 'sentenceCase');
+    expect(string).toEqual(
+      'My one thousand one hundred and fourty five component'
+    );
+  });
   test('Kebabcase text can handle symbols', () => {
     const string = changeCase('my-component-with-&-@', 'sentenceCase');
     expect(string).toEqual('My component with and at');
@@ -64,6 +70,12 @@ describe('changeCase() convert from pascal case', () => {
     const string = changeCase('My1Component', 'sentenceCase');
     expect(string).toEqual('My one component');
   });
+  test('Pascalcase text can handle large numbers', () => {
+    const string = changeCase('My1145Component', 'sentenceCase');
+    expect(string).toEqual(
+      'My one thousand one hundred and fourty five component'
+    );
+  });
   test('Pascalcase text can handle symbols', () => {
     const string = changeCase('MyComponentWith&@', 'sentenceCase');
     expect(string).toEqual('My component with and at');
@@ -99,6 +111,12 @@ describe('changeCase() convert from camel case', () => {
     const string = changeCase('my1Component', 'sentenceCase');
     expect(string).toEqual('My one component');
   });
+  test('Camelcase text can handle large numbers', () => {
+    const string = changeCase('my1145Component', 'sentenceCase');
+    expect(string).toEqual(
+      'My one thousand one hundred and fourty five component'
+    );
+  });
   test('Camelcase text can handle symbols', () => {
     const string = changeCase('myComponentWith&@', 'sentenceCase');
     expect(string).toEqual('My component with and at');
@@ -133,6 +151,12 @@ describe('changeCase() convert from snake case', () => {
   test('Snakecase text can handle numbers', () => {
     const string = changeCase('my_1_component', 'sentenceCase');
     expect(string).toEqual('My one component');
+  });
+  test('Snakecase text can handle large numbers', () => {
+    const string = changeCase('my_1145_component', 'sentenceCase');
+    expect(string).toEqual(
+      'My one thousand one hundred and fourty five component'
+    );
   });
   test('Snakecase text can handle symbols', () => {
     const string = changeCase('my_component_with_&_@', 'sentenceCase');
@@ -172,6 +196,15 @@ describe('changeCase() convert from sentence case', () => {
   test('Sentencecase text can handle numbers', () => {
     const string = changeCase('My one component', 'sentenceCase');
     expect(string).toEqual('My one component');
+  });
+  test('Sentencecase text can handle large numbers', () => {
+    const string = changeCase(
+      'My one thousand one hundred and fourty five component',
+      'sentenceCase'
+    );
+    expect(string).toEqual(
+      'My one thousand one hundred and fourty five component'
+    );
   });
   test('Sentencecase text can handle symbols', () => {
     const string = changeCase('My component with and at', 'sentenceCase');
