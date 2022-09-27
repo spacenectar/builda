@@ -33,14 +33,20 @@ describe('convertRegistryPathToUrl resolver urls', () => {
   });
 
   test('should return a path to a registry.json file on the builda repository when builda: is provided', () => {
-    const registryPath = '$builda:blueprint-default-js';
+    const registryPath = 'builda:blueprint-default-js';
     const expected = 'https://builda.app/modules/blueprint-default-js/latest';
     expect(convertRegistryPathToUrl({ registryPath }).url).toEqual(expected);
   });
 
   test('should return a raw path to a registry.json file when a bitbucket resolver is provided', () => {
-    const registryPath = '$bitbucket:builda/blueprints@1.1.0';
+    const registryPath = 'bitbucket:builda/blueprints@1.1.0';
     const expected = 'https://bitbucket.org/builda/blueprints/raw/1.1.0';
+    expect(convertRegistryPathToUrl({ registryPath }).url).toEqual(expected);
+  });
+
+  test('should return a raw path to a registry.json file when a bitbucket resolver is provided and preovid the correct version number', () => {
+    const registryPath = 'bitbucket:builda@v1.1.0';
+    const expected = 'https://bitbucket.org/builda/raw/v1.1.0';
     expect(convertRegistryPathToUrl({ registryPath }).url).toEqual(expected);
   });
 
@@ -53,7 +59,7 @@ describe('convertRegistryPathToUrl resolver urls', () => {
       }
     } as ConfigFile;
 
-    const registryPath = '$bbcustom:component-library@6.7.1';
+    const registryPath = 'bbcustom:component-library@6.7.1';
     const expected =
       'https://bitbucket.custom.url/projects/builda/repos/component-library/raw/%FILE_NAME%?at=refs/tags/6.7.1';
     expect(
@@ -69,16 +75,16 @@ describe('convertRegistryPathToUrl failure paths', () => {
     expect(runner).toEqual({
       url: '',
       error:
-        'Paths must start with a $ if using a resolver or http(s) if using a url'
+        'Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url'
     });
   });
 
   test('Should return an error, if an unknown resolver is used', () => {
-    const registryPath = '$unknown:blah';
+    const registryPath = 'unknown:blah';
     const runner = convertRegistryPathToUrl({ registryPath });
     expect(runner).toEqual({
       url: '',
-      error: 'Could not find a resolver for $unknown:blah'
+      error: 'Could not find a resolver for unknown:blah'
     });
   });
 });

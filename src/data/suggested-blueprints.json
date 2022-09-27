@@ -1,7 +1,7 @@
 [
   {
     "name": "Test Blueprint",
-    "value": "$github:builda-modules/blueprint-test"
+    "value": "github:builda-modules/blueprint-test"
   },
   {
     "name": "Fake blueprint",

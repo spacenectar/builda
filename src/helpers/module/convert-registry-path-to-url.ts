@@ -17,14 +17,12 @@ export const convertRegistryPathToUrl = ({
   registryPath,
   config
 }: TConvertRegistryPathToUrl): TReturnValue => {
-  let newPath = registryPath;
+  const newPath = registryPath;
+  let error = '';
 
   let resolvers = resolversFile as {
     [key: string]: string;
   };
-
-  let version = '';
-  let error = '';
 
   if (newPath.startsWith('http') || newPath.startsWith('https')) {
     // User has provided a standard url
@@ -41,13 +39,17 @@ export const convertRegistryPathToUrl = ({
     return { url, error };
   }
 
-  if (newPath.includes('@')) {
-    const pathParts = registryPath.split('@');
-    newPath = pathParts[0];
-    version = pathParts[1];
-  }
+  const resolverMatcher = newPath.match(
+    /^([a-z]+:{1}[/]{0})([a-z0-9-/]+)((?:@{1}v?[0-9.]+)?(?:[\w\d-]*))?$/
+  );
 
-  if (newPath.startsWith(`$`)) {
+  if (resolverMatcher) {
+    const resolver = resolverMatcher[1].replace(':', '');
+    const modulePath = resolverMatcher[2];
+    const version = resolverMatcher[3]
+      ? resolverMatcher[3].replace('@', '')
+      : 'latest';
+
     if (config && config.resolvers) {
       resolvers = {
         ...resolvers,
@@ -56,7 +58,8 @@ export const convertRegistryPathToUrl = ({
     }
 
     const url = useResolver({
-      currentPath: newPath,
+      resolver,
+      modulePath,
       version,
       resolvers
     });
@@ -69,7 +72,7 @@ export const convertRegistryPathToUrl = ({
   }
 
   error =
-    'Paths must start with a $ if using a resolver or http(s) if using a url';
+    'Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url';
   return { url: '', error };
 };
 

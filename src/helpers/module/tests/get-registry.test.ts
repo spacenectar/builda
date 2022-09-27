@@ -32,7 +32,7 @@ describe('getRegistry() via url path', () => {
 
 describe('getRegistry() via resolver path', () => {
   test('should return a blueprint from a registry.json file when a full url is used', async () => {
-    const registryPath = `$github:spacenectar/builda-app/master/${bluePrintPath}`;
+    const registryPath = `github:spacenectar/builda-app/master/${bluePrintPath}`;
     const registryContent = await getRegistry(registryPath);
     expect(axios.get).toHaveBeenCalledWith(
       `https://raw.githubusercontent.com/spacenectar/builda-app/master/src/mocks/blueprints/test-blueprint/registry.json`

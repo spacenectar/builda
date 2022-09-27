@@ -1,18 +1,18 @@
 [
-  {
-    "name": "Test Prefab",
-    "value": "$github:builda-modules/prefab-test"
-  },
-  {
-    "name": "Fake prefab",
-    "value": ""
-  },
-  {
-    "name": "Another fake prefab",
-    "value": ""
-  },
-  {
-    "name": "Yet another fake prefab",
-    "value": ""
-  }
+    {
+        "name": "Test Prefab",
+        "value": "github:builda-modules/prefab-test"
+    },
+    {
+        "name": "Fake prefab",
+        "value": ""
+    },
+    {
+        "name": "Another fake prefab",
+        "value": ""
+    },
+    {
+        "name": "Yet another fake prefab",
+        "value": ""
+    }
 ]

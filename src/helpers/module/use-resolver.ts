@@ -1,25 +1,26 @@
 import { urlWithProtocol } from 'helpers';
 
 export const useResolver = ({
-  currentPath,
+  resolver,
+  modulePath,
   version,
   resolvers
 }: {
-  currentPath: string;
+  resolver: string;
+  modulePath: string;
   version: string;
   resolvers: { [key: string]: string };
 }) => {
-  const name = currentPath.split(':')[0].replace('$', '').toLowerCase();
-  const resolved = resolvers[name];
+  const resolved = resolvers[resolver];
   if (!resolved) {
     return '';
   }
   let resolvedUrl = resolved;
-  const repoName = currentPath.split(':')[1];
+
   if (resolvedUrl.includes('%REPO_NAME%')) {
-    resolvedUrl = resolvedUrl.replace('%REPO_NAME%', repoName);
+    resolvedUrl = resolvedUrl.replace('%REPO_NAME%', modulePath);
   } else {
-    resolvedUrl = resolvedUrl.replace(`${name}`, '');
+    resolvedUrl = resolvedUrl.replace(`${resolver}`, '');
   }
   if (resolvedUrl.includes('%VERSION%')) {
     resolvedUrl = resolvedUrl.replace('%VERSION%', version);

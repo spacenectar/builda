@@ -1,7 +1,7 @@
 [
   {
     "name": "Test Prefab",
-    "value": "$github:builda-modules/prefab-test"
+    "value": "github:builda-modules/prefab-test"
   },
   {
     "name": "Fake prefab",
