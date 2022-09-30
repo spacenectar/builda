@@ -67,7 +67,7 @@ export interface ModuleRegistry {
      * (see (https://builda.app/docs/trade-store))
      * @optional
      */
-    builda_user?: string;
+    buildaUser?: string;
   };
   /**
    * Do you want to publish this module to the builda trade store? (see (https://builda.app/docs/trade-store))
@@ -91,7 +91,17 @@ export interface ModuleRegistry {
    * If the module is a blueprint, this will be ignored
    * @optional
    */
-  filesInRoot?: RootFile[];
+  appFiles?: RootFile[];
+  /**
+   * Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root
+   * in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend
+   * files from the prefab (like tsconfig.json).
+   *
+   * Just like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.
+   *
+   * Note: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists
+   */
+  uniqueInstances?: RootFile[];
   /**
    * If this module has any required dependencies, you can add them here
    * @example "react": "^17.0.1"

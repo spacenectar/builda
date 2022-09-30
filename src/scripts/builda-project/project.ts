@@ -130,7 +130,7 @@ export default async ({
   const substitutions = module.substitute || [];
 
   const extraRootfiles =
-    module.filesInRoot
+    module.appFiles
       ?.filter((file) => {
         if (!file.rewrite) {
           return file;
@@ -140,7 +140,7 @@ export default async ({
       .map((f) => f.path) || [];
 
   const extraRootfilesToRewrite =
-    module.filesInRoot?.filter((file) => {
+    module.appFiles?.filter((file) => {
       if (file.rewrite) {
         return file;
       }
@@ -195,6 +195,12 @@ export default async ({
     });
   }
 
+  //TODO: We need a function to loop through the appFiles and copy them to the root directory. There should possibly also
+  // be a sync function to copy the files back to the export directory. This could be part of the 'build' command.
+  // It would also be good if users could choose to add the path to the files they want to the `appFiles` array in the
+  // config file OR just copy the files manually. Either way, the `build` function should keep both the files and the config
+  // in sync, e.g. Any files added to the root dir should appear in the `appFiles` array on build and vice versa.
+
   // Copy config.json from working builda directory to root directory
   if (fs.existsSync(buildaConfigPath)) {
     fs.copyFileSync(buildaConfigPath, path.join(rootDir, configFileName));
@@ -237,6 +243,23 @@ export default async ({
     }
   });
 
+  // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
+  // to the root directory without the .unique extension
+
+  // TODO: Continue here.
+  if (module.uniqueInstances && module.uniqueInstances.length > 0) {
+    module.uniqueInstances.forEach((file) => {
+      const uniqueFile = path.join(workingDir, file);
+      const uniqueFileContents = fs.readFileSync(uniqueFile, {
+        encoding: 'utf8'
+      });
+      const uniqueFileWithoutUnique = uniqueFile.replace('.unique', '');
+      fs.writeFileSync(uniqueFileWithoutUnique, uniqueFileContents);
+      fs.unlinkSync(uniqueFile);
+    });
+  }
+
+  // Create a new package.json file in the root directory with updated details
   const newPackageJson = {
     ...packageJson,
     scripts: buildaScripts

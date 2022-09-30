@@ -80,13 +80,13 @@ exports.default = async ({ appName, pathName, packageManager }) => {
     const prefabName = module.name;
     const version = module.version;
     const substitutions = module.substitute || [];
-    const extraRootfiles = ((_a = module.filesInRoot) === null || _a === void 0 ? void 0 : _a.filter((file) => {
+    const extraRootfiles = ((_a = module.appFiles) === null || _a === void 0 ? void 0 : _a.filter((file) => {
         if (!file.rewrite) {
             return file;
         }
         return false;
     }).map((f) => f.path)) || [];
-    const extraRootfilesToRewrite = ((_b = module.filesInRoot) === null || _b === void 0 ? void 0 : _b.filter((file) => {
+    const extraRootfilesToRewrite = ((_b = module.appFiles) === null || _b === void 0 ? void 0 : _b.filter((file) => {
         if (file.rewrite) {
             return file;
         }
@@ -131,6 +131,11 @@ exports.default = async ({ appName, pathName, packageManager }) => {
             substitute: extraSubstitutions
         });
     }
+    //TODO: We need a function to loop through the appFiles and copy them to the root directory. There should possibly also
+    // be a sync function to copy the files back to the export directory. This could be part of the 'build' command.
+    // It would also be good if users could choose to add the path to the files they want to the `appFiles` array in the
+    // config file OR just copy the files manually. Either way, the `build` function should keep both the files and the config
+    // in sync, e.g. Any files added to the root dir should appear in the `appFiles` array on build and vice versa.
     // Copy config.json from working builda directory to root directory
     if (node_fs_1.default.existsSync(buildaConfigPath)) {
         node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));
@@ -165,6 +170,21 @@ exports.default = async ({ appName, pathName, packageManager }) => {
             buildaScripts[key] = `builda -x ${key}`;
         }
     });
+    // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
+    // to the root directory without the .unique extension
+    // TODO: Continue here.
+    if (module.uniqueInstances && module.uniqueInstances.length > 0) {
+        module.uniqueInstances.forEach((file) => {
+            const uniqueFile = node_path_1.default.join(workingDir, file);
+            const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
+                encoding: 'utf8'
+            });
+            const uniqueFileWithoutUnique = uniqueFile.replace('.unique', '');
+            node_fs_1.default.writeFileSync(uniqueFileWithoutUnique, uniqueFileContents);
+            node_fs_1.default.unlinkSync(uniqueFile);
+        });
+    }
+    // Create a new package.json file in the root directory with updated details
     const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
