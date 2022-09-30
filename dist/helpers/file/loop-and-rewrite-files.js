@@ -12,7 +12,7 @@ const create_dir_1 = __importDefault(require("./create-dir"));
 const write_file_1 = __importDefault(require("./write-file"));
 const loopAndRewriteFiles = async ({ name, paths, substitute }) => {
     const { buildaDir } = globals_1.default;
-    const prefabDir = node_path_1.default.join(buildaDir, 'modules/prefab/files');
+    const prefabDir = node_path_1.default.join(buildaDir, 'modules', 'prefab');
     const workingDir = node_path_1.default.join(buildaDir, 'export');
     const promises = [];
     for (const file of paths) {

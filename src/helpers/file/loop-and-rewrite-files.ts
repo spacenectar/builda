@@ -24,7 +24,7 @@ export const loopAndRewriteFiles = async ({
 }: FunctionParams) => {
   const { buildaDir } = globals;
 
-  const prefabDir = path.join(buildaDir, 'modules/prefab/files');
+  const prefabDir = path.join(buildaDir, 'modules', 'prefab');
   const workingDir = path.join(buildaDir, 'export');
 
   const promises = [];

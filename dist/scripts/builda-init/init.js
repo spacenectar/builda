@@ -25,6 +25,9 @@ exports.default = async ({ config }) => {
         appRoot: '',
         packageManager: ''
     };
+    /**
+     * Config file exists, ask the user if they want to overwrite it or abort the process
+     */
     if (config) {
         if (config.prefab) {
             (0, helpers_1.showHelp)('This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.', 'error');
@@ -67,6 +70,9 @@ exports.default = async ({ config }) => {
             node_fs_1.default.rmSync(buildaDir, { recursive: true });
         }
     }
+    /**
+     * No config file exists, let's get this moveable feast underway!
+     */
     (0, helpers_1.showHelp)('Welcome to ' +
         chalk_1.default.magenta('Builda') +
         ' This is a guided setup process help you get your project up and running.' +
@@ -103,6 +109,9 @@ exports.default = async ({ config }) => {
     ]);
     if (initType === 'new') {
         (0, helpers_1.showHelp)("A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch.");
+        /**
+         * Leave this command and go to the builda-project script
+         */
         (0, builda_project_1.buildaProject)({});
     }
     if (initType === 'existing') {
@@ -113,7 +122,7 @@ exports.default = async ({ config }) => {
         const blueprintAnswers = await (0, blueprint_questions_1.default)(answers);
         answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
         const config = {
-            name: answers.projectName,
+            name: answers.appName,
             rootDir: answers.appRoot,
             packageManager: answers.packageManager
         };

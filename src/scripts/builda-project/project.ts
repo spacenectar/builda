@@ -83,11 +83,11 @@ export default async ({
   const newProjectAnswers = await newProjectQuestions();
 
   answers = { ...answers, ...newProjectAnswers };
-
-  const name = appName || (answers.appName as string);
-  const prefabPath = pathName || (answers.pathName as string);
+  const name = (appName || answers.appName) as string;
+  const prefabPath = (pathName || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.yarnOrNpm as string) || 'npm';
+  const rootDir = (answers.appRoot as string) || process.cwd();
 
   await createDir(name);
 
@@ -95,9 +95,8 @@ export default async ({
   process.chdir(name);
 
   // check if the root directory is empty
-  const rootDir = process.cwd();
-  const workingDir = path.join(buildaDir, 'export');
-  const prefabDir = path.join(buildaDir, 'modules/prefab/files');
+  const workingDir = path.join(rootDir, buildaDir, 'export');
+  const prefabDir = path.join(rootDir, buildaDir, 'modules', 'prefab');
 
   if (fs.readdirSync(rootDir).length !== 0) {
     throwError(

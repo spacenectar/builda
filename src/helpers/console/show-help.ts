@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import chalk from 'chalk';
 import { printLogo } from 'helpers';
 import inquirer from 'inquirer';
@@ -44,7 +45,7 @@ export default (message: string, type?: string) => {
     chalk[colour](' '.repeat(consoleWidth - 10)) +
     '\n';
 
-  let tag =
+  const tag =
     paddingLine +
     iconTag +
     ' ' +

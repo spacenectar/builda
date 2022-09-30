@@ -15,7 +15,6 @@ const addRemoteModule = async (modulePath, output) => {
     const buildaDir = node_path_1.default.join(output || './', globals_1.default.buildaDir);
     // get the directory contents
     const registry = await (0, get_registry_1.default)(modulePath);
-    console.log({ registry });
     const outputPath = registry.type === 'blueprint'
         ? `${buildaDir}/modules/blueprints/${registry.name}`
         : `${buildaDir}/modules/prefab`;

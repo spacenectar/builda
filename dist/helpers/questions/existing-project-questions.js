@@ -17,6 +17,10 @@ exports.default = async () => {
             return '';
         }
     };
+    if (!packageJson()) {
+        (0, helpers_1.showHelp)('You must have a package.json file in the root of your project to add to an existing project.', 'error');
+        process.exit(1);
+    }
     const { name } = packageJson();
     // Find out if the project is a monorepo
     const checkForMonorepo = () => {

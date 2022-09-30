@@ -14,16 +14,16 @@ exports.default = async (hasPrefab) => {
     return inquirer_1.default.prompt([
         {
             type: 'input',
-            name: 'projectName',
+            name: 'appName',
             required: true,
-            message: `What do you want to call your project? (If you don't know, just press enter to use ${chalk_1.default.bold.magenta(suggestedName)})`,
+            message: `What do you want to call your project? This will also be the folder name we will create for your app. (If you don't know, just press enter to use ${chalk_1.default.bold.magenta(suggestedName)})`,
             default: suggestedName
         },
         {
             type: 'input',
             name: 'appRoot',
             message: () => {
-                (0, helpers_1.showHelp)("The app root is the directory where your app files are stored.\n\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory.");
+                (0, helpers_1.showHelp)("The app root is the directory where your app files are stored.\n\nThis is usually your the root directory of your app but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory.");
                 return 'What is the root directory of your app?';
             },
             default: './'

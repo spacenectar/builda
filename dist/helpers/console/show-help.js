@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../helpers");
 const inquirer_1 = __importDefault(require("inquirer"));
@@ -39,7 +40,7 @@ exports.default = (message, type) => {
         // @ts-ignore-implicit-any - chalk typings are wrong
         chalk_1.default[colour](' '.repeat(consoleWidth - 10)) +
         '\n';
-    let tag = paddingLine +
+    const tag = paddingLine +
         iconTag +
         ' ' +
         // @ts-ignore-implicit-any - chalk typings are wrong

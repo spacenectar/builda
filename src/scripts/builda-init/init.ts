@@ -41,6 +41,9 @@ export default async ({ config }: TInit) => {
     packageManager: ''
   };
 
+  /**
+   * Config file exists, ask the user if they want to overwrite it or abort the process
+   */
   if (config) {
     if (config.prefab) {
       showHelp(
@@ -96,6 +99,9 @@ export default async ({ config }: TInit) => {
     }
   }
 
+  /**
+   * No config file exists, let's get this moveable feast underway!
+   */
   showHelp(
     'Welcome to ' +
       chalk.magenta('Builda') +
@@ -139,7 +145,9 @@ export default async ({ config }: TInit) => {
     showHelp(
       "A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch."
     );
-
+    /**
+     * Leave this command and go to the builda-project script
+     */
     buildaProject({});
   }
 
@@ -154,7 +162,7 @@ export default async ({ config }: TInit) => {
     answers = { ...answers, ...blueprintAnswers };
 
     const config: ConfigFile = {
-      name: answers.projectName as string,
+      name: answers.appName as string,
       rootDir: answers.appRoot as string,
       packageManager: answers.packageManager as string
     };

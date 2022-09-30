@@ -46,16 +46,16 @@ exports.default = async ({ appName, pathName, packageManager }) => {
     }
     const newProjectAnswers = await (0, helpers_1.newProjectQuestions)();
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
-    const name = appName || answers.appName;
-    const prefabPath = pathName || answers.pathName;
+    const name = (appName || answers.appName);
+    const prefabPath = (pathName || answers.prefab);
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
+    const rootDir = answers.appRoot || node_process_1.default.cwd();
     await (0, helpers_1.createDir)(name);
     // Change directory to the new app
     node_process_1.default.chdir(name);
     // check if the root directory is empty
-    const rootDir = node_process_1.default.cwd();
-    const workingDir = node_path_1.default.join(buildaDir, 'export');
-    const prefabDir = node_path_1.default.join(buildaDir, 'modules/prefab/files');
+    const workingDir = node_path_1.default.join(rootDir, buildaDir, 'export');
+    const prefabDir = node_path_1.default.join(rootDir, buildaDir, 'modules', 'prefab');
     if (node_fs_1.default.readdirSync(rootDir).length !== 0) {
         (0, helpers_1.throwError)(`The directory: '${rootDir}' already exists. It is not recommended to install a prefab into an existing project.`);
     }
