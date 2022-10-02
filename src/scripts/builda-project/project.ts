@@ -28,8 +28,9 @@ import { TFlatObject } from 'types/flat-object';
 
 export type TGenerateProject = {
   appName?: string;
-  pathName?: string;
+  appRoot?: string;
   packageManager?: string;
+  cliPrefabPath?: string;
   autoInstall?: boolean;
 };
 
@@ -39,8 +40,10 @@ export type TGenerateProject = {
  */
 export default async ({
   appName,
-  pathName,
-  packageManager
+  appRoot,
+  cliPrefabPath,
+  packageManager,
+  autoInstall
 }: TGenerateProject) => {
   const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } =
     globals;
@@ -53,46 +56,52 @@ export default async ({
   ];
 
   let answers = {} as TFlatObject;
+  if (!cliPrefabPath) {
+    const { usePrefab } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'usePrefab',
+        message: `Do you want to set the project up using a prefab?`,
+        default: true
+      }
+    ]);
 
-  const { usePrefab } = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'usePrefab',
-      message: `Do you want to set the project up using a prefab?`,
-      default: true
+    if (usePrefab) {
+      const prefabAnswers = await prefabQuestions(answers);
+      answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
+    } else {
+      showHelp(
+        'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
+          `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
+      );
     }
-  ]);
 
-  if (usePrefab) {
-    const prefabAnswers = await prefabQuestions(answers);
-    answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
-  } else {
-    showHelp(
-      'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
-    );
+    if (answers.prefab) {
+      showHelp(
+        'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
+        'success'
+      );
+    }
   }
 
-  if (answers.prefab) {
-    showHelp(
-      'Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.',
-      'success'
-    );
+  let newProjectAnswers = {} as TFlatObject;
+
+  if (!appRoot || !appName || !packageManager) {
+    newProjectAnswers = await newProjectQuestions();
   }
-
-  const newProjectAnswers = await newProjectQuestions();
-
   answers = { ...answers, ...newProjectAnswers };
   const name = (appName || answers.appName) as string;
-  const prefabPath = (pathName || answers.prefab) as string;
+  const prefabPath = (cliPrefabPath || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.yarnOrNpm as string) || 'npm';
-  const rootDir = (answers.appRoot as string) || process.cwd();
+  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
-  await createDir(name);
+  const kebabAppName = changeCase(name, 'kebabCase');
+
+  await createDir(kebabAppName);
 
   // Change directory to the new app
-  process.chdir(name);
+  process.chdir(kebabAppName);
 
   // check if the root directory is empty
   const workingDir = path.join(rootDir, buildaDir, 'export');
@@ -245,17 +254,35 @@ export default async ({
 
   // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
   // to the root directory without the .unique extension
-
-  // TODO: Continue here.
   if (module.uniqueInstances && module.uniqueInstances.length > 0) {
     module.uniqueInstances.forEach((file) => {
-      const uniqueFile = path.join(workingDir, file);
-      const uniqueFileContents = fs.readFileSync(uniqueFile, {
-        encoding: 'utf8'
-      });
-      const uniqueFileWithoutUnique = uniqueFile.replace('.unique', '');
-      fs.writeFileSync(uniqueFileWithoutUnique, uniqueFileContents);
-      fs.unlinkSync(uniqueFile);
+      const rewrite = file.rewrite || false;
+      const uniqueFile = path.join(workingDir, file.path);
+      const uniqueFileSrcDir = path.dirname(uniqueFile);
+      if (rewrite) {
+        const uniqueFileContents = fs.readFileSync(uniqueFile, {
+          encoding: 'utf8'
+        });
+        const uniqueFileSubs =
+          [...substitute, file.substitutions].flat() || substitute;
+
+        writeFile({
+          file: uniqueFile,
+          content: uniqueFileContents,
+          substitute: uniqueFileSubs,
+          name: appName,
+          rename: uniqueFile.replace('.unique', ''),
+          outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
+        });
+      } else {
+        fs.copyFileSync(
+          uniqueFile,
+          path.join(
+            uniqueFileSrcDir.replace(workingDir, rootDir),
+            file.path.replace('.unique', '')
+          )
+        );
+      }
     });
   }
 
@@ -377,7 +404,7 @@ export default async ({
   }
   printMessage('All files copied to application.', 'success');
 
-  if (answers.autoInstall) {
+  if (autoInstall || answers.autoInstall) {
     printMessage('Installing dependencies...', 'config');
 
     // Run package manager install

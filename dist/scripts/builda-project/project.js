@@ -15,7 +15,7 @@ const helpers_1 = require("../../helpers");
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-exports.default = async ({ appName, pathName, packageManager }) => {
+exports.default = async ({ appName, appRoot, cliPrefabPath, packageManager, autoInstall }) => {
     var _a, _b, _c;
     const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
     const defaultRequiredFiles = [
@@ -25,34 +25,40 @@ exports.default = async ({ appName, pathName, packageManager }) => {
         'README.md'
     ];
     let answers = {};
-    const { usePrefab } = await inquirer_1.default.prompt([
-        {
-            type: 'confirm',
-            name: 'usePrefab',
-            message: `Do you want to set the project up using a prefab?`,
-            default: true
+    if (!cliPrefabPath) {
+        const { usePrefab } = await inquirer_1.default.prompt([
+            {
+                type: 'confirm',
+                name: 'usePrefab',
+                message: `Do you want to set the project up using a prefab?`,
+                default: true
+            }
+        ]);
+        if (usePrefab) {
+            const prefabAnswers = await (0, helpers_1.prefabQuestions)(answers);
+            answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
         }
-    ]);
-    if (usePrefab) {
-        const prefabAnswers = await (0, helpers_1.prefabQuestions)(answers);
-        answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
+        else {
+            (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
+                `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+        }
+        if (answers.prefab) {
+            (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
+        }
     }
-    else {
-        (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+    let newProjectAnswers = {};
+    if (!appRoot || !appName || !packageManager) {
+        newProjectAnswers = await (0, helpers_1.newProjectQuestions)();
     }
-    if (answers.prefab) {
-        (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
-    }
-    const newProjectAnswers = await (0, helpers_1.newProjectQuestions)();
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = (appName || answers.appName);
-    const prefabPath = (pathName || answers.prefab);
+    const prefabPath = (cliPrefabPath || answers.prefab);
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
-    const rootDir = answers.appRoot || node_process_1.default.cwd();
-    await (0, helpers_1.createDir)(name);
+    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
+    const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
+    await (0, helpers_1.createDir)(kebabAppName);
     // Change directory to the new app
-    node_process_1.default.chdir(name);
+    node_process_1.default.chdir(kebabAppName);
     // check if the root directory is empty
     const workingDir = node_path_1.default.join(rootDir, buildaDir, 'export');
     const prefabDir = node_path_1.default.join(rootDir, buildaDir, 'modules', 'prefab');
@@ -172,16 +178,28 @@ exports.default = async ({ appName, pathName, packageManager }) => {
     });
     // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
     // to the root directory without the .unique extension
-    // TODO: Continue here.
     if (module.uniqueInstances && module.uniqueInstances.length > 0) {
         module.uniqueInstances.forEach((file) => {
-            const uniqueFile = node_path_1.default.join(workingDir, file);
-            const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
-                encoding: 'utf8'
-            });
-            const uniqueFileWithoutUnique = uniqueFile.replace('.unique', '');
-            node_fs_1.default.writeFileSync(uniqueFileWithoutUnique, uniqueFileContents);
-            node_fs_1.default.unlinkSync(uniqueFile);
+            const rewrite = file.rewrite || false;
+            const uniqueFile = node_path_1.default.join(workingDir, file.path);
+            const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
+            if (rewrite) {
+                const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
+                    encoding: 'utf8'
+                });
+                const uniqueFileSubs = [...substitute, file.substitutions].flat() || substitute;
+                (0, helpers_1.writeFile)({
+                    file: uniqueFile,
+                    content: uniqueFileContents,
+                    substitute: uniqueFileSubs,
+                    name: appName,
+                    rename: uniqueFile.replace('.unique', ''),
+                    outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
+                });
+            }
+            else {
+                node_fs_1.default.copyFileSync(uniqueFile, node_path_1.default.join(uniqueFileSrcDir.replace(workingDir, rootDir), file.path.replace('.unique', '')));
+            }
         });
     }
     // Create a new package.json file in the root directory with updated details
@@ -271,7 +289,7 @@ exports.default = async ({ appName, pathName, packageManager }) => {
         await Promise.all(blueprintPromises);
     }
     (0, helpers_1.printMessage)('All files copied to application.', 'success');
-    if (answers.autoInstall) {
+    if (autoInstall || answers.autoInstall) {
         (0, helpers_1.printMessage)('Installing dependencies...', 'config');
         // Run package manager install
         if (node_fs_1.default.existsSync(node_path_1.default.resolve(workingDir, 'package.json'))) {
