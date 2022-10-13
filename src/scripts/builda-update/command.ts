@@ -3,6 +3,12 @@ import yargs from 'yargs';
 
 import buildaUpdate from './update';
 
+type Args = {
+  configPath: string;
+  // TODO: It might be better to make this optional and then just update all modules if it's not provided
+  moduleName: string;
+};
+
 export default () => {
   return {
     command: 'update <moduleName>',
@@ -21,7 +27,7 @@ export default () => {
           type: 'string'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaUpdate({
