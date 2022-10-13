@@ -3,6 +3,13 @@ import yargs from 'yargs';
 
 import buildaNew from './new';
 
+type Args = {
+  configPath: string;
+  name: string;
+  scriptName: string;
+  subString: string;
+};
+
 export default () => {
   return {
     command: 'new <scriptName>',
@@ -31,7 +38,7 @@ export default () => {
           type: 'string'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaNew({
