@@ -3,6 +3,12 @@ import yargs from 'yargs';
 
 import buildaBuild from './build';
 
+type Args = {
+  configPath: string;
+  prod: boolean;
+  onlyPath: string;
+};
+
 export default () => {
   return {
     command: 'build',
@@ -28,7 +34,7 @@ export default () => {
           type: 'string'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaBuild({
