@@ -7,7 +7,7 @@ export default () => {
     command: 'project [appName]',
     desc: 'Generate a new app from a prefab',
     aliases: ['app', '--app', '--project'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> | null => {
+    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('appName', {
           describe: 'The name of the app',
