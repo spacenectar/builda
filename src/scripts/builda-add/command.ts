@@ -7,11 +7,16 @@ import buildaAdd from './add';
 
 const { websiteUrl } = globals;
 
+type Args = {
+  blueprintPath: string;
+  configPath: string;
+};
+
 export default () => {
   return {
     command: 'add <blueprintPath>',
     desc: 'Adds a new blueprint',
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .positional('blueprintPath', {
           describe: `The path to the blueprint (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
@@ -25,7 +30,7 @@ export default () => {
           type: 'string'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaAdd({ config, modulePath: argv.blueprintPath });
