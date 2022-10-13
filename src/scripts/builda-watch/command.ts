@@ -3,6 +3,10 @@ import yargs from 'yargs';
 
 import buildaWatch from './watch';
 
+type Args = {
+  configPath: string;
+};
+
 export default () => {
   return {
     command: 'watch',
@@ -16,7 +20,7 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaWatch(config);
