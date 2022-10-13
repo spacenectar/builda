@@ -4,6 +4,10 @@ import { getConfigFile, throwError } from 'helpers';
 
 import buildaIndexer from './indexer';
 
+type Args = {
+  configPath: string;
+};
+
 export default () => {
   return {
     command: 'indexer',
@@ -17,7 +21,7 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaIndexer(config);
