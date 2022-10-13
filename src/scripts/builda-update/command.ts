@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
 
@@ -6,8 +5,8 @@ import buildaUpdate from './update';
 
 export default () => {
   return {
-    command: `${chalk.green('update')} ${chalk.blue('<moduleName>')}`,
-    desc: chalk.white('update a module'),
+    command: 'update <moduleName>',
+    desc: 'update a module',
     aliases: ['u'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs

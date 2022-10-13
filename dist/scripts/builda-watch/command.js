@@ -3,13 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../helpers");
 const watch_1 = __importDefault(require("./watch"));
 exports.default = () => {
     return {
-        command: chalk_1.default.green('watch'),
-        desc: chalk_1.default.white('Watches your app for changes and rebuilds'),
+        command: 'watch',
+        desc: 'Watches your app for changes and rebuilds',
         aliases: ['w'],
         builder: (yargs) => {
             return yargs.option('configPath', {

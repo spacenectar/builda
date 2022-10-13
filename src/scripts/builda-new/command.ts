@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
 
@@ -6,8 +5,8 @@ import buildaNew from './new';
 
 export default () => {
   return {
-    command: `${chalk.green('new')} ${chalk.blue('<scriptName>')}`,
-    desc: chalk.white('Create something new from a blueprint'),
+    command: 'new <scriptName>',
+    desc: 'Create something new from a blueprint',
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('scriptName', {

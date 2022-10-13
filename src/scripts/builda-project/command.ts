@@ -1,18 +1,18 @@
 import yargs from 'yargs';
-import chalk from 'chalk';
 
 import buildaProject from './project';
 
 export default () => {
   return {
-    command: `${chalk.green('project')} ${chalk.blue('[appName]')}`,
-    desc: chalk.white('Generate a new app from a prefab'),
+    command: 'project [appName]',
+    desc: 'Generate a new app from a prefab',
     aliases: ['app', '--app', '--project'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<unknown> | null => {
       return yargs
         .positional('appName', {
           describe: 'The name of the app',
-          type: 'string'
+          type: 'string',
+          default: ''
         })
         .option('pathName', {
           alias: 'p',
@@ -31,6 +31,12 @@ export default () => {
           alias: 'i',
           default: false,
           describe: 'Whether to automatically install dependencies',
+          type: 'boolean'
+        })
+        .option('smokeTest', {
+          alias: 's',
+          default: false,
+          describe: 'Runs the command but deletes the output immediately',
           type: 'boolean'
         });
     },

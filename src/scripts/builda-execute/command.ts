@@ -1,13 +1,12 @@
 import yargs from 'yargs';
-import chalk from 'chalk';
 import buildaExecute from './execute';
 
 import { getConfigFile, throwError } from 'helpers';
 
 export default () => {
   return {
-    command: `${chalk.green('execute')} ${chalk.blue('<command>')}`,
-    desc: chalk.white('Execute a command from within the export directory'),
+    command: 'execute <command>',
+    desc: 'Execute a command from within the export directory',
     aliases: ['x', 'exec'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs

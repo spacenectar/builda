@@ -10,7 +10,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const { websiteUrl } = globals_1.default;
 exports.default = () => {
     return {
-        command: `${chalk_1.default.green('install')} ${chalk_1.default.blue('<modulePath>')}`,
+        command: 'install <modulePath>',
         desc: chalk_1.default.white('Adds a new blueprint'),
         builder: (yargs) => {
             return yargs

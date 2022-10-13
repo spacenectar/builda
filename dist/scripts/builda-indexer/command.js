@@ -5,11 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../helpers");
 const indexer_1 = __importDefault(require("./indexer"));
-const chalk_1 = __importDefault(require("chalk"));
 exports.default = () => {
     return {
-        command: chalk_1.default.green('indexer'),
-        desc: chalk_1.default.white('Generate an index file for the specified directories'),
+        command: 'indexer',
+        desc: 'Generate an index file for the specified directories',
         aliases: ['index'],
         builder: (yargs) => {
             return yargs.option('configPath', {

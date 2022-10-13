@@ -4,12 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../helpers");
-const chalk_1 = __importDefault(require("chalk"));
 const build_1 = __importDefault(require("./build"));
 exports.default = () => {
     return {
-        command: chalk_1.default.green('build'),
-        desc: chalk_1.default.white('Build your project'),
+        command: 'build',
+        desc: 'Build your project',
         aliases: ['-b', '--build'],
         builder: (yargs) => {
             return yargs

@@ -1,13 +1,12 @@
 import { getConfigFile, throwError } from 'helpers';
 import yargs from 'yargs';
-import chalk from 'chalk';
 
 import buildaBuild from './build';
 
 export default () => {
   return {
-    command: chalk.green('build'),
-    desc: chalk.white('Build your project'),
+    command: 'build',
+    desc: 'Build your project',
     aliases: ['-b', '--build'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs

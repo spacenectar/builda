@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { getConfigFile } from 'helpers';
 import yargs from 'yargs';
 
@@ -6,8 +5,8 @@ import buildaInit from './init';
 
 export default () => {
   return {
-    command: chalk.green('init'),
-    desc: chalk.white('Initialise builda'),
+    command: 'init',
+    desc: 'Initialise builda',
     aliases: ['$0'],
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs.option('configPath', {

@@ -4,14 +4,13 @@ import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
 import buildaAdd from './add';
-import chalk from 'chalk';
 
 const { websiteUrl } = globals;
 
 export default () => {
   return {
-    command: `${chalk.green('add')} ${chalk.blue('<blueprintPath>')}`,
-    desc: chalk.white('Adds a new blueprint'),
+    command: 'add <blueprintPath>',
+    desc: 'Adds a new blueprint',
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('blueprintPath', {

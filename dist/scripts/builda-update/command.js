@@ -3,13 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../helpers");
 const update_1 = __importDefault(require("./update"));
 exports.default = () => {
     return {
-        command: `${chalk_1.default.green('update')} ${chalk_1.default.blue('<moduleName>')}`,
-        desc: chalk_1.default.white('update a module'),
+        command: 'update <moduleName>',
+        desc: 'update a module',
         aliases: ['u'],
         builder: (yargs) => {
             return yargs
