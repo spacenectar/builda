@@ -11,7 +11,7 @@ export default () => {
     command: 'publish',
     desc: 'publish a module',
     aliases: ['pub', 'push'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('version', {
         aliases: ['v', 'ver'],
         default: '',

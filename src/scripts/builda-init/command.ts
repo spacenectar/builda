@@ -12,7 +12,7 @@ export default () => {
     command: 'init',
     desc: 'Initialise builda',
     aliases: ['$0'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
         default: '',

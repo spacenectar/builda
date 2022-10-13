@@ -13,7 +13,7 @@ export default () => {
     command: 'execute <command>',
     desc: 'Execute a command from within the export directory',
     aliases: ['x', 'exec'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .positional('command', {
           describe: 'The name of the command',

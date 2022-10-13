@@ -14,18 +14,19 @@ export default () => {
     command: 'build',
     desc: 'Build your project',
     aliases: ['-b', '--build'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .option('prod', {
           aliases: ['p', 'production'],
-          default: '',
+          default: false,
           describe:
             'Build for production. This will minify the output and remove any debug code',
           type: 'boolean'
         })
         .option('onlyPath', {
           describe: 'If you want to build from a specific path',
-          type: 'string'
+          type: 'string',
+          default: ''
         })
         .option('configPath', {
           aliases: ['c', 'config'],

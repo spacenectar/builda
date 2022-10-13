@@ -14,11 +14,12 @@ export default () => {
     command: 'update <moduleName>',
     desc: 'update a module',
     aliases: ['u'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .positional('moduleName', {
           describe: 'The name of the module',
-          type: 'string'
+          type: 'string',
+          demandOption: true
         })
         .option('configPath', {
           aliases: ['c', 'config'],

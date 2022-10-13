@@ -13,7 +13,7 @@ export default () => {
     command: 'indexer',
     desc: 'Generate an index file for the specified directories',
     aliases: ['index'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
         default: '',

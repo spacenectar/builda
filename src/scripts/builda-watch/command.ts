@@ -12,7 +12,7 @@ export default () => {
     command: 'watch',
     desc: 'Watches your app for changes and rebuilds',
     aliases: ['w'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
         default: '',

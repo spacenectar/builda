@@ -13,11 +13,13 @@ exports.default = () => {
             return yargs
                 .positional('scriptName', {
                 describe: 'The scaffold script to run',
-                type: 'string'
+                type: 'string',
+                default: ''
             })
                 .positional('name', {
                 describe: 'The name of the new thing',
-                type: 'string'
+                type: 'string',
+                default: ''
             })
                 .option('subString', {
                 aliases: ['s', 'sub'],

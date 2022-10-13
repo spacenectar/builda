@@ -14,15 +14,17 @@ export default () => {
   return {
     command: 'new <scriptName>',
     desc: 'Create something new from a blueprint',
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .positional('scriptName', {
           describe: 'The scaffold script to run',
-          type: 'string'
+          type: 'string',
+          default: ''
         })
         .positional('name', {
           describe: 'The name of the new thing',
-          type: 'string'
+          type: 'string',
+          default: ''
         })
         .option('subString', {
           aliases: ['s', 'sub'],

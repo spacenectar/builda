@@ -14,7 +14,8 @@ exports.default = () => {
             return yargs
                 .positional('moduleName', {
                 describe: 'The name of the module',
-                type: 'string'
+                type: 'string',
+                demandOption: true
             })
                 .option('configPath', {
                 aliases: ['c', 'config'],
