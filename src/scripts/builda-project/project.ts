@@ -29,6 +29,7 @@ import { TFlatObject } from 'types/flat-object';
 export type TGenerateProject = {
   appName?: string;
   appRoot?: string;
+  pathName?: string;
   packageManager?: string;
   cliPrefabPath?: string;
   autoInstall?: boolean;
@@ -42,7 +43,7 @@ export type TGenerateProject = {
 export default async ({
   appName,
   appRoot,
-  cliPrefabPath,
+  pathName,
   packageManager,
   autoInstall,
   smokeTest
@@ -58,7 +59,7 @@ export default async ({
   ];
 
   let answers = {} as TFlatObject;
-  if (!cliPrefabPath) {
+  if (!pathName) {
     const { usePrefab } = await inquirer.prompt([
       {
         type: 'confirm',
@@ -93,7 +94,7 @@ export default async ({
   }
   answers = { ...answers, ...newProjectAnswers };
   const name = (appName || answers.appName) as string;
-  const prefabPath = (cliPrefabPath || answers.prefab) as string;
+  const prefabPath = (pathName || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.yarnOrNpm as string) || 'npm';
   const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
@@ -457,8 +458,13 @@ export default async ({
 
   printMessage(`Your application, "${name}" has been initialised!`, 'success');
   if (smokeTest) {
-    printMessage(`This was a smoke test. No files were created.`, 'primary');
-    fs.rmSync(name, { recursive: true, force: true });
+    process.chdir('../');
+    fs.rm(name, { recursive: true, force: true }, (err) => {
+      if (err) {
+        console.log(err);
+      }
+      printMessage(`This was a smoke test. No files were created.`, 'primary');
+    });
   } else {
     execa('cd', [name]);
     printMessage(

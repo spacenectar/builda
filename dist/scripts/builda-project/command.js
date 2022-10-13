@@ -44,10 +44,11 @@ exports.default = () => {
         },
         handler: async (argv) => {
             const args = {
-                appName: argv.appName || argv.name,
-                pathName: argv.path,
+                appName: argv.appName,
+                pathName: argv.pathName,
                 packageManager: argv.packageManager,
-                autoInstall: argv.autoInstall
+                autoInstall: argv.autoInstall,
+                smokeTest: argv.smokeTest
             };
             await (0, project_1.default)(Object.assign({}, args));
         }

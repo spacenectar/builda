@@ -23,8 +23,8 @@ const builda_init_1 = require("./scripts/builda-init");
 const { websiteUrl } = globals_1.default;
 const builda = async () => {
     return yargs_1.default
-        .scriptName(chalk_1.default.magenta('builda'))
-        .usage(`$0 ${chalk_1.default.green('<cmd>')} [args]`)
+        .scriptName('builda')
+        .usage('$0 <cmd> [args]')
         .help()
         .command(Object.assign({}, (0, builda_project_1.command)()))
         .command(Object.assign({}, (0, builda_init_1.command)()))

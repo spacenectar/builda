@@ -4,14 +4,13 @@ import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
 import buildaInstall from './install';
-import chalk from 'chalk';
 
 const { websiteUrl } = globals;
 
 export default () => {
   return {
     command: 'install <modulePath>',
-    desc: chalk.white('Adds a new blueprint'),
+    desc: 'Adds a new blueprint',
     builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
       return yargs
         .positional('modulePath', {

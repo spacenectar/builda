@@ -2,12 +2,20 @@ import yargs from 'yargs';
 
 import buildaProject from './project';
 
+type Args = {
+  appName: string;
+  pathName: string;
+  packageManager: string;
+  autoInstall: boolean;
+  smokeTest: boolean;
+};
+
 export default () => {
   return {
     command: 'project [appName]',
     desc: 'Generate a new app from a prefab',
     aliases: ['app', '--app', '--project'],
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
         .positional('appName', {
           describe: 'The name of the app',
@@ -40,12 +48,13 @@ export default () => {
           type: 'boolean'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const args = {
-        appName: argv.appName || argv.name,
-        pathName: argv.path,
+        appName: argv.appName,
+        pathName: argv.pathName,
         packageManager: argv.packageManager,
-        autoInstall: argv.autoInstall
+        autoInstall: argv.autoInstall,
+        smokeTest: argv.smokeTest
       };
       await buildaProject({ ...args });
     }

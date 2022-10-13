@@ -6,12 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const helpers_1 = require("../../helpers");
 const globals_1 = __importDefault(require("../../data/globals"));
 const install_1 = __importDefault(require("./install"));
-const chalk_1 = __importDefault(require("chalk"));
 const { websiteUrl } = globals_1.default;
 exports.default = () => {
     return {
         command: 'install <modulePath>',
-        desc: chalk_1.default.white('Adds a new blueprint'),
+        desc: 'Adds a new blueprint',
         builder: (yargs) => {
             return yargs
                 .positional('modulePath', {

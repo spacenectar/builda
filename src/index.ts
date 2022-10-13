@@ -22,8 +22,8 @@ const { websiteUrl } = globals;
 
 export const builda = async () => {
   return yargs
-    .scriptName(chalk.magenta('builda'))
-    .usage(`$0 ${chalk.green('<cmd>')} [args]`)
+    .scriptName('builda')
+    .usage('$0 <cmd> [args]')
     .help()
     .command({ ...projectCommand() })
     .command({ ...initCommand() })

@@ -15,7 +15,7 @@ const helpers_1 = require("../../helpers");
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-exports.default = async ({ appName, appRoot, cliPrefabPath, packageManager, autoInstall, smokeTest }) => {
+exports.default = async ({ appName, appRoot, pathName, packageManager, autoInstall, smokeTest }) => {
     var _a, _b, _c;
     const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
     const defaultRequiredFiles = [
@@ -25,7 +25,7 @@ exports.default = async ({ appName, appRoot, cliPrefabPath, packageManager, auto
         'README.md'
     ];
     let answers = {};
-    if (!cliPrefabPath) {
+    if (!pathName) {
         const { usePrefab } = await inquirer_1.default.prompt([
             {
                 type: 'confirm',
@@ -52,7 +52,7 @@ exports.default = async ({ appName, appRoot, cliPrefabPath, packageManager, auto
     }
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = (appName || answers.appName);
-    const prefabPath = (cliPrefabPath || answers.prefab);
+    const prefabPath = (pathName || answers.prefab);
     const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
     const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
@@ -330,8 +330,13 @@ exports.default = async ({ appName, appRoot, cliPrefabPath, packageManager, auto
     }
     (0, helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
     if (smokeTest) {
-        (0, helpers_1.printMessage)(`This was a smoke test. No files were created.`, 'primary');
-        node_fs_1.default.rmSync(name, { recursive: true, force: true });
+        node_process_1.default.chdir('../');
+        node_fs_1.default.rm(name, { recursive: true, force: true }, (err) => {
+            if (err) {
+                console.log(err);
+            }
+            (0, helpers_1.printMessage)(`This was a smoke test. No files were created.`, 'primary');
+        });
     }
     else {
         (0, execa_1.default)('cd', [name]);
