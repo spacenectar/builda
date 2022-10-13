@@ -2,6 +2,10 @@ import yargs from 'yargs';
 
 import buildaPublish from './publish';
 
+type Args = {
+  version: string;
+};
+
 export default () => {
   return {
     command: 'publish',
@@ -15,7 +19,7 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       return buildaPublish(argv.version);
     }
   };
