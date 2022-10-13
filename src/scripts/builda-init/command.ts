@@ -3,6 +3,10 @@ import yargs from 'yargs';
 
 import buildaInit from './init';
 
+type Args = {
+  configPath: string;
+};
+
 export default () => {
   return {
     command: 'init',
@@ -16,7 +20,7 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       return buildaInit({ config: config || undefined });
     }
