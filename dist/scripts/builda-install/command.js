@@ -12,13 +12,7 @@ exports.default = () => {
         command: 'install <modulePath>',
         desc: 'Adds a new blueprint',
         builder: (yargs) => {
-            return yargs
-                .positional('modulePath', {
-                describe: `The path to the module (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
-                type: 'string',
-                demandOption: true
-            })
-                .option('configPath', {
+            return yargs.option('configPath', {
                 aliases: ['c', 'config'],
                 default: '',
                 describe: 'The path to a config file',

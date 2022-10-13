@@ -7,25 +7,23 @@ import buildaInstall from './install';
 
 const { websiteUrl } = globals;
 
+type Args = {
+  configPath: string;
+};
+
 export default () => {
   return {
     command: 'install <modulePath>',
     desc: 'Adds a new blueprint',
-    builder: (yargs: yargs.Argv): yargs.Argv<unknown> => {
-      return yargs
-        .positional('modulePath', {
-          describe: `The path to the module (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
-          type: 'string',
-          demandOption: true
-        })
-        .option('configPath', {
-          aliases: ['c', 'config'],
-          default: '',
-          describe: 'The path to a config file',
-          type: 'string'
-        });
+    builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
+      return yargs.option('configPath', {
+        aliases: ['c', 'config'],
+        default: '',
+        describe: 'The path to a config file',
+        type: 'string'
+      });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaInstall({ config });
