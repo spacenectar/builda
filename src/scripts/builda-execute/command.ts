@@ -3,6 +3,11 @@ import buildaExecute from './execute';
 
 import { getConfigFile, throwError } from 'helpers';
 
+type Args = {
+  configPath: string;
+  command: string;
+};
+
 export default () => {
   return {
     command: 'execute <command>',
@@ -22,7 +27,7 @@ export default () => {
           type: 'string'
         });
     },
-    handler: async (argv: any) => {
+    handler: async (argv: Args) => {
       const config = await getConfigFile(argv.configPath);
       if (config) {
         return buildaExecute({ config, command: argv.command });
