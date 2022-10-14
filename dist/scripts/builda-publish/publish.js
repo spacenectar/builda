@@ -12,7 +12,7 @@ const publish_to_trade_store_1 = require("./helpers/publish-to-trade-store");
 const check_path_exists_1 = require("./helpers/check-path-exists");
 exports.default = async (updateVersion) => {
     const registry = await (0, helpers_1.getRegistry)();
-    const { name, type, version, tradeStore } = registry;
+    const { name, type, version, publishToTradeStore } = registry;
     const REGISTRYFILE = 'registry.json';
     const READMEFILE = 'README.md';
     const FILESFOLDER = 'files';
@@ -28,7 +28,7 @@ exports.default = async (updateVersion) => {
     if (!version && !updateVersion) {
         (0, helpers_1.throwError)(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
     }
-    if (!tradeStore) {
+    if (!publishToTradeStore) {
         (0, helpers_1.printMessage)(`No tradeStore entry found in ${REGISTRYFILE}.\nThis module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`, 'info');
     }
     const validateFileFolder = (0, check_path_exists_1.checkPathExists)(FILESFOLDER, true);
@@ -110,8 +110,8 @@ exports.default = async (updateVersion) => {
     // Push the changes to git
     await git.push();
     (0, helpers_1.printMessage)('Changes pushed to git.', 'success');
-    // Publish to trade store if 'tradeStore' is true
-    if (tradeStore) {
+    // Publish to trade store if 'publishToTradeStore' is true
+    if (publishToTradeStore) {
         (0, helpers_1.printMessage)('Publishing to the Builda Trade Store...', 'processing');
         (0, publish_to_trade_store_1.publishToTradeStore)();
     }

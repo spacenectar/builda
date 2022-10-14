@@ -13,19 +13,32 @@ import { TFlatObject } from 'types/flat-object';
 import suggestedBlueprints from 'data/suggested-blueprints.json';
 
 const validateBlueprint = async (input: string, answers: TFlatObject) => {
-  const moduleValid = await validateModulePath(input, answers);
+  const moduleValid = await validateModulePath(input);
 
-  if (moduleValid === true) {
+  if (moduleValid.status) {
     if (answers.prefabRegistry) {
       const registry = answers.prefabRegistry as TFlatObject;
       const blueprints = registry.blueprints as TFlatObject;
       if (blueprints && blueprints[input]) {
-        return 'A blueprint with that name already exists';
+        return {
+          status: false,
+          message: 'A blueprint with that name already exists'
+        };
       }
-      return moduleValid;
+      return {
+        status: true,
+        message: ''
+      };
     }
+    return {
+      status: true,
+      message: ''
+    };
   }
-  return moduleValid;
+  return {
+    status: false,
+    message: moduleValid.message || 'Could not validate the blueprint'
+  };
 };
 
 export default async (answers: TFlatObject) => {
@@ -90,8 +103,8 @@ export default async (answers: TFlatObject) => {
         for (const url of urls) {
           // Check that the blueprints are valid and don't already exist
           const moduleValid = await validateBlueprint(url, answers);
-          if (moduleValid !== true) {
-            return `The module at ${url} returned an error: ${moduleValid}`;
+          if (!moduleValid.status) {
+            return `The module at ${url} returned an error: ${moduleValid.message}`;
           }
         }
         return true;
@@ -116,8 +129,8 @@ export default async (answers: TFlatObject) => {
         // Check that the blueprint is valid and doesn't already exist
         for (const blueprint of input) {
           const moduleValid = await validateBlueprint(blueprint, answers);
-          if (moduleValid !== true) {
-            return `The module at ${blueprint} returned an error: ${moduleValid}`;
+          if (!moduleValid.status) {
+            return `The module at ${blueprint} returned an error: ${moduleValid.message}`;
           }
         }
         return true;

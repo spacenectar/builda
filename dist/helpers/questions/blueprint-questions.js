@@ -8,18 +8,31 @@ const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../helpers");
 const suggested_blueprints_json_1 = __importDefault(require("../../data/suggested-blueprints.json"));
 const validateBlueprint = async (input, answers) => {
-    const moduleValid = await (0, helpers_1.validateModulePath)(input, answers);
-    if (moduleValid === true) {
+    const moduleValid = await (0, helpers_1.validateModulePath)(input);
+    if (moduleValid.status) {
         if (answers.prefabRegistry) {
             const registry = answers.prefabRegistry;
             const blueprints = registry.blueprints;
             if (blueprints && blueprints[input]) {
-                return 'A blueprint with that name already exists';
+                return {
+                    status: false,
+                    message: 'A blueprint with that name already exists'
+                };
             }
-            return moduleValid;
+            return {
+                status: true,
+                message: ''
+            };
         }
+        return {
+            status: true,
+            message: ''
+        };
     }
-    return moduleValid;
+    return {
+        status: false,
+        message: moduleValid.message || 'Could not validate the blueprint'
+    };
 };
 exports.default = async (answers) => {
     (0, helpers_1.showHelp)("These questions are all about adding blueprints to your project.\r\n\nIf you're not sure what a blueprint is" +
@@ -72,8 +85,8 @@ exports.default = async (answers) => {
                 for (const url of urls) {
                     // Check that the blueprints are valid and don't already exist
                     const moduleValid = await validateBlueprint(url, answers);
-                    if (moduleValid !== true) {
-                        return `The module at ${url} returned an error: ${moduleValid}`;
+                    if (!moduleValid.status) {
+                        return `The module at ${url} returned an error: ${moduleValid.message}`;
                     }
                 }
                 return true;
@@ -96,8 +109,8 @@ exports.default = async (answers) => {
                 // Check that the blueprint is valid and doesn't already exist
                 for (const blueprint of input) {
                     const moduleValid = await validateBlueprint(blueprint, answers);
-                    if (moduleValid !== true) {
-                        return `The module at ${blueprint} returned an error: ${moduleValid}`;
+                    if (!moduleValid.status) {
+                        return `The module at ${blueprint} returned an error: ${moduleValid.message}`;
                     }
                 }
                 return true;

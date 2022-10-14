@@ -166,14 +166,11 @@ export default async ({ config }: TInit) => {
       rootDir: answers.appRoot as string,
       packageManager: answers.packageManager as string
     };
-
     createConfigFile(config);
 
     const blueprints =
       answers.blueprintUrls ||
       (answers.blueprintList as Array<string>).join('');
-
-    console.log(blueprints);
 
     buildaAdd({ config, modulePath: blueprints as string });
   }

@@ -53,6 +53,7 @@
   },
   "homepage": "https://www.builda.app",
   "dependencies": {
+    "ajv": "^8.11.0",
     "axios": "^0.27.2",
     "chalk": "4.1.2",
     "chokidar": "^3.5.3",
@@ -60,6 +61,7 @@
     "glob": "^8.0.3",
     "inquirer": "8.2.4",
     "markdownlint": "^0.25.1",
+    "node-fetch": "^3.2.10",
     "simple-git": "^3.14.1",
     "tar": "^6.1.11",
     "yargs": "^17.4.1"

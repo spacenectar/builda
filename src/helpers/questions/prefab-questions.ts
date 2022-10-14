@@ -8,11 +8,9 @@ import {
   validateModulePath
 } from 'helpers';
 
-import { TFlatObject } from 'types/flat-object';
-
 import suggestedPrefabs from 'data/suggested-prefabs.json';
 
-export default async (answers: TFlatObject) => {
+export default async () => {
   showHelp(
     "These questions are all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
       chalk.blue.underline(getSiteLink('docs/prefabs')) +
@@ -50,7 +48,8 @@ export default async (answers: TFlatObject) => {
           return 'You must enter a url';
         }
         // Check that a registry.json file exists at the url
-        return validateModulePath(input, answers);
+        const module = await validateModulePath(input);
+        return module.status;
       }
     },
     {

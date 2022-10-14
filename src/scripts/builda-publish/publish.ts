@@ -6,12 +6,12 @@ import tar from 'tar';
 import { simpleGit } from 'simple-git';
 
 import { getRegistry, printMessage, throwError } from 'helpers';
-import { publishToTradeStore } from './helpers/publish-to-trade-store';
+import { publishToTradeStore as PTS } from './helpers/publish-to-trade-store';
 import { checkPathExists } from './helpers/check-path-exists';
 
 export default async (updateVersion?: string) => {
   const registry = await getRegistry();
-  const { name, type, version, tradeStore } = registry;
+  const { name, type, version, publishToTradeStore } = registry;
 
   const REGISTRYFILE = 'registry.json';
   const READMEFILE = 'README.md';
@@ -35,7 +35,7 @@ export default async (updateVersion?: string) => {
     throwError(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
   }
 
-  if (!tradeStore) {
+  if (!publishToTradeStore) {
     printMessage(
       `No tradeStore entry found in ${REGISTRYFILE}.\nThis module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`,
       'info'
@@ -156,10 +156,10 @@ export default async (updateVersion?: string) => {
   await git.push();
   printMessage('Changes pushed to git.', 'success');
 
-  // Publish to trade store if 'tradeStore' is true
-  if (tradeStore) {
+  // Publish to trade store if 'publishToTradeStore' is true
+  if (publishToTradeStore) {
     printMessage('Publishing to the Builda Trade Store...', 'processing');
-    publishToTradeStore();
+    PTS();
   }
 
   printMessage('Module published.', 'success');

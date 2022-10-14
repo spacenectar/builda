@@ -129,7 +129,6 @@ exports.default = async ({ config }) => {
         (0, helpers_1.createConfigFile)(config);
         const blueprints = answers.blueprintUrls ||
             answers.blueprintList.join('');
-        // TODO: Something isn't right here and is somehow still trying to use prefabs
         (0, builda_add_1.buildaAdd)({ config, modulePath: blueprints });
     }
     if (initType === 'prefab') {

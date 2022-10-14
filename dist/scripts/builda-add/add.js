@@ -35,7 +35,8 @@ exports.default = async ({ config, modulePath, fromScript }) => {
             module = await (0, helpers_1.addLocalModule)(currentModule);
         }
         /**
-         * The following should only run if the command is being run directly from the CLI
+         * The following should only run if the command is being run directly from the CLI or
+         * if the command is being run from a script and the module is being added to the project config
          */
         if (!fromScript) {
             if (module === null || module === void 0 ? void 0 : module.name) {

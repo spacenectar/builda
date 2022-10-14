@@ -15,6 +15,7 @@ export const addRemoteModule = async (
   const buildaDir = path.join(output || './', globals.buildaDir);
   // get the directory contents
   const registry = await getRegistry(modulePath);
+
   const outputPath =
     registry.type === 'blueprint'
       ? `${buildaDir}/modules/blueprints/${registry.name}`
@@ -58,7 +59,10 @@ export const addRemoteModule = async (
     .finally(() => {
       printMessage('Copying the registry file...', 'copying');
       // Write the registry to the output directory
-      fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
+      fs.writeFileSync(
+        `${outputPath}/registry.json`,
+        JSON.stringify(registry, null, 2)
+      );
     });
 
   printMessage('Done.', 'success');

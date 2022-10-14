@@ -7,7 +7,7 @@ const inquirer_1 = __importDefault(require("inquirer"));
 const chalk_1 = __importDefault(require("chalk"));
 const helpers_1 = require("../../helpers");
 const suggested_prefabs_json_1 = __importDefault(require("../../data/suggested-prefabs.json"));
-exports.default = async (answers) => {
+exports.default = async () => {
     (0, helpers_1.showHelp)("These questions are all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " +
         chalk_1.default.blue.underline((0, helpers_1.getSiteLink)('docs/prefabs')) +
         chalk_1.default.white(' for more information.'));
@@ -41,7 +41,8 @@ exports.default = async (answers) => {
                     return 'You must enter a url';
                 }
                 // Check that a registry.json file exists at the url
-                return (0, helpers_1.validateModulePath)(input, answers);
+                const module = await (0, helpers_1.validateModulePath)(input);
+                return module.status;
             }
         },
         {

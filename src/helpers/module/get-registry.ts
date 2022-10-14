@@ -7,8 +7,12 @@ import {
   convertRegistryPathToUrl,
   validateModulePath
 } from 'helpers';
+import ModuleRegistry from 'types/module-registry';
+import axios from 'axios';
 
-export const getRegistry = async (registryPath?: string) => {
+export const getRegistry = async (
+  registryPath?: string
+): Promise<ModuleRegistry> => {
   const REGISTRYFILE = 'registry.json';
 
   registryPath = registryPath || process.cwd();
@@ -34,9 +38,21 @@ export const getRegistry = async (registryPath?: string) => {
     url = `${url}/${REGISTRYFILE}`;
   }
 
-  const module = { registry: {} };
-  await validateModulePath(url, module);
-  return module.registry;
+  const validModule = await validateModulePath(url, true);
+  if (!validModule.status) {
+    throwError(validModule.message);
+  }
+
+  return axios
+    .get(url, {
+      responseType: 'json'
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throwError(error.message);
+    });
 };
 
 export default getRegistry;

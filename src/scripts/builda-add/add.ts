@@ -70,7 +70,8 @@ export default async ({
     }
 
     /**
-     * The following should only run if the command is being run directly from the CLI
+     * The following should only run if the command is being run directly from the CLI or
+     * if the command is being run from a script and the module is being added to the project config
      */
     if (!fromScript) {
       if (module?.name) {

@@ -1,0 +1,254 @@
+{
+    "$ref": "#/definitions/ModuleRegistry",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ModuleConfig": {
+            "additionalProperties": {
+                "$ref": "#/definitions/ModuleConfigContents"
+            },
+            "type": "object"
+        },
+        "ModuleConfigContents": {
+            "additionalProperties": false,
+            "properties": {
+                "location": {
+                    "description": "The location of the module. This can be a local path, a remote url, a resolver or 'prefab' (if preinstalled inside a prefab)",
+                    "type": "string"
+                },
+                "outputDir": {
+                    "description": "If the module should have a custom output directory, specify it here (relative to the app_root)",
+                    "type": "string"
+                },
+                "resolve": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "additionalProperties": false,
+                            "properties": {
+                                "type": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "url",
+                                "type"
+                            ],
+                            "type": "object"
+                        }
+                    ],
+                    "description": "The custom resolver to use for the module"
+                },
+                "version": {
+                    "description": "The version of the module (not required for blueprints preinstalled inside a prefab)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "location"
+            ],
+            "type": "object"
+        },
+        "ModuleRegistry": {
+            "additionalProperties": false,
+            "description": "See (https://builda.app/docs/build-a-module/registry) for more info",
+            "properties": {
+                "appFiles": {
+                    "description": "Any files which should be copied to the app root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) If the module is a blueprint, this will be ignored",
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "path": {
+                                "description": "The path to the root file (relative to the .builda/export directory)",
+                                "type": "string"
+                            },
+                            "rewrite": {
+                                "default": false,
+                                "description": "Should the file contents be rewritten with substitutions?",
+                                "type": "boolean"
+                            },
+                            "substitutions": {
+                                "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+                                "items": {
+                                    "$ref": "#/definitions/TSubstitution"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "required": [
+                            "path",
+                            "substitutions"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "author": {
+                    "additionalProperties": false,
+                    "description": "The module author's details",
+                    "properties": {
+                        "buildaUser": {
+                            "description": "The builda username of the author. This is optional but is required if you want to publish your module to the builda trade store (see (https://builda.app/docs/trade-store))",
+                            "type": "string"
+                        },
+                        "email": {
+                            "description": "The author's email",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "The author's name",
+                            "type": "string"
+                        },
+                        "website": {
+                            "description": "The author's website",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "blueprints": {
+                    "$ref": "#/definitions/ModuleConfig",
+                    "description": "If the module is a prefab and requires blueprints or has it's own blueprints, you should add them here if the module is a blueprint, this field is ignored",
+                    "examples": [
+                        "github:cool-developer/blueprint-cool-module@3.0.0",
+                        "internal:blueprint-name"
+                    ]
+                },
+                "dependencies": {
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "description": "If this module has any required dependencies, you can add them here",
+                    "type": "object"
+                },
+                "funding": {
+                    "description": "Is this module looking for funding? If so, you can add a list of funding links here.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "keywords": {
+                    "description": "The module keywords (optional but recommended if you want to publish your module to the builda trade store)",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "description": "The name of the module",
+                    "type": "string"
+                },
+                "prerelease": {
+                    "default": false,
+                    "description": "If this is a prerelease, set this to true",
+                    "type": "boolean"
+                },
+                "publishToTradeStore": {
+                    "default": false,
+                    "description": "Do you want to publish this module to the builda trade store? (see (https://builda.app/docs/trade-store))",
+                    "type": "boolean"
+                },
+                "substitute": {
+                    "description": "A list of substitutions to make when the module is installed (see (https://builda.app/docs/build-a-module/substitutions))",
+                    "items": {
+                        "$ref": "#/definitions/TSubstitution"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "description": "The module type",
+                    "enum": [
+                        "blueprint",
+                        "prefab"
+                    ],
+                    "type": "string"
+                },
+                "uniqueInstances": {
+                    "description": "Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend files from the prefab (like tsconfig.json).\n\nJust like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.\n\nNote: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists",
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "path": {
+                                "description": "The path to the root file (relative to the .builda/export directory)",
+                                "type": "string"
+                            },
+                            "rewrite": {
+                                "default": false,
+                                "description": "Should the file contents be rewritten with substitutions?",
+                                "type": "boolean"
+                            },
+                            "substitutions": {
+                                "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+                                "items": {
+                                    "$ref": "#/definitions/TSubstitution"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "required": [
+                            "path",
+                            "substitutions"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "url": {
+                    "description": "The url of the module (generally a git repository) You can also use resolver aliases here. See (https://builda.app/docs/resolvers)",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "The module version number (in semver format)",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "type",
+                "version",
+                "url"
+            ],
+            "type": "object"
+        },
+        "TSubstitution": {
+            "additionalProperties": false,
+            "properties": {
+                "replace": {
+                    "description": "The string to be replaced",
+                    "pattern": "^%[A-Z_]+%$",
+                    "type": "string"
+                },
+                "required": {
+                    "default": false,
+                    "description": "Is this substitution required? (i.e. if it is not found, should the build fail?)",
+                    "type": "boolean"
+                },
+                "valid": {
+                    "description": "Do you want to provide a list of valid options for this substitution? (i.e. if it is not found, should the build fail?)",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "with": {
+                    "description": "The string to replace with",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "replace",
+                "with"
+            ],
+            "type": "object"
+        }
+    }
+}

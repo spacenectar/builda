@@ -7,6 +7,7 @@ exports.getRegistry = void 0;
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../helpers");
+const axios_1 = __importDefault(require("axios"));
 const getRegistry = async (registryPath) => {
     const REGISTRYFILE = 'registry.json';
     registryPath = registryPath || node_process_1.default.cwd();
@@ -25,9 +26,20 @@ const getRegistry = async (registryPath) => {
     else {
         url = `${url}/${REGISTRYFILE}`;
     }
-    const module = { registry: {} };
-    await (0, helpers_1.validateModulePath)(url, module);
-    return module.registry;
+    const validModule = await (0, helpers_1.validateModulePath)(url, true);
+    if (!validModule.status) {
+        (0, helpers_1.throwError)(validModule.message);
+    }
+    return axios_1.default
+        .get(url, {
+        responseType: 'json'
+    })
+        .then((response) => {
+        return response.data;
+    })
+        .catch((error) => {
+        (0, helpers_1.throwError)(error.message);
+    });
 };
 exports.getRegistry = getRegistry;
 exports.default = exports.getRegistry;

@@ -52,7 +52,7 @@ const addRemoteModule = async (modulePath, output) => {
         .finally(() => {
         (0, helpers_1.printMessage)('Copying the registry file...', 'copying');
         // Write the registry to the output directory
-        node_fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
+        node_fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry, null, 2));
     });
     (0, helpers_1.printMessage)('Done.', 'success');
     return registry;

@@ -38,6 +38,12 @@ export interface ModuleRegistry {
    */
   version: string;
   /**
+   * If this is a prerelease, set this to true
+   * @default false
+   * @optional
+   */
+  prerelease?: boolean;
+  /**
    * The url of the module (generally a git repository)
    * You can also use resolver aliases here. See (https://builda.app/docs/resolvers)
    * @example https://github.com/cool-developer/blueprint-cool-module
