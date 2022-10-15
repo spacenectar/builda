@@ -16,7 +16,7 @@ import {
   writeFile,
   changeCase
 } from 'helpers';
-import ModuleRegistry from 'types/module-registry';
+import { ModuleRegistry, RootFile } from 'types/module-registry';
 import { TFlatObject } from 'types/flat-object';
 
 export async function generateFromPrefab(
@@ -56,23 +56,23 @@ export async function generateFromPrefab(
   const version = module.version;
   const substitutions = module.substitute || [];
 
-  const extraRootfiles =
-    module.appFiles
-      ?.filter((file) => {
-        if (!file.rewrite) {
-          return file;
-        }
-        return false;
-      })
-      .map((f) => f.path) || [];
+  // handle root files
 
-  const extraRootfilesToRewrite =
-    module.appFiles?.filter((file) => {
-      if (file.rewrite) {
-        return file;
+  const extraRootfiles = [] as string[];
+  const extraRootfilesToRewrite = [] as RootFile[];
+
+  module.appFiles?.forEach((file: unknown) => {
+    if (typeof file === 'string') {
+      extraRootfiles.push(file);
+    } else {
+      const rootFile = file as RootFile;
+      if (rootFile.rewrite) {
+        extraRootfilesToRewrite.push(rootFile);
+      } else {
+        extraRootfiles.push(rootFile.path);
       }
-      return false;
-    }) || [];
+    }
+  });
 
   const requiredFiles = [...defaultRequiredFiles, ...(extraRootfiles || [])];
   printMessage(`Installed ${prefabName}@${version}`, 'success');
@@ -173,32 +173,37 @@ export async function generateFromPrefab(
   // to the root directory without the .unique extension
   if (module.uniqueInstances && module.uniqueInstances.length > 0) {
     module.uniqueInstances.forEach((file) => {
-      const rewrite = file.rewrite || false;
-      const uniqueFile = path.join(workingDir, file.path);
-      const uniqueFileSrcDir = path.dirname(uniqueFile);
-      if (rewrite) {
-        const uniqueFileContents = fs.readFileSync(uniqueFile, {
-          encoding: 'utf8'
-        });
-        const uniqueFileSubs =
-          [...substitute, file.substitutions].flat() || substitute;
-
-        writeFile({
-          file: uniqueFile,
-          content: uniqueFileContents,
-          substitute: uniqueFileSubs,
-          name: appName,
-          rename: uniqueFile.replace('.unique', ''),
-          outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
-        });
-      } else {
+      if (typeof file === 'string') {
+        const uniqueFile = path.resolve(workingDir, file);
+        const uniqueFileSrcDir = path.dirname(uniqueFile);
         fs.copyFileSync(
           uniqueFile,
           path.join(
             uniqueFileSrcDir.replace(workingDir, rootDir),
-            file.path.replace('.unique', '')
+            file.replace('.unique', '')
           )
         );
+      } else {
+        const recastFile = file as RootFile;
+        const rewrite = recastFile.rewrite || false;
+        const uniqueFile = path.join(workingDir, recastFile.path);
+        const uniqueFileSrcDir = path.dirname(uniqueFile);
+        if (rewrite) {
+          const uniqueFileContents = fs.readFileSync(uniqueFile, {
+            encoding: 'utf8'
+          });
+          const uniqueFileSubs =
+            [...substitute, file.substitutions].flat() || substitute;
+
+          writeFile({
+            file: uniqueFile,
+            content: uniqueFileContents,
+            substitute: uniqueFileSubs,
+            name: appName,
+            rename: uniqueFile.replace('.unique', ''),
+            outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
+          });
+        }
       }
     });
   }

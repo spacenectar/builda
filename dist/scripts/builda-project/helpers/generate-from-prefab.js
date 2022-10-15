@@ -11,7 +11,7 @@ const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b, _c;
+    var _a, _b;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -30,18 +30,23 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     const prefabName = module.name;
     const version = module.version;
     const substitutions = module.substitute || [];
-    const extraRootfiles = ((_a = module.appFiles) === null || _a === void 0 ? void 0 : _a.filter((file) => {
-        if (!file.rewrite) {
-            return file;
+    // handle root files
+    const extraRootfiles = [];
+    const extraRootfilesToRewrite = [];
+    (_a = module.appFiles) === null || _a === void 0 ? void 0 : _a.forEach((file) => {
+        if (typeof file === 'string') {
+            extraRootfiles.push(file);
         }
-        return false;
-    }).map((f) => f.path)) || [];
-    const extraRootfilesToRewrite = ((_b = module.appFiles) === null || _b === void 0 ? void 0 : _b.filter((file) => {
-        if (file.rewrite) {
-            return file;
+        else {
+            const rootFile = file;
+            if (rootFile.rewrite) {
+                extraRootfilesToRewrite.push(rootFile);
+            }
+            else {
+                extraRootfiles.push(rootFile.path);
+            }
         }
-        return false;
-    })) || [];
+    });
     const requiredFiles = [...defaultRequiredFiles, ...(extraRootfiles || [])];
     (0, helpers_1.printMessage)(`Installed ${prefabName}@${version}`, 'success');
     (0, helpers_1.printMessage)('Creating export path...', 'processing');
@@ -124,25 +129,30 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     // to the root directory without the .unique extension
     if (module.uniqueInstances && module.uniqueInstances.length > 0) {
         module.uniqueInstances.forEach((file) => {
-            const rewrite = file.rewrite || false;
-            const uniqueFile = node_path_1.default.join(workingDir, file.path);
-            const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
-            if (rewrite) {
-                const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
-                    encoding: 'utf8'
-                });
-                const uniqueFileSubs = [...substitute, file.substitutions].flat() || substitute;
-                (0, helpers_1.writeFile)({
-                    file: uniqueFile,
-                    content: uniqueFileContents,
-                    substitute: uniqueFileSubs,
-                    name: appName,
-                    rename: uniqueFile.replace('.unique', ''),
-                    outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
-                });
+            if (typeof file === 'string') {
+                const uniqueFile = node_path_1.default.resolve(workingDir, file);
+                const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
+                node_fs_1.default.copyFileSync(uniqueFile, node_path_1.default.join(uniqueFileSrcDir.replace(workingDir, rootDir), file.replace('.unique', '')));
             }
             else {
-                node_fs_1.default.copyFileSync(uniqueFile, node_path_1.default.join(uniqueFileSrcDir.replace(workingDir, rootDir), file.path.replace('.unique', '')));
+                const recastFile = file;
+                const rewrite = recastFile.rewrite || false;
+                const uniqueFile = node_path_1.default.join(workingDir, recastFile.path);
+                const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
+                if (rewrite) {
+                    const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
+                        encoding: 'utf8'
+                    });
+                    const uniqueFileSubs = [...substitute, file.substitutions].flat() || substitute;
+                    (0, helpers_1.writeFile)({
+                        file: uniqueFile,
+                        content: uniqueFileContents,
+                        substitute: uniqueFileSubs,
+                        name: appName,
+                        rename: uniqueFile.replace('.unique', ''),
+                        outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
+                    });
+                }
             }
         });
     }
@@ -244,7 +254,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                     all: true,
                     stdio: 'inherit'
                 });
-                (_c = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _c === void 0 ? void 0 : _c.pipe(node_process_1.default.stdout);
+                (_b = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _b === void 0 ? void 0 : _b.pipe(node_process_1.default.stdout);
                 await childProcess;
                 (0, helpers_1.printMessage)('All dependencies installed.', 'success');
             }

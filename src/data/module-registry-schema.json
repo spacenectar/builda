@@ -58,34 +58,44 @@
       "description": "See (https://builda.app/docs/build-a-module/registry) for more info",
       "properties": {
         "appFiles": {
-          "description": "Any files which should be copied to the app root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) If the module is a blueprint, this will be ignored",
-          "items": {
-            "additionalProperties": false,
-            "properties": {
-              "path": {
-                "description": "The path to the root file (relative to the .builda/export directory)",
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "description": "The path to the root file (relative to the .builda/export directory)",
+                    "type": "string"
+                  },
+                  "rewrite": {
+                    "default": false,
+                    "description": "Should the file contents be rewritten with substitutions?",
+                    "type": "boolean"
+                  },
+                  "substitutions": {
+                    "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+                    "items": {
+                      "$ref": "#/definitions/TSubstitution"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "path",
+                  "substitutions"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "type": "string"
               },
-              "rewrite": {
-                "default": false,
-                "description": "Should the file contents be rewritten with substitutions?",
-                "type": "boolean"
-              },
-              "substitutions": {
-                "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
-                "items": {
-                  "$ref": "#/definitions/TSubstitution"
-                },
-                "type": "array"
-              }
-            },
-            "required": [
-              "path",
-              "substitutions"
-            ],
-            "type": "object"
-          },
-          "type": "array"
+              "type": "array"
+            }
+          ],
+          "description": "Any files which should be copied to the app root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) If the module is a blueprint, this will be ignored"
         },
         "author": {
           "additionalProperties": false,
@@ -172,34 +182,44 @@
           "type": "string"
         },
         "uniqueInstances": {
-          "description": "Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend files from the prefab (like tsconfig.json).\n\nJust like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.\n\nNote: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists",
-          "items": {
-            "additionalProperties": false,
-            "properties": {
-              "path": {
-                "description": "The path to the root file (relative to the .builda/export directory)",
+          "anyOf": [
+            {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "path": {
+                    "description": "The path to the root file (relative to the .builda/export directory)",
+                    "type": "string"
+                  },
+                  "rewrite": {
+                    "default": false,
+                    "description": "Should the file contents be rewritten with substitutions?",
+                    "type": "boolean"
+                  },
+                  "substitutions": {
+                    "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+                    "items": {
+                      "$ref": "#/definitions/TSubstitution"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "path",
+                  "substitutions"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
                 "type": "string"
               },
-              "rewrite": {
-                "default": false,
-                "description": "Should the file contents be rewritten with substitutions?",
-                "type": "boolean"
-              },
-              "substitutions": {
-                "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
-                "items": {
-                  "$ref": "#/definitions/TSubstitution"
-                },
-                "type": "array"
-              }
-            },
-            "required": [
-              "path",
-              "substitutions"
-            ],
-            "type": "object"
-          },
-          "type": "array"
+              "type": "array"
+            }
+          ],
+          "description": "Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend files from the prefab (like tsconfig.json).\n\nJust like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.\n\nNote: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists"
         },
         "url": {
           "description": "The url of the module (generally a git repository) You can also use resolver aliases here. See (https://builda.app/docs/resolvers)",

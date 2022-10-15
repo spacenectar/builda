@@ -1,7 +1,7 @@
 import TSubstitution from './substitution';
 import ModuleConfig from './module-config';
 
-type RootFile = {
+export type RootFile = {
   /**
    * The path to the root file (relative to the .builda/export directory)
    */
@@ -97,7 +97,7 @@ export interface ModuleRegistry {
    * If the module is a blueprint, this will be ignored
    * @optional
    */
-  appFiles?: RootFile[];
+  appFiles?: RootFile[] | string[];
   /**
    * Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root
    * in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend
@@ -107,7 +107,7 @@ export interface ModuleRegistry {
    *
    * Note: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists
    */
-  uniqueInstances?: RootFile[];
+  uniqueInstances?: RootFile[] | string[];
   /**
    * If this module has any required dependencies, you can add them here
    * @example "react": "^17.0.1"
