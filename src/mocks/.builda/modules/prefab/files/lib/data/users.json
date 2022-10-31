@@ -1,0 +1,14 @@
+{
+  "users": {
+    "8oYh1u5IAGeANjcHTvODAI3VVjB2": {
+      "displayName": "Alex Foxleigh",
+      "photoUrl": "https://en.gravatar.com/userimage/3297297/c0e0c2dc87c2147ab1de03b3acc4e971.jpeg",
+      "role": "admin",
+      "email": "alex@alexfoxleigh.com",
+      "createdAt": "2022-07-26T00:00:00.000Z",
+      "updatedAt": "2022-07-26T00:00:00.000Z",
+      "lastLogin": "",
+      "emailVerified": true
+    }
+  }
+}

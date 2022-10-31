@@ -1,0 +1,135 @@
+import { Text } from "./index.tsx";
+
+<Meta
+  title="atom/Text"
+  component={Text}
+/>
+
+<Title type="ALPHA">Text</Title>
+
+<Description of={Text} />
+
+
+## Usage
+
+The component will render a `<p>` tag by default.
+
+The `string` prop will be used as the text content of the tag.
+
+<Canvas withSource="open">
+  <Story
+    name="Default">
+    {(args) => <Text {...args}>This is the default text</Text>}
+  </Story>
+</Canvas>
+
+You can specify a different tag by passing the `use` prop (see 'props' below, for supported tags).
+
+<Canvas withSource="open">
+  <Story
+    name="H1"
+    args={{
+      use: "h1"
+    }}>
+    {(args) => <Text {...args}>This is the h1 text</Text>}
+  </Story>
+   <Story
+    name="H2"
+    args={{
+      use: "h2",
+    }}>
+    {(args) => <Text {...args}>This is the h2 text</Text>}
+  </Story>
+    <Story
+      name="H3"
+      args={{
+        use: "h3",
+      }}>
+      {(args) => <Text {...args}>This is the h3 text</Text>}
+    </Story>
+    <Story
+      name="H4"
+      args={{
+        use: "h4"
+      }}>
+      {(args) => <Text {...args}>This is the h4 text</Text>}
+    </Story>
+    <Story
+      name="H5"
+      args={{
+        use: "h5"
+      }}>
+      {(args) => <Text {...args}>This is the h5 text</Text>}
+    </Story>
+    <Story
+      name="H6"
+      args={{
+        use: "h6"
+      }}>
+      {(args) => <Text {...args}>This is the h6 text</Text>}
+    </Story>
+    <Story
+      name="P"
+      args={{
+        use: "p"
+      }}>
+      {(args) => <Text {...args}>This is the p text</Text>}
+    </Story>
+    <Story
+      name="Span"
+      args={{
+        use: "span"
+      }}>
+      {(args) => <Text {...args}>This is the span text</Text>}
+    </Story>
+</Canvas>
+
+You can also pass an `as` prop to render the semantically correct tag but style it as a different tag.
+
+<Canvas withSource="open">
+  <Story
+    name="H3 as H2"
+    args={{
+      use: "h3",
+      as: "h2"
+    }}>
+    {(args) => <Text {...args}>This is text is in a h3 but it looks like a h2</Text>}
+  </Story>
+</Canvas>
+
+The child prop can also accept HTML, this should be used with caution, however as the styling may
+not look as expected.
+
+<Canvas withSource="open">
+  <Story name="P tag with a strong tag">
+    <Text>This is a p tag with a <strong>strong tag</strong> inside it.</Text>
+  </Story>
+</Canvas>
+
+<Tip type="warning">
+  Be very wary about using html as the root tag of the children prop. This could result in unsemantic markup.
+</Tip>
+
+By default, all text output (with the exception of the `span` element) will have a `1rem` bottom margin. You can
+override this by passing the `showMargin` prop and setting it to false.
+
+<Canvas withSource="open">
+  <Story name="h2 with no bottom margin">
+    <Text use='h2' showMargin={false}>This h2 has no bottom margin</Text>
+  </Story>
+</Canvas>
+
+You can make the output text larger or smaller by passing the `size` prop.
+
+<Canvas withSource="open">
+  <Story name="larger paragraph">
+    <Text size="larger">This p tag is larger</Text>
+  </Story>
+  <Story name="smaller paragraph">
+    <Text size="smaller">This p tag is smaller</Text>
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={Text} />

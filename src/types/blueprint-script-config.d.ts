@@ -2,7 +2,7 @@ import TSubstitution from './substitution';
 
 export type BlueprintScriptContent = {
   use: string;
-  output_dir: string;
+  outputDir: string;
   substitute: TSubstitution[] | [];
 };
 

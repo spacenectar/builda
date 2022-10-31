@@ -1,0 +1,27 @@
+.user-menu {
+  position: relative;
+  display: grid;
+  grid-template-columns: 20px 50px;
+  align-items: center;
+  gap: spacing(1);
+  padding: padding(0.5);
+  color: $col-body-text;
+  cursor: pointer;
+  &:hover {
+    background: rgba($col-dark, 0.3);
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  z-index: $context-menu-level;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(0.5);
+  justify-items: end;
+}

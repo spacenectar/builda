@@ -1,0 +1,114 @@
+.button {
+  position: relative;
+
+  &.loading {
+    display: grid;
+    grid-template-columns: 20px auto;
+    align-items: center;
+    gap: spacing(1);
+    padding-left: padding(1);
+  }
+}
+
+.button-primary {
+  @include utils.button-primary;
+}
+
+.button-secondary {
+  @include utils.button-secondary;
+}
+
+.button-tertiary {
+  @include utils.button-tertiary;
+}
+
+.button-create {
+  @include utils.button-create;
+}
+
+.button-destroy {
+  @include utils.button-destroy;
+}
+
+.button-text {
+  @include utils.button-text;
+}
+
+.button-text-create {
+  @include utils.button-text-create;
+}
+
+.button-text-destroy {
+  @include utils.button-text-destroy;
+}
+
+.circular {
+  @include utils.button-circular;
+}
+
+.icon-none {
+  :is(svg, .icon, img, picture) {
+    display: none;
+  }
+}
+
+@mixin has-icon {
+  align-items: center;
+  display: grid;
+
+  svg {
+    font-size: 100% !important; // Override MUI styles
+    height: auto;
+    width: 2.2rem;
+  }
+}
+
+.icon-only {
+  @include has-icon;
+
+  padding: padding(0.5);
+  place-items: center;
+}
+
+.icon-left,
+.icon-right {
+  @include has-icon;
+
+  column-gap: spacing(1);
+  grid-template-columns: spacing(2) auto;
+}
+
+.icon-center {
+  @include has-icon;
+
+  align-content: center;
+  grid-gap: spacing(0.5);
+  grid-template-rows: auto auto;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.icon-right {
+  @include has-icon;
+
+  grid-template-columns: auto $gutters;
+
+  :is(svg, .icon, img, picture) {
+    order: 2;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+// The error to display if the user doesn't add an onClick or a href prop
+.error {
+  color: $col-danger;
+  font-weight: bold;
+}
+
+.active {
+  font-weight: bold;
+}

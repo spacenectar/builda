@@ -1,0 +1,135 @@
+import { Card } from 'components';
+import { CardHeader } from './components/card-header';
+import { CardBody } from './components/card-body';
+import { CardFooter } from './components/card-footer';
+
+<Meta
+  title="molecule/Card"
+  component={Card}
+  subcomponents={{
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter
+  }}
+/>
+
+# Card
+
+The Card component is a container for content that is typically displayed in a card. It is primarily just a wrapper for the content
+displaying the appropriate styles.
+
+By default, the card only has a background, a border-radius and a drop shadow (all of which can be disabled) and displays the content in a
+in a single row css grid layout. It relies on the child components to set the appropriate width, height and internal spacing.
+
+External spacing around the card should ideally be set by the parent component but you can add spacing to the card itself by passing in
+the `vSpacing` and/or `hSpacing` boolean props.
+
+You can also pass a `className` prop and style it yourself but this is discouraged unless absolutely necessary.
+
+<Canvas withSource="open">
+  <Story name="Default">
+    <Card>
+      <p>This card is the default card with all of the styling intact</p>
+    </Card>
+  </Story>
+</Canvas>
+
+## Usage
+
+You can pass any child you want to the Card component, but to get the best out of it, you should use the pre-styled CardHeader and CardBody components.
+
+### CardBody
+
+The CardBody component adds some extra padding and automatically expands to the available space within the card.
+
+<Canvas withSource="open">
+  <Story name="WithCardBody">
+    <Card>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+    </Card>
+  </Story>
+</Canvas>
+
+### CardHeader
+
+The CardHeader component adds some extra padding and a bottom border to the card.
+
+The component automatically detects there are 2 children here and has adjusted the CSS
+grid layout to make room for the header.
+
+<Tip type="danger">
+  This component is not that smart, it assumes if there are two children then
+  the first one is a CardHeader. If there are three then it assumes the first is the CardHeader the last is the CardFooter.
+</Tip>
+
+<Canvas withSource="open">
+  <Story name="WithHeader">
+    <Card>
+      <Card.Header>
+        <div>Header goes here</div>
+      </Card.Header>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+    </Card>
+  </Story>
+</Canvas>
+
+### CardFooter
+
+<Canvas withSource="open">
+  <Story name="WithFooter">
+    <Card>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+      <Card.Footer>
+        <div>Footer goes here</div>
+      </Card.Footer>
+    </Card>
+  </Story>
+</Canvas>
+
+### CardHeader and CardFooter
+
+<Canvas withSource="open">
+  <Story name="WithHeaderAndFooter">
+    <Card>
+      <Card.Header>
+        <div>Header goes here</div>
+      </Card.Header>
+      <Card.Body>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ex
+          euismod, consectetur nunc eget, maximus nunc.
+        </p>
+      </Card.Body>
+      <Card.Footer>
+        <div>Footer goes here</div>
+      </Card.Footer>
+    </Card>
+  </Story>
+</Canvas>
+
+## Supports Cards
+
+<a id="compatibility"></a>
+
+The CardHeader and CardBody component were made for the `Card` component, however they also work as children of other components. If you see a <WorksWith component="cards" /> badge on a component, it means that
+the CardBody and CardHeader components have been tested and work well.
+
+## Props
+
+<ArgsTable of={Card} />

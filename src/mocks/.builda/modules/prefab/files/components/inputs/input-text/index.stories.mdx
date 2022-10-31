@@ -1,0 +1,106 @@
+import InputText from './index';
+
+<Meta
+  title="input/InputText"
+  component={InputText}
+  args={{
+    name: 'InputText',
+    type: 'text'
+  }}
+/>
+
+export const Template = (args) => <InputText {...args} />;
+
+# InputText
+
+<WorksWith component="InputFactory" />
+
+The input-text component is used to collect user input
+
+In spite of it's name, it can also be used to collect any kind of text, based input
+including, email addresses, numbers and more.
+
+### Text Input
+
+<Canvas withSource="open">
+  <Story name="Text">{Template.bind({})}</Story>
+  <Story
+    name="With placeholder text"
+    args={{
+      placeholder: 'Enter your text here'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Disabled"
+    args={{
+      disabled: true,
+      value: 'Disabled input'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Read only"
+    args={{
+      readOnly: true,
+      value: 'Read only input'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Number Input
+
+<Canvas withSource="open">
+  <Story
+    name="Number"
+    args={{
+      type: 'number'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+### Mobile only types
+
+The following types do not do anything exciting on desktop devices,
+however on a mobile device, they will change the users keyboard to
+include extra features. Such as a number pad or a '.com' button.
+
+Appearance-wise, they all appear as a reuglar text input, so it makes sense to
+group them together, view this page on mobile to see the differences.
+
+<Canvas withSource="open">
+  <Story
+    name="Telephone number"
+    args={{
+      type: 'tel'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="Email address"
+    args={{
+      type: 'email'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+  <Story
+    name="URL"
+    args={{
+      type: 'url'
+    }}
+  >
+    {Template.bind({})}
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={InputText} />

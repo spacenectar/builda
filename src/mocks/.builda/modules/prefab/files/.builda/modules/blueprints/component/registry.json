@@ -1,0 +1,20 @@
+{
+  "name": "component",
+  "type": "blueprint",
+  "files": [
+    "index.stories.mdx",
+    "index.tsx",
+    "styles.module.scss"
+  ],
+  "substitute": [
+    {
+      "replace": "PREFIX",
+      "required": true,
+      "with": "command"
+    },
+    {
+      "replace": "TYPE",
+      "with": "component"
+    }
+  ]
+}

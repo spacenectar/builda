@@ -1,0 +1,374 @@
+import { FaCoffee, FaArrowLeft } from 'react-icons/fa';
+
+import { Button } from './index.tsx';
+
+<Meta
+  title="atom/Button"
+  component={Button}
+  args={{
+    label: 'Button'
+  }}
+  argTypes={{
+    onClick: { action: 'clicked' },
+    variant: {
+      control: {
+        type: 'select',
+        options: ['primary', 'secondary', 'text']
+      }
+    }
+  }}
+/>
+
+<Title type="alpha">Button</Title>
+
+<Description of={Button} />
+
+<Tip>
+  It's also possible to turn a regular button element or link into a basic
+  button by adding the `button` utility to it although that method is cosmetic
+  only and lacks the more advanced features of this component.
+</Tip>
+
+## Primary
+
+<Canvas withSource="open">
+  <Story
+    name="Primary"
+    args={{
+      variant: 'primary',
+      label: 'Primary'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Secondary"
+    args={{
+      variant: 'secondary',
+      label: 'Secondary'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Tertiary"
+    args={{
+      variant: 'tertiary',
+      label: 'Tertiary'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Primary (disabled)"
+    args={{
+      variant: 'primary',
+      disabled: true,
+      label: 'Primary (disabled)'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Create and destroy
+
+<Canvas withSource="open">
+  <Story
+    name="create"
+    args={{
+      variant: 'create',
+      label: 'create'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="destroy"
+    args={{
+      variant: 'destroy',
+      label: 'destroy'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Text only
+
+<Canvas withSource="open">
+  <Story
+    name="Text only"
+    args={{
+      variant: 'text',
+      label: 'Text only'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Text only (disabled)"
+    args={{
+      variant: 'text',
+      disabled: true,
+      label: 'Text only (disabled)'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Circular button
+
+A button can also be circular. Protip: Limit the amount of text you
+put in a circular button or better yet, use only an icon. This avoids creating
+huge buttons.
+
+<Canvas withSource="open">
+  <Story
+    name="Circular"
+    args={{
+      variant: 'primary',
+      label: 'add',
+      circular: true
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Circular with icon"
+    args={{
+      variant: 'primary',
+      label: 'add',
+      circular: true,
+      iconOnly: true,
+      children: <FaCoffee />
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Circular (disabled)"
+    args={{
+      variant: 'primary',
+      disabled: true,
+      label: 'add',
+      circular: true
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Circular (destroy)"
+    args={{
+      variant: 'destroy',
+      label: 'destroy',
+      circular: true,
+      iconOnly: true,
+      children: <FaCoffee />
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Includes icons
+
+Icons are included in the button component as children, this allows for a more
+flexible button design as there is no limit to the type of child you can add.
+
+The examples below only show a UI icon component being used but you could actually
+use any valid React element.
+
+<Tip type="danger">
+  As with anything that allows for unlimited customisation, there are no
+  guarantees that this component will work as expected if you leave the beaten
+  track.
+</Tip>
+
+<Canvas withSource="open">
+  <Story
+    name="With Left Icon"
+    args={{
+      variant: 'primary',
+      children: <FaCoffee />,
+      alignIcon: 'left'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="With Right Icon"
+    args={{
+      variant: 'primary',
+      children: <FaCoffee />,
+      alignIcon: 'right'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="With Central Icon"
+    args={{
+      variant: 'primary',
+      children: <FaCoffee />,
+      alignIcon: 'center'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="With Icon (disabled)"
+    args={{
+      variant: 'primary',
+      disabled: true,
+      children: <FaCoffee />,
+      alignIcon: 'left'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Icon only
+
+<Canvas withSource="open">
+  <Story
+    name="Icon only"
+    args={{
+      variant: 'primary',
+      iconOnly: true,
+      children: <FaCoffee />
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Icon Presets
+
+Rather than having to add an icon every time you use a button. You can use one of the
+available presets to add an icon to your button.
+
+<Canvas withSource="open">
+  <Story
+    name="Add icon"
+    args={{
+      variant: 'create',
+      iconOnly: true,
+      preset: 'add'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="Edit icon"
+    args={{
+      variant: 'primary',
+      iconOnly: true,
+      preset: 'edit'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="delete icon"
+    args={{
+      variant: 'destroy',
+      iconOnly: true,
+      preset: 'delete'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="refresh icon"
+    args={{
+      variant: 'primary',
+      iconOnly: true,
+      preset: 'refresh'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+  <Story
+    name="close icon"
+    args={{
+      variant: 'primary',
+      iconOnly: true,
+      preset: 'close'
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Children instead of label
+
+You do not need to use the label prop to add text to a button (although it is still the recommended way),
+you can pass children to the button instead.
+
+<Canvas withSource="open">
+  <Story name="With children instead of label">
+   <Button>Hello, I am a button</Button>
+  </Story>
+</Canvas>
+
+## Full width button
+
+Sometimes, you want a button to be full width, this is possible by passing the fullWidth prop to the button.
+
+<Canvas withSource="open">
+  <Story name="Full-width button">
+   <Button fullWidth>Hello, I am a long boi</Button>
+  </Story>
+</Canvas>
+
+## Loading state
+
+You can pass a 'loading' prop to the button to show a loading state. This will
+add a spinner to the button and disable it, you can also pass a 'loadingText'
+prop to show a custom loading text. By default the loading text is 'Loading...'
+
+<Canvas withSource="open">
+  <Story
+    name="Loading"
+    args={{
+      variant: 'primary',
+      label: 'Loading',
+      loadingIndicator: 'Loading...',
+      loading: true
+    }}
+  >
+    {(args) => <Button {...args} />}
+  </Story>
+</Canvas>
+
+## Use as a link
+
+A Button component can be used to style a link, however you must wrap the component
+in the correct routing method of your framework for it to work.
+
+e.g.
+
+```jsx
+<Link href="/marketplace">
+  <Button alignIcon="left">
+    <FaArrowLeft /> Return to Home page
+  </Button>
+</Link>
+```
+
+## Adding icons
+
+Anything can be used as a child of the button component and can be styled with
+the use of the `className` property. However the component has support for
+adding icons.
+
+Your icon should be either an `svg`, `img` or `picture` tag. You must then apply the `alignIcon` prop to the component which will align
+the icon correctly to either the `left` or `right`.
+
+
+## Props
+
+<ArgsTable of={Button} />

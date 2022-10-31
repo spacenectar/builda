@@ -1,0 +1,60 @@
+@mixin sizes($type) {
+  &.size-xs {
+    font-size: calc($fs-heading-#{$type} * 0.5);
+  }
+  &.size-s {
+    font-size: calc($fs-heading-#{$type} * 0.75);
+  }
+  &.size-m {
+    font-size: $fs-heading-#{$type};
+  }
+  &.size-l {
+    font-size: calc($fs-heading-#{$type} * 1.25);
+  }
+  &.size-xl {
+    font-size: calc($fs-heading-#{$type} * 1.5);
+  }
+  &.size-xxl {
+    font-size: calc($fs-heading-#{$type} * 2);
+  }
+}
+
+.text-h1 {
+  @include fs-heading-xxl;
+
+}
+
+.text-h2 {
+  @include fs-heading-xl;
+}
+
+.text-h3 {
+  @include fs-heading-l;
+}
+
+.text-h4 {
+  @include fs-heading-m;
+}
+
+.text-h5 {
+  @include fs-heading-s;
+  font-weight: 600;
+}
+
+.text-h6 {
+  @include fs-heading-s;
+}
+
+.text-p {
+  @include fs-body-text();
+}
+
+.text-span {
+  @include fs-body-text();
+  line-height: 1;
+}
+
+.show-margin:not(.text-span) {
+  margin-bottom: margin(1);
+}
+

@@ -1,0 +1,407 @@
+import { useState } from 'react';
+import InputFactory from './index';
+
+import options from 'lib/mocks/options';
+
+<Meta
+  title="input/InputFactory"
+  component={InputFactory}
+  args={{
+    name: 'Test name',
+    labelText: 'Test label',
+    type: 'text'
+  }}
+  argTypes={{
+    onChange: { action: 'onChange' }
+  }}
+/>
+
+# InputFactory
+
+The InputFactory is a container for all of the various input components. This is the component which handles labels, validation messages and helper text.
+
+By default, the InputFactory will fill 100% of the parent container but you can override this by passing in a `width`, `minWidth` or `maxWidth` prop. These properties
+behave in the same was as their corresponding CSS properties.
+
+<Tip>
+  {' '}
+  If you want to add support for another input type, see 'Adding new input types'
+  below.
+</Tip>
+
+## Usage
+
+You can output your required input components by passing in the `type` prop.
+
+The following are the available types and their corresponding components:
+
+| type         | component rendered                                                         |
+| ------------ | -------------------------------------------------------------------------- |
+| text         | [InputText](?path=/docs/atom-inputtext--text)                              |
+| password     | [InputText](?path=/docs/atom-inputtext--text)                              |
+| number       | [InputText](?path=/docs/atom-inputtext--text)                              |
+| url          | [InputText](?path=/docs/atom-inputtext--text)                              |
+| email        | [InputText](?path=/docs/atom-inputtext--text)                              |
+| tel          | [InputText](?path=/docs/atom-inputtext--text)                              |
+| textarea     | [InputTextarea](?path=/docs/atom-inputtextarea--default-story)             |
+| select       | [InputSelect](?path=/docs/atom-inputselect--default-story)                 |
+| autocomplete | [InputAutocomplete](?path=/docs/molecule-inputautocomplete--default-story) |
+| datetime     | [InputDatetime](?path=/docs/atom-inputdatetime--date-picker)               |
+| file         | [InputFile](?path=/docs/atom-inputfile--file-picker)                       |
+| checkbox     | [InputCheckbox](?path=/docs/atom-inputcheckbox--checked)                   |
+| radio        | [InputRadio](?path=/docs/atom-inputradio--checked)                         |
+| radiogroup   | [InputRadioGroup](?path=/docs/molecule-inputradiogroup--default-story)     |
+
+For examples on how to implement the various inputs, please see below.
+
+## Input types
+
+### Text Input
+
+<Canvas withSource="open">
+  <Story
+    name="Text input"
+    args={{
+      placeholder: 'test input goes here...'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Textarea Input
+
+<Canvas withSource="open">
+  <Story
+    name="Textarea input"
+    args={{
+      placeholder: 'test input goes here...',
+      rows: 5,
+      cols: 20,
+      type: 'textarea'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Radio Button and Checkboxes
+
+When using radio buttons or checkboxes, be sure to include the `hideLabel` prop,
+otherwise you'll end up with multiple lables.
+
+<Canvas withSource="open">
+  <Story
+    name="Checkbox"
+    args={{
+      hideLabel: true,
+      labelText: 'Checkbox',
+      type: 'checkbox'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+  <Story
+    name="Radio"
+    args={{
+      hideLabel: true,
+      labelText: 'Radio',
+      type: 'radio'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Radio group
+
+<Canvas withSource="open">
+  <Story
+    name="Radio Group"
+    args={{
+      name: 'radiogroup',
+      labelText: 'Radio group',
+      type: 'radiogroup',
+      options: [
+        { label: 'Radio one', value: '1' },
+        { label: 'Radio two', value: '2' },
+        { label: 'Radio three', value: '3' }
+      ]
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Select
+
+This project requires the use of a fully-styleble select element. The `Select`
+component is a drop in replacement for the native select element. It is
+fully navigatable with either keyboard or mouse, and styled to match the rest of the project.
+
+<Canvas withSource="open">
+  <Story
+    name="Select"
+    args={{
+      name: 'select',
+      labelText: 'Select',
+      options: options,
+      type: 'select'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### File Picker
+
+<Canvas withSource="open">
+  <Story
+    name="File Picker"
+    args={{
+      name: 'filePicker',
+      labelText: 'File Picker',
+      type: 'file'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Autocomplete
+
+<Canvas withSource="open">
+  <Story
+    name="Autocomplete"
+    args={{
+      name: 'autocomplete',
+      labelText: 'Autocomplete',
+      type: 'autocomplete',
+      options: [
+        'one',
+        'two',
+        'three',
+        'four',
+        'five',
+        'six',
+        'seven',
+        'eight',
+        'nine',
+        'ten'
+      ]
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Date & Time input
+
+<Canvas withSource="open">
+  <Story
+    name="Date Picker"
+    args={{
+      name: 'datePicker',
+      labelText: 'Date Picker',
+      type: 'datetime'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+## Input States
+
+<Canvas withSource="open" isColumn>
+  <Story
+    name="Normal status"
+    args={{
+      name: 'normal',
+      labelText: 'Normal'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story
+    name="Error State"
+    args={{
+      name: 'error',
+      labelText: 'Error',
+      status: 'error',
+      statusMessage:
+        'This is a much longer error message, this is to show how the design handles long error messages, try it out in different viewport sizes.'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story
+    name="Warning Status"
+    args={{
+      name: 'warning',
+      labelText: 'Warning',
+      status: 'warning',
+      statusMessage: 'Test warning message'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+<Canvas withSource="open">
+  <Story
+    name="Success Status"
+    args={{
+      name: 'success',
+      labelText: 'Success',
+      status: 'success',
+      statusMessage: 'Test success message'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### With helper text
+
+<Canvas withSource="open">
+  <Story
+    name="With helper text"
+    args={{
+      name: 'helperText',
+      labelText: 'Helper Text',
+      helperText: 'This is a helper text message'
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Disabled
+
+<Canvas withSource="open">
+  <Story
+    name="Disabled input"
+    args={{
+      name: 'disabled',
+      labelText: 'Disabled',
+      disabled: true
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Read Only
+
+<Canvas withSource="open">
+  <Story
+    name="Read only input"
+    args={{
+      name: 'readOnly',
+      labelText: 'Read Only',
+      readOnly: true
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+### Required
+
+<Canvas withSource="open">
+  <Story
+    name="Required input"
+    args={{
+      name: 'required',
+      labelText: 'Required',
+      required: true
+    }}
+  >
+    {(args) => <InputFactory {...args} />}
+  </Story>
+</Canvas>
+
+<Tip type="note">
+  The below stories are not controllable via the Storybook controls panel. They
+  will soon be upgraded to use actions and controls.
+</Tip>
+
+## Connecting to application state
+
+As the inputs all extend the props of their native counterparts, you can use
+them in your application state in the same way.
+
+Simply pass an `onChange` prop to the child component or the `InputFactory` itself, and it will be called
+when the value changes.
+
+<Canvas withSource="open">
+  <Story name="Connected state (Text input)">
+    {() => {
+      const [value, setValue] = useState('');
+      return (
+        <>
+          <p>
+            <strong>State value: </strong>
+            <span>"{value}"</span>
+          </p>
+          <hr />
+          <br />
+          <InputFactory
+            name="Test Name"
+            labelText="Test Input"
+            onChange={(e) => setValue(e.target.value)}
+            type="text"
+          />
+        </>
+      );
+    }}
+  </Story>
+  <Story name="Connected state (Select input)">
+    {() => {
+      const [value, setValue] = useState(options[1].value);
+      return (
+        <>
+          <p>
+            <strong>State value: </strong>
+            <span>"{value}"</span>
+          </p>
+          <hr />
+          <br />
+          <InputFactory
+            name="Test Name"
+            labelText="Test Input"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            options={options}
+            type="select"
+          />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Component compatibility <a id="compatibility"></a>
+
+Not all inputs are compatible with InputFactory, this is usually because the input implements InputFactory internally.
+
+You can quickly tell if a component is compatibile as you will be able to see a <WorksWith component="InputFactory" /> badge at the top of the story.
+
+## Adding new input types
+
+The list of inputs is documented in the `types/input-types.ts` file in the component folder. The list is comprehensive,
+but not exhaustive, it's fairly straightforward to add support for new types. Here's a quick run-through:
+
+1. In the `types/input-types.ts` file, add a new type, e.g. `| 'autocomplete'` (note the pipe, that tells typescript to treat this as an additional entry).
+2. In the `helpers/render-input.tsx` file add the new input type to the components import and then update the `switch` statement to include the new type.
+3. Update this story to include an example of the new type
+
+## Props
+
+<ArgsTable of={InputFactory} />

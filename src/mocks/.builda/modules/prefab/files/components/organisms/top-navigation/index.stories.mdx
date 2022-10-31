@@ -1,0 +1,20 @@
+import TopNavigation from './index';
+
+import users from 'lib/mocks/users';
+
+import links from 'lib/mocks/links';
+
+<Meta
+  title="organism/TopNavigation"
+  args={{
+    links
+  }}
+/>
+
+# App header
+
+<Description of={TopNavigation} />
+
+<Canvas withSource="open">
+  <Story name="default">{(args) => <TopNavigation {...args} />}</Story>
+</Canvas>

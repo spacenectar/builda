@@ -1,0 +1,5 @@
+{
+  "builda": "https://builda.app/modules/%REPO_NAME%",
+  "github": "https://raw.githubusercontent.com/%REPO_NAME%",
+  "bitbucket": "https://bitbucket.org/%REPO_NAME%/raw"
+}

@@ -1,0 +1,95 @@
+import TableCell from './index';
+
+<Meta
+  title="molecule/TableCell"
+  component={TableCell}
+  args={{
+    name: 'table-cell name',
+    children: <>Hello world</>
+  }}
+/>
+
+export const Template = (args) => <TableCell {...args} />;
+
+## Table Cell
+
+The table-cell component is used to display a single cell of a table. It is not a standalone component, but rather a child of the table component.
+
+<Tip type="warning">
+  The example below shows the component in a standard HTML table element. <br />{' '}
+  To see the correct styling and all available features, please refer to the{' '}
+  <a href="?path=/docs/molecule-table--default-story">Table</a> or{' '}
+  <a href="?path=/docs/organism-tablegenerator--default-story">
+    TableGenerator
+  </a>{' '}
+  components.
+</Tip>
+
+<Canvas withSource="open">
+  <Story name="Default">
+    <table>
+      <tbody>
+        <tr>
+          <TableCell>
+            <p>Hello world</p>
+          </TableCell>
+          <TableCell>
+            <p>Hello world</p>
+          </TableCell>
+        </tr>
+      </tbody>
+    </table>
+  </Story>
+</Canvas>
+
+The TabelCell component can render as a regular (`td`) cell or as a header (`th`) cell.
+
+You can tell the component to render as a header cell by passing the `th` prop.
+
+You don't need to pass the `th` prop if you are rendering the component
+inside the `Table` component as it will automatically detect the correct tag and the `TableGenerator`
+component will take care of all rendering anyway.
+
+<Canvas withSource="open">
+  <Story name="Render as TH">
+    <table>
+      <thead>
+        <tr>
+          <TableCell th>ID</TableCell>
+          <TableCell th>Name</TableCell>
+        </tr>
+      </thead>
+    </table>
+  </Story>
+</Canvas>
+
+The `Table` component is designed to be fully responsive, at smaller screens
+the table will collapse into a single column. In order for your table cells
+to work correctly in this context, you should pass a `contextHeading` prop
+to each cell, with the value of its corresponding header cell.
+
+If you are using the `TableGenerator` component (which is strongly recommended),
+this will be done automatically for you.
+
+<Canvas withSource="open">
+  <Story name="Using context heading">
+    <table>
+      <thead>
+        <tr>
+          <TableCell th>ID</TableCell>
+          <TableCell th>Name</TableCell>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <TableCell contextHeading="ID">24601</TableCell>
+          <TableCell contextHeading="Name">John Valjean</TableCell>
+        </tr>
+      </tbody>
+    </table>
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={TableCell} />

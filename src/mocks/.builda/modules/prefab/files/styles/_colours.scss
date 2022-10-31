@@ -1,0 +1,105 @@
+/* Backgrounds */
+$col-background: hsl(0, 0%, 100%);
+$col-main-panel-bg: hsl(0, 0%, 97%);
+$col-alt-panel-bg: hsl(53, 47%, 96%);
+
+/* Brand Colours */
+$col-primary: hsl(331, 64%, 49%);
+$col-secondary: hsl(266, 100%, 64%);
+$col-tertiary: hsl(272, 100%, 90%);
+
+/* Dark and light base colours */
+$col-dark: hsl(0, 0%, 7%);
+$col-light: hsl(0, 0%, 93%);
+
+/* Grey shades */
+$col-grey-100: hsl(0, 0%, 98%);
+$col-grey-200: hsl(0, 0%, 94%);
+$col-grey-300: hsl(0, 0%, 90%);
+$col-grey-400: hsl(0, 0%, 77%);
+$col-grey-500: hsl(0, 0%, 60%);
+$col-grey-600: hsl(0, 0%, 40%);
+$col-grey-700: hsl(0, 0%, 20%);
+$col-grey-800: hsl(0, 0%, 13%);
+$col-grey-900: hsl(0, 0%, 7%);
+
+/* Typography */
+$col-body-text: hsl(0, 0%, 8%);
+$col-body-text-light: hsl(203, 9%, 34%);
+
+/* Statuses */
+$col-warning: hsl(45, 100%, 51%);
+$col-success: hsl(152, 100%, 22%);
+$col-danger: hsl(8, 77%, 47%);
+$col-info: hsl(194, 100%, 36%);
+$col-error: $col-danger;
+
+/* Inputs */
+$col-input-bg: $col-background;
+$col-input-focus-bg: lighten($col-warning, 47%);
+$col-input-border: $col-grey-500;
+$col-input-border-focus: $col-warning;
+$col-label-text: hsl(0, 5%, 46%);
+$col-input-text: $col-body-text;
+$col-disabled-input-text: $col-label-text;
+
+/* Links */
+/* Style also applies to text buttons */
+$col-link: hsl(260, 54%, 48%);
+$col-link-hover: lighten($col-link, 20%);
+$col-link-hover-bg: hsl(260, 70%, 70%);
+$col-link-focus-bg: $col-link-hover;
+$col-link-disabled: hsl(0, 5%, 46%);
+
+/* Actions */
+$col-action: $col-link;
+$col-action-destroy: $col-danger;
+$col-action-create: $col-success;
+$col-action-disabled: hsl(0, 0%, 60%);
+
+$col-action-hover: lighten($col-primary, 10%);
+$col-action-destroy-hover: lighten($col-secondary, 10%);
+$col-action-create-hover: lighten($col-action-create, 10%);
+
+$col-action-focus-bg: lighten($col-primary, 20%);
+$col-action-destroy-focus-bg: lighten($col-secondary, 20%);
+$col-action-create-focus-bg: lighten($col-action-create, 20%);
+
+$col-action-text: hsl(0, 0%, 100%);
+
+/* Shadows and borders */
+
+$col-shadow: hsl(0, 0%, 0%);
+$col-border: hsl(30, 3%, 87%);
+$col-border-dark: hsl(0, 0%, 44%);
+
+/* Chips */
+
+$col-chip-bg: $col-background;
+$col-chip-category-bg: hsl(18, 38%, 87%);
+
+/* Tables */
+
+$col-table-bg: $col-background;
+$col-table-header-bg: $col-primary;
+$col-table-header-text: $col-light;
+$col-table-stripe-bg: hsl(0, 0%, 94%);
+
+$col-statuses: (
+  error: $col-error,
+  success: $col-success,
+  warning: $col-warning,
+  info: $col-info
+);
+
+/* Room colour options */
+$col-orange: hsl(27, 99%, 39%);
+$col-blue: hsl(213, 50%, 49%);
+$col-turquoise: hsl(165, 34%, 45%);
+$col-red: hsl(0, 63%, 57%);
+$col-pink: hsl(302, 50%, 48%);
+$col-indigo: hsl(275, 100%, 25%);
+$col-purple: hsl(265, 100%, 46%);
+$col-green: hsl(105, 40%, 44%);
+$col-brown: hsl(27, 47%, 38%);
+$col-hotpink: hsl(314, 100%, 31%);

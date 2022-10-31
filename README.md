@@ -2,8 +2,8 @@
 
 [![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
 [![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
-[![GitHub issues](https://img.shields.io/github/issues/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
-[![GitHub stars](https://img.shields.io/github/stars/st-elmos-fire/builda?style=for-the-badge&logo=github)](https://github.com/st-elmos-fire/builda)
+[![GitHub issues](https://img.shields.io/github/issues/spacenectar/builda?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda)
+[![GitHub stars](https://img.shields.io/github/stars/spacenectar/builda?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda)
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
@@ -26,11 +26,11 @@ You can also build entire projects using super-powered blueprints known as 'pref
 
 ### Initialising builda
 
-![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/builda/example/init.gif)
+![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/example/init.gif)
 
 ### Generate an atom component
 
-![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/builda/example/generate-atom.gif)
+![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/example/generate-atom.gif)
 
 The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda/tree/master/example/test-component)
 
@@ -150,19 +150,22 @@ builda install sn:custom-blueprint
 #### `builda --init`
 
 Initialises builda in your project. This will create a `.builda` directory in your
-project root and a `config.json` file inside that. (see [Configuration](#configuration) below)
+project root and a `config.json` file inside that.
+(see [Configuration](#configuration) below)
 
 #### `builda --prefab <prefab-path>`
 
 Initialises a new project using a prefab. (see [Prefabs](#prefabs) below)
 
-#### `builda --exec <command>
+#### `builda --exec <command>`
 
-Executes a command in the context of the current project. (see [Commands](#commands) below)
+Executes a command in the context of the current project.
+(see [Commands](#commands) below)
 
 #### `builda --index`
 
-Generates an index file any directories specified in 'indexes' in the config file. (see [Indexing](#indexing) below)
+Generates an index file any directories specified in 'indexes' in the config
+file. (see [Indexing](#indexing) below)
 
 #### `builda --help`
 
@@ -292,6 +295,22 @@ This will build out your new project using the `the-burrows` prefab.
 > package to your project (e.g. storybook) and wanted to keep that preconfiguration
 > in sync with the rest of your projects but still leave the rest of your project
 > as a standalone project.
+
+## Commands
+
+Builda can also be used to run commands in the context of your project. This is
+useful if you want to run a command that is not a blueprint or prefab.
+
+Most commonly, you would not need to run this command directly as this is generally
+handled by the prefab developer. But if you want to run a command that is not
+included in the prefab, you can do this by running:
+
+```shell
+builda exec <command>
+```
+
+This will find the matching script in the `.builda/export/pacakge.json` file and
+run it in the context of your project.
 
 ## Migrating from Buildcom
 
