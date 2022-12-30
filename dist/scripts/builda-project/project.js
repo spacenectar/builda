@@ -52,7 +52,7 @@ exports.default = async ({ appName, appRoot, pathName, packageManager, autoInsta
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = (appName || answers.appName);
     const prefabPath = (pathName || answers.prefab);
-    const packageManagerType = packageManager || answers.yarnOrNpm || 'npm';
+    const packageManagerType = packageManager || answers.packageManager || 'npm';
     const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
     await (0, helpers_1.createDir)(kebabAppName);
