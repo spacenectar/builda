@@ -1,9 +1,9 @@
-# ![Builda Logo](https://raw.githubusercontent.com/spacenectar/builda/master/builda-logo.png)
+# ![Builda Logo](https://raw.githubusercontent.com/spacenectar/builda-app/master/builda-logo.png)
 
 [![NPM Version](https://img.shields.io/npm/v/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
 [![npm](https://img.shields.io/npm/dt/builda?style=for-the-badge&logo=npm)](https://www.npmjs.com/package/builda)
-[![GitHub issues](https://img.shields.io/github/issues/spacenectar/builda?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda)
-[![GitHub stars](https://img.shields.io/github/stars/spacenectar/builda?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda)
+[![GitHub issues](https://img.shields.io/github/issues/spacenectar/builda-app?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda-app)
+[![GitHub stars](https://img.shields.io/github/stars/spacenectar/builda-app?style=for-the-badge&logo=github)](https://github.com/spacenectar/builda-app)
 ![Codacy grade](https://img.shields.io/codacy/grade/2d431f518682497fb27036f95ec38599?style=for-the-badge)
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
@@ -26,13 +26,13 @@ You can also build entire projects using super-powered blueprints known as 'pref
 
 ### Initialising builda
 
-![Initialisation](https://raw.githubusercontent.com/spacenectar/builda/master/example/init.gif)
+![Initialisation](https://raw.githubusercontent.com/spacenectar/builda-app/master/example/init.gif)
 
 ### Generate an atom component
 
-![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda/master/example/generate-atom.gif)
+![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda-app/master/example/generate-atom.gif)
 
-The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda/tree/master/example/test-component)
+The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda-app/tree/master/example/test-component)
 
 ## Setup
 
@@ -349,7 +349,7 @@ release, you may find that you are better off staying with buildcom for now.
 
 ## Get support / discuss builda
 
-I've set up a [GitHub Discussions board](https://github.com/spacenectar/builda/discussions)
+I've set up a [GitHub Discussions board](https://github.com/spacenectar/builda-app/discussions)
 for builda. Feel free to post questions, bugs, suggestions, or just to chat.
 
 ## Contribute
