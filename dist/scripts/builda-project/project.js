@@ -15,7 +15,7 @@ const generate_from_prefab_1 = require("./helpers/generate-from-prefab");
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-exports.default = async ({ appName, appRoot, pathName, packageManager, autoInstall, smokeTest }) => {
+exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall, smokeTest }) => {
     const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
     const defaultRequiredFiles = [
         buildaDir,
@@ -24,7 +24,7 @@ exports.default = async ({ appName, appRoot, pathName, packageManager, autoInsta
         'README.md'
     ];
     let answers = {};
-    if (!pathName) {
+    if (!prefab) {
         const { usePrefab } = await inquirer_1.default.prompt([
             {
                 type: 'confirm',
@@ -46,18 +46,18 @@ exports.default = async ({ appName, appRoot, pathName, packageManager, autoInsta
         }
     }
     let newProjectAnswers = {};
-    if (!appRoot || !appName || !packageManager) {
+    if (!prefab || !appName) {
         newProjectAnswers = await (0, helpers_1.newProjectQuestions)();
     }
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = (appName || answers.appName);
-    const prefabPath = (pathName || answers.prefab);
+    const prefabPath = (prefab || answers.prefab);
     const packageManagerType = packageManager || answers.packageManager || 'npm';
-    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
     await (0, helpers_1.createDir)(kebabAppName);
     // Change directory to the new app
     node_process_1.default.chdir(kebabAppName);
+    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     // check if the root directory is empty
     const workingDir = node_path_1.default.join(rootDir, buildaDir, 'export');
     const prefabDir = node_path_1.default.join(rootDir, buildaDir, 'modules', 'prefab');

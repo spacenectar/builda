@@ -47,7 +47,7 @@ exports.default = async (url, resolved) => {
             };
         }
         (_a = validate.errors) === null || _a === void 0 ? void 0 : _a.forEach((error) => {
-            (0, helpers_1.writeLogFile)(`Registry validation error: ${error.message}`);
+            console.log(`Registry validation error: ${error.message}`);
         });
         return {
             status: false,
