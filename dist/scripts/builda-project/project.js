@@ -53,7 +53,7 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
     const name = (appName || answers.appName);
     const prefabPath = (prefab || answers.prefab);
     const packageManagerType = packageManager || answers.packageManager || 'yarn';
-    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
+    const rootDir = appRoot || answers.appRoot || './';
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
     await (0, helpers_1.createDir)(kebabAppName);
     // Change directory to the new app
@@ -62,7 +62,7 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
     const workingDir = node_path_1.default.join(rootDir, buildaDir, 'export');
     const prefabDir = node_path_1.default.join(rootDir, buildaDir, 'modules', 'prefab');
     if (node_fs_1.default.readdirSync(rootDir).length !== 0) {
-        (0, helpers_1.throwError)(`The directory: '${rootDir}' already exists. It is not recommended to install a prefab into an existing project.`);
+        (0, helpers_1.throwError)(`The directory: '${kebabAppName}' already exists. It is not recommended to install a prefab into an existing project.`);
     }
     await (0, helpers_1.createDir)(workingDir);
     // The directory is empty, so we can continue

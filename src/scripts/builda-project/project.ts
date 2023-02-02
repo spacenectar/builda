@@ -90,7 +90,7 @@ export default async ({
   const prefabPath = (prefab || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.packageManager as string) || 'yarn';
-  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
+  const rootDir = appRoot || (answers.appRoot as string) || './';
 
   const kebabAppName = changeCase(name, 'kebabCase');
 
@@ -105,7 +105,7 @@ export default async ({
 
   if (fs.readdirSync(rootDir).length !== 0) {
     throwError(
-      `The directory: '${rootDir}' already exists. It is not recommended to install a prefab into an existing project.`
+      `The directory: '${kebabAppName}' already exists. It is not recommended to install a prefab into an existing project.`
     );
   }
 
