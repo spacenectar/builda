@@ -90,6 +90,7 @@ export default async ({
   const prefabPath = (prefab || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.packageManager as string) || 'npm';
+  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
   const kebabAppName = changeCase(name, 'kebabCase');
 
@@ -97,8 +98,6 @@ export default async ({
 
   // Change directory to the new app
   process.chdir(kebabAppName);
-
-  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
   // check if the root directory is empty
   const workingDir = path.join(rootDir, buildaDir, 'export');

@@ -53,11 +53,11 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
     const name = (appName || answers.appName);
     const prefabPath = (prefab || answers.prefab);
     const packageManagerType = packageManager || answers.packageManager || 'npm';
+    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
     await (0, helpers_1.createDir)(kebabAppName);
     // Change directory to the new app
     node_process_1.default.chdir(kebabAppName);
-    const rootDir = appRoot || answers.appRoot || node_process_1.default.cwd();
     // check if the root directory is empty
     const workingDir = node_path_1.default.join(rootDir, buildaDir, 'export');
     const prefabDir = node_path_1.default.join(rootDir, buildaDir, 'modules', 'prefab');
