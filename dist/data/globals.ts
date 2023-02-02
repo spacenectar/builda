@@ -1,5 +1,5 @@
 export default {
-  "version": "5.0.0-3",
+  "version": "5.0.0-4",
   "buildaDir": ".builda",
   "configFileName": "builda.json",
   "websiteUrl": "https://www.builda.app",

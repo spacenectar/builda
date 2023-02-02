@@ -25,6 +25,10 @@ export const builda = async () => {
     .scriptName('builda')
     .usage('$0 <cmd> [args]')
     .help()
+    .demandCommand(
+      1,
+      'You need at least one command before moving on. Try "builda --help" for more information'
+    )
     .command({ ...projectCommand() })
     .command({ ...initCommand() })
     .command({ ...buildCommand() })

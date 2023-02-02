@@ -89,7 +89,7 @@ export default async ({
   const name = (appName || answers.appName) as string;
   const prefabPath = (prefab || answers.prefab) as string;
   const packageManagerType =
-    packageManager || (answers.packageManager as string) || 'npm';
+    packageManager || (answers.packageManager as string) || 'yarn';
   const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
   const kebabAppName = changeCase(name, 'kebabCase');
