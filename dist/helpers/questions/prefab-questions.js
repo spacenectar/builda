@@ -42,6 +42,9 @@ exports.default = async () => {
                 }
                 // Check that a registry.json file exists at the url
                 const module = await (0, helpers_1.validateModulePath)(input);
+                if (module.status !== true) {
+                    chalk_1.default.red(module.message);
+                }
                 return module.status;
             }
         },

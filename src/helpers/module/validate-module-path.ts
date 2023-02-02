@@ -56,7 +56,7 @@ export default async (
         };
       }
       validate.errors?.forEach((error) => {
-        writeLogFile(`Registry validation error: ${error.message}`);
+        console.log(`Registry validation error: ${error.message}`);
       });
       return {
         status: false,

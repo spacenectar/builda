@@ -22,7 +22,7 @@ import { TFlatObject } from 'types/flat-object';
 export type TGenerateProject = {
   appName?: string;
   appRoot?: string;
-  pathName?: string;
+  prefab?: string;
   packageManager?: string;
   cliPrefabPath?: string;
   autoInstall?: boolean;
@@ -36,7 +36,7 @@ export type TGenerateProject = {
 export default async ({
   appName,
   appRoot,
-  pathName,
+  prefab,
   packageManager,
   autoInstall,
   smokeTest
@@ -52,7 +52,7 @@ export default async ({
   ];
 
   let answers = {} as TFlatObject;
-  if (!pathName) {
+  if (!prefab) {
     const { usePrefab } = await inquirer.prompt([
       {
         type: 'confirm',
@@ -82,15 +82,14 @@ export default async ({
 
   let newProjectAnswers = {} as TFlatObject;
 
-  if (!appRoot || !appName || !packageManager) {
+  if (!prefab || !appName) {
     newProjectAnswers = await newProjectQuestions();
   }
   answers = { ...answers, ...newProjectAnswers };
   const name = (appName || answers.appName) as string;
-  const prefabPath = (pathName || answers.prefab) as string;
+  const prefabPath = (prefab || answers.prefab) as string;
   const packageManagerType =
     packageManager || (answers.packageManager as string) || 'npm';
-  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
   const kebabAppName = changeCase(name, 'kebabCase');
 
@@ -98,6 +97,8 @@ export default async ({
 
   // Change directory to the new app
   process.chdir(kebabAppName);
+
+  const rootDir = appRoot || (answers.appRoot as string) || process.cwd();
 
   // check if the root directory is empty
   const workingDir = path.join(rootDir, buildaDir, 'export');

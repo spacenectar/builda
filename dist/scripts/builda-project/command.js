@@ -16,16 +16,16 @@ exports.default = () => {
                 type: 'string',
                 default: ''
             })
-                .option('pathName', {
+                .option('prefab', {
                 alias: 'p',
                 default: '',
-                describe: 'The path to the prefab (url or local path)',
+                describe: 'The prefab to use (url, local path, or preset name)',
                 type: 'string'
             })
                 .option('packageManager', {
                 alias: 'm',
-                choices: ['npm', 'yarn'],
-                default: 'npm',
+                choices: ['yarn', 'npm'],
+                default: 'yarn',
                 describe: 'The package manager to use',
                 type: 'string'
             })
@@ -45,7 +45,7 @@ exports.default = () => {
         handler: async (argv) => {
             const args = {
                 appName: argv.appName,
-                pathName: argv.pathName,
+                prefab: argv.prefab,
                 packageManager: argv.packageManager,
                 autoInstall: argv.autoInstall,
                 smokeTest: argv.smokeTest
