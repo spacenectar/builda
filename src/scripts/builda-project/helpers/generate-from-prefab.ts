@@ -165,7 +165,7 @@ export async function generateFromPrefab(
        */
       buildaScripts[key] = value;
     } else {
-      buildaScripts[key] = `builda -x ${key}`;
+      buildaScripts[key] = `builda x ${key}`;
     }
   });
 
