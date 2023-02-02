@@ -36,6 +36,9 @@ export const convertRegistryPathToUrl = ({
     if (newPath.includes('bitbucket.org')) {
       url = newPath.replace('src', 'raw');
     }
+    if (url.endsWith('/')) {
+      url = url.slice(0, -1);
+    }
     return { url, error };
   }
 
