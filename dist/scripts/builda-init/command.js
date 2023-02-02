@@ -9,7 +9,6 @@ exports.default = () => {
     return {
         command: 'init',
         desc: 'Initialise builda',
-        aliases: ['$0'],
         builder: (yargs) => {
             return yargs.option('configPath', {
                 aliases: ['c', 'config'],
