@@ -122,7 +122,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             buildaScripts[key] = value;
         }
         else {
-            buildaScripts[key] = `builda -x ${key}`;
+            buildaScripts[key] = `builda x ${key}`;
         }
     });
     // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files

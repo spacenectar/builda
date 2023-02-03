@@ -22,6 +22,9 @@ const convertRegistryPathToUrl = ({ registryPath, config }) => {
         if (newPath.includes('bitbucket.org')) {
             url = newPath.replace('src', 'raw');
         }
+        if (url.endsWith('/')) {
+            url = url.slice(0, -1);
+        }
         return { url, error };
     }
     const resolverMatcher = newPath.match(/^([a-z]+:{1}[/]{0})([a-z0-9-/]+)((?:@{1}v?[0-9.]+)?(?:[\w\d-]*))?$/);
