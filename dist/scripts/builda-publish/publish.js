@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_fs_1 = __importDefault(require("node:fs"));
-const tar_1 = __importDefault(require("tar"));
 const simple_git_1 = require("simple-git");
 const helpers_1 = require("../../helpers");
 const publish_to_trade_store_1 = require("./helpers/publish-to-trade-store");
@@ -15,7 +14,7 @@ exports.default = async (updateVersion) => {
     const { name, type, version, publishToTradeStore } = registry;
     const REGISTRYFILE = 'registry.json';
     const READMEFILE = 'README.md';
-    const FILESFOLDER = 'files';
+    const MODULEPACKAGE = 'files.tgz';
     if (!registry) {
         (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
     }
@@ -31,9 +30,8 @@ exports.default = async (updateVersion) => {
     if (!publishToTradeStore) {
         (0, helpers_1.printMessage)(`No tradeStore entry found in ${REGISTRYFILE}.\nThis module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`, 'info');
     }
-    const validateFileFolder = (0, check_path_exists_1.checkPathExists)(FILESFOLDER, true);
-    if (validateFileFolder.error) {
-        (0, helpers_1.throwError)(validateFileFolder.message);
+    if (!node_fs_1.default.existsSync(MODULEPACKAGE)) {
+        (0, helpers_1.throwError)(`No ${MODULEPACKAGE} file found. Please run 'builda package' before publishing.\r`);
     }
     const isCorrectlyPrefixed = name.startsWith(`${type}-`);
     if (!isCorrectlyPrefixed) {
@@ -56,23 +54,10 @@ exports.default = async (updateVersion) => {
     const newRegistry = Object.assign(Object.assign({}, registry), { version: newVersion });
     const newRegistryString = JSON.stringify(newRegistry, null, 2);
     node_fs_1.default.writeFileSync(REGISTRYFILE, newRegistryString);
-    // Package the files folder into a tarball
-    (0, helpers_1.printMessage)(`Packaging ${name}...`, 'processing');
-    // If there is already a tarball, delete it
-    if (node_fs_1.default.existsSync('files.tgz')) {
-        node_fs_1.default.unlinkSync('files.tgz');
-    }
-    // Create the tarball
-    await tar_1.default.create({
-        file: `${FILESFOLDER}.tgz`,
-        gzip: true,
-        cwd: FILESFOLDER
-    }, node_fs_1.default.readdirSync(FILESFOLDER));
-    (0, helpers_1.printMessage)('Package created', 'success');
     // Add new tarball to git
-    (0, helpers_1.printMessage)(`Adding ${FILESFOLDER}.tgz to git...`, 'processing');
-    await git.add(`${FILESFOLDER}.tgz`);
-    await git.commit(`Adds updated ${FILESFOLDER}.tgz`);
+    (0, helpers_1.printMessage)(`Adding ${MODULEPACKAGE} to git...`, 'processing');
+    await git.add(`${MODULEPACKAGE}`);
+    await git.commit(`Adds updated ${MODULEPACKAGE}`);
     (0, helpers_1.printMessage)('Added to git', 'success');
     (0, helpers_1.printMessage)('Tagging the latest commit...', 'processing');
     // If tag already exists, throw an error
@@ -85,6 +70,7 @@ exports.default = async (updateVersion) => {
     await git.addTag(`v${newVersion}`);
     let tagString = 'tags';
     if (registry.prerelease) {
+        // TODO: Refactor the below code to add a 'next' tag if the prerelease entry is true
         (0, helpers_1.printMessage)('Prerelease entry found in registry.json. Skipping latest tag...', 'info');
         tagString = 'tag';
     }

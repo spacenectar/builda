@@ -10,6 +10,7 @@ import { command as projectCommand } from 'scripts/builda-project';
 import { command as executeCommand } from 'scripts/builda-execute';
 import { command as installCommand } from 'scripts/builda-install';
 import { command as addCommand } from 'scripts/builda-add';
+import { command as packageCommand } from 'scripts/builda-package';
 import { command as publishCommand } from 'scripts/builda-publish';
 import { command as updateCommand } from 'scripts/builda-update';
 import { command as watchCommand } from 'scripts/builda-watch';
@@ -36,6 +37,7 @@ export const builda = async () => {
     .command({ ...installCommand() })
     .command({ ...newCommand() })
     .command({ ...executeCommand() })
+    .command({ ...packageCommand() })
     .command({ ...publishCommand() })
     .command({ ...updateCommand() })
     .command({ ...watchCommand() })

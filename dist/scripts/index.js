@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initCommand = exports.buildaInit = exports.buildCommand = exports.buildaBuild = exports.newCommand = exports.buildaNew = exports.indexerCommand = exports.buildaIndexer = exports.watchCommand = exports.buildaWatch = exports.updateCommand = exports.buildaUpdate = exports.publishCommand = exports.buildaPublish = exports.installCommand = exports.buildaInstall = exports.addCommand = exports.buildaAdd = exports.executeCommand = exports.buildaExecute = exports.projectCommand = exports.buildaProject = void 0;
+exports.initCommand = exports.buildaInit = exports.buildCommand = exports.buildaBuild = exports.newCommand = exports.buildaNew = exports.indexerCommand = exports.buildaIndexer = exports.watchCommand = exports.buildaWatch = exports.updateCommand = exports.buildaUpdate = exports.publishCommand = exports.buildaPublish = exports.packageCommand = exports.buildaPackage = exports.installCommand = exports.buildaInstall = exports.addCommand = exports.buildaAdd = exports.executeCommand = exports.buildaExecute = exports.projectCommand = exports.buildaProject = void 0;
 var builda_project_1 = require("./builda-project");
 Object.defineProperty(exports, "buildaProject", { enumerable: true, get: function () { return builda_project_1.buildaProject; } });
 Object.defineProperty(exports, "projectCommand", { enumerable: true, get: function () { return builda_project_1.command; } });
@@ -13,6 +13,9 @@ Object.defineProperty(exports, "addCommand", { enumerable: true, get: function (
 var builda_install_1 = require("./builda-install");
 Object.defineProperty(exports, "buildaInstall", { enumerable: true, get: function () { return builda_install_1.buildaInstall; } });
 Object.defineProperty(exports, "installCommand", { enumerable: true, get: function () { return builda_install_1.command; } });
+var builda_package_1 = require("./builda-package");
+Object.defineProperty(exports, "buildaPackage", { enumerable: true, get: function () { return builda_package_1.buildaPackage; } });
+Object.defineProperty(exports, "packageCommand", { enumerable: true, get: function () { return builda_package_1.command; } });
 var builda_publish_1 = require("./builda-publish");
 Object.defineProperty(exports, "buildaPublish", { enumerable: true, get: function () { return builda_publish_1.buildaPublish; } });
 Object.defineProperty(exports, "publishCommand", { enumerable: true, get: function () { return builda_publish_1.command; } });
