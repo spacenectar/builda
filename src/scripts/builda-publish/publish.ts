@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 import fs from 'node:fs';
-import tar from 'tar';
 
 import { simpleGit } from 'simple-git';
 
@@ -15,7 +14,7 @@ export default async (updateVersion?: string) => {
 
   const REGISTRYFILE = 'registry.json';
   const READMEFILE = 'README.md';
-  const FILESFOLDER = 'files';
+  const MODULEPACKAGE = 'files.tgz';
 
   if (!registry) {
     throwError(
@@ -42,10 +41,10 @@ export default async (updateVersion?: string) => {
     );
   }
 
-  const validateFileFolder = checkPathExists(FILESFOLDER, true);
-
-  if (validateFileFolder.error) {
-    throwError(validateFileFolder.message);
+  if (!fs.existsSync(MODULEPACKAGE)) {
+    throwError(
+      `No ${MODULEPACKAGE} file found. Please run 'builda package' before publishing.\r`
+    );
   }
 
   const isCorrectlyPrefixed = name.startsWith(`${type}-`);
@@ -91,28 +90,10 @@ export default async (updateVersion?: string) => {
 
   fs.writeFileSync(REGISTRYFILE, newRegistryString);
 
-  // Package the files folder into a tarball
-  printMessage(`Packaging ${name}...`, 'processing');
-  // If there is already a tarball, delete it
-  if (fs.existsSync('files.tgz')) {
-    fs.unlinkSync('files.tgz');
-  }
-
-  // Create the tarball
-  await tar.create(
-    {
-      file: `${FILESFOLDER}.tgz`,
-      gzip: true,
-      cwd: FILESFOLDER
-    },
-    fs.readdirSync(FILESFOLDER)
-  );
-  printMessage('Package created', 'success');
-
   // Add new tarball to git
-  printMessage(`Adding ${FILESFOLDER}.tgz to git...`, 'processing');
-  await git.add(`${FILESFOLDER}.tgz`);
-  await git.commit(`Adds updated ${FILESFOLDER}.tgz`);
+  printMessage(`Adding ${MODULEPACKAGE} to git...`, 'processing');
+  await git.add(`${MODULEPACKAGE}`);
+  await git.commit(`Adds updated ${MODULEPACKAGE}`);
   printMessage('Added to git', 'success');
   printMessage('Tagging the latest commit...', 'processing');
   // If tag already exists, throw an error
@@ -128,6 +109,7 @@ export default async (updateVersion?: string) => {
   await git.addTag(`v${newVersion}`);
   let tagString = 'tags';
   if (registry.prerelease) {
+    // TODO: Refactor the below code to add a 'next' tag if the prerelease entry is true
     printMessage(
       'Prerelease entry found in registry.json. Skipping latest tag...',
       'info'
