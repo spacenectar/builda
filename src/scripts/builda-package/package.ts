@@ -12,7 +12,22 @@ export default async (updateVersion?: string) => {
 
   const REGISTRYFILE = 'registry.json';
   const READMEFILE = 'README.md';
-  const FILESFOLDER = 'files';
+  const FILESFOLDER = 'module';
+
+  const ignoreFiles = [] as string[];
+  // Check for an .npmignore file in the root directory if it exists add the files to the ignoreFiles array
+  if (fs.existsSync('.npmignore')) {
+    const npmIgnore = fs.readFileSync('.npmignore', 'utf8');
+    const npmIgnoreFiles = npmIgnore.split('\n');
+    ignoreFiles.push(...npmIgnoreFiles);
+  }
+
+  // Check for a .gitignore file inside the files folder if it exists add the files to the ignoreFiles array
+  if (fs.existsSync(`${FILESFOLDER}/.gitignore`)) {
+    const gitignore = fs.readFileSync(`${FILESFOLDER}/.gitignore`, 'utf8');
+    const gitignoreFiles = gitignore.split('\n');
+    ignoreFiles.push(...gitignoreFiles);
+  }
 
   if (!registry) {
     throwError(
@@ -68,16 +83,17 @@ export default async (updateVersion?: string) => {
   // Package the files folder into a tarball
   printMessage(`Packaging ${name}...`, 'processing');
   // If there is already a tarball, delete it
-  if (fs.existsSync('files.tgz')) {
-    fs.unlinkSync('files.tgz');
+  if (fs.existsSync('module.tgz')) {
+    fs.unlinkSync('module.tgz');
   }
 
   // Create the tarball
   await tar.create(
     {
-      file: `${FILESFOLDER}.tgz`,
+      file: `module.tgz`,
       gzip: true,
-      cwd: FILESFOLDER
+      cwd: FILESFOLDER,
+      filter: (path) => !ignoreFiles.includes(path)
     },
     fs.readdirSync(FILESFOLDER)
   );

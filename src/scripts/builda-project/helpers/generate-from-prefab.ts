@@ -54,14 +54,14 @@ export async function generateFromPrefab(
 
   const prefabName = module.name;
   const version = module.version;
-  const substitutions = module.substitute || [];
+  const substitutions = module?.generatorOptions?.substitutions || [];
 
   // handle root files
 
   const extraRootfiles = [] as string[];
   const extraRootfilesToRewrite = [] as RootFile[];
 
-  module.appFiles?.forEach((file: unknown) => {
+  module.generatorOptions?.uniqueFiles?.forEach((file: unknown) => {
     if (typeof file === 'string') {
       extraRootfiles.push(file);
     } else {
@@ -168,45 +168,6 @@ export async function generateFromPrefab(
       buildaScripts[key] = `builda x ${key}`;
     }
   });
-
-  // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
-  // to the root directory without the .unique extension
-  if (module.uniqueInstances && module.uniqueInstances.length > 0) {
-    module.uniqueInstances.forEach((file) => {
-      if (typeof file === 'string') {
-        const uniqueFile = path.resolve(workingDir, file);
-        const uniqueFileSrcDir = path.dirname(uniqueFile);
-        fs.copyFileSync(
-          uniqueFile,
-          path.join(
-            uniqueFileSrcDir.replace(workingDir, rootDir),
-            file.replace('.unique', '')
-          )
-        );
-      } else {
-        const recastFile = file as RootFile;
-        const rewrite = recastFile.rewrite || false;
-        const uniqueFile = path.join(workingDir, recastFile.path);
-        const uniqueFileSrcDir = path.dirname(uniqueFile);
-        if (rewrite) {
-          const uniqueFileContents = fs.readFileSync(uniqueFile, {
-            encoding: 'utf8'
-          });
-          const uniqueFileSubs =
-            [...substitute, file.substitutions].flat() || substitute;
-
-          writeFile({
-            file: uniqueFile,
-            content: uniqueFileContents,
-            substitute: uniqueFileSubs,
-            name: appName,
-            rename: uniqueFile.replace('.unique', ''),
-            outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
-          });
-        }
-      }
-    });
-  }
 
   // Create a new package.json file in the root directory with updated details
   const newPackageJson = {

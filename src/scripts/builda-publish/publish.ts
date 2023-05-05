@@ -14,7 +14,7 @@ export default async (updateVersion?: string) => {
 
   const REGISTRYFILE = 'registry.json';
   const READMEFILE = 'README.md';
-  const MODULEPACKAGE = 'files.tgz';
+  const MODULEPACKAGE = 'module.tgz';
 
   if (!registry) {
     throwError(

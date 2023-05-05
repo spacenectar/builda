@@ -13,7 +13,9 @@ export const copyDir = (source: string, destination: string) => {
     if (fs.lstatSync(srcPath).isDirectory()) {
       copyDir(srcPath, destPath);
     } else {
-      fs.copyFileSync(srcPath, destPath);
+      fs.cpSync(srcPath, destPath, {
+        dereference: true
+      });
     }
   });
 };

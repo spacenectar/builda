@@ -7,7 +7,8 @@ export type RootFile = {
    */
   path: string;
   /**
-   * Should the file contents be rewritten with substitutions?
+   * Should the file contents be rewritten with the default substitutions?
+   * https://builda.app/docs/build-a-module/substitutions
    * @default false
    * @optional
    */
@@ -92,31 +93,6 @@ export interface ModuleRegistry {
    */
   funding?: string[];
   /**
-   * Any files which should be copied to the app root when the module is installed in addition
-   * to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files))
-   * If the module is a blueprint, this will be ignored
-   * @optional
-   */
-  appFiles?: RootFile[] | string[];
-  /**
-   * Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root
-   * in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend
-   * files from the prefab (like tsconfig.json).
-   *
-   * Just like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.
-   *
-   * Note: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists
-   */
-  uniqueInstances?: RootFile[] | string[];
-  /**
-   * If this module has any required dependencies, you can add them here
-   * @example "react": "^17.0.1"
-   * @optional
-   */
-  dependencies?: {
-    [key: string]: string;
-  };
-  /**
    * If the module is a prefab and requires blueprints or has it's own blueprints, you should add them here
    * if the module is a blueprint, this field is ignored
    * @example "github:cool-developer/blueprint-cool-module@3.0.0"
@@ -125,10 +101,42 @@ export interface ModuleRegistry {
    */
   blueprints?: ModuleConfig;
   /**
-   * A list of substitutions to make when the module is installed (see (https://builda.app/docs/build-a-module/substitutions))
+   * A set of options which will be passed to the module generator when the module has been installed
    * @optional
    */
-  substitute?: TSubstitution[];
+  generatorOptions?: {
+    /**
+     * Extra folders which should be created in the module root when the module is installed
+     * (Will create any folders which don't already exist in the tree)
+     * @optional
+     */
+    extraFolders?: string[];
+    /**
+     * Any files which should be copied to the module root when the module is installed
+     * (i.e. files which are unique in every instance of the module)
+     * @optional
+     */
+    uniqueFiles?: RootFile[] | string[];
+    /**
+     * Any files which should be copied to the module root when the module is installed in addition
+     * to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files))
+     * e.g. .env files
+     * @optional
+     */
+    rootFiles?: RootFile[] | string[];
+    /**
+     * Any global substitutions which should be made to the module files when they are installed
+     * (see (https://builda.app/docs/build-a-module/substitutions))
+     * @optional
+     */
+    substitutions?: TSubstitution[];
+    /**
+     * Any post install scripts which should be run after the module has been installed
+     * and all files have been copied across and substitutions made
+     * (script paths are relative to the module root and should be in the form of a node cli script)
+     */
+    postScripts?: string[];
+  };
 }
 
 export default ModuleRegistry;

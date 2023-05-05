@@ -17,7 +17,9 @@ const copyDir = (source, destination) => {
             (0, exports.copyDir)(srcPath, destPath);
         }
         else {
-            node_fs_1.default.copyFileSync(srcPath, destPath);
+            node_fs_1.default.cpSync(srcPath, destPath, {
+                dereference: true
+            });
         }
     });
 };

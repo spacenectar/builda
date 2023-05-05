@@ -1,5 +1,4 @@
 {
-  "$ref": "#/definitions/ModuleRegistry",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "ModuleConfig": {
@@ -57,46 +56,6 @@
       "additionalProperties": false,
       "description": "See (https://builda.app/docs/build-a-module/registry) for more info",
       "properties": {
-        "appFiles": {
-          "anyOf": [
-            {
-              "items": {
-                "additionalProperties": false,
-                "properties": {
-                  "path": {
-                    "description": "The path to the root file (relative to the .builda/export directory)",
-                    "type": "string"
-                  },
-                  "rewrite": {
-                    "default": false,
-                    "description": "Should the file contents be rewritten with substitutions?",
-                    "type": "boolean"
-                  },
-                  "substitutions": {
-                    "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
-                    "items": {
-                      "$ref": "#/definitions/TSubstitution"
-                    },
-                    "type": "array"
-                  }
-                },
-                "required": [
-                  "path",
-                  "substitutions"
-                ],
-                "type": "object"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Any files which should be copied to the app root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) If the module is a blueprint, this will be ignored"
-        },
         "author": {
           "additionalProperties": false,
           "description": "The module author's details",
@@ -131,19 +90,75 @@
             "internal:blueprint-name"
           ]
         },
-        "dependencies": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "If this module has any required dependencies, you can add them here",
-          "type": "object"
-        },
         "funding": {
           "description": "Is this module looking for funding? If so, you can add a list of funding links here.",
           "items": {
             "type": "string"
           },
           "type": "array"
+        },
+        "generatorOptions": {
+          "additionalProperties": false,
+          "description": "A set of options which will be passed to the module generator when the module has been installed",
+          "properties": {
+            "extraFolders": {
+              "description": "Extra folders which should be created in the module root when the module is installed (Will create any folders which don't already exist in the tree)",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "substitutions": {
+              "additionalProperties": false,
+              "description": "A set of substitutions which should be made in the module files when the module is installed",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/TSubstitution"
+              }
+            },
+            "postScripts": {
+              "description": "Any post install scripts which should be run after the module has been installed and all files have been copied across and substitutions made (script paths are relative to the module root and should be in the form of a node cli script)",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "rootFiles": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/definitions/RootFile"
+                  },
+                  "type": "array"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Any files which should be copied to the module root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) e.g. .env files"
+            },
+            "uniqueFiles": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/definitions/RootFile"
+                  },
+                  "type": "array"
+                },
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Any files which should be copied to the module root when the module is installed (i.e. files which are unique in every instance of the module)"
+            }
+          },
+          "type": "object"
         },
         "keywords": {
           "description": "The module keywords (optional but recommended if you want to publish your module to the builda trade store)",
@@ -166,13 +181,6 @@
           "description": "Do you want to publish this module to the builda trade store? (see (https://builda.app/docs/trade-store))",
           "type": "boolean"
         },
-        "substitute": {
-          "description": "A list of substitutions to make when the module is installed (see (https://builda.app/docs/build-a-module/substitutions))",
-          "items": {
-            "$ref": "#/definitions/TSubstitution"
-          },
-          "type": "array"
-        },
         "type": {
           "description": "The module type",
           "enum": [
@@ -180,46 +188,6 @@
             "prefab"
           ],
           "type": "string"
-        },
-        "uniqueInstances": {
-          "anyOf": [
-            {
-              "items": {
-                "additionalProperties": false,
-                "properties": {
-                  "path": {
-                    "description": "The path to the root file (relative to the .builda/export directory)",
-                    "type": "string"
-                  },
-                  "rewrite": {
-                    "default": false,
-                    "description": "Should the file contents be rewritten with substitutions?",
-                    "type": "boolean"
-                  },
-                  "substitutions": {
-                    "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
-                    "items": {
-                      "$ref": "#/definitions/TSubstitution"
-                    },
-                    "type": "array"
-                  }
-                },
-                "required": [
-                  "path",
-                  "substitutions"
-                ],
-                "type": "object"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Any file in this array, will tell builda to look for the same file with a '.unique' extension and copy that to the app root in its place (without the extra extension). This is useful for files which should be unique to each app (like .gitignore) or files which need to extend files from the prefab (like tsconfig.json).\n\nJust like the appFiles array, this can be rewritten with substitutions and will be ignored if the module is a blueprint.\n\nNote: The items in this array must be actual files and not directories. You do not need to specify the .unique extension here, just ensure that the file exists"
         },
         "url": {
           "description": "The url of the module (generally a git repository) You can also use resolver aliases here. See (https://builda.app/docs/resolvers)",
@@ -236,6 +204,32 @@
         "type",
         "version",
         "url"
+      ],
+      "type": "object"
+    },
+    "RootFile": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "description": "The path to the root file (relative to the .builda/export directory)",
+          "type": "string"
+        },
+        "rewrite": {
+          "default": false,
+          "description": "Should the file contents be rewritten with the default substitutions? https://builda.app/docs/build-a-module/substitutions",
+          "type": "boolean"
+        },
+        "substitutions": {
+          "description": "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+          "items": {
+            "$ref": "#/definitions/TSubstitution"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "path",
+        "substitutions"
       ],
       "type": "object"
     },

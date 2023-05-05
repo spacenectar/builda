@@ -10,6 +10,7 @@ export const checkAndCopyPath = (
   // If it's a directory, copy the directory to the destination
   if (fs.lstatSync(sourcePath).isDirectory()) {
     return fs.cpSync(sourcePath, path.join(destinationPath, name), {
+      dereference: true,
       recursive: true,
       force: true
     });
