@@ -19,7 +19,9 @@ const loopAndRewriteFiles = async ({ name, paths, substitute }) => {
         const filePath = node_path_1.default.join(prefabDir, file);
         // Check if file is glob
         if (file.includes('*')) {
-            const globFiles = glob_1.default.sync(file);
+            const globFiles = glob_1.default
+                .sync(filePath)
+                .map((f) => node_path_1.default.relative(prefabDir, f));
             promises.push(await (0, exports.loopAndRewriteFiles)({ name, paths: globFiles, substitute }));
         }
         else if (node_fs_1.default.lstatSync(filePath).isDirectory()) {

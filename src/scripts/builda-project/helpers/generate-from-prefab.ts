@@ -16,8 +16,9 @@ import {
   writeFile,
   changeCase
 } from 'helpers';
-import { ModuleRegistry, RootFile } from 'types/module-registry';
+import { ModuleRegistry } from 'types/module-registry';
 import { TFlatObject } from 'types/flat-object';
+import glob from 'glob';
 
 export async function generateFromPrefab(
   prefabPath: string,
@@ -56,25 +57,6 @@ export async function generateFromPrefab(
   const version = module.version;
   const substitutions = module?.generatorOptions?.substitutions || [];
 
-  // handle root files
-
-  const extraRootfiles = [] as string[];
-  const extraRootfilesToRewrite = [] as RootFile[];
-
-  module.generatorOptions?.uniqueFiles?.forEach((file: unknown) => {
-    if (typeof file === 'string') {
-      extraRootfiles.push(file);
-    } else {
-      const rootFile = file as RootFile;
-      if (rootFile.rewrite) {
-        extraRootfilesToRewrite.push(rootFile);
-      } else {
-        extraRootfiles.push(rootFile.path);
-      }
-    }
-  });
-
-  const requiredFiles = [...defaultRequiredFiles, ...(extraRootfiles || [])];
   printMessage(`Installed ${prefabName}@${version}`, 'success');
 
   printMessage('Creating export path...', 'processing');
@@ -103,30 +85,40 @@ export async function generateFromPrefab(
   ];
 
   // Copy all required files
-  await loopAndRewriteFiles({ name, paths: requiredFiles, substitute });
+  await loopAndRewriteFiles({ name, paths: defaultRequiredFiles, substitute });
   const buildaPath = path.join(workingDir, buildaDir);
   const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
-  // If there are extra files which need to be rewritten, do that now
-  if (extraRootfilesToRewrite.length > 0) {
-    const paths = extraRootfilesToRewrite.map((f) => f.path);
-    const extraSubstitutions = extraRootfilesToRewrite
-      .map((f) => f.substitutions)
-      .flat()
-      .concat(substitutions);
+  // Copy all rootFiles into the application root
+  module?.generatorOptions?.rootFiles?.forEach(async (file) => {
+    const filePath = path.join(prefabDir, file);
+    if (file.includes('*')) {
+      const globFiles = glob
+        .sync(filePath)
+        .map((f) => path.relative(prefabDir, f));
+      globFiles.forEach(async (globFile) => {
+        // Get the file name
+        const fileName = path.basename(globFile);
+        // Remove the file name from the path
+        const fileDir = path.dirname(globFile);
+        // Create the directory tree
+        fs.mkdirSync(path.join(rootDir, fileDir), { recursive: true });
+        // Copy the file
+        fs.copyFileSync(
+          path.join(prefabDir, fileDir, fileName),
+          path.join(rootDir, fileDir, fileName)
+        );
+      });
+    }
+  });
 
-    await loopAndRewriteFiles({
-      name,
-      paths,
-      substitute: extraSubstitutions
-    });
-  }
+  // Create any extraFolders in the application root
+  module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
+    fs.mkdirSync(path.join(rootDir, folder), { recursive: true });
+    // add a .gitkeep file to the folder
+    fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
+  });
 
-  //TODO: We need a function to loop through the appFiles and copy them to the root directory. There should possibly also
-  // be a sync function to copy the files back to the export directory. This could be part of the 'build' command.
-  // It would also be good if users could choose to add the path to the files they want to the `appFiles` array in the
-  // config file OR just copy the files manually. Either way, the `build` function should keep both the files and the config
-  // in sync, e.g. Any files added to the root dir should appear in the `appFiles` array on build and vice versa.
   // Copy config.json from working builda directory to root directory
   if (fs.existsSync(buildaConfigPath)) {
     fs.copyFileSync(buildaConfigPath, path.join(rootDir, configFileName));
