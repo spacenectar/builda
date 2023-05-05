@@ -13,7 +13,20 @@ exports.default = async (updateVersion) => {
     const { name, type, version } = registry;
     const REGISTRYFILE = 'registry.json';
     const READMEFILE = 'README.md';
-    const FILESFOLDER = 'files';
+    const FILESFOLDER = 'module';
+    const ignoreFiles = [];
+    // Check for an .npmignore file in the root directory if it exists add the files to the ignoreFiles array
+    if (node_fs_1.default.existsSync('.npmignore')) {
+        const npmIgnore = node_fs_1.default.readFileSync('.npmignore', 'utf8');
+        const npmIgnoreFiles = npmIgnore.split('\n');
+        ignoreFiles.push(...npmIgnoreFiles);
+    }
+    // Check for a .gitignore file inside the files folder if it exists add the files to the ignoreFiles array
+    if (node_fs_1.default.existsSync(`${FILESFOLDER}/.gitignore`)) {
+        const gitignore = node_fs_1.default.readFileSync(`${FILESFOLDER}/.gitignore`, 'utf8');
+        const gitignoreFiles = gitignore.split('\n');
+        ignoreFiles.push(...gitignoreFiles);
+    }
     if (!registry) {
         (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
     }
@@ -46,14 +59,15 @@ exports.default = async (updateVersion) => {
     // Package the files folder into a tarball
     (0, helpers_1.printMessage)(`Packaging ${name}...`, 'processing');
     // If there is already a tarball, delete it
-    if (node_fs_1.default.existsSync('files.tgz')) {
-        node_fs_1.default.unlinkSync('files.tgz');
+    if (node_fs_1.default.existsSync('module.tgz')) {
+        node_fs_1.default.unlinkSync('module.tgz');
     }
     // Create the tarball
     await tar_1.default.create({
-        file: `${FILESFOLDER}.tgz`,
+        file: `module.tgz`,
         gzip: true,
-        cwd: FILESFOLDER
+        cwd: FILESFOLDER,
+        filter: (path) => !ignoreFiles.includes(path)
     }, node_fs_1.default.readdirSync(FILESFOLDER));
     (0, helpers_1.printMessage)('Package created', 'success');
 };

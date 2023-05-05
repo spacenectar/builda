@@ -25,7 +25,7 @@ export const getSubstitutions = ({
   const substitute =
     script?.substitute && script.substitute?.length > 0
       ? script?.substitute
-      : registry?.substitute;
+      : registry?.generatorOptions?.substitutions;
 
   if (substitute && substitute.length) {
     substitute.forEach((sub: TSubstitution) => {

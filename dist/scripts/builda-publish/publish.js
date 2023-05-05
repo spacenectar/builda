@@ -14,7 +14,7 @@ exports.default = async (updateVersion) => {
     const { name, type, version, publishToTradeStore } = registry;
     const REGISTRYFILE = 'registry.json';
     const READMEFILE = 'README.md';
-    const MODULEPACKAGE = 'files.tgz';
+    const MODULEPACKAGE = 'module.tgz';
     if (!registry) {
         (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
     }

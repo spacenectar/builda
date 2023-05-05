@@ -11,6 +11,7 @@ const checkAndCopyPath = (sourcePath, destinationPath, fileName) => {
     // If it's a directory, copy the directory to the destination
     if (fs_1.default.lstatSync(sourcePath).isDirectory()) {
         return fs_1.default.cpSync(sourcePath, path_1.default.join(destinationPath, name), {
+            dereference: true,
             recursive: true,
             force: true
         });

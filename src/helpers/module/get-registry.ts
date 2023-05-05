@@ -42,7 +42,6 @@ export const getRegistry = async (
   if (!validModule.status) {
     throwError(validModule.message);
   }
-
   return axios
     .get(url, {
       responseType: 'json'

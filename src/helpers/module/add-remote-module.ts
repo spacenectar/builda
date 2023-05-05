@@ -26,26 +26,26 @@ export const addRemoteModule = async (
   printMessage(`Downloading ${registry.name}...`, 'downloading');
   // Download the tarball
   await axios
-    .get(`${modulePath}/files.tgz`, {
+    .get(`${modulePath}/module.tgz`, {
       responseType: 'arraybuffer',
       headers: {
         'Content-Type': 'application/gzip'
       }
     })
     .then((res) =>
-      fs.writeFileSync(`${outputPath}/files.tgz`, res.data, {
+      fs.writeFileSync(`${outputPath}/module.tgz`, res.data, {
         encoding: 'binary'
       })
     )
     .then(async () => {
-      if (fs.existsSync(`${outputPath}/files.tgz`)) {
+      if (fs.existsSync(`${outputPath}/module.tgz`)) {
         printMessage('Extracting module files...', 'config');
         try {
           await tar.extract({
-            file: `${outputPath}/files.tgz`,
+            file: `${outputPath}/module.tgz`,
             cwd: outputPath
           });
-          fs.unlinkSync(`${outputPath}/files.tgz`);
+          fs.unlinkSync(`${outputPath}/module.tgz`);
         } catch (err) {
           throwError(err);
         }

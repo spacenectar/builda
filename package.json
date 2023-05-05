@@ -1,6 +1,6 @@
 {
   "name": "builda",
-  "version": "5.0.0-7",
+  "version": "5.0.0-9",
   "bin": {
     "builda": "dist/index.js"
   },
@@ -36,6 +36,7 @@
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write .",
+    "update-module-schema": "ts-json-schema-generator --path ./src/types/module-registry.d.ts --out ./src/data/module-registry-schema.json",
     "postbuild": "tsc-alias && yarn copyfiles",
     "preflight": "yarn build && yarn lint:md && yarn lint:json && yarn prettier-write && yarn test"
   },
@@ -88,6 +89,7 @@
     "markdownlint-cli2": "^0.5.1",
     "mock-stdin": "^1.0.0",
     "ts-jest": "^28.0.5",
+    "ts-json-schema-generator": "^1.2.0",
     "tsc-alias": "^1.7.0",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"

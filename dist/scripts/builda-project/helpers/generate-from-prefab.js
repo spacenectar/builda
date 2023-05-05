@@ -11,7 +11,7 @@ const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b;
+    var _a, _b, _c, _d;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -29,11 +29,11 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     }
     const prefabName = module.name;
     const version = module.version;
-    const substitutions = module.substitute || [];
+    const substitutions = ((_a = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _a === void 0 ? void 0 : _a.substitutions) || [];
     // handle root files
     const extraRootfiles = [];
     const extraRootfilesToRewrite = [];
-    (_a = module.appFiles) === null || _a === void 0 ? void 0 : _a.forEach((file) => {
+    (_c = (_b = module.generatorOptions) === null || _b === void 0 ? void 0 : _b.uniqueFiles) === null || _c === void 0 ? void 0 : _c.forEach((file) => {
         if (typeof file === 'string') {
             extraRootfiles.push(file);
         }
@@ -125,37 +125,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             buildaScripts[key] = `builda x ${key}`;
         }
     });
-    // If there is a 'uniqueInstances' array in the config file, loop through and copy the .unique version of those files
-    // to the root directory without the .unique extension
-    if (module.uniqueInstances && module.uniqueInstances.length > 0) {
-        module.uniqueInstances.forEach((file) => {
-            if (typeof file === 'string') {
-                const uniqueFile = node_path_1.default.resolve(workingDir, file);
-                const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
-                node_fs_1.default.copyFileSync(uniqueFile, node_path_1.default.join(uniqueFileSrcDir.replace(workingDir, rootDir), file.replace('.unique', '')));
-            }
-            else {
-                const recastFile = file;
-                const rewrite = recastFile.rewrite || false;
-                const uniqueFile = node_path_1.default.join(workingDir, recastFile.path);
-                const uniqueFileSrcDir = node_path_1.default.dirname(uniqueFile);
-                if (rewrite) {
-                    const uniqueFileContents = node_fs_1.default.readFileSync(uniqueFile, {
-                        encoding: 'utf8'
-                    });
-                    const uniqueFileSubs = [...substitute, file.substitutions].flat() || substitute;
-                    (0, helpers_1.writeFile)({
-                        file: uniqueFile,
-                        content: uniqueFileContents,
-                        substitute: uniqueFileSubs,
-                        name: appName,
-                        rename: uniqueFile.replace('.unique', ''),
-                        outputDir: uniqueFileSrcDir.replace(workingDir, rootDir)
-                    });
-                }
-            }
-        });
-    }
     // Create a new package.json file in the root directory with updated details
     const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
@@ -254,7 +223,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                     all: true,
                     stdio: 'inherit'
                 });
-                (_b = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _b === void 0 ? void 0 : _b.pipe(node_process_1.default.stdout);
+                (_d = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _d === void 0 ? void 0 : _d.pipe(node_process_1.default.stdout);
                 await childProcess;
                 (0, helpers_1.printMessage)('All dependencies installed.', 'success');
             }
