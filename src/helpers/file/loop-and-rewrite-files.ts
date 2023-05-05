@@ -30,9 +30,12 @@ export const loopAndRewriteFiles = async ({
   const promises = [];
   for (const file of paths) {
     const filePath = path.join(prefabDir, file);
+
     // Check if file is glob
     if (file.includes('*')) {
-      const globFiles = glob.sync(file);
+      const globFiles = glob
+        .sync(filePath)
+        .map((f) => path.relative(prefabDir, f));
       promises.push(
         await loopAndRewriteFiles({ name, paths: globFiles, substitute })
       );

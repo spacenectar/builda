@@ -10,6 +10,7 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
+const glob_1 = __importDefault(require("glob"));
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
     var _a, _b, _c, _d;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
@@ -30,24 +31,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     const prefabName = module.name;
     const version = module.version;
     const substitutions = ((_a = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _a === void 0 ? void 0 : _a.substitutions) || [];
-    // handle root files
-    const extraRootfiles = [];
-    const extraRootfilesToRewrite = [];
-    (_c = (_b = module.generatorOptions) === null || _b === void 0 ? void 0 : _b.uniqueFiles) === null || _c === void 0 ? void 0 : _c.forEach((file) => {
-        if (typeof file === 'string') {
-            extraRootfiles.push(file);
-        }
-        else {
-            const rootFile = file;
-            if (rootFile.rewrite) {
-                extraRootfilesToRewrite.push(rootFile);
-            }
-            else {
-                extraRootfiles.push(rootFile.path);
-            }
-        }
-    });
-    const requiredFiles = [...defaultRequiredFiles, ...(extraRootfiles || [])];
     (0, helpers_1.printMessage)(`Installed ${prefabName}@${version}`, 'success');
     (0, helpers_1.printMessage)('Creating export path...', 'processing');
     // Copy the prefab files to the export directory
@@ -70,27 +53,29 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         }
     ];
     // Copy all required files
-    await (0, helpers_1.loopAndRewriteFiles)({ name, paths: requiredFiles, substitute });
+    await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
     const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
-    // If there are extra files which need to be rewritten, do that now
-    if (extraRootfilesToRewrite.length > 0) {
-        const paths = extraRootfilesToRewrite.map((f) => f.path);
-        const extraSubstitutions = extraRootfilesToRewrite
-            .map((f) => f.substitutions)
-            .flat()
-            .concat(substitutions);
-        await (0, helpers_1.loopAndRewriteFiles)({
-            name,
-            paths,
-            substitute: extraSubstitutions
-        });
-    }
-    //TODO: We need a function to loop through the appFiles and copy them to the root directory. There should possibly also
-    // be a sync function to copy the files back to the export directory. This could be part of the 'build' command.
-    // It would also be good if users could choose to add the path to the files they want to the `appFiles` array in the
-    // config file OR just copy the files manually. Either way, the `build` function should keep both the files and the config
-    // in sync, e.g. Any files added to the root dir should appear in the `appFiles` array on build and vice versa.
+    // const promises = [];
+    // Copy all rootFiles into the application root
+    (_c = (_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) === null || _c === void 0 ? void 0 : _c.forEach(async (file) => {
+        const filePath = node_path_1.default.join(prefabDir, file);
+        if (file.includes('*')) {
+            const globFiles = glob_1.default
+                .sync(filePath)
+                .map((f) => node_path_1.default.relative(prefabDir, f));
+            globFiles.forEach(async (globFile) => {
+                // Get the file name
+                const fileName = node_path_1.default.basename(globFile);
+                // Remove the file name from the path
+                const fileDir = node_path_1.default.dirname(globFile);
+                // Create the directory tree
+                node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, fileDir), { recursive: true });
+                // Copy the file
+                node_fs_1.default.copyFileSync(node_path_1.default.join(prefabDir, fileDir, fileName), node_path_1.default.join(rootDir, fileDir, fileName));
+            });
+        }
+    });
     // Copy config.json from working builda directory to root directory
     if (node_fs_1.default.existsSync(buildaConfigPath)) {
         node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));

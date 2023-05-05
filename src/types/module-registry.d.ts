@@ -112,18 +112,12 @@ export interface ModuleRegistry {
      */
     extraFolders?: string[];
     /**
-     * Any files which should be copied to the module root when the module is installed
-     * (i.e. files which are unique in every instance of the module)
-     * @optional
-     */
-    uniqueFiles?: RootFile[] | string[];
-    /**
      * Any files which should be copied to the module root when the module is installed in addition
      * to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files))
      * e.g. .env files
      * @optional
      */
-    rootFiles?: RootFile[] | string[];
+    rootFiles?: string[];
     /**
      * Any global substitutions which should be made to the module files when they are installed
      * (see (https://builda.app/docs/build-a-module/substitutions))

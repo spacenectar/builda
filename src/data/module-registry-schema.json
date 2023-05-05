@@ -124,39 +124,12 @@
               "type": "array"
             },
             "rootFiles": {
-              "anyOf": [
-                {
-                  "items": {
-                    "$ref": "#/definitions/RootFile"
-                  },
-                  "type": "array"
-                },
-                {
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Any files which should be copied to the module root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) e.g. .env files"
+              "description": "Any files which should be copied to the module root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) e.g. .env files",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
             },
-            "uniqueFiles": {
-              "anyOf": [
-                {
-                  "items": {
-                    "$ref": "#/definitions/RootFile"
-                  },
-                  "type": "array"
-                },
-                {
-                  "items": {
-                    "type": "string"
-                  },
-                  "type": "array"
-                }
-              ],
-              "description": "Any files which should be copied to the module root when the module is installed (i.e. files which are unique in every instance of the module)"
-            }
           },
           "type": "object"
         },
