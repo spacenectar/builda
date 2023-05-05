@@ -12,7 +12,7 @@ const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
 const glob_1 = __importDefault(require("glob"));
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -56,7 +56,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
     const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
-    // const promises = [];
     // Copy all rootFiles into the application root
     (_c = (_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) === null || _c === void 0 ? void 0 : _c.forEach(async (file) => {
         const filePath = node_path_1.default.join(prefabDir, file);
@@ -75,6 +74,12 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                 node_fs_1.default.copyFileSync(node_path_1.default.join(prefabDir, fileDir, fileName), node_path_1.default.join(rootDir, fileDir, fileName));
             });
         }
+    });
+    // Create any extraFolders in the application root
+    (_e = (_d = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _d === void 0 ? void 0 : _d.extraFolders) === null || _e === void 0 ? void 0 : _e.forEach(async (folder) => {
+        node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, folder), { recursive: true });
+        // add a .gitkeep file to the folder
+        node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
     });
     // Copy config.json from working builda directory to root directory
     if (node_fs_1.default.existsSync(buildaConfigPath)) {
@@ -208,7 +213,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                     all: true,
                     stdio: 'inherit'
                 });
-                (_d = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _d === void 0 ? void 0 : _d.pipe(node_process_1.default.stdout);
+                (_f = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _f === void 0 ? void 0 : _f.pipe(node_process_1.default.stdout);
                 await childProcess;
                 (0, helpers_1.printMessage)('All dependencies installed.', 'success');
             }

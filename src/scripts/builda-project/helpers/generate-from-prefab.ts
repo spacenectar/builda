@@ -89,7 +89,6 @@ export async function generateFromPrefab(
   const buildaPath = path.join(workingDir, buildaDir);
   const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
-  // const promises = [];
   // Copy all rootFiles into the application root
   module?.generatorOptions?.rootFiles?.forEach(async (file) => {
     const filePath = path.join(prefabDir, file);
@@ -111,6 +110,13 @@ export async function generateFromPrefab(
         );
       });
     }
+  });
+
+  // Create any extraFolders in the application root
+  module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
+    fs.mkdirSync(path.join(rootDir, folder), { recursive: true });
+    // add a .gitkeep file to the folder
+    fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
   });
 
   // Copy config.json from working builda directory to root directory
