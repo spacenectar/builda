@@ -10,9 +10,8 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
-const glob_1 = __importDefault(require("glob"));
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -56,27 +55,11 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
     const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
+    const rootFiles = ((_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) || [];
     // Copy all rootFiles into the application root
-    (_c = (_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) === null || _c === void 0 ? void 0 : _c.forEach(async (file) => {
-        const filePath = node_path_1.default.join(prefabDir, file);
-        if (file.includes('*')) {
-            const globFiles = glob_1.default
-                .sync(filePath)
-                .map((f) => node_path_1.default.relative(prefabDir, f));
-            globFiles.forEach(async (globFile) => {
-                // Get the file name
-                const fileName = node_path_1.default.basename(globFile);
-                // Remove the file name from the path
-                const fileDir = node_path_1.default.dirname(globFile);
-                // Create the directory tree
-                node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, fileDir), { recursive: true });
-                // Copy the file
-                node_fs_1.default.copyFileSync(node_path_1.default.join(prefabDir, fileDir, fileName), node_path_1.default.join(rootDir, fileDir, fileName));
-            });
-        }
-    });
+    await (0, helpers_1.copyPathsToRoot)(rootFiles, rootDir);
     // Create any extraFolders in the application root
-    (_e = (_d = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _d === void 0 ? void 0 : _d.extraFolders) === null || _e === void 0 ? void 0 : _e.forEach(async (folder) => {
+    (_d = (_c = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _c === void 0 ? void 0 : _c.extraFolders) === null || _d === void 0 ? void 0 : _d.forEach(async (folder) => {
         node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, folder), { recursive: true });
         // add a .gitkeep file to the folder
         node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
@@ -213,7 +196,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                     all: true,
                     stdio: 'inherit'
                 });
-                (_f = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _f === void 0 ? void 0 : _f.pipe(node_process_1.default.stdout);
+                (_e = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _e === void 0 ? void 0 : _e.pipe(node_process_1.default.stdout);
                 await childProcess;
                 (0, helpers_1.printMessage)('All dependencies installed.', 'success');
             }

@@ -15,6 +15,7 @@ export { default as loopAndRewriteFiles } from './file/loop-and-rewrite-files';
 export { default as replaceRootDir } from './file/replace-root-dir';
 export { default as writeFile } from './file/write-file';
 export { default as writeLogFile } from './file/write-log-file';
+export { default as copyPathsToRoot } from './file/copy-paths-to-root';
 
 // Module helpers
 export { default as addLocalModule } from './module/add-local-module';

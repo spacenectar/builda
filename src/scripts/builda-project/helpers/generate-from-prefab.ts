@@ -3,11 +3,13 @@ import execa from 'execa';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+
 import {
   addLocalModule,
   addRemoteModule,
   convertRegistryPathToUrl,
   copyDir,
+  copyPathsToRoot,
   createDir,
   detectPathType,
   loopAndRewriteFiles,
@@ -18,7 +20,6 @@ import {
 } from 'helpers';
 import { ModuleRegistry } from 'types/module-registry';
 import { TFlatObject } from 'types/flat-object';
-import glob from 'glob';
 
 export async function generateFromPrefab(
   prefabPath: string,
@@ -89,28 +90,9 @@ export async function generateFromPrefab(
   const buildaPath = path.join(workingDir, buildaDir);
   const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
+  const rootFiles = module?.generatorOptions?.rootFiles || [];
   // Copy all rootFiles into the application root
-  module?.generatorOptions?.rootFiles?.forEach(async (file) => {
-    const filePath = path.join(prefabDir, file);
-    if (file.includes('*')) {
-      const globFiles = glob
-        .sync(filePath)
-        .map((f) => path.relative(prefabDir, f));
-      globFiles.forEach(async (globFile) => {
-        // Get the file name
-        const fileName = path.basename(globFile);
-        // Remove the file name from the path
-        const fileDir = path.dirname(globFile);
-        // Create the directory tree
-        fs.mkdirSync(path.join(rootDir, fileDir), { recursive: true });
-        // Copy the file
-        fs.copyFileSync(
-          path.join(prefabDir, fileDir, fileName),
-          path.join(rootDir, fileDir, fileName)
-        );
-      });
-    }
-  });
+  await copyPathsToRoot(rootFiles, rootDir);
 
   // Create any extraFolders in the application root
   module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
