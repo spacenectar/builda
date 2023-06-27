@@ -28,8 +28,8 @@ type TBuild = {
 };
 
 export default async ({ config, prod, onlyPath }: TBuild) => {
-  const { prefab, rootDir } = config;
-  const root = rootDir ? rootDir : process.cwd();
+  const { prefab } = config;
+  const root = process.cwd();
 
   if (!prefab) {
     throwError(
@@ -45,7 +45,7 @@ export default async ({ config, prod, onlyPath }: TBuild) => {
       onlyPath.replace(cleanRoot, '')
     );
   } else {
-    let promises = [] as Promise<string>[];
+    const promises = [] as Promise<string>[];
     printMessage('Building your project', 'processing');
 
     // Get a list of all of the files in the root directory

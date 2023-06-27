@@ -1,6 +1,5 @@
 import yargs from 'yargs';
 
-import { getConfigFile, throwError } from 'helpers';
 import globals from 'data/globals';
 
 import buildaAdd from './add';
@@ -9,7 +8,6 @@ const { websiteUrl } = globals;
 
 type Args = {
   blueprintPath: string;
-  configPath: string;
 };
 
 export default () => {
@@ -31,11 +29,7 @@ export default () => {
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
-        return buildaAdd({ config, modulePath: argv.blueprintPath });
-      }
-      throwError('No config file found');
+      return buildaAdd({ modulePath: argv.blueprintPath });
     }
   };
 };

@@ -1,11 +1,6 @@
 import yargs from 'yargs';
 
-import { getConfigFile, throwError } from 'helpers';
-import globals from 'data/globals';
-
 import buildaInstall from './install';
-
-const { websiteUrl } = globals;
 
 type Args = {
   configPath: string;
@@ -23,14 +18,8 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
-        return buildaInstall({ config });
-      }
-      throwError(
-        `No config file found. Run 'builda init' (http://${websiteUrl}/docs/initialise-a-project) to create one or 'builda project' to generate a new project from a prefab (http://${websiteUrl}/docs/prefabs).`
-      );
+    handler: async () => {
+      return buildaInstall();
     }
   };
 };

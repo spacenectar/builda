@@ -1,13 +1,13 @@
 import generateCommands from 'scripts/builda-new/helpers/generate-commands';
 
-import config from 'mocks/builda.json';
+import config from 'mocks/package.json';
 import { ConfigFile } from 'types/config-file';
 
 describe('generateCommands', () => {
-  let commands = {} as ConfigFile['blueprintScripts'];
+  let commands = {} as ConfigFile['scripts'];
 
   beforeEach(async () => {
-    commands = generateCommands(config);
+    commands = generateCommands(config.builda);
   });
 
   test('config file is parsed and commands extracted', () => {

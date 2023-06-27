@@ -9,6 +9,7 @@ import {
   addLocalModule,
   addRemoteModule,
   createDir,
+  getConfig,
   convertRegistryPathToUrl,
   printMessage,
   changeCase
@@ -19,22 +20,15 @@ import globals from 'data/globals';
 
 // Import types
 import ModuleRegistry from 'types/module-registry';
-import { ConfigFile } from 'types/config-file';
 
 export type AddModulesResponse = {
   module: ModuleRegistry;
-  config: ConfigFile;
 };
 
 export default async ({
-  config,
   modulePath,
   fromScript
 }: {
-  /**
-   * The project config
-   */
-  config: ConfigFile;
   /**
    * The path to the module to add
    */
@@ -45,6 +39,7 @@ export default async ({
   fromScript?: boolean;
 }) => {
   let module = {} as ModuleRegistry;
+  const config = getConfig();
   const outputPath = process.cwd();
   // Check the module directory exists and create it if it doesn't
   const moduleDirPath = path.join(outputPath, globals.buildaDir, 'modules');
@@ -58,8 +53,7 @@ export default async ({
   for (const currentModule of moduleList) {
     if (detectPathType(currentModule) === 'remote') {
       const registry = convertRegistryPathToUrl({
-        registryPath: currentModule,
-        config
+        registryPath: currentModule
       }).url;
       if (!registry) {
         throwError('No registry found');

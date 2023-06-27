@@ -3,7 +3,11 @@ import TSubstitution from './substitution';
 export type BlueprintScriptContent = {
   use: string;
   outputDir: string;
-  substitute: TSubstitution[] | [];
+  substitute?: TSubstitution[] | [];
+  variants: {
+    name: string;
+    outputPath: string;
+  }[];
 };
 
 export interface BlueprintScriptConfig<T> {

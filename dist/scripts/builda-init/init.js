@@ -121,15 +121,9 @@ exports.default = async ({ config }) => {
         answers = Object.assign(Object.assign({}, answers), existingProjectAnswers);
         const blueprintAnswers = await (0, blueprint_questions_1.default)(answers);
         answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
-        const config = {
-            name: answers.appName,
-            rootDir: answers.appRoot,
-            packageManager: answers.packageManager
-        };
-        (0, helpers_1.createConfigFile)(config);
         const blueprints = answers.blueprintUrls ||
             answers.blueprintList.join('');
-        (0, builda_add_1.buildaAdd)({ config, modulePath: blueprints });
+        (0, builda_add_1.buildaAdd)({ modulePath: blueprints });
     }
     if (initType === 'prefab') {
         (0, helpers_1.showHelp)('You can create your own prefab by answering a few questions about your project.\r\n\n' +

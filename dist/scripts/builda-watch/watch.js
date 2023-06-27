@@ -6,6 +6,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const chokidar_1 = __importDefault(require("chokidar"));
+const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../helpers");
 const builda_build_1 = require("../../scripts/builda-build");
 const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
@@ -15,7 +16,7 @@ exports.default = (config) => {
     if (!prefab) {
         (0, helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
     }
-    const watcher = chokidar_1.default.watch(config.rootDir, {
+    const watcher = chokidar_1.default.watch(node_process_1.default.cwd(), {
         persistent: true,
         ignored
     });

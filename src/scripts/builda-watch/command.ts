@@ -1,4 +1,4 @@
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 import yargs from 'yargs';
 
 import buildaWatch from './watch';
@@ -20,8 +20,8 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+    handler: async () => {
+      const config = await getConfig();
       if (config) {
         return buildaWatch(config);
       }

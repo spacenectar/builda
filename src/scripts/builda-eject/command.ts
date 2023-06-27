@@ -1,10 +1,7 @@
 import yargs from 'yargs';
 import buildaEject from './eject';
 
-import { getConfigFile, throwError } from 'helpers';
-
 type Args = {
-  configPath: string;
   pathString: string;
 };
 
@@ -27,11 +24,7 @@ export default () => {
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
-        return buildaEject({ config, pathString: argv.pathString });
-      }
-      throwError('No config file found');
+      return buildaEject({ pathString: argv.pathString });
     }
   };
 };

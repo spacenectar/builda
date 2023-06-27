@@ -10,9 +10,10 @@ const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../helpers");
 // Import data
 const globals_1 = __importDefault(require("../../data/globals"));
-exports.default = async ({ config, modulePath, fromScript }) => {
+exports.default = async ({ modulePath, fromScript }) => {
     var _a;
     let module = {};
+    const config = (0, helpers_1.getConfig)();
     const outputPath = node_process_1.default.cwd();
     // Check the module directory exists and create it if it doesn't
     const moduleDirPath = node_path_1.default.join(outputPath, globals_1.default.buildaDir, 'modules');
@@ -23,8 +24,7 @@ exports.default = async ({ config, modulePath, fromScript }) => {
     for (const currentModule of moduleList) {
         if ((0, helpers_1.detectPathType)(currentModule) === 'remote') {
             const registry = (0, helpers_1.convertRegistryPathToUrl)({
-                registryPath: currentModule,
-                config
+                registryPath: currentModule
             }).url;
             if (!registry) {
                 (0, helpers_1.throwError)('No registry found');

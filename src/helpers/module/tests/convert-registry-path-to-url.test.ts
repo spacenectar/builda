@@ -1,5 +1,5 @@
 import { ConfigFile } from 'types/config-file';
-import { getConfigFile } from 'helpers';
+import { getConfig } from 'helpers';
 import { convertRegistryPathToUrl } from '../convert-registry-path-to-url';
 
 describe('convertRegistryPathToUrl http urls', () => {
@@ -29,7 +29,7 @@ describe('convertRegistryPathToUrl http urls', () => {
 describe('convertRegistryPathToUrl resolver urls', () => {
   let config = {} as ConfigFile;
   beforeAll(async () => {
-    config = (await getConfigFile()) as ConfigFile;
+    config = (await getConfig()) as ConfigFile;
   });
 
   test('should return a path to a registry.json file on the builda repository when builda: is provided', () => {

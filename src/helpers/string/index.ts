@@ -1,4 +1,3 @@
-export { default as getPathFromRoot } from './get-path-from-root';
 export { default as randomNameGenerator } from './random-word-generator';
 export { default as getSiteLink } from './get-site-link';
 export { default as detectPathType } from './detect-path-type';

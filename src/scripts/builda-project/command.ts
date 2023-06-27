@@ -5,8 +5,6 @@ import buildaProject from './project';
 type Args = {
   appName: string;
   prefab: string;
-  packageManager: string;
-  autoInstall: boolean;
   smokeTest: boolean;
 };
 
@@ -28,19 +26,6 @@ export default () => {
           describe: 'The prefab to use (url, local path, or preset name)',
           type: 'string'
         })
-        .option('packageManager', {
-          alias: 'm',
-          choices: ['yarn', 'npm'],
-          default: 'yarn',
-          describe: 'The package manager to use',
-          type: 'string'
-        })
-        .option('autoInstall', {
-          alias: 'i',
-          default: false,
-          describe: 'Whether to automatically install dependencies',
-          type: 'boolean'
-        })
         .option('smokeTest', {
           alias: 's',
           default: false,
@@ -52,8 +37,6 @@ export default () => {
       const args = {
         appName: argv.appName,
         prefab: argv.prefab,
-        packageManager: argv.packageManager,
-        autoInstall: argv.autoInstall,
         smokeTest: argv.smokeTest
       };
       await buildaProject({ ...args });

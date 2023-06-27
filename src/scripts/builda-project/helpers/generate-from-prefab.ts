@@ -1,8 +1,7 @@
 import axios from 'axios';
-import execa from 'execa';
+
 import fs from 'node:fs';
 import path from 'node:path';
-import process from 'node:process';
 
 import {
   addLocalModule,
@@ -19,7 +18,6 @@ import {
   changeCase
 } from 'helpers';
 import { ModuleRegistry } from 'types/module-registry';
-import { TFlatObject } from 'types/flat-object';
 
 export async function generateFromPrefab(
   prefabPath: string,
@@ -29,14 +27,9 @@ export async function generateFromPrefab(
   prefabDir: string,
   workingDir: string,
   name: string,
-  packageManagerType: string,
   buildaDir: string,
-  configFileName: string,
-  appName: string | undefined,
   websiteUrl: string,
-  buildaReadmeFileName: string,
-  autoInstall: boolean | undefined,
-  answers: TFlatObject
+  buildaReadmeFileName: string
 ): Promise<ModuleRegistry> {
   if (detectPathType(prefabPath) === 'remote') {
     const registry = convertRegistryPathToUrl({
@@ -74,21 +67,12 @@ export async function generateFromPrefab(
     {
       replace: '%APP_NAME%',
       with: changeCase(name, 'kebabCase')
-    },
-    {
-      replace: '%APP_ROOT%',
-      with: './'
-    },
-    {
-      replace: '%PACKAGE_MANAGER%',
-      with: packageManagerType
     }
   ];
 
   // Copy all required files
   await loopAndRewriteFiles({ name, paths: defaultRequiredFiles, substitute });
   const buildaPath = path.join(workingDir, buildaDir);
-  const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
   const rootFiles = module?.generatorOptions?.rootFiles || [];
   // Copy all rootFiles into the application root
@@ -124,22 +108,6 @@ export async function generateFromPrefab(
       });
     }
   });
-
-  // Copy builda.json from working builda directory to root directory and add the version number
-  if (fs.existsSync(buildaConfigPath)) {
-    const buildaConfig = JSON.parse(
-      fs.readFileSync(buildaConfigPath, {
-        encoding: 'utf8'
-      })
-    );
-
-    buildaConfig.version = version;
-
-    fs.writeFileSync(
-      path.join(rootDir, configFileName),
-      JSON.stringify(buildaConfig, null, 2)
-    );
-  }
 
   // Create a new package.json file in the root directory
   const packageJsonFile = fs.readFileSync(
@@ -179,21 +147,10 @@ export async function generateFromPrefab(
     }
   });
 
-  // Create a 'builda' entry with the path to the current prefab and version:
-
-  const buildaEntry = {
-    prefab: {
-      name: prefabName,
-      version: version,
-      path: prefabPath
-    }
-  };
-
   // Create a new package.json file in the root directory with updated details
   const newPackageJson = {
     ...packageJson,
-    scripts: buildaScripts,
-    builda: buildaEntry
+    scripts: buildaScripts
   };
 
   fs.writeFileSync(
@@ -307,41 +264,5 @@ export async function generateFromPrefab(
     await Promise.all(blueprintPromises);
   }
   printMessage('All files copied to application.', 'success');
-
-  if (autoInstall || answers.autoInstall) {
-    printMessage('Installing dependencies...', 'config');
-
-    // Run package manager install
-    if (fs.existsSync(path.resolve(workingDir, 'package.json'))) {
-      printMessage(`Running ${packageManagerType} install`, 'processing');
-      try {
-        const childProcess = execa(packageManagerType, ['install'], {
-          cwd: rootDir,
-          all: true,
-          stdio: 'inherit'
-        });
-        childProcess?.all?.pipe(process.stdout);
-        await childProcess;
-        printMessage('All dependencies installed.', 'success');
-      } catch (error) {
-        printMessage(
-          `Failed to run. Please try running '${packageManagerType} install' manually.`,
-          'error'
-        );
-        //TODO : Add this documentation
-        printMessage(
-          `For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`,
-          'primary'
-        );
-      }
-    } else {
-      printMessage('No package.json found. Skipping install.', 'notice');
-    }
-  } else {
-    printMessage(
-      `Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`,
-      'notice'
-    );
-  }
   return module;
 }

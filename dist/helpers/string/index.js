@@ -3,9 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normaliseCase = exports.detectPathType = exports.getSiteLink = exports.randomNameGenerator = exports.getPathFromRoot = void 0;
-var get_path_from_root_1 = require("./get-path-from-root");
-Object.defineProperty(exports, "getPathFromRoot", { enumerable: true, get: function () { return __importDefault(get_path_from_root_1).default; } });
+exports.pluralise = exports.changeCase = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.normaliseCase = exports.detectPathType = exports.getSiteLink = exports.randomNameGenerator = void 0;
 var random_word_generator_1 = require("./random-word-generator");
 Object.defineProperty(exports, "randomNameGenerator", { enumerable: true, get: function () { return __importDefault(random_word_generator_1).default; } });
 var get_site_link_1 = require("./get-site-link");

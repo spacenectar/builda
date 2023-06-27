@@ -31,7 +31,7 @@ exports.default = () => {
             });
         },
         handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
+            const config = await (0, helpers_1.getConfig)();
             if (config) {
                 return (0, build_1.default)({
                     config,

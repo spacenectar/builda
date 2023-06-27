@@ -15,14 +15,9 @@ const generate_from_prefab_1 = require("./helpers/generate-from-prefab");
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall, smokeTest }) => {
-    const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } = globals_1.default;
-    const defaultRequiredFiles = [
-        buildaDir,
-        `${buildaDir}/${configFileName}`,
-        'package.json',
-        'README.md'
-    ];
+exports.default = async ({ appName, prefab, smokeTest }) => {
+    const { buildaDir, websiteUrl, buildaReadmeFileName } = globals_1.default;
+    const defaultRequiredFiles = [buildaDir, 'package.json', 'README.md'];
     let answers = {};
     if (!prefab) {
         const { usePrefab } = await inquirer_1.default.prompt([
@@ -39,7 +34,7 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
         }
         else {
             (0, helpers_1.showHelp)('You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-                `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+                `If you are unsure about any of these, you can always change them later by editing the 'builda' section of your package.json file.`);
         }
         if (answers.prefab) {
             (0, helpers_1.showHelp)('Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.', 'success');
@@ -52,9 +47,8 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
     answers = Object.assign(Object.assign({}, answers), newProjectAnswers);
     const name = (appName || answers.appName);
     const prefabPath = (prefab || answers.prefab);
-    const packageManagerType = packageManager || answers.packageManager || 'yarn';
-    const rootDir = appRoot || answers.appRoot || './';
     const kebabAppName = (0, helpers_1.changeCase)(name, 'kebabCase');
+    const rootDir = node_path_1.default.join(node_process_1.default.cwd(), kebabAppName);
     await (0, helpers_1.createDir)(kebabAppName);
     // Change directory to the new app
     node_process_1.default.chdir(kebabAppName);
@@ -69,15 +63,7 @@ exports.default = async ({ appName, appRoot, prefab, packageManager, autoInstall
     const module = {};
     // If the user isn't using a prefab, we can just create a config and then skip the rest of this file
     if (prefabPath) {
-        await (0, generate_from_prefab_1.generateFromPrefab)(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers);
-    }
-    else {
-        const config = {
-            name,
-            rootDir,
-            packageManager: packageManagerType
-        };
-        node_fs_1.default.writeFileSync(configFileName, JSON.stringify(config, null, 2));
+        await (0, generate_from_prefab_1.generateFromPrefab)(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, buildaDir, websiteUrl, buildaReadmeFileName);
     }
     (0, helpers_1.printMessage)(`Your application, "${name}" has been initialised!`, 'success');
     if (smokeTest) {

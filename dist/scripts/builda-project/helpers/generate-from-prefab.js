@@ -5,13 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateFromPrefab = void 0;
 const axios_1 = __importDefault(require("axios"));
-const execa_1 = __importDefault(require("execa"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
-const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
-async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b, _c, _d, _e, _f, _g;
+async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, buildaDir, websiteUrl, buildaReadmeFileName) {
+    var _a, _b, _c, _d, _e, _f;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -41,20 +39,11 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         {
             replace: '%APP_NAME%',
             with: (0, helpers_1.changeCase)(name, 'kebabCase')
-        },
-        {
-            replace: '%APP_ROOT%',
-            with: './'
-        },
-        {
-            replace: '%PACKAGE_MANAGER%',
-            with: packageManagerType
         }
     ];
     // Copy all required files
     await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
-    const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
     const rootFiles = ((_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) || [];
     // Copy all rootFiles into the application root
     await (0, helpers_1.copyPathsToRoot)(rootFiles, rootDir);
@@ -86,14 +75,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             });
         }
     });
-    // Copy builda.json from working builda directory to root directory and add the version number
-    if (node_fs_1.default.existsSync(buildaConfigPath)) {
-        const buildaConfig = JSON.parse(node_fs_1.default.readFileSync(buildaConfigPath, {
-            encoding: 'utf8'
-        }));
-        buildaConfig.version = version;
-        node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, configFileName), JSON.stringify(buildaConfig, null, 2));
-    }
     // Create a new package.json file in the root directory
     const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(workingDir, 'package.json'), {
         encoding: 'utf8'
@@ -125,16 +106,8 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             buildaScripts[key] = `builda x ${key}`;
         }
     });
-    // Create a 'builda' entry with the path to the current prefab and version:
-    const buildaEntry = {
-        prefab: {
-            name: prefabName,
-            version: version,
-            path: prefabPath
-        }
-    };
     // Create a new package.json file in the root directory with updated details
-    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts, builda: buildaEntry });
+    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
     const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
@@ -220,34 +193,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         await Promise.all(blueprintPromises);
     }
     (0, helpers_1.printMessage)('All files copied to application.', 'success');
-    if (autoInstall || answers.autoInstall) {
-        (0, helpers_1.printMessage)('Installing dependencies...', 'config');
-        // Run package manager install
-        if (node_fs_1.default.existsSync(node_path_1.default.resolve(workingDir, 'package.json'))) {
-            (0, helpers_1.printMessage)(`Running ${packageManagerType} install`, 'processing');
-            try {
-                const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
-                    cwd: rootDir,
-                    all: true,
-                    stdio: 'inherit'
-                });
-                (_g = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _g === void 0 ? void 0 : _g.pipe(node_process_1.default.stdout);
-                await childProcess;
-                (0, helpers_1.printMessage)('All dependencies installed.', 'success');
-            }
-            catch (error) {
-                (0, helpers_1.printMessage)(`Failed to run. Please try running '${packageManagerType} install' manually.`, 'error');
-                //TODO : Add this documentation
-                (0, helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
-            }
-        }
-        else {
-            (0, helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
-        }
-    }
-    else {
-        (0, helpers_1.printMessage)(`Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`, 'notice');
-    }
     return module;
 }
 exports.generateFromPrefab = generateFromPrefab;

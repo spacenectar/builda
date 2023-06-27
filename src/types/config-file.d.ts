@@ -4,22 +4,6 @@ import { GenIndexConfig } from './gen-index-config';
 
 export interface ConfigFile {
   /**
-   * Ignore this property. It is used internally by builda
-   */
-  default?: Omit<ConfigFile, 'default'>;
-  /**
-   * The name of your app
-   */
-  name: string;
-  /**
-   * The working root directory of your app, generally the directory where your package.json file is located
-   */
-  rootDir: string;
-  /**
-   * The package manager to use for installing dependencies (Builda currently supports npm and yarn)
-   */
-  packageManager: string;
-  /**
    * The resolvers to use for resolving modules (See (https://builda.app/docs/resolvers) for more info)
    */
   resolvers?: {
@@ -41,13 +25,17 @@ export interface ConfigFile {
   /**
    * Any blueprint scripts you want to be available to your app (See (https://builda.app/docs/build-a-module/blueprint-scripts) for more info)
    */
-  blueprintScripts?: {
+  scripts?: {
     [key: string]: BlueprintScriptContents;
   };
   /**
    * The path to the prefab used by your app (can be a local path, a remote url or a resolver)
    */
-  prefab?: string;
+  prefab?: {
+    name: string;
+    version: string;
+    path: string;
+  };
   /**
    * The blueprints to use in your app (See (https://builda.app/docs/blueprints) for more info)
    */

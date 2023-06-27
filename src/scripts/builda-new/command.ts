@@ -1,4 +1,4 @@
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 import yargs from 'yargs';
 
 import buildaNew from './new';
@@ -41,7 +41,7 @@ export default () => {
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+      const config = await getConfig();
       if (config) {
         return buildaNew({
           config,

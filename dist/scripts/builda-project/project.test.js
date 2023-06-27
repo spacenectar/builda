@@ -14,10 +14,7 @@ describe('builda project from prefab - no npm install', () => {
         process.chdir(FILE_FOLDER);
         await (0, project_1.default)({
             appName: 'My App',
-            appRoot: './',
-            prefab: 'github:builda-modules/prefab-test',
-            packageManager: 'npm',
-            autoInstall: false
+            prefab: 'github:builda-modules/prefab-test'
         });
     });
     afterAll(() => {

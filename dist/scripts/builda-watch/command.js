@@ -18,8 +18,8 @@ exports.default = () => {
                 type: 'string'
             });
         },
-        handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
+        handler: async () => {
+            const config = await (0, helpers_1.getConfig)();
             if (config) {
                 return (0, watch_1.default)(config);
             }

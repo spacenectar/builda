@@ -3,7 +3,7 @@
 // Watch for changes in the specified directories and run the 'build' script when changes are detected
 
 import chokidar from 'chokidar';
-
+import process from 'node:process';
 import { printMessage, throwError } from 'helpers';
 
 import { buildaBuild } from 'scripts/builda-build';
@@ -23,7 +23,7 @@ export default (config: ConfigFile) => {
     );
   }
 
-  const watcher = chokidar.watch(config.rootDir, {
+  const watcher = chokidar.watch(process.cwd(), {
     persistent: true,
     ignored
   });

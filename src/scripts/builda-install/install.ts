@@ -8,23 +8,22 @@ import globals from 'data/globals';
 
 // Import scripts
 import { buildaAdd } from 'scripts';
-import { printMessage } from 'helpers';
+import { getConfig, printMessage } from 'helpers';
 
 export type InstallModulesResponse = {
   config: ConfigFile;
 };
 
-export default async ({ config }: { config: ConfigFile }) => {
+export default async () => {
   // If the project is a prefab project, install the prefab files
 
-  const { prefab, blueprints } = config;
+  const { prefab, blueprints } = getConfig();
   const { buildaDir } = globals;
   let success = false;
 
   if (prefab) {
     await buildaAdd({
-      config,
-      modulePath: prefab
+      modulePath: prefab.name
     });
     // Check the prefab was installed successfully
     const prefabPath = path.join(process.cwd(), buildaDir, 'modules', 'prefab');
@@ -41,7 +40,6 @@ export default async ({ config }: { config: ConfigFile }) => {
     );
     for (const blueprint of blueprintsArray) {
       await buildaAdd({
-        config,
         modulePath: blueprint
       });
       // Check the blueprint was installed successfully

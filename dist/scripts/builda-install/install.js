@@ -10,15 +10,14 @@ const globals_1 = __importDefault(require("../../data/globals"));
 // Import scripts
 const scripts_1 = require("../../scripts");
 const helpers_1 = require("../../helpers");
-exports.default = async ({ config }) => {
+exports.default = async () => {
     // If the project is a prefab project, install the prefab files
-    const { prefab, blueprints } = config;
+    const { prefab, blueprints } = (0, helpers_1.getConfig)();
     const { buildaDir } = globals_1.default;
     let success = false;
     if (prefab) {
         await (0, scripts_1.buildaAdd)({
-            config,
-            modulePath: prefab
+            modulePath: prefab.name
         });
         // Check the prefab was installed successfully
         const prefabPath = node_path_1.default.join(process.cwd(), buildaDir, 'modules', 'prefab');
@@ -32,7 +31,6 @@ exports.default = async ({ config }) => {
         const blueprintsArray = Object.keys(blueprints).filter((blueprint) => blueprints[blueprint].location !== 'prefab');
         for (const blueprint of blueprintsArray) {
             await (0, scripts_1.buildaAdd)({
-                config,
                 modulePath: blueprint
             });
             // Check the blueprint was installed successfully

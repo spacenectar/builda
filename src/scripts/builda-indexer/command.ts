@@ -1,6 +1,6 @@
 import yargs from 'yargs';
 
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 
 import buildaIndexer from './indexer';
 
@@ -22,7 +22,7 @@ export default () => {
       });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+      const config = await getConfig();
       if (config) {
         return buildaIndexer(config);
       }

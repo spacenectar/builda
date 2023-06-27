@@ -15,7 +15,6 @@ const builda_install_1 = require("./scripts/builda-install");
 const builda_add_1 = require("./scripts/builda-add");
 const builda_package_1 = require("./scripts/builda-package");
 const builda_publish_1 = require("./scripts/builda-publish");
-const builda_update_1 = require("./scripts/builda-update");
 const builda_watch_1 = require("./scripts/builda-watch");
 const builda_indexer_1 = require("./scripts/builda-indexer");
 const builda_new_1 = require("./scripts/builda-new");
@@ -37,7 +36,6 @@ const builda = async () => {
         .command(Object.assign({}, (0, builda_execute_1.command)()))
         .command(Object.assign({}, (0, builda_package_1.command)()))
         .command(Object.assign({}, (0, builda_publish_1.command)()))
-        .command(Object.assign({}, (0, builda_update_1.command)()))
         .command(Object.assign({}, (0, builda_watch_1.command)()))
         .command(Object.assign({}, (0, builda_indexer_1.command)()))
         .epilogue(`For more information, visit ${chalk_1.default.blue.underline(`${websiteUrl}/docs`)}`).argv;

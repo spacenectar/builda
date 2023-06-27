@@ -22,19 +22,6 @@ exports.default = () => {
                 describe: 'The prefab to use (url, local path, or preset name)',
                 type: 'string'
             })
-                .option('packageManager', {
-                alias: 'm',
-                choices: ['yarn', 'npm'],
-                default: 'yarn',
-                describe: 'The package manager to use',
-                type: 'string'
-            })
-                .option('autoInstall', {
-                alias: 'i',
-                default: false,
-                describe: 'Whether to automatically install dependencies',
-                type: 'boolean'
-            })
                 .option('smokeTest', {
                 alias: 's',
                 default: false,
@@ -46,8 +33,6 @@ exports.default = () => {
             const args = {
                 appName: argv.appName,
                 prefab: argv.prefab,
-                packageManager: argv.packageManager,
-                autoInstall: argv.autoInstall,
                 smokeTest: argv.smokeTest
             };
             await (0, project_1.default)(Object.assign({}, args));

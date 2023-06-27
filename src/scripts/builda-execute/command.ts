@@ -1,8 +1,6 @@
 import yargs from 'yargs';
 import buildaExecute from './execute';
 
-import { getConfigFile, throwError } from 'helpers';
-
 type Args = {
   configPath: string;
   command: string;
@@ -28,11 +26,7 @@ export default () => {
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
-        return buildaExecute({ config, command: argv.command });
-      }
-      throwError('No config file found');
+      return buildaExecute({ command: argv.command });
     }
   };
 };

@@ -1,4 +1,4 @@
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 import yargs from 'yargs';
 
 import buildaBuild from './build';
@@ -36,7 +36,7 @@ export default () => {
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+      const config = await getConfig();
       if (config) {
         return buildaBuild({
           config,

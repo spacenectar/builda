@@ -11,8 +11,8 @@ const globals_1 = __importDefault(require("../../data/globals"));
 const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
 const ignored = ignore_file_json_1.default.ignore;
 exports.default = async ({ config, prod, onlyPath }) => {
-    const { prefab, rootDir } = config;
-    const root = rootDir ? rootDir : process.cwd();
+    const { prefab } = config;
+    const root = process.cwd();
     if (!prefab) {
         (0, helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
     }
@@ -21,7 +21,7 @@ exports.default = async ({ config, prod, onlyPath }) => {
         (0, helpers_1.checkAndCopyPath)(onlyPath, `${globals_1.default.buildaDir}/export`, onlyPath.replace(cleanRoot, ''));
     }
     else {
-        let promises = [];
+        const promises = [];
         (0, helpers_1.printMessage)('Building your project', 'processing');
         // Get a list of all of the files in the root directory
         node_fs_1.default.readdir(root, (err, files) => {

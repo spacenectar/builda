@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const execute_1 = __importDefault(require("./execute"));
-const helpers_1 = require("../../helpers");
 exports.default = () => {
     return {
         command: 'execute <command>',
@@ -25,11 +24,7 @@ exports.default = () => {
             });
         },
         handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
-            if (config) {
-                return (0, execute_1.default)({ config, command: argv.command });
-            }
-            (0, helpers_1.throwError)('No config file found');
+            return (0, execute_1.default)({ command: argv.command });
         }
     };
 };

@@ -3,12 +3,7 @@ import EventEmitter from 'node:events';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import {
-  printMessage,
-  printSiteLink,
-  showHelp,
-  createConfigFile
-} from 'helpers';
+import { printMessage, printSiteLink, showHelp } from 'helpers';
 
 import type { ConfigFile } from 'types/config-file';
 
@@ -161,18 +156,11 @@ export default async ({ config }: TInit) => {
     const blueprintAnswers = await blueprintQuestions(answers);
     answers = { ...answers, ...blueprintAnswers };
 
-    const config: ConfigFile = {
-      name: answers.appName as string,
-      rootDir: answers.appRoot as string,
-      packageManager: answers.packageManager as string
-    };
-    createConfigFile(config);
-
     const blueprints =
       answers.blueprintUrls ||
       (answers.blueprintList as Array<string>).join('');
 
-    buildaAdd({ config, modulePath: blueprints as string });
+    buildaAdd({ modulePath: blueprints as string });
   }
 
   if (initType === 'prefab') {

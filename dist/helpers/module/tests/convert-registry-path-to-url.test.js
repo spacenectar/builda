@@ -22,7 +22,7 @@ describe('convertRegistryPathToUrl http urls', () => {
 describe('convertRegistryPathToUrl resolver urls', () => {
     let config = {};
     beforeAll(async () => {
-        config = (await (0, helpers_1.getConfigFile)());
+        config = (await (0, helpers_1.getConfig)());
     });
     test('should return a path to a registry.json file on the builda repository when builda: is provided', () => {
         const registryPath = 'builda:blueprint-default-js';
