@@ -125,7 +125,7 @@ export async function generateFromPrefab(
     }
   });
 
-  // Copy config.json from working builda directory to root directory and add the version number
+  // Copy builda.json from working builda directory to root directory and add the version number
   if (fs.existsSync(buildaConfigPath)) {
     const buildaConfig = JSON.parse(
       fs.readFileSync(buildaConfigPath, {
@@ -141,7 +141,7 @@ export async function generateFromPrefab(
     );
   }
 
-  // Create a new package.json file in the root directory with updated scripts
+  // Create a new package.json file in the root directory
   const packageJsonFile = fs.readFileSync(
     path.resolve(workingDir, 'package.json'),
     {
@@ -150,6 +150,7 @@ export async function generateFromPrefab(
   );
   const packageJson = JSON.parse(packageJsonFile);
 
+  // Update the scripts entry to use 'builda execute'
   const scripts = packageJson.scripts as Record<string, string>;
   const buildaScripts = {} as Record<string, string>;
 
@@ -178,10 +179,21 @@ export async function generateFromPrefab(
     }
   });
 
+  // Create a 'builda' entry with the path to the current prefab and version:
+
+  const buildaEntry = {
+    prefab: {
+      name: prefabName,
+      version: version,
+      path: prefabPath
+    }
+  };
+
   // Create a new package.json file in the root directory with updated details
   const newPackageJson = {
     ...packageJson,
-    scripts: buildaScripts
+    scripts: buildaScripts,
+    builda: buildaEntry
   };
 
   fs.writeFileSync(

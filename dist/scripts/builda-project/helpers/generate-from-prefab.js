@@ -86,7 +86,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             });
         }
     });
-    // Copy config.json from working builda directory to root directory and add the version number
+    // Copy builda.json from working builda directory to root directory and add the version number
     if (node_fs_1.default.existsSync(buildaConfigPath)) {
         const buildaConfig = JSON.parse(node_fs_1.default.readFileSync(buildaConfigPath, {
             encoding: 'utf8'
@@ -94,11 +94,12 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         buildaConfig.version = version;
         node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, configFileName), JSON.stringify(buildaConfig, null, 2));
     }
-    // Create a new package.json file in the root directory with updated scripts
+    // Create a new package.json file in the root directory
     const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(workingDir, 'package.json'), {
         encoding: 'utf8'
     });
     const packageJson = JSON.parse(packageJsonFile);
+    // Update the scripts entry to use 'builda execute'
     const scripts = packageJson.scripts;
     const buildaScripts = {};
     Object.entries(scripts).forEach(([key, value]) => {
@@ -124,8 +125,16 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             buildaScripts[key] = `builda x ${key}`;
         }
     });
+    // Create a 'builda' entry with the path to the current prefab and version:
+    const buildaEntry = {
+        prefab: {
+            name: prefabName,
+            version: version,
+            path: prefabPath
+        }
+    };
     // Create a new package.json file in the root directory with updated details
-    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
+    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts, builda: buildaEntry });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
     const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
