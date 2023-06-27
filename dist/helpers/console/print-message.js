@@ -10,7 +10,7 @@ const dots = {
     interval: 80,
     frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 };
-const std = process_1.default.stdout;
+const stdOut = process_1.default.stdout;
 const stderr = process_1.default.stderr;
 let timer = undefined;
 const printMessage = (message, type, returnstring) => {
@@ -84,9 +84,9 @@ const printMessage = (message, type, returnstring) => {
                 index = 0;
                 now = spinnerFrames[index];
             }
-            readline_1.default.clearLine(std, 0);
-            readline_1.default.cursorTo(std, 0);
-            std.write(now);
+            readline_1.default.clearLine(stdOut, 0);
+            readline_1.default.cursorTo(stdOut, 0);
+            stdOut.write(now);
             index = index >= spinnerFrames.length ? 0 : index + 1;
         }, spinnerTimeInterval);
         newMessage = chalk_1.default.blue(`${message}`);
@@ -94,7 +94,7 @@ const printMessage = (message, type, returnstring) => {
     if (!type) {
         newMessage = message;
     }
-    const returnType = type === 'error' ? stderr : std;
+    const returnType = type === 'error' ? stderr : stdOut;
     return returnstring ? newMessage : returnType.write(`${newMessage}\n`);
 };
 exports.default = printMessage;

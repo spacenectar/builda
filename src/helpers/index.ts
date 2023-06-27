@@ -4,6 +4,7 @@ export { default as printMessage } from './console/print-message';
 export { default as printSiteLink } from './console/print-site-link';
 export { default as showHelp } from './console/show-help';
 export { default as throwError } from './console/throw-error';
+export { default as confirm } from './console/confirm';
 
 // File helpers
 export { default as checkAndCopyPath } from './file/check-and-copy-path';

@@ -24,9 +24,9 @@ describe('builda project from prefab - no npm install', () => {
     process.chdir(cwdCache);
     jest.restoreAllMocks();
     jest.resetModules();
-    // if (fs.existsSync(path.resolve(FILE_FOLDER))) {
-    //   fs.rmSync(path.resolve(FILE_FOLDER), { recursive: true });
-    // }
+    if (fs.existsSync(path.resolve(FILE_FOLDER))) {
+      fs.rmSync(path.resolve(FILE_FOLDER), { recursive: true });
+    }
   });
 
   test('The .builda file contains an export dir', () => {

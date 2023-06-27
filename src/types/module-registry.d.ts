@@ -119,6 +119,12 @@ export interface ModuleRegistry {
      */
     rootFiles?: string[];
     /**
+     * Unique to application modules, this is a list of files which should be copied to the application root
+     * and if necessary, have substitutions made to them. These files will NOT be copied back into the module
+     * export directory.
+     */
+    applicationOnlyFiles?: RootFile[];
+    /**
      * Any global substitutions which should be made to the module files when they are installed
      * (see (https://builda.app/docs/build-a-module/substitutions))
      * @optional

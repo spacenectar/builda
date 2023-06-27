@@ -1,6 +1,6 @@
 {
   "name": "builda",
-  "version": "5.0.0-9",
+  "version": "5.0.0-10",
   "bin": {
     "builda": "dist/index.js"
   },
@@ -69,6 +69,8 @@
     "yargs": "^17.4.1"
   },
   "devDependencies": {
+    "@types/concat-stream": "^2.0.0",
+    "@types/cross-spawn": "^6.0.2",
     "@types/glob": "^8.0.0",
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^28.1.4",
@@ -79,7 +81,9 @@
     "@types/yargs": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "concat-stream": "^2.0.0",
     "concurrently": "^7.4.0",
+    "cross-spawn": "^7.0.3",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-output": "^3.0.1",

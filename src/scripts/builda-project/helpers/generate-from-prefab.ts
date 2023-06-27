@@ -101,9 +101,44 @@ export async function generateFromPrefab(
     fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
   });
 
-  // Copy config.json from working builda directory to root directory
+  // Copy any applicationOnlyFiles to the application root and rewrite them
+  // TODO:
+  // - only rewrite files that have substitutions
+  // - This isn't working for some reason, the substitutions aren't being applied
+  module?.generatorOptions?.applicationOnlyFiles?.forEach(async (file) => {
+    const prefabDir = path.join(buildaDir, 'modules', 'prefab');
+    const filePath = path.join(prefabDir, file.path);
+    const outputDir = path.join(rootDir, path.dirname(file.path));
+    // Check if the file is a directory
+    if (fs.lstatSync(filePath).isDirectory()) {
+      throw new Error(
+        'Directories are not allowed in applicationOnlyFiles, please use rootFiles instead'
+      );
+    } else {
+      // Copy the file to the root directory
+      await writeFile({
+        file: filePath,
+        outputDir,
+        substitute: file.substitutions,
+        name
+      });
+    }
+  });
+
+  // Copy config.json from working builda directory to root directory and add the version number
   if (fs.existsSync(buildaConfigPath)) {
-    fs.copyFileSync(buildaConfigPath, path.join(rootDir, configFileName));
+    const buildaConfig = JSON.parse(
+      fs.readFileSync(buildaConfigPath, {
+        encoding: 'utf8'
+      })
+    );
+
+    buildaConfig.version = version;
+
+    fs.writeFileSync(
+      path.join(rootDir, configFileName),
+      JSON.stringify(buildaConfig, null, 2)
+    );
   }
 
   // Create a new package.json file in the root directory with updated scripts

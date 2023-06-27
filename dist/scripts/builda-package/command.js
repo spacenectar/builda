@@ -9,16 +9,8 @@ exports.default = () => {
         command: 'package',
         desc: 'Package a module ready for publishing',
         aliases: ['package', 'pack'],
-        builder: (yargs) => {
-            return yargs.option('version', {
-                aliases: ['v', 'ver'],
-                default: '',
-                describe: 'update module version (semver)',
-                type: 'string'
-            });
-        },
-        handler: async (argv) => {
-            return (0, package_1.default)(argv.version);
+        handler: async () => {
+            return (0, package_1.default)();
         }
     };
 };

@@ -11,7 +11,7 @@ const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -64,9 +64,35 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         // add a .gitkeep file to the folder
         node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
     });
-    // Copy config.json from working builda directory to root directory
+    // Copy any applicationOnlyFiles to the application root and rewrite them
+    // TODO:
+    // - only rewrite files that have substitutions
+    // - This isn't working for some reason, the substitutions aren't being applied
+    (_f = (_e = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _e === void 0 ? void 0 : _e.applicationOnlyFiles) === null || _f === void 0 ? void 0 : _f.forEach(async (file) => {
+        const prefabDir = node_path_1.default.join(buildaDir, 'modules', 'prefab');
+        const filePath = node_path_1.default.join(prefabDir, file.path);
+        const outputDir = node_path_1.default.join(rootDir, node_path_1.default.dirname(file.path));
+        // Check if the file is a directory
+        if (node_fs_1.default.lstatSync(filePath).isDirectory()) {
+            throw new Error('Directories are not allowed in applicationOnlyFiles, please use rootFiles instead');
+        }
+        else {
+            // Copy the file to the root directory
+            await (0, helpers_1.writeFile)({
+                file: filePath,
+                outputDir,
+                substitute: file.substitutions,
+                name
+            });
+        }
+    });
+    // Copy config.json from working builda directory to root directory and add the version number
     if (node_fs_1.default.existsSync(buildaConfigPath)) {
-        node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));
+        const buildaConfig = JSON.parse(node_fs_1.default.readFileSync(buildaConfigPath, {
+            encoding: 'utf8'
+        }));
+        buildaConfig.version = version;
+        node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, configFileName), JSON.stringify(buildaConfig, null, 2));
     }
     // Create a new package.json file in the root directory with updated scripts
     const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(workingDir, 'package.json'), {
@@ -196,7 +222,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
                     all: true,
                     stdio: 'inherit'
                 });
-                (_e = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _e === void 0 ? void 0 : _e.pipe(node_process_1.default.stdout);
+                (_g = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _g === void 0 ? void 0 : _g.pipe(node_process_1.default.stdout);
                 await childProcess;
                 (0, helpers_1.printMessage)('All dependencies installed.', 'success');
             }

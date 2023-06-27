@@ -9,6 +9,7 @@ const simple_git_1 = require("simple-git");
 const helpers_1 = require("../../helpers");
 const publish_to_trade_store_1 = require("./helpers/publish-to-trade-store");
 const check_path_exists_1 = require("./helpers/check-path-exists");
+const builda_package_1 = require("../builda-package");
 exports.default = async (updateVersion) => {
     const registry = await (0, helpers_1.getRegistry)();
     const { name, type, version, publishToTradeStore } = registry;
@@ -31,7 +32,10 @@ exports.default = async (updateVersion) => {
         (0, helpers_1.printMessage)(`No tradeStore entry found in ${REGISTRYFILE}.\nThis module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`, 'info');
     }
     if (!node_fs_1.default.existsSync(MODULEPACKAGE)) {
-        (0, helpers_1.throwError)(`No ${MODULEPACKAGE} file found. Please run 'builda package' before publishing.\r`);
+        // If the module package does not exist, run the builda-package script
+        (0, helpers_1.printMessage)('No module package found. Building package...', 'processing');
+        await (0, builda_package_1.buildaPackage)(updateVersion);
+        (0, helpers_1.printMessage)('Package built', 'success');
     }
     const isCorrectlyPrefixed = name.startsWith(`${type}-`);
     if (!isCorrectlyPrefixed) {

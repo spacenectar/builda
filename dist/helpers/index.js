@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.urlWithProtocol = exports.randomNameGenerator = exports.pluralise = exports.normaliseCase = exports.getSiteLink = exports.getPathFromRoot = exports.detectPathType = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.changeCase = exports.prefabQuestions = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.validateModulePath = exports.getSubstitutions = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.copyPathsToRoot = exports.writeLogFile = exports.writeFile = exports.replaceRootDir = exports.loopAndRewriteFiles = exports.getConfigFile = exports.createDir = exports.createConfigFile = exports.copyDir = exports.checkAndCopyPath = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = void 0;
+exports.urlWithProtocol = exports.randomNameGenerator = exports.pluralise = exports.normaliseCase = exports.getSiteLink = exports.getPathFromRoot = exports.detectPathType = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.changeCase = exports.prefabQuestions = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.validateModulePath = exports.getSubstitutions = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.copyPathsToRoot = exports.writeLogFile = exports.writeFile = exports.replaceRootDir = exports.loopAndRewriteFiles = exports.getConfigFile = exports.createDir = exports.createConfigFile = exports.copyDir = exports.checkAndCopyPath = exports.confirm = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = void 0;
 // Console helpers
 var print_logo_1 = require("./console/print-logo");
 Object.defineProperty(exports, "printLogo", { enumerable: true, get: function () { return __importDefault(print_logo_1).default; } });
@@ -15,6 +15,8 @@ var show_help_1 = require("./console/show-help");
 Object.defineProperty(exports, "showHelp", { enumerable: true, get: function () { return __importDefault(show_help_1).default; } });
 var throw_error_1 = require("./console/throw-error");
 Object.defineProperty(exports, "throwError", { enumerable: true, get: function () { return __importDefault(throw_error_1).default; } });
+var confirm_1 = require("./console/confirm");
+Object.defineProperty(exports, "confirm", { enumerable: true, get: function () { return __importDefault(confirm_1).default; } });
 // File helpers
 var check_and_copy_path_1 = require("./file/check-and-copy-path");
 Object.defineProperty(exports, "checkAndCopyPath", { enumerable: true, get: function () { return __importDefault(check_and_copy_path_1).default; } });
