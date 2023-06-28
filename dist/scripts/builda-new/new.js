@@ -9,8 +9,18 @@ const generate_commands_1 = __importDefault(require("./helpers/generate-commands
 const inquirer_1 = __importDefault(require("inquirer"));
 // import helpers
 const helpers_1 = require("../../helpers");
-const buildFromBlueprint = (name, outputDir, config, script, subString) => {
+const globals_1 = __importDefault(require("../../data/globals"));
+const builda_build_1 = require("../../scripts/builda-build");
+const buildFromBlueprint = async (name, outputDir, config, script, subString) => {
+    const { buildaDir } = globals_1.default;
     const outputDirectory = `${outputDir}/${(0, helpers_1.changeCase)(name, 'kebabCase')}`;
+    const outputInExport = path_1.default.join(buildaDir, 'export', outputDirectory);
+    if (node_fs_1.default.existsSync(outputDirectory)) {
+        (0, helpers_1.throwError)(`A ${script.use} already exists with the name ${name}`);
+    }
+    if (node_fs_1.default.existsSync(outputInExport)) {
+        (0, helpers_1.throwError)(`An existing ${script.use} with the name ${name} was found in the prefab. Continuing will overwrite this version.\r\nIf you want to edit the prefab version, you need to eject it with 'builda eject ${name}'`);
+    }
     // Create the directory tree if it doesn't exist
     node_fs_1.default.mkdirSync(outputDirectory, { recursive: true });
     const { path: pathstring, registry } = (0, helpers_1.getModule)('blueprint', config, script);
@@ -29,33 +39,31 @@ const buildFromBlueprint = (name, outputDir, config, script, subString) => {
     const fullPath = path_1.default.resolve(pathstring, 'files');
     node_fs_1.default.readdirSync(fullPath).forEach((file) => {
         const srcPath = `${fullPath}/${file}`;
-        const outputPath = `${outputDirectory}`;
+        const outputDir = `${outputDirectory}`;
         (0, helpers_1.writeFile)({
             file: srcPath,
-            outputDir: outputPath,
+            rename: srcPath.replace('temp_name', name),
+            outputDir: outputDir,
             substitute,
             name
         });
     });
-    const componentRegistry = {
-        name,
-        version: '1.0.0',
-        author: '',
-        blueprint: {
-            name: registry.name,
-            version: registry.version
-        }
-    };
-    // Add a component registry file to the output directory
-    return node_fs_1.default.writeFileSync(`${outputDirectory}/registry.json`, JSON.stringify(componentRegistry, null, 2));
+    // copy the folder into the export directory
+    (0, builda_build_1.buildaBuild)({
+        config
+    });
+    return (0, helpers_1.printMessage)('Done!', 'success');
 };
 exports.default = async ({ config, name, scriptName, subString }) => {
     const commands = (0, generate_commands_1.default)(config);
     const script = commands === null || commands === void 0 ? void 0 : commands[scriptName];
     if (script.use) {
+        if (!name || name === '') {
+            (0, helpers_1.throwError)(`You need to provide a name for your new ${scriptName}`);
+        }
         (0, helpers_1.printMessage)(`Building new ${scriptName}: '${name}'...`, 'notice');
         if (script.variants) {
-            const answers = inquirer_1.default.prompt([
+            const answers = await inquirer_1.default.prompt([
                 {
                     type: 'list',
                     name: 'variantChoice',
@@ -63,16 +71,18 @@ exports.default = async ({ config, name, scriptName, subString }) => {
                     choices: script.variants.map((variant) => {
                         return {
                             name: variant.name,
-                            value: variant.outputPath
+                            value: variant.outputDir
                         };
                     })
                 }
             ]);
-            const outputDir = await answers;
-            console.log(outputDir);
+            await buildFromBlueprint(name, answers.variantChoice, config, script, subString);
         }
         else {
-            buildFromBlueprint(name, script.outputDir, config, script, subString);
+            await buildFromBlueprint(name, script.outputDir, config, script, subString);
         }
+    }
+    else {
+        (0, helpers_1.throwError)('No valid scripts found');
     }
 };

@@ -4,7 +4,6 @@ import yargs from 'yargs';
 import buildaNew from './new';
 
 type Args = {
-  configPath: string;
   name: string;
   scriptName: string;
   subString: string;
@@ -31,12 +30,6 @@ export default () => {
           default: '',
           describe:
             'A string matcher for the blueprint script. e.g: "%MY_STRING%:\'new string\'"',
-          type: 'string'
-        })
-        .option('configPath', {
-          aliases: ['c', 'config'],
-          default: '',
-          describe: 'The path to a config file',
           type: 'string'
         });
     },

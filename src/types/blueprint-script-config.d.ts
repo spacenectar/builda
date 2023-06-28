@@ -6,7 +6,7 @@ export type BlueprintScriptContent = {
   substitute?: TSubstitution[] | [];
   variants: {
     name: string;
-    outputPath: string;
+    outputDir: string;
   }[];
 };
 

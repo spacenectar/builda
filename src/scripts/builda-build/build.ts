@@ -18,22 +18,18 @@ type TBuild = {
    */
   config: ConfigFile;
   /**
-   * Should the build be run in production mode
-   */
-  prod: boolean;
-  /**
    * If only a specific path should be built, this is the path
    */
   onlyPath?: string;
 };
 
-export default async ({ config, prod, onlyPath }: TBuild) => {
+export default async ({ config, onlyPath }: TBuild) => {
   const { prefab } = config;
   const root = process.cwd();
 
   if (!prefab) {
     throwError(
-      'No prefab found in config file. Watch cannot be run without a prefab'
+      'No prefab found in config file. Build cannot be run without a prefab'
     );
   }
 

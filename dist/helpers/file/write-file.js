@@ -9,7 +9,11 @@ const path_1 = __importDefault(require("path"));
 const string_1 = require("../../helpers/string");
 const prettier_1 = __importDefault(require("prettier"));
 const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
-    const fileName = file === null || file === void 0 ? void 0 : file.split('/').pop();
+    let fileName = file;
+    if (rename) {
+        fileName = rename;
+    }
+    fileName = fileName === null || fileName === void 0 ? void 0 : fileName.split('/').pop();
     // get the file contents
     const fileContent = file ? fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8') : '';
     // replace the each placeholder with the correctly formatted name
@@ -37,9 +41,9 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
         : newContent;
     // write the new file contents to the output directory
     if (newContent) {
-        return fs_1.default.writeFileSync(`${outputDir}/${rename || fileName}`, newContent);
+        return fs_1.default.writeFileSync(`${outputDir}/${fileName}`, newContent);
     }
-    throw new Error(`Could not write file ${rename || fileName}`);
+    throw new Error(`Could not write file ${fileName}`);
 };
 exports.writeFile = writeFile;
 exports.default = exports.writeFile;

@@ -6,20 +6,25 @@ import path from 'node:path';
 import fs from 'node:fs';
 import execa from 'execa';
 
-import { throwError, printMessage } from 'helpers';
+import { throwError } from 'helpers';
 
 import globals from 'data/globals';
 
 type TExecute = {
   command: string;
+  args?: Record<string, string>;
 };
 
 /**
  * Takes a command as an argument and prepends the builda directory to the command
  */
-export default async ({ command }: TExecute) => {
+export default async ({ command, args }: TExecute) => {
   const cwd = process.cwd();
-  const exportDir = path.join(cwd, globals.buildaDir, 'export');
+  let exportDir = path.join(process.cwd(), globals.buildaDir, 'export');
+  if (cwd.split('/').pop() === 'export') {
+    // If we're already in the export directory, use the current directory
+    exportDir = cwd;
+  }
   const packageJsonFile = fs.readFileSync(
     path.resolve(exportDir, 'package.json'),
     {
@@ -44,12 +49,10 @@ export default async ({ command }: TExecute) => {
   }
 
   if (fs.existsSync(path.resolve(cwd, 'yarn.lock'))) {
-    printMessage('yarn lockfile found, using Yarn as script runner', 'success');
     packageManager = 'yarn';
   }
 
   if (fs.existsSync(path.resolve(cwd, 'package-lock.json'))) {
-    printMessage('NPM lockfile found, using NPM as script runner', 'success');
     packageManager = 'npm';
   }
 
@@ -66,7 +69,35 @@ export default async ({ command }: TExecute) => {
   }
 
   try {
-    const prefixedCommand = `${packageManager} run ${command}`;
+    let prefixedCommand = `${packageManager} run ${command}`;
+    if (args) {
+      const argKeys = Object.keys(args);
+      const argValues = Object.values(args);
+      const argsString = argKeys.reduce((acc, key, index) => {
+        const value = argValues[index];
+        let keyString = '';
+
+        // If the key is '_' or '$0', we don't need to add it to the string
+        if (key === '_' || key === '$0') {
+          return acc;
+        }
+
+        // If the key is only one character, we can use a single dash
+        if (key.length === 1) {
+          keyString = `-${key}`;
+        } else {
+          // If the key is more than one character, we need to use two dashes
+          keyString = `--${key}`;
+        }
+
+        // If the value is a boolean, we don't need to add the value to the string
+        if (value && typeof value === 'boolean') {
+          return `${acc} ${keyString}`;
+        }
+        return `${acc} ${keyString}="${value}"`;
+      }, '');
+      prefixedCommand = `${prefixedCommand} ${argsString}`;
+    }
 
     process.stdout.write(
       chalk.magenta('Running with Builda: ') +

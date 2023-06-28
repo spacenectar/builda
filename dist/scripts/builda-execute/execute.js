@@ -14,10 +14,14 @@ const globals_1 = __importDefault(require("../../data/globals"));
 /**
  * Takes a command as an argument and prepends the builda directory to the command
  */
-exports.default = async ({ command }) => {
+exports.default = async ({ command, args }) => {
     var _a;
     const cwd = node_process_1.default.cwd();
-    const exportDir = node_path_1.default.join(cwd, globals_1.default.buildaDir, 'export');
+    let exportDir = node_path_1.default.join(node_process_1.default.cwd(), globals_1.default.buildaDir, 'export');
+    if (cwd.split('/').pop() === 'export') {
+        // If we're already in the export directory, use the current directory
+        exportDir = cwd;
+    }
     const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(exportDir, 'package.json'), {
         encoding: 'utf8'
     });
@@ -31,11 +35,9 @@ exports.default = async ({ command }) => {
         (0, helpers_1.throwError)('Builda detected a yarn.lock file and a package-lock.json file. Please delete one of these files and try again');
     }
     if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'yarn.lock'))) {
-        (0, helpers_1.printMessage)('yarn lockfile found, using Yarn as script runner', 'success');
         packageManager = 'yarn';
     }
     if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'package-lock.json'))) {
-        (0, helpers_1.printMessage)('NPM lockfile found, using NPM as script runner', 'success');
         packageManager = 'npm';
     }
     if (!script) {
@@ -48,7 +50,33 @@ exports.default = async ({ command }) => {
         (0, helpers_1.throwError)('No command found');
     }
     try {
-        const prefixedCommand = `${packageManager} run ${command}`;
+        let prefixedCommand = `${packageManager} run ${command}`;
+        if (args) {
+            const argKeys = Object.keys(args);
+            const argValues = Object.values(args);
+            const argsString = argKeys.reduce((acc, key, index) => {
+                const value = argValues[index];
+                let keyString = '';
+                // If the key is '_' or '$0', we don't need to add it to the string
+                if (key === '_' || key === '$0') {
+                    return acc;
+                }
+                // If the key is only one character, we can use a single dash
+                if (key.length === 1) {
+                    keyString = `-${key}`;
+                }
+                else {
+                    // If the key is more than one character, we need to use two dashes
+                    keyString = `--${key}`;
+                }
+                // If the value is a boolean, we don't need to add the value to the string
+                if (value && typeof value === 'boolean') {
+                    return `${acc} ${keyString}`;
+                }
+                return `${acc} ${keyString}="${value}"`;
+            }, '');
+            prefixedCommand = `${prefixedCommand} ${argsString}`;
+        }
         node_process_1.default.stdout.write(chalk_1.default.magenta('Running with Builda: ') +
             chalk_1.default.white.bold(`'${prefixedCommand}'`) +
             '\n');

@@ -10,21 +10,14 @@ exports.default = () => {
         desc: 'Execute a command from within the export directory',
         aliases: ['x', 'exec'],
         builder: (yargs) => {
-            return yargs
-                .positional('command', {
+            return yargs.positional('command', {
                 describe: 'The name of the command',
                 type: 'string',
                 demandOption: true
-            })
-                .option('configPath', {
-                aliases: ['c', 'config'],
-                default: '',
-                describe: 'The path to a config file',
-                type: 'string'
             });
         },
         handler: async (argv) => {
-            return (0, execute_1.default)({ command: argv.command });
+            return (0, execute_1.default)({ command: argv.command, args: argv });
         }
     };
 };

@@ -12,12 +12,6 @@ exports.default = () => {
         aliases: ['-b', '--build'],
         builder: (yargs) => {
             return yargs
-                .option('prod', {
-                aliases: ['p', 'production'],
-                default: false,
-                describe: 'Build for production. This will minify the output and remove any debug code',
-                type: 'boolean'
-            })
                 .option('onlyPath', {
                 describe: 'If you want to build from a specific path',
                 type: 'string',
@@ -35,8 +29,7 @@ exports.default = () => {
             if (config) {
                 return (0, build_1.default)({
                     config,
-                    onlyPath: argv.onlyPath,
-                    prod: argv.prod
+                    onlyPath: argv.onlyPath
                 });
             }
             (0, helpers_1.throwError)('No config file found');

@@ -8,8 +8,7 @@ const generateCommands = (config) => {
         const scriptArray = Object.entries(config.scripts);
         scriptArray.forEach((script) => {
             const name = script[0];
-            const { use, outputDir } = script[1];
-            commands[name] = { use, outputDir };
+            commands[name] = script[1];
         });
         return commands;
     }

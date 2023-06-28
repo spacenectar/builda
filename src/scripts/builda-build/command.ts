@@ -5,7 +5,6 @@ import buildaBuild from './build';
 
 type Args = {
   configPath: string;
-  prod: boolean;
   onlyPath: string;
 };
 
@@ -16,13 +15,6 @@ export default () => {
     aliases: ['-b', '--build'],
     builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs
-        .option('prod', {
-          aliases: ['p', 'production'],
-          default: false,
-          describe:
-            'Build for production. This will minify the output and remove any debug code',
-          type: 'boolean'
-        })
         .option('onlyPath', {
           describe: 'If you want to build from a specific path',
           type: 'string',
@@ -40,8 +32,7 @@ export default () => {
       if (config) {
         return buildaBuild({
           config,
-          onlyPath: argv.onlyPath,
-          prod: argv.prod
+          onlyPath: argv.onlyPath
         });
       }
       throwError('No config file found');

@@ -3,7 +3,6 @@
 // Watch for changes in the specified directories and run the 'build' script when changes are detected
 
 import chokidar from 'chokidar';
-import process from 'node:process';
 import { printMessage, throwError } from 'helpers';
 
 import { buildaBuild } from 'scripts/builda-build';
@@ -23,18 +22,35 @@ export default (config: ConfigFile) => {
     );
   }
 
-  const watcher = chokidar.watch(process.cwd(), {
+  const watcher = chokidar.watch('.', {
     persistent: true,
+    ignoreInitial: true,
     ignored
   });
 
-  watcher.on('ready', () => {
-    printMessage('Watching for changes...', 'primary');
-    printMessage('Press Ctrl+C to stop watching', 'secondary');
-  });
-
-  watcher.on('change', (pathString) => {
-    console.log(`File ${pathString} has been changed`);
-    buildaBuild({ config, prod: false, onlyPath: pathString });
-  });
+  watcher
+    .on('change', (pathString) => {
+      console.log(`File ${pathString} has been changed`);
+      buildaBuild({ config, onlyPath: pathString });
+    })
+    .on('add', (pathString) => {
+      console.log(`File ${pathString} has been added`);
+      buildaBuild({ config, onlyPath: pathString });
+    })
+    .on('addDir', (pathString) => {
+      console.log(`Directory ${pathString} has been added`);
+      buildaBuild({ config, onlyPath: pathString });
+    })
+    .on('unlinkDir', (pathString) => {
+      console.log(`Directory ${pathString} has been deleted`);
+      buildaBuild({ config, onlyPath: pathString });
+    })
+    .on('unlink', (pathString) => {
+      console.log(`File ${pathString} has been deleted`);
+      buildaBuild({ config, onlyPath: pathString });
+    })
+    .on('ready', () => {
+      printMessage('Watching for changes...', 'primary');
+      printMessage('Press Ctrl+C to stop watching', 'secondary');
+    });
 };

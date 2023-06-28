@@ -23,7 +23,13 @@ export const writeFile = ({
   substitute,
   name
 }: IWriteFileOptions) => {
-  const fileName = file?.split('/').pop();
+  let fileName = file;
+
+  if (rename) {
+    fileName = rename;
+  }
+
+  fileName = fileName?.split('/').pop();
 
   // get the file contents
   const fileContent = file ? fs.readFileSync(path.resolve(file), 'utf8') : '';
@@ -57,9 +63,9 @@ export const writeFile = ({
 
   // write the new file contents to the output directory
   if (newContent) {
-    return fs.writeFileSync(`${outputDir}/${rename || fileName}`, newContent);
+    return fs.writeFileSync(`${outputDir}/${fileName}`, newContent);
   }
-  throw new Error(`Could not write file ${rename || fileName}`);
+  throw new Error(`Could not write file ${fileName}`);
 };
 
 export default writeFile;

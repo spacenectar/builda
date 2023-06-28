@@ -1,15 +1,14 @@
 {
-  "ignore": [
-    ".DS_Store",
-    "node_modules",
-    ".builda",
-    ".git",
-    ".DS_Store",
-    ".github",
-    ".vscode",
-    "builda",
-    "npm-debug.log",
-    "yarn-error.log",
-    "yarn-debug.log"
-  ]
+    "ignore": [
+        ".DS_Store",
+        "node_modules",
+        ".builda",
+        ".git",
+        ".github",
+        ".vscode",
+        "npm-debug.log",
+        "yarn-error.log",
+        "yarn-debug.log",
+        "package.json"
+    ]
 }
