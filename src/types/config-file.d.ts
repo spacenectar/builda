@@ -10,18 +10,10 @@ export interface ConfigFile {
     [key: string]: string;
   };
   /**
-   * Any files to include in the root of the export directory (can be a glob pattern)
-   */
-  watchInclude?: string[];
-  /**
-   * Any files to ignore in the root of the export directory (can be a glob pattern)
-   */
-  watchIgnore?: string[];
-  /**
    * Any files from the prefab which you do not want to be a part of your app
    * (can be a glob pattern)
    */
-  deletedInPrefab?: string[];
+  ejected?: string[];
   /**
    * Any blueprint scripts you want to be available to your app (See (https://builda.app/docs/build-a-module/blueprint-scripts) for more info)
    */

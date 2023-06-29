@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initCommand = exports.buildaInit = exports.buildCommand = exports.buildaBuild = exports.newCommand = exports.buildaNew = exports.indexerCommand = exports.buildaIndexer = exports.watchCommand = exports.buildaWatch = exports.publishCommand = exports.buildaPublish = exports.packageCommand = exports.buildaPackage = exports.installCommand = exports.buildaInstall = exports.addCommand = exports.buildaAdd = exports.ejectCommand = exports.buildaEject = exports.executeCommand = exports.buildaExecute = exports.projectCommand = exports.buildaProject = void 0;
+exports.buildaQuestion = exports.initCommand = exports.buildaInit = exports.buildCommand = exports.buildaBuild = exports.newCommand = exports.buildaNew = exports.indexerCommand = exports.buildaIndexer = exports.watchCommand = exports.buildaWatch = exports.publishCommand = exports.buildaPublish = exports.packageCommand = exports.buildaPackage = exports.installCommand = exports.buildaInstall = exports.addCommand = exports.buildaAdd = exports.ejectCommand = exports.buildaEject = exports.executeCommand = exports.buildaExecute = exports.projectCommand = exports.buildaProject = void 0;
 var builda_project_1 = require("./builda-project");
 Object.defineProperty(exports, "buildaProject", { enumerable: true, get: function () { return builda_project_1.buildaProject; } });
 Object.defineProperty(exports, "projectCommand", { enumerable: true, get: function () { return builda_project_1.command; } });
@@ -37,3 +37,5 @@ Object.defineProperty(exports, "buildCommand", { enumerable: true, get: function
 var builda_init_1 = require("./builda-init");
 Object.defineProperty(exports, "buildaInit", { enumerable: true, get: function () { return builda_init_1.buildaInit; } });
 Object.defineProperty(exports, "initCommand", { enumerable: true, get: function () { return builda_init_1.command; } });
+var builda_question_1 = require("./builda-question");
+Object.defineProperty(exports, "buildaQuestion", { enumerable: true, get: function () { return builda_question_1.buildaQuestion; } });

@@ -14,11 +14,14 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.ts', '**/*.tsx'],
+      files: ['**/*.ts'],
       env: {
         browser: true
       },
-      extends: ['plugin:@typescript-eslint/recommended']
+      extends: ['plugin:@typescript-eslint/recommended'],
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 0
+      }
     },
     {
       files: ['**/*.json'],

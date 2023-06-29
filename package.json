@@ -1,6 +1,6 @@
 {
   "name": "builda",
-  "version": "5.0.0-12",
+  "version": "5.0.0-13",
   "bin": {
     "builda": "dist/index.js"
   },

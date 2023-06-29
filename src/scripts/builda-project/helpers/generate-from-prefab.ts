@@ -93,6 +93,7 @@ export async function generateFromPrefab(
     const prefabDir = path.join(buildaDir, 'modules', 'prefab');
     const filePath = path.join(prefabDir, file.path);
     const outputDir = path.join(rootDir, path.dirname(file.path));
+    const fileName = path.basename(file.path);
     // Check if the file is a directory
     if (fs.lstatSync(filePath).isDirectory()) {
       throw new Error(
@@ -103,6 +104,7 @@ export async function generateFromPrefab(
       await writeFile({
         file: filePath,
         outputDir,
+        rename: fileName.replace('.aof', ''),
         substitute: file.substitutions,
         name
       });
