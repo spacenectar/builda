@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -10,9 +9,9 @@ import {
   addRemoteModule,
   createDir,
   getConfig,
+  updateConfig,
   convertRegistryPathToUrl,
-  printMessage,
-  changeCase
+  printMessage
 } from 'helpers';
 
 // Import data
@@ -98,20 +97,9 @@ export default async ({
           );
         }
 
-        // Write the config file
-        fs.writeFile(
-          globals.configFileName,
-          JSON.stringify(config, null, 2),
-          (err) => {
-            if (err) {
-              throwError(err.message);
-            }
-            printMessage(
-              `${changeCase(type, 'pascal')}: '${name}@${version}' added`,
-              'success'
-            );
-          }
-        );
+        // Update the config file
+        updateConfig(config);
+        printMessage(`Added ${name} to your project`, 'success');
       } else {
         throwError('Something went wrong');
       }

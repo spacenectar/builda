@@ -9,7 +9,7 @@ export { default as confirm } from './console/confirm';
 // File helpers
 export { default as checkAndCopyPath } from './file/check-and-copy-path';
 export { default as copyDir } from './file/copy-dir';
-export { default as createConfigFile } from './file/create-config-file';
+export { default as updateConfig } from './file/update-config';
 export { default as createDir } from './file/create-dir';
 export { default as getConfig } from './file/get-config';
 export { default as loopAndRewriteFiles } from './file/loop-and-rewrite-files';

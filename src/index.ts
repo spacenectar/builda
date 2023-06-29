@@ -52,3 +52,5 @@ if (require.main === module) {
 }
 
 export default builda;
+export { buildaQuestion } from './scripts/builda-question';
+export { buildaSubstitute } from './scripts/builda-substitute';

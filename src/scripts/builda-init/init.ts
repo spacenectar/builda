@@ -3,7 +3,7 @@ import EventEmitter from 'node:events';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { printMessage, printSiteLink, showHelp } from 'helpers';
+import { printMessage, printSiteLink, showHelp, updateConfig } from 'helpers';
 
 import type { ConfigFile } from 'types/config-file';
 
@@ -28,7 +28,7 @@ export default async ({ config }: TInit) => {
   // This number should be incremented if the number of questions exceeds 50
   EventEmitter.defaultMaxListeners = 50;
 
-  const { buildaDir, configFileName } = globals;
+  const { buildaDir } = globals;
 
   let answers: TFlatObject = {
     projectName: '',
@@ -64,13 +64,13 @@ export default async ({ config }: TInit) => {
     showHelp(
       'It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
         chalk.yellow('Be careful though') +
-        ', continuing will instantly delete any existing config file and your' +
+        ', continuing will instantly delete any existing config and your' +
         buildaDir +
         ' directory.',
       'warning'
     );
 
-    // If a config file already exists, ask the user if they want to overwrite it
+    // If a builda config entry already exists in package.json, ask the user if they want to overwrite it
     const { overwrite } = await inquirer.prompt([
       {
         type: 'confirm',
@@ -81,14 +81,15 @@ export default async ({ config }: TInit) => {
     ]);
 
     if (!overwrite) {
-      // If the user doesn't want to overwrite the config file, exit the script
+      // If the user doesn't want to overwrite the config , exit the script
       printMessage('Process aborted at user request', 'notice');
       process.exit(0);
     }
 
-    // If the user wants to overwrite the config file, delete the existing one
-    fs.unlinkSync(configFileName);
-    // And delete the builda directory
+    // Remove the builda config from package.json
+    updateConfig(null);
+
+    // Delete the builda directory
     if (fs.existsSync(buildaDir)) {
       fs.rmSync(buildaDir, { recursive: true });
     }
@@ -149,7 +150,7 @@ export default async ({ config }: TInit) => {
   if (initType === 'existing') {
     showHelp(
       'You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
-        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
+        `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.`
     );
     const existingProjectAnswers = await existingProjectQuestions();
     answers = { ...answers, ...existingProjectAnswers };
@@ -166,7 +167,7 @@ export default async ({ config }: TInit) => {
   if (initType === 'prefab') {
     showHelp(
       'You can create your own prefab by answering a few questions about your project.\r\n\n' +
-        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
+        `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.` +
         printSiteLink({ link: 'docs/build-a-module', anchor: 'prefab' })
     );
 
@@ -177,7 +178,7 @@ export default async ({ config }: TInit) => {
   if (initType === 'blueprint') {
     showHelp(
       'You can create your own blueprint by answering a few questions about your project.\r\n\n' +
-        `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
+        `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.\r\n\n` +
         printSiteLink({ link: 'docs/build-a-module', anchor: 'blueprint' })
     );
     console.log('Coming soon...');
