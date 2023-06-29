@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSubstitutions = void 0;
 const helpers_1 = require("../../helpers");
-const getSubstitutions = ({ name, registry, script, sub }) => {
+const getSubstitutions = ({ name, registry, script }) => {
     var _a, _b;
     const substitutions = [];
     const substitute = (script === null || script === void 0 ? void 0 : script.substitute) && ((_a = script.substitute) === null || _a === void 0 ? void 0 : _a.length) > 0

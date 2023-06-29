@@ -13,21 +13,16 @@ interface ISubstitute extends TSubstitution {
   includeRootFiles?: boolean;
 }
 
-export type TSubstitute = {
-  /**
-   * The list of substitutions to perform
-   */
-  substitutions: ISubstitute[];
-};
-
 /**
  * Substitute values found in all files in the export directory
  * and the root files (if specified)
  */
-export default async ({ substitutions }: TSubstitute) => {
+export default async (substitutions: ISubstitute[]) => {
   substitutions.forEach((substitution) => {
     console.log(
-      `Substituting ${substitution.replace} for ${substitution.with}`
+      `Substituting ${substitution.replace} for ${substitution.with} in ${
+        substitution.includeRootFiles ? 'included root files and ' : ''
+      }export files`
     );
   });
 };

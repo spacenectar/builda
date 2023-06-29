@@ -20,6 +20,7 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     let newContent = content || fileContent;
     if (name) {
         newContent = fileContent
+            .replace(/prefab-name-replace-string/g, (0, string_1.changeCase)(name, 'kebabCase'))
             .replace(/%KEBAB_CASE%/g, (0, string_1.changeCase)(name, 'kebabCase'))
             .replace(/%CAMEL_CASE%/g, (0, string_1.changeCase)(name, 'camelCase'))
             .replace(/%SNAKE_CASE%/g, (0, string_1.changeCase)(name, 'snakeCase'))
@@ -34,11 +35,14 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
             newContent = newContent.replace(regex, sub.with);
         });
     }
-    newContent = file
-        ? prettier_1.default.format(newContent, {
-            filepath: path_1.default.resolve(file)
-        })
-        : newContent;
+    // Run prettier on the file if it's not an aof file
+    if (!(fileName === null || fileName === void 0 ? void 0 : fileName.endsWith('.aof'))) {
+        newContent = file
+            ? prettier_1.default.format(newContent, {
+                filepath: path_1.default.resolve(file)
+            })
+            : newContent;
+    }
     // write the new file contents to the output directory
     if (newContent) {
         return fs_1.default.writeFileSync(`${outputDir}/${fileName}`, newContent);

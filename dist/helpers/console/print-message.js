@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.printMessage = void 0;
 const chalk_1 = __importDefault(require("chalk"));
 const process_1 = __importDefault(require("process"));
 const readline_1 = __importDefault(require("readline"));
@@ -97,4 +98,5 @@ const printMessage = (message, type, returnstring) => {
     const returnType = type === 'error' ? stderr : stdOut;
     return returnstring ? newMessage : returnType.write(`${newMessage}\n`);
 };
-exports.default = printMessage;
+exports.printMessage = printMessage;
+exports.default = exports.printMessage;

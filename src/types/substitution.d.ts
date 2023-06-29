@@ -1,8 +1,8 @@
 // see (https://builda.app/docs/build-a-module/substitutions) for more info
 export type TSubstitution = {
   /**
-   * The string to be replaced
-   * @pattern ^%[A-Z_]+%$
+   * The string(s) to be replaced
+   * TODO: Add support for multiple strings to be replaced
    * @example %APP_NAME%
    */
   replace: string;

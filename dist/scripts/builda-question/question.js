@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const inquirer_1 = __importDefault(require("inquirer"));
 /**
- * Asks the user a series of questions, defined by the prefab,
- * @param { TQuestion }
+ * Asks the user a series of questions, defined by the prefab
  */
-exports.default = async ({ questions }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- This comes from inquirer
+exports.default = async (questions) => {
     return inquirer_1.default.prompt(questions);
 };

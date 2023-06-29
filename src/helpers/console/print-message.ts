@@ -31,7 +31,11 @@ type Types =
 
 let timer: NodeJS.Timeout | undefined = undefined;
 
-const printMessage = (message: string, type: Types, returnstring?: boolean) => {
+export const printMessage = (
+  message: string,
+  type: Types,
+  returnstring?: boolean
+) => {
   let newMessage = null;
   if (type && type === 'error') {
     if (timer !== undefined) {

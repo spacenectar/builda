@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.buildaSubstitute = exports.buildaQuestion = exports.builda = void 0;
+exports.throwError = exports.printMessage = exports.changeCase = exports.buildaSubstitute = exports.buildaQuestion = exports.builda = void 0;
 const yargs_1 = __importDefault(require("yargs"));
 const chalk_1 = __importDefault(require("chalk"));
 // import data
@@ -49,3 +49,7 @@ var builda_question_1 = require("./scripts/builda-question");
 Object.defineProperty(exports, "buildaQuestion", { enumerable: true, get: function () { return builda_question_1.buildaQuestion; } });
 var builda_substitute_1 = require("./scripts/builda-substitute");
 Object.defineProperty(exports, "buildaSubstitute", { enumerable: true, get: function () { return builda_substitute_1.buildaSubstitute; } });
+var helpers_1 = require("./helpers");
+Object.defineProperty(exports, "changeCase", { enumerable: true, get: function () { return helpers_1.changeCase; } });
+Object.defineProperty(exports, "printMessage", { enumerable: true, get: function () { return helpers_1.printMessage; } });
+Object.defineProperty(exports, "throwError", { enumerable: true, get: function () { return helpers_1.throwError; } });

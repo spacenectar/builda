@@ -8,7 +8,7 @@ import { ConfigFile } from 'types/config-file';
  * Replaces the existing 'builda' entry in the package.json file with an updated version
  * Pass null to remove the entry
  */
-const updateConfig = (update: ConfigFile | null) => {
+export const updateConfig = (update: ConfigFile | null) => {
   if (fs.existsSync(path.resolve(process.cwd(), 'package.json'))) {
     const configFile = JSON.parse(
       fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf8')

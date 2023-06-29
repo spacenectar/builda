@@ -30,6 +30,12 @@ const changeCase = (input, type) => {
                 return word.charAt(0).toUpperCase() + word.slice(1);
             })
                 .join('');
+        case 'titleCase':
+            return wordArray
+                .map((word) => {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+             })
+                .join(' ');
         case 'sentenceCase':
         default:
             return wordArray

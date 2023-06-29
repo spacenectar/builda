@@ -39,6 +39,7 @@ export const writeFile = ({
 
   if (name) {
     newContent = fileContent
+      .replace(/prefab-name-replace-string/g, changeCase(name, 'kebabCase'))
       .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
       .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
       .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))
@@ -55,12 +56,14 @@ export const writeFile = ({
     });
   }
 
-  newContent = file
-    ? prettier.format(newContent, {
-        filepath: path.resolve(file)
-      })
-    : newContent;
-
+  // Run prettier on the file if it's not an aof file
+  if (!fileName?.endsWith('.aof')) {
+    newContent = file
+      ? prettier.format(newContent, {
+          filepath: path.resolve(file)
+        })
+      : newContent;
+  }
   // write the new file contents to the output directory
   if (newContent) {
     return fs.writeFileSync(`${outputDir}/${fileName}`, newContent);

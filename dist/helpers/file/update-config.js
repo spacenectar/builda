@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateConfig = void 0;
 const fs_1 = __importDefault(require("fs"));
 const console_1 = require("../../helpers/console");
 const path_1 = __importDefault(require("path"));
@@ -19,4 +20,5 @@ const updateConfig = (update) => {
     }
     return (0, console_1.throwError)('No package.json found in project');
 };
-exports.default = updateConfig;
+exports.updateConfig = updateConfig;
+exports.default = exports.updateConfig;
