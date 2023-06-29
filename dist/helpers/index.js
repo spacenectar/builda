@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.urlWithProtocol = exports.randomNameGenerator = exports.pluralise = exports.normaliseCase = exports.getSiteLink = exports.detectPathType = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.changeCase = exports.prefabQuestions = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.validateModulePath = exports.getSubstitutions = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.copyPathsToRoot = exports.writeLogFile = exports.writeFile = exports.loopAndRewriteFiles = exports.getConfig = exports.createDir = exports.createConfigFile = exports.copyDir = exports.checkAndCopyPath = exports.confirm = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = void 0;
+exports.urlWithProtocol = exports.randomNameGenerator = exports.pluralise = exports.normaliseCase = exports.getSiteLink = exports.detectPathType = exports.convertSymbolsToWords = exports.convertNumbersToWords = exports.changeCase = exports.prefabQuestions = exports.newProjectQuestions = exports.existingProjectQuestions = exports.blueprintQuestions = exports.validateModulePath = exports.getSubstitutions = exports.getRegistry = exports.getModule = exports.getDetailsFromPath = exports.convertRegistryPathToUrl = exports.addRemoteModule = exports.addLocalModule = exports.copyPathsToRoot = exports.writeLogFile = exports.writeFile = exports.loopAndRewriteFiles = exports.getConfig = exports.createDir = exports.updateConfig = exports.copyDir = exports.checkAndCopyPath = exports.confirm = exports.throwError = exports.showHelp = exports.printSiteLink = exports.printMessage = exports.printLogo = void 0;
 // Console helpers
 var print_logo_1 = require("./console/print-logo");
 Object.defineProperty(exports, "printLogo", { enumerable: true, get: function () { return __importDefault(print_logo_1).default; } });
@@ -22,8 +22,8 @@ var check_and_copy_path_1 = require("./file/check-and-copy-path");
 Object.defineProperty(exports, "checkAndCopyPath", { enumerable: true, get: function () { return __importDefault(check_and_copy_path_1).default; } });
 var copy_dir_1 = require("./file/copy-dir");
 Object.defineProperty(exports, "copyDir", { enumerable: true, get: function () { return __importDefault(copy_dir_1).default; } });
-var create_config_file_1 = require("./file/create-config-file");
-Object.defineProperty(exports, "createConfigFile", { enumerable: true, get: function () { return __importDefault(create_config_file_1).default; } });
+var update_config_1 = require("./file/update-config");
+Object.defineProperty(exports, "updateConfig", { enumerable: true, get: function () { return __importDefault(update_config_1).default; } });
 var create_dir_1 = require("./file/create-dir");
 Object.defineProperty(exports, "createDir", { enumerable: true, get: function () { return __importDefault(create_dir_1).default; } });
 var get_config_1 = require("./file/get-config");

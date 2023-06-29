@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const node_process_1 = __importDefault(require("node:process"));
 // Import helpers
@@ -64,13 +63,9 @@ exports.default = async ({ modulePath, fromScript }) => {
                     // User has added this prefab before.
                     (0, helpers_1.throwError)(`You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda project' instead.`);
                 }
-                // Write the config file
-                node_fs_1.default.writeFile(globals_1.default.configFileName, JSON.stringify(config, null, 2), (err) => {
-                    if (err) {
-                        (0, helpers_1.throwError)(err.message);
-                    }
-                    (0, helpers_1.printMessage)(`${(0, helpers_1.changeCase)(type, 'pascal')}: '${name}@${version}' added`, 'success');
-                });
+                // Update the config file
+                (0, helpers_1.updateConfig)(config);
+                (0, helpers_1.printMessage)(`Added ${name} to your project`, 'success');
             }
             else {
                 (0, helpers_1.throwError)('Something went wrong');

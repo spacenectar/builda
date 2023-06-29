@@ -1,7 +1,6 @@
 export default {
-  "version": "5.0.0-9",
+  "version": "5.0.0-13",
   "buildaDir": ".builda",
-  "configFileName": "builda.json",
   "websiteUrl": "https://www.builda.app",
   "buildaReadmeFileName": "getting-started.md",
   "repository": {

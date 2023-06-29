@@ -19,7 +19,7 @@ exports.default = async ({ config }) => {
     // event listeners to not be removed until the process exits
     // This number should be incremented if the number of questions exceeds 50
     node_events_1.default.defaultMaxListeners = 50;
-    const { buildaDir, configFileName } = globals_1.default;
+    const { buildaDir } = globals_1.default;
     let answers = {
         projectName: '',
         appRoot: '',
@@ -46,10 +46,10 @@ exports.default = async ({ config }) => {
         }
         (0, helpers_1.showHelp)('It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
             chalk_1.default.yellow('Be careful though') +
-            ', continuing will instantly delete any existing config file and your' +
+            ', continuing will instantly delete any existing config and your' +
             buildaDir +
             ' directory.', 'warning');
-        // If a config file already exists, ask the user if they want to overwrite it
+        // If a builda config entry already exists in package.json, ask the user if they want to overwrite it
         const { overwrite } = await inquirer_1.default.prompt([
             {
                 type: 'confirm',
@@ -59,13 +59,13 @@ exports.default = async ({ config }) => {
             }
         ]);
         if (!overwrite) {
-            // If the user doesn't want to overwrite the config file, exit the script
+            // If the user doesn't want to overwrite the config , exit the script
             (0, helpers_1.printMessage)('Process aborted at user request', 'notice');
             process.exit(0);
         }
-        // If the user wants to overwrite the config file, delete the existing one
-        node_fs_1.default.unlinkSync(configFileName);
-        // And delete the builda directory
+        // Remove the builda config from package.json
+        (0, helpers_1.updateConfig)(null);
+        // Delete the builda directory
         if (node_fs_1.default.existsSync(buildaDir)) {
             node_fs_1.default.rmSync(buildaDir, { recursive: true });
         }
@@ -116,7 +116,7 @@ exports.default = async ({ config }) => {
     }
     if (initType === 'existing') {
         (0, helpers_1.showHelp)('You can add builda to an existing project by answering a few questions about your project.\r\n\n' +
-            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`);
+            `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.`);
         const existingProjectAnswers = await (0, existing_project_questions_1.default)();
         answers = Object.assign(Object.assign({}, answers), existingProjectAnswers);
         const blueprintAnswers = await (0, blueprint_questions_1.default)(answers);
@@ -127,14 +127,14 @@ exports.default = async ({ config }) => {
     }
     if (initType === 'prefab') {
         (0, helpers_1.showHelp)('You can create your own prefab by answering a few questions about your project.\r\n\n' +
-            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.` +
+            `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'prefab' }));
         console.log('Coming soon...');
         process.exit(0);
     }
     if (initType === 'blueprint') {
         (0, helpers_1.showHelp)('You can create your own blueprint by answering a few questions about your project.\r\n\n' +
-            `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.\r\n\n` +
+            `If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.\r\n\n` +
             (0, helpers_1.printSiteLink)({ link: 'docs/build-a-module', anchor: 'blueprint' }));
         console.log('Coming soon...');
         process.exit(0);

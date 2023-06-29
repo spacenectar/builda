@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.builda = void 0;
+exports.buildaSubstitute = exports.buildaQuestion = exports.builda = void 0;
 const yargs_1 = __importDefault(require("yargs"));
 const chalk_1 = __importDefault(require("chalk"));
 // import data
@@ -45,3 +45,7 @@ if (require.main === module) {
     (0, exports.builda)();
 }
 exports.default = exports.builda;
+var builda_question_1 = require("./scripts/builda-question");
+Object.defineProperty(exports, "buildaQuestion", { enumerable: true, get: function () { return builda_question_1.buildaQuestion; } });
+var builda_substitute_1 = require("./scripts/builda-substitute");
+Object.defineProperty(exports, "buildaSubstitute", { enumerable: true, get: function () { return builda_substitute_1.buildaSubstitute; } });
