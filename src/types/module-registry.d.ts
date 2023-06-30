@@ -117,7 +117,7 @@ export interface ModuleRegistry {
      * e.g. .env files
      * @optional
      */
-    rootFiles?: string[];
+    rootFiles?: Array<string | RootFile>;
     /**
      * Unique to application modules, this is a list of files which should be copied to the application root
      * and if necessary, have substitutions made to them. These files will NOT be copied back into the module

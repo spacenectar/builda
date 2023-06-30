@@ -74,9 +74,15 @@ export async function generateFromPrefab(
   await loopAndRewriteFiles({ name, paths: defaultRequiredFiles, substitute });
   const buildaPath = path.join(workingDir, buildaDir);
 
-  const rootFiles = module?.generatorOptions?.rootFiles || [];
-  // Copy all rootFiles into the application root
-  await copyPathsToRoot(rootFiles, rootDir);
+  module?.generatorOptions?.rootFiles?.forEach(async (file) => {
+    if (typeof file === 'string') {
+      // If the file is just a string, copy that file to the root
+      await copyPathsToRoot([file], rootDir);
+    } else {
+      // If the file is a RootFile object, copy the file to the root and rewrite it
+      await loopAndRewriteFiles({ name, paths: [file.path], substitute });
+    }
+  });
 
   // Create any extraFolders in the application root
   module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
@@ -154,7 +160,11 @@ export async function generateFromPrefab(
   // Create a new package.json file in the root directory with updated details
   const newPackageJson = {
     ...packageJson,
-    scripts: buildaScripts
+    scripts: buildaScripts,
+    builda: {
+      ...packageJson.builda,
+      fromPrefab: true
+    }
   };
 
   fs.writeFileSync(

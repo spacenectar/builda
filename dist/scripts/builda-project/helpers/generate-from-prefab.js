@@ -9,7 +9,7 @@ const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
 const helpers_1 = require("../../../helpers");
 async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, buildaDir, websiteUrl, buildaReadmeFileName) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e, _f, _g;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
             registryPath: prefabPath
@@ -44,11 +44,18 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     // Copy all required files
     await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
-    const rootFiles = ((_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) || [];
-    // Copy all rootFiles into the application root
-    await (0, helpers_1.copyPathsToRoot)(rootFiles, rootDir);
+    (_c = (_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) === null || _c === void 0 ? void 0 : _c.forEach(async (file) => {
+        if (typeof file === 'string') {
+            // If the file is just a string, copy that file to the root
+            await (0, helpers_1.copyPathsToRoot)([file], rootDir);
+        }
+        else {
+            // If the file is a RootFile object, copy the file to the root and rewrite it
+            await (0, helpers_1.loopAndRewriteFiles)({ name, paths: [file.path], substitute });
+        }
+    });
     // Create any extraFolders in the application root
-    (_d = (_c = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _c === void 0 ? void 0 : _c.extraFolders) === null || _d === void 0 ? void 0 : _d.forEach(async (folder) => {
+    (_e = (_d = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _d === void 0 ? void 0 : _d.extraFolders) === null || _e === void 0 ? void 0 : _e.forEach(async (folder) => {
         node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, folder), { recursive: true });
         // add a .gitkeep file to the folder
         node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
@@ -57,7 +64,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     // TODO:
     // - only rewrite files that have substitutions
     // - This isn't working for some reason, the substitutions aren't being applied
-    (_f = (_e = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _e === void 0 ? void 0 : _e.applicationOnlyFiles) === null || _f === void 0 ? void 0 : _f.forEach(async (file) => {
+    (_g = (_f = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _f === void 0 ? void 0 : _f.applicationOnlyFiles) === null || _g === void 0 ? void 0 : _g.forEach(async (file) => {
         const prefabDir = node_path_1.default.join(buildaDir, 'modules', 'prefab');
         const filePath = node_path_1.default.join(prefabDir, file.path);
         const outputDir = node_path_1.default.join(rootDir, node_path_1.default.dirname(file.path));
@@ -111,7 +118,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         }
     });
     // Create a new package.json file in the root directory with updated details
-    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
+    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts, builda: Object.assign(Object.assign({}, packageJson.builda), { fromPrefab: true }) });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
     const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;

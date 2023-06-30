@@ -10,7 +10,7 @@ import writeFile from './write-file';
 
 type FunctionParams = {
   // The name of the app being created (used for substitution)
-  name: string;
+  name?: string;
   // An array of file paths to be rewritten
   paths: string[];
   // An array of substitutions to be made
