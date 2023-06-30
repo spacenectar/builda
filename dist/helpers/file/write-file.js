@@ -35,14 +35,12 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
             newContent = newContent.replace(regex, sub.with);
         });
     }
-    // Run prettier on the file if it's not an aof file
-    if (!(fileName === null || fileName === void 0 ? void 0 : fileName.endsWith('.aof'))) {
-        newContent = file
-            ? prettier_1.default.format(newContent, {
-                filepath: path_1.default.resolve(file)
-            })
-            : newContent;
-    }
+    // Run prettier on the file
+    newContent = file
+        ? prettier_1.default.format(newContent, {
+            filepath: path_1.default.resolve(file)
+        })
+        : newContent;
     // write the new file contents to the output directory
     if (newContent) {
         return fs_1.default.writeFileSync(`${outputDir}/${fileName}`, newContent);

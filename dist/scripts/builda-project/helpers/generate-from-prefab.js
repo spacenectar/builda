@@ -71,10 +71,12 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             await (0, helpers_1.writeFile)({
                 file: filePath,
                 outputDir,
-                rename: fileName.replace('.aof', ''),
+                rename: fileName.replace('aof.', ''),
                 substitute: file.substitutions,
                 name
             });
+            // Then delete the file from the prefab directory
+            node_fs_1.default.unlinkSync(filePath);
         }
     });
     // Create a new package.json file in the root directory

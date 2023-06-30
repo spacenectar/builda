@@ -104,10 +104,12 @@ export async function generateFromPrefab(
       await writeFile({
         file: filePath,
         outputDir,
-        rename: fileName.replace('.aof', ''),
+        rename: fileName.replace('aof.', ''),
         substitute: file.substitutions,
         name
       });
+      // Then delete the file from the prefab directory
+      fs.unlinkSync(filePath);
     }
   });
 

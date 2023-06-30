@@ -12,14 +12,6 @@ const prefabDir = node_path_1.default.join(buildaDir, 'modules', 'prefab');
 exports.default = async (paths, rootDir) => {
     paths.forEach(async (file) => {
         const filePath = node_path_1.default.join(prefabDir, file);
-        // Check if the file is a directory
-        if (node_fs_1.default.lstatSync(filePath).isDirectory()) {
-            // Copy the directory and it's children to the root directory, preserving the directory structure
-            node_fs_1.default.cpSync(filePath, node_path_1.default.join(rootDir, file), { recursive: true });
-        }
-        else {
-            // Copy the file to the root directory
-            node_fs_1.default.copyFileSync(filePath, node_path_1.default.join(rootDir, file));
-        }
+        node_fs_1.default.cpSync(filePath, node_path_1.default.join(rootDir, file), { recursive: true });
     });
 };

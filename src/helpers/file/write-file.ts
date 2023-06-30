@@ -56,14 +56,13 @@ export const writeFile = ({
     });
   }
 
-  // Run prettier on the file if it's not an aof file
-  if (!fileName?.endsWith('.aof')) {
-    newContent = file
-      ? prettier.format(newContent, {
-          filepath: path.resolve(file)
-        })
-      : newContent;
-  }
+  // Run prettier on the file
+  newContent = file
+    ? prettier.format(newContent, {
+        filepath: path.resolve(file)
+      })
+    : newContent;
+
   // write the new file contents to the output directory
   if (newContent) {
     return fs.writeFileSync(`${outputDir}/${fileName}`, newContent);
