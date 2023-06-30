@@ -8,6 +8,23 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const string_1 = require("../../helpers/string");
 const prettier_1 = __importDefault(require("prettier"));
+const prettierAllowedFileTypes = [
+    'css',
+    'html',
+    'js',
+    'jsx',
+    'json',
+    'less',
+    'md',
+    'mdx',
+    'scss',
+    'sass',
+    'ts',
+    'tsx',
+    'yaml',
+    'yml',
+    'graphql'
+];
 const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     let fileName = file;
     if (rename) {
@@ -35,12 +52,15 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
             newContent = newContent.replace(regex, sub.with);
         });
     }
-    // Run prettier on the file
-    newContent = file
-        ? prettier_1.default.format(newContent, {
-            filepath: path_1.default.resolve(file)
-        })
-        : newContent;
+    // Run prettier on the file if it's a supported file type
+    const fileType = fileName === null || fileName === void 0 ? void 0 : fileName.split('.').pop();
+    if (fileType && prettierAllowedFileTypes.includes(fileType)) {
+        newContent = file
+            ? prettier_1.default.format(newContent, {
+                filepath: path_1.default.resolve(file)
+            })
+            : newContent;
+    }
     // write the new file contents to the output directory
     if (newContent) {
         return fs_1.default.writeFileSync(`${outputDir}/${fileName}`, newContent);

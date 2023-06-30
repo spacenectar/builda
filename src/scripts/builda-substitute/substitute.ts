@@ -1,8 +1,4 @@
-// import fs from 'node:fs';
-import path from 'node:path';
-import process from 'node:process';
-
-import { getConfig, getRegistry, loopAndRewriteFiles } from 'helpers';
+import { getRegistry, loopAndRewriteFiles } from 'helpers';
 
 import { TSubstitution } from 'types/substitution';
 
@@ -11,31 +7,24 @@ import { TSubstitution } from 'types/substitution';
  * (This is a post-processing step and exists to give prefab developers more control over the final output)
  */
 export default async (substitutions: TSubstitution[]) => {
-  const config = await getConfig();
-  if (!config.fromPrefab) {
-    throw new Error(
-      'BuildaSubstitute can only be run from within an application built from a prefab'
-    );
-  }
-
-  const registry = await getRegistry(
-    path.join(process.cwd(), '.builda', 'export')
-  );
+  const registry = await getRegistry();
 
   const rootFiles =
     registry?.generatorOptions?.rootFiles?.map((file) =>
-      path.resolve(process.cwd(), typeof file === 'string' ? file : file.path)
+      typeof file === 'string' ? file : file.path
     ) || [];
 
   const applicationOnlyFiles =
     registry?.generatorOptions?.applicationOnlyFiles?.map((file) =>
-      path.resolve(process.cwd(), typeof file === 'string' ? file : file.path)
+      typeof file === 'string' ? file : file.path
     ) || [];
 
   const filesToRewrite = [...rootFiles, ...applicationOnlyFiles];
 
   loopAndRewriteFiles({
     paths: filesToRewrite,
-    substitute: substitutions
+    substitute: substitutions,
+    fromRoot: true,
+    toRoot: true
   });
 };

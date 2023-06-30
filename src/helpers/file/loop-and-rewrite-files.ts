@@ -15,12 +15,21 @@ type FunctionParams = {
   paths: string[];
   // An array of substitutions to be made
   substitute: TSubstitution[];
+  // Run from the root directory instead of the prefab directory
+  fromRoot?: boolean;
+  // Run from the a custom directory
+  fromCustomPath?: string;
+  // Copy to the root directory as well as the export directory
+  toRoot?: boolean;
 };
 
 export const loopAndRewriteFiles = async ({
   name,
   paths,
-  substitute
+  substitute,
+  fromRoot = false,
+  fromCustomPath,
+  toRoot = false
 }: FunctionParams) => {
   const { buildaDir } = globals;
 
@@ -29,7 +38,7 @@ export const loopAndRewriteFiles = async ({
 
   const promises = [];
   for (const file of paths) {
-    const filePath = path.join(prefabDir, file);
+    const filePath = fromRoot ? file : path.join(prefabDir, file);
 
     // Check if file is glob
     if (file.includes('*')) {
@@ -37,27 +46,57 @@ export const loopAndRewriteFiles = async ({
         .sync(filePath)
         .map((f) => path.relative(prefabDir, f));
       promises.push(
-        await loopAndRewriteFiles({ name, paths: globFiles, substitute })
+        await loopAndRewriteFiles({
+          name,
+          paths: globFiles,
+          substitute,
+          fromRoot,
+          fromCustomPath,
+          toRoot
+        })
       );
     } else if (fs.lstatSync(filePath).isDirectory()) {
       const files = fs.readdirSync(filePath);
       const newFiles = files.map((f) => path.join(file, f));
       promises.push(
-        await loopAndRewriteFiles({ name, paths: newFiles, substitute })
+        await loopAndRewriteFiles({
+          name,
+          paths: newFiles,
+          substitute,
+          fromRoot,
+          fromCustomPath,
+          toRoot
+        })
       );
     } else {
       promises.push(
         new Promise((resolve) => {
           const directoryPathWithoutFile = path.dirname(file);
+          const fileName = path.basename(file);
           const directoryPath = path.join(workingDir, directoryPathWithoutFile);
+          const rootDir = fromCustomPath
+            ? fromCustomPath
+            : path.join(process.cwd(), '..', '..');
+          const rootPath = path.resolve(rootDir, directoryPathWithoutFile);
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
+            // Copy the file to the export directory and rewrite it
             writeFile({
               file: filePath,
               outputDir: directoryPath,
               substitute,
               name
             });
+            if (toRoot) {
+              // Copy the file to the root directory and rewrite it
+              writeFile({
+                file: filePath,
+                rename: fileName.replace('aof.', ''),
+                outputDir: rootPath,
+                substitute,
+                name
+              });
+            }
           }
           resolve(filePath);
         })

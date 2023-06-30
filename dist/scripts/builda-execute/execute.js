@@ -34,11 +34,14 @@ exports.default = async ({ command, args }) => {
         node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'package-lock.json'))) {
         (0, helpers_1.throwError)('Builda detected a yarn.lock file and a package-lock.json file. Please delete one of these files and try again');
     }
-    if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'yarn.lock'))) {
+    else if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'yarn.lock'))) {
         packageManager = 'yarn';
     }
-    if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'package-lock.json'))) {
+    else if (node_fs_1.default.existsSync(node_path_1.default.resolve(cwd, 'package-lock.json'))) {
         packageManager = 'npm';
+    }
+    else {
+        (0, helpers_1.throwError)('Builda could not detect a yarn.lock or package-lock.json file. Please run `yarn` or `npm install` and try again');
     }
     if (!script) {
         (0, helpers_1.throwError)(`No script found with the name '${command}'`);

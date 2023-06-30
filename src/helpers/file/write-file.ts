@@ -6,6 +6,24 @@ import prettier from 'prettier';
 // Import types
 import TSubstitution from 'types/substitution';
 
+const prettierAllowedFileTypes = [
+  'css',
+  'html',
+  'js',
+  'jsx',
+  'json',
+  'less',
+  'md',
+  'mdx',
+  'scss',
+  'sass',
+  'ts',
+  'tsx',
+  'yaml',
+  'yml',
+  'graphql'
+];
+
 interface IWriteFileOptions {
   file?: string;
   rename?: string;
@@ -56,12 +74,15 @@ export const writeFile = ({
     });
   }
 
-  // Run prettier on the file
-  newContent = file
-    ? prettier.format(newContent, {
-        filepath: path.resolve(file)
-      })
-    : newContent;
+  // Run prettier on the file if it's a supported file type
+  const fileType = fileName?.split('.').pop();
+  if (fileType && prettierAllowedFileTypes.includes(fileType)) {
+    newContent = file
+      ? prettier.format(newContent, {
+          filepath: path.resolve(file)
+        })
+      : newContent;
+  }
 
   // write the new file contents to the output directory
   if (newContent) {

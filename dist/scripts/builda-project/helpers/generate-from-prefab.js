@@ -51,7 +51,13 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         }
         else {
             // If the file is a RootFile object, copy the file to the root and rewrite it
-            await (0, helpers_1.loopAndRewriteFiles)({ name, paths: [file.path], substitute });
+            await (0, helpers_1.loopAndRewriteFiles)({
+                name,
+                paths: [file.path],
+                substitute,
+                fromCustomPath: rootDir,
+                toRoot: true
+            });
         }
     });
     // Create any extraFolders in the application root
@@ -118,7 +124,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         }
     });
     // Create a new package.json file in the root directory with updated details
-    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts, builda: Object.assign(Object.assign({}, packageJson.builda), { fromPrefab: true }) });
+    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
     const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;

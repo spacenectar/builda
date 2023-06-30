@@ -80,7 +80,13 @@ export async function generateFromPrefab(
       await copyPathsToRoot([file], rootDir);
     } else {
       // If the file is a RootFile object, copy the file to the root and rewrite it
-      await loopAndRewriteFiles({ name, paths: [file.path], substitute });
+      await loopAndRewriteFiles({
+        name,
+        paths: [file.path],
+        substitute,
+        fromCustomPath: rootDir,
+        toRoot: true
+      });
     }
   });
 
@@ -160,11 +166,7 @@ export async function generateFromPrefab(
   // Create a new package.json file in the root directory with updated details
   const newPackageJson = {
     ...packageJson,
-    scripts: buildaScripts,
-    builda: {
-      ...packageJson.builda,
-      fromPrefab: true
-    }
+    scripts: buildaScripts
   };
 
   fs.writeFileSync(
