@@ -23,6 +23,10 @@ export default async ({ pathString }: TEject) => {
     throwError('A path must be provided');
   }
 
+  if (config.ejected?.includes(pathString)) {
+    throwError(`${pathString} has already been ejected.`);
+  }
+
   const trimmedPath = pathString.replace(`${process.cwd()}/`, '');
 
   const pathInExport = `${process.cwd()}/.builda/export/${trimmedPath}`;
@@ -32,8 +36,11 @@ export default async ({ pathString }: TEject) => {
       throwError(`No file found at ${pathInExport}.`);
     }
     printMessage(`Moving ${trimmedPath} to application...`, 'info');
-    // Move the file to the root directory
-    copyPathsToRoot([trimmedPath], process.cwd(), true);
+    // Copy the file to the root directory
+    copyPathsToRoot([trimmedPath], process.cwd());
+    // Delete the file from the export directory
+    printMessage(`Deleting original from ${pathInExport}`, 'info');
+    fs.rmSync(pathInExport, { recursive: true, force: true });
     // Update the config to include the ejected file (prevents it from being re-added to the export directory on the next build)
     const relativePath = pathString.replace(`${process.cwd()}/`, '');
     const ejected = config.ejected ?? [];
