@@ -11,6 +11,7 @@ const chalk_1 = __importDefault(require("chalk"));
 const globals_1 = __importDefault(require("./data/globals"));
 const builda_project_1 = require("./scripts/builda-project");
 const builda_execute_1 = require("./scripts/builda-execute");
+const builda_eject_1 = require("./scripts/builda-eject");
 const builda_install_1 = require("./scripts/builda-install");
 const builda_add_1 = require("./scripts/builda-add");
 const builda_package_1 = require("./scripts/builda-package");
@@ -31,6 +32,7 @@ const builda = async () => {
         .command(Object.assign({}, (0, builda_init_1.command)()))
         .command(Object.assign({}, (0, builda_build_1.command)()))
         .command(Object.assign({}, (0, builda_add_1.command)()))
+        .command(Object.assign({}, (0, builda_eject_1.command)()))
         .command(Object.assign({}, (0, builda_install_1.command)()))
         .command(Object.assign({}, (0, builda_new_1.command)()))
         .command(Object.assign({}, (0, builda_execute_1.command)()))

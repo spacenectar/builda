@@ -8,6 +8,7 @@ import globals from 'data/globals';
 
 import { command as projectCommand } from 'scripts/builda-project';
 import { command as executeCommand } from 'scripts/builda-execute';
+import { command as ejectCommand } from 'scripts/builda-eject';
 import { command as installCommand } from 'scripts/builda-install';
 import { command as addCommand } from 'scripts/builda-add';
 import { command as packageCommand } from 'scripts/builda-package';
@@ -33,6 +34,7 @@ export const builda = async () => {
     .command({ ...initCommand() })
     .command({ ...buildCommand() })
     .command({ ...addCommand() })
+    .command({ ...ejectCommand() })
     .command({ ...installCommand() })
     .command({ ...newCommand() })
     .command({ ...executeCommand() })

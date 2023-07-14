@@ -1,9 +1,13 @@
 #! /usr/bin/env node
 import process from 'node:process';
 import fs from 'node:fs';
-import { throwError, getConfig, updateConfig, printMessage } from 'helpers';
-
-import { copyPathsToRoot } from 'helpers';
+import {
+  throwError,
+  getConfig,
+  updateConfig,
+  printMessage,
+  copyPathsToRoot
+} from 'helpers';
 
 type TEject = {
   pathString: string;
@@ -27,16 +31,18 @@ export default async ({ pathString }: TEject) => {
     if (!fs.existsSync(pathInExport)) {
       throwError(`No file found at ${pathInExport}.`);
     }
-    copyPathsToRoot([pathInExport], process.cwd());
+    printMessage(`Moving ${trimmedPath} to application...`, 'info');
+    // Move the file to the root directory
+    copyPathsToRoot([trimmedPath], process.cwd(), true);
+    // Update the config to include the ejected file (prevents it from being re-added to the export directory on the next build)
     const relativePath = pathString.replace(`${process.cwd()}/`, '');
-    const ejected = config.ejected || [];
+    const ejected = config.ejected ?? [];
     ejected.push(relativePath);
     const newConfig = {
       ...config,
       ejected
     };
     updateConfig(newConfig);
-    fs.unlinkSync(pathString);
     printMessage(
       `Ejected ${pathString}. You can now edit this file directly.`,
       'success'

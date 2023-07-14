@@ -24,8 +24,9 @@ export const updateConfig = (update: ConfigFile | null) => {
       path.resolve(process.cwd(), 'package.json'),
       JSON.stringify(newConfig, null, 2)
     );
+  } else {
+    throwError('No package.json found in project');
   }
-  return throwError('No package.json found in project');
 };
 
 export default updateConfig;

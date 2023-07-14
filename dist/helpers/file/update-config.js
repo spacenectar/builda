@@ -18,7 +18,9 @@ const updateConfig = (update) => {
         const newConfig = Object.assign(Object.assign({}, config), { builda: update === null ? undefined : Object.assign({}, update) });
         fs_1.default.writeFileSync(path_1.default.resolve(process.cwd(), 'package.json'), JSON.stringify(newConfig, null, 2));
     }
-    return (0, console_1.throwError)('No package.json found in project');
+    else {
+        (0, console_1.throwError)('No package.json found in project');
+    }
 };
 exports.updateConfig = updateConfig;
 exports.default = exports.updateConfig;
