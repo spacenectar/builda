@@ -1,5 +1,5 @@
 import { BlueprintScriptContents } from './blueprint-script-config';
-import { ModuleConfig } from './module-config';
+import { ModuleConfig, ModuleConfigContents } from './module-config';
 import { GenIndexConfig } from './gen-index-config';
 
 export interface ConfigFile {
@@ -23,11 +23,7 @@ export interface ConfigFile {
   /**
    * The path to the prefab used by your app (can be a local path, a remote url or a resolver)
    */
-  prefab?: {
-    name: string;
-    version: string;
-    path: string;
-  };
+  prefab?: ModuleConfigContents;
   /**
    * The blueprints to use in your app (See (https://builda.app/docs/blueprints) for more info)
    */

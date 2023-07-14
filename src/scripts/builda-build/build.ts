@@ -1,9 +1,9 @@
 #! /usr/bin/env node
 
 import fs from 'node:fs';
-
+import path from 'node:path';
 // Run a build
-import { printMessage, throwError, checkAndCopyPath } from 'helpers';
+import { printMessage, throwError, copyPath, getRegistry } from 'helpers';
 
 import globals from 'data/globals';
 import ignoredFiles from 'data/ignore-file.json';
@@ -26,6 +26,13 @@ type TBuild = {
 export default async ({ config, onlyPath }: TBuild) => {
   const { prefab } = config;
   const root = process.cwd();
+  const workingDir = path.join(root, globals.buildaDir);
+  const exportRoot = path.join(workingDir, 'export');
+  const registry = await getRegistry(exportRoot);
+
+  const uniqueAppFiles = registry.generatorOptions?.applicationOnlyFiles || [];
+
+  const ignoredFiles = [...ignored, ...uniqueAppFiles.map((file) => file.path)];
 
   if (!prefab) {
     throwError(
@@ -35,7 +42,10 @@ export default async ({ config, onlyPath }: TBuild) => {
 
   if (onlyPath) {
     const cleanRoot = root.replace(/\.\//, '');
-    checkAndCopyPath(
+    if (ignoredFiles.includes(onlyPath)) {
+      return;
+    }
+    copyPath(
       onlyPath,
       `${globals.buildaDir}/export`,
       onlyPath.replace(cleanRoot, '')
@@ -51,12 +61,8 @@ export default async ({ config, onlyPath }: TBuild) => {
       }
 
       files.forEach((file) => {
-        if (!ignored.includes(file)) {
-          checkAndCopyPath(
-            `${root}/${file}`,
-            `${globals.buildaDir}/export`,
-            file
-          );
+        if (!ignoredFiles.includes(file)) {
+          copyPath(`${root}/${file}`, `${globals.buildaDir}/export`, file);
         }
         promises.push(
           new Promise((resolve) => {

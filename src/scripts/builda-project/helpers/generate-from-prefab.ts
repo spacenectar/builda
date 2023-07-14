@@ -116,7 +116,7 @@ export async function generateFromPrefab(
       await writeFile({
         file: filePath,
         outputDir,
-        rename: fileName.replace('aof.', ''),
+        rename: fileName.replace('unique.', ''),
         substitute: file.substitutions,
         name
       });

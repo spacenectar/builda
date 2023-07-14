@@ -5,7 +5,7 @@
     "prefab": {
       "name": "prefab-lba-wellspring",
       "version": "0.0.1",
-      "path": "https://lba-wellspring.lhowst.apps.gss.gov.uk"
+      "location": "https://lba-wellspring.lhowst.apps.gss.gov.uk"
     },
     "blueprints": {
       "component": {

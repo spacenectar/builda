@@ -1,5 +1,5 @@
 export default {
-  "version": "5.0.0-13",
+  "version": "5.0.0-18",
   "buildaDir": ".builda",
   "websiteUrl": "https://www.builda.app",
   "buildaReadmeFileName": "getting-started.md",

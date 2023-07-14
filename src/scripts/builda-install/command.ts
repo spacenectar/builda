@@ -8,8 +8,8 @@ type Args = {
 
 export default () => {
   return {
-    command: 'install <modulePath>',
-    desc: 'Adds a new blueprint',
+    command: 'install',
+    desc: 'Installs the applications prefab and builds the export directory',
     builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],

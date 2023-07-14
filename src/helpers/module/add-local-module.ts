@@ -61,7 +61,7 @@ export const addLocalModule = async (
   await createDir(outputPath);
 
   // Get the files
-  await getFiles(modulePath, outputPath, 'files');
+  await getFiles(modulePath, outputPath, 'module');
 
   // Write the registry to the output directory
   fs.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));

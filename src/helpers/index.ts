@@ -7,7 +7,7 @@ export { default as throwError } from './console/throw-error';
 export { default as confirm } from './console/confirm';
 
 // File helpers
-export { default as checkAndCopyPath } from './file/check-and-copy-path';
+export { default as copyPath } from './file/check-and-copy-path';
 export { default as copyDir } from './file/copy-dir';
 export { default as updateConfig } from './file/update-config';
 export { default as createDir } from './file/create-dir';

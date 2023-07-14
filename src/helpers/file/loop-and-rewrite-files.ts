@@ -91,7 +91,7 @@ export const loopAndRewriteFiles = async ({
               // Copy the file to the root directory and rewrite it
               writeFile({
                 file: filePath,
-                rename: fileName.replace('aof.', ''),
+                rename: fileName.replace('unique.', ''),
                 outputDir: rootPath,
                 substitute,
                 name
