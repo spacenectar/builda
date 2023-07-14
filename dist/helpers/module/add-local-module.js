@@ -49,7 +49,7 @@ const addLocalModule = async (modulePath, output) => {
         : `${buildaDir}/modules/prefab`;
     await (0, helpers_1.createDir)(outputPath);
     // Get the files
-    await getFiles(modulePath, outputPath, 'files');
+    await getFiles(modulePath, outputPath, 'module');
     // Write the registry to the output directory
     node_fs_1.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
     return registry;

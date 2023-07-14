@@ -65,7 +65,7 @@ const loopAndRewriteFiles = async ({ name, paths, substitute, fromRoot = false, 
                         // Copy the file to the root directory and rewrite it
                         (0, write_file_1.default)({
                             file: filePath,
-                            rename: fileName.replace('aof.', ''),
+                            rename: fileName.replace('unique.', ''),
                             outputDir: rootPath,
                             substitute,
                             name

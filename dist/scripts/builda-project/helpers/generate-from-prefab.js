@@ -84,7 +84,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
             await (0, helpers_1.writeFile)({
                 file: filePath,
                 outputDir,
-                rename: fileName.replace('aof.', ''),
+                rename: fileName.replace('unique.', ''),
                 substitute: file.substitutions,
                 name
             });

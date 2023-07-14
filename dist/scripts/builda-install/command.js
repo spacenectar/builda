@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const install_1 = __importDefault(require("./install"));
 exports.default = () => {
     return {
-        command: 'install <modulePath>',
-        desc: 'Adds a new blueprint',
+        command: 'install',
+        desc: 'Installs the applications prefab and builds the export directory',
         builder: (yargs) => {
             return yargs.option('configPath', {
                 aliases: ['c', 'config'],

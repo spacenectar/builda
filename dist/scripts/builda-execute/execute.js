@@ -60,8 +60,8 @@ exports.default = async ({ command, args }) => {
             const argsString = argKeys.reduce((acc, key, index) => {
                 const value = argValues[index];
                 let keyString = '';
-                // If the key is '_' or '$0', we don't need to add it to the string
-                if (key === '_' || key === '$0') {
+                // If the key is '_', 'command' or '$0', we don't need to add it to the string
+                if (key === '_' || key === 'command' || key === '$0') {
                     return acc;
                 }
                 // If the key is only one character, we can use a single dash
@@ -74,11 +74,11 @@ exports.default = async ({ command, args }) => {
                 }
                 // If the value is a boolean, we don't need to add the value to the string
                 if (value && typeof value === 'boolean') {
-                    return `${acc} ${keyString}`;
+                    return ` ${acc} ${keyString}`;
                 }
-                return `${acc} ${keyString}="${value}"`;
+                return ` ${acc} ${keyString}="${value}"`;
             }, '');
-            prefixedCommand = `${prefixedCommand} ${argsString}`;
+            prefixedCommand = `${prefixedCommand}${argsString}`;
         }
         node_process_1.default.stdout.write(chalk_1.default.magenta('Running with Builda: ') +
             chalk_1.default.white.bold(`'${prefixedCommand}'`) +
