@@ -17,22 +17,32 @@ type TBuild = {
    * The project config
    */
   config: ConfigFile;
-  /**
-   * If only a specific path should be built, this is the path
-   */
-  onlyPath?: string;
 };
 
-export default async ({ config, onlyPath }: TBuild) => {
+export default async ({ config }: TBuild) => {
   const { prefab } = config;
   const root = process.cwd();
   const workingDir = path.join(root, globals.buildaDir);
   const exportRoot = path.join(workingDir, 'export');
   const registry = await getRegistry(exportRoot);
 
-  const uniqueAppFiles = registry.generatorOptions?.applicationOnlyFiles || [];
+  const uniqueAppFiles =
+    registry.generatorOptions?.rootFiles?.filter((file) => {
+      const pathString = typeof file === 'string' ? file : file.path;
 
-  const ignoredFiles = [...ignored, ...uniqueAppFiles.map((file) => file.path)];
+      if (pathString.startsWith('unique.')) {
+        return true;
+      }
+
+      return false;
+    }) ?? [];
+
+  const ignoredFiles = [
+    ...ignored,
+    ...uniqueAppFiles.map((file) =>
+      typeof file === 'string' ? file : file.path
+    )
+  ];
 
   if (!prefab) {
     throwError(
@@ -40,40 +50,24 @@ export default async ({ config, onlyPath }: TBuild) => {
     );
   }
 
-  if (onlyPath) {
-    const cleanRoot = root.replace(/\.\//, '');
-    if (ignoredFiles.includes(onlyPath)) {
-      return;
+  const promises = [] as Promise<string>[];
+  printMessage('Building your project', 'processing');
+
+  // Get a list of all of the files in the root directory
+  fs.readdir(root, (err, files) => {
+    if (err) {
+      throwError(err.message);
     }
-    copyPath(
-      onlyPath,
-      `${globals.buildaDir}/export`,
-      onlyPath.replace(cleanRoot, '')
-    );
-  } else {
-    const promises = [] as Promise<string>[];
-    printMessage('Building your project', 'processing');
 
-    // Get a list of all of the files in the root directory
-    fs.readdir(root, (err, files) => {
-      if (err) {
-        throwError(err.message);
+    files.forEach((file) => {
+      if (!ignoredFiles.includes(file)) {
+        copyPath(`${root}/${file}`, `${globals.buildaDir}/export`, file);
       }
-
-      files.forEach((file) => {
-        if (!ignoredFiles.includes(file)) {
-          copyPath(`${root}/${file}`, `${globals.buildaDir}/export`, file);
-        }
-        promises.push(
-          new Promise((resolve) => {
-            resolve(file);
-          })
-        );
-      });
-
-      Promise.all(promises).then(() => {
-        printMessage('Build complete', 'success');
-      });
+      promises.push(Promise.resolve(file));
     });
-  }
+
+    Promise.all(promises).then(() => {
+      printMessage('Build complete', 'success');
+    });
+  });
 };

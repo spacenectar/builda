@@ -34,7 +34,7 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     // get the file contents
     const fileContent = file ? fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8') : '';
     // replace the each placeholder with the correctly formatted name
-    let newContent = content || fileContent;
+    let newContent = content !== null && content !== void 0 ? content : fileContent;
     if (name) {
         newContent = fileContent
             .replace(/prefab-name-replace-string/g, (0, string_1.changeCase)(name, 'kebabCase'))
@@ -47,7 +47,7 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     // Replace custom substitutions
     if (substitute && substitute.length > 0) {
         substitute.forEach((sub) => {
-            const needle = `${sub.replace.toUpperCase()}`;
+            const needle = `${sub.replace}`;
             const regex = new RegExp(needle, 'g');
             newContent = newContent.replace(regex, sub.with);
         });

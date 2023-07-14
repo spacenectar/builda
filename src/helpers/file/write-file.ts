@@ -53,7 +53,7 @@ export const writeFile = ({
   const fileContent = file ? fs.readFileSync(path.resolve(file), 'utf8') : '';
 
   // replace the each placeholder with the correctly formatted name
-  let newContent = content || fileContent;
+  let newContent = content ?? fileContent;
 
   if (name) {
     newContent = fileContent
@@ -68,7 +68,7 @@ export const writeFile = ({
   // Replace custom substitutions
   if (substitute && substitute.length > 0) {
     substitute.forEach((sub: TSubstitution) => {
-      const needle = `${sub.replace.toUpperCase()}`;
+      const needle = `${sub.replace}`;
       const regex = new RegExp(needle, 'g');
       newContent = newContent.replace(regex, sub.with);
     });

@@ -20,8 +20,11 @@ exports.default = () => {
         },
         handler: async () => {
             const config = await (0, helpers_1.getConfig)();
-            if (config) {
+            if (config === null || config === void 0 ? void 0 : config.prefab) {
                 return (0, watch_1.default)(config);
+            }
+            else if ((config === null || config === void 0 ? void 0 : config.prefab) === undefined) {
+                (0, helpers_1.throwError)('No prefab found in config file. Watch can only be run within a prefab');
             }
             (0, helpers_1.throwError)('No config file found');
         }

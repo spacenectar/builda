@@ -6,7 +6,7 @@ export const copyPath = (
   destinationPath: string,
   fileName?: string
 ) => {
-  const name = fileName || '';
+  const name = fileName ?? '';
 
   return fs.cpSync(sourcePath, path.join(destinationPath, name), {
     dereference: true,

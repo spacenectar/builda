@@ -9,20 +9,13 @@ import { TSubstitution } from 'types/substitution';
 export default async (substitutions: TSubstitution[]) => {
   const registry = await getRegistry();
 
-  const rootFiles =
+  const paths =
     registry?.generatorOptions?.rootFiles?.map((file) =>
       typeof file === 'string' ? file : file.path
-    ) || [];
-
-  const applicationOnlyFiles =
-    registry?.generatorOptions?.applicationOnlyFiles?.map((file) =>
-      typeof file === 'string' ? file : file.path
-    ) || [];
-
-  const filesToRewrite = [...rootFiles, ...applicationOnlyFiles];
+    ) ?? [];
 
   loopAndRewriteFiles({
-    paths: filesToRewrite,
+    paths,
     substitute: substitutions,
     fromRoot: true,
     toRoot: true

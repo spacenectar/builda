@@ -22,8 +22,12 @@ export default () => {
     },
     handler: async () => {
       const config = await getConfig();
-      if (config) {
+      if (config?.prefab) {
         return buildaWatch(config);
+      } else if (config?.prefab === undefined) {
+        throwError(
+          'No prefab found in config file. Watch can only be run within a prefab'
+        );
       }
       throwError('No config file found');
     }

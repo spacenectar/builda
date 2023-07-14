@@ -10,10 +10,14 @@ export interface ConfigFile {
     [key: string]: string;
   };
   /**
-   * Any files from the prefab which you do not want to be a part of your app
-   * (can be a glob pattern)
+   * Any files or folders from the prefab which you wish to be unique to your app
    */
   ejected?: string[];
+  /**
+   * Any files or folders in your app which are only used in development and should not be included in the exported app
+   * (can be a glob pattern)
+   */
+  ignored?: string[];
   /**
    * Any blueprint scripts you want to be available to your app (See (https://builda.app/docs/build-a-module/blueprint-scripts) for more info)
    */

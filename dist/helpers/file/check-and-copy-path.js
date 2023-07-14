@@ -7,7 +7,7 @@ exports.copyPath = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const copyPath = (sourcePath, destinationPath, fileName) => {
-    const name = fileName || '';
+    const name = fileName !== null && fileName !== void 0 ? fileName : '';
     return fs_1.default.cpSync(sourcePath, path_1.default.join(destinationPath, name), {
         dereference: true,
         recursive: true,

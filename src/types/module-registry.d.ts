@@ -114,16 +114,11 @@ export interface ModuleRegistry {
     /**
      * Any files which should be copied to the module root when the module is installed in addition
      * to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files))
-     * e.g. .env files
+     * These files can also be rewritten with substitutions if required
+     * (note: prefixing a file name with `unique` will automatically add the file to the 'ignored' list (see https://builda.app/docs/build-a-module/prefabs#ignored-files and https://builda.app/docs/build-a-module/prefabs#unique-files))
      * @optional
      */
     rootFiles?: Array<string | RootFile>;
-    /**
-     * Unique to application modules, this is a list of files which should be copied to the application root
-     * and if necessary, have substitutions made to them. These files will NOT be copied back into the module
-     * export directory.
-     */
-    applicationOnlyFiles?: RootFile[];
     /**
      * Any global substitutions which should be made to the module files when they are installed
      * (see (https://builda.app/docs/build-a-module/substitutions))

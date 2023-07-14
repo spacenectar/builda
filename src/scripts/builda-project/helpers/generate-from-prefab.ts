@@ -49,7 +49,7 @@ export async function generateFromPrefab(
 
   const prefabName = module.name;
   const version = module.version;
-  const substitutions = module?.generatorOptions?.substitutions || [];
+  const substitutions = module?.generatorOptions?.substitutions ?? [];
 
   printMessage(`Installed ${prefabName}@${version}`, 'success');
 
@@ -62,68 +62,19 @@ export async function generateFromPrefab(
 
   printMessage('Copying required files to application...', 'copying');
 
-  const substitute = [
-    ...substitutions,
-    {
-      replace: '%APP_NAME%',
-      with: changeCase(name, 'kebabCase')
-    }
-  ];
-
   // Copy all required files
-  await loopAndRewriteFiles({ name, paths: defaultRequiredFiles, substitute });
+  await loopAndRewriteFiles({
+    name,
+    paths: defaultRequiredFiles,
+    substitute: [
+      ...substitutions,
+      {
+        replace: '%APP_NAME%',
+        with: changeCase(name, 'kebabCase')
+      }
+    ]
+  });
   const buildaPath = path.join(workingDir, buildaDir);
-
-  module?.generatorOptions?.rootFiles?.forEach(async (file) => {
-    if (typeof file === 'string') {
-      // If the file is just a string, copy that file to the root
-      await copyPathsToRoot([file], rootDir);
-    } else {
-      // If the file is a RootFile object, copy the file to the root and rewrite it
-      await loopAndRewriteFiles({
-        name,
-        paths: [file.path],
-        substitute,
-        fromCustomPath: rootDir,
-        toRoot: true
-      });
-    }
-  });
-
-  // Create any extraFolders in the application root
-  module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
-    fs.mkdirSync(path.join(rootDir, folder), { recursive: true });
-    // add a .gitkeep file to the folder
-    fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
-  });
-
-  // Copy any applicationOnlyFiles to the application root and rewrite them
-  // TODO:
-  // - only rewrite files that have substitutions
-  // - This isn't working for some reason, the substitutions aren't being applied
-  module?.generatorOptions?.applicationOnlyFiles?.forEach(async (file) => {
-    const prefabDir = path.join(buildaDir, 'modules', 'prefab');
-    const filePath = path.join(prefabDir, file.path);
-    const outputDir = path.join(rootDir, path.dirname(file.path));
-    const fileName = path.basename(file.path);
-    // Check if the file is a directory
-    if (fs.lstatSync(filePath).isDirectory()) {
-      throw new Error(
-        'Directories are not allowed in applicationOnlyFiles, please use rootFiles instead'
-      );
-    } else {
-      // Copy the file to the root directory
-      await writeFile({
-        file: filePath,
-        outputDir,
-        rename: fileName.replace('unique.', ''),
-        substitute: file.substitutions,
-        name
-      });
-      // Then delete the file from the prefab directory
-      fs.unlinkSync(filePath);
-    }
-  });
 
   // Create a new package.json file in the root directory
   const packageJsonFile = fs.readFileSync(
@@ -133,6 +84,61 @@ export async function generateFromPrefab(
     }
   );
   const packageJson = JSON.parse(packageJsonFile);
+
+  const newPackageJson = {
+    ...packageJson
+  };
+
+  module?.generatorOptions?.rootFiles?.forEach(async (file) => {
+    const filePath = typeof file === 'string' ? file : file.path;
+    const fileDir = path.dirname(filePath);
+    const fileName = path.basename(filePath);
+    if (typeof file === 'string') {
+      // If the file is just a string, copy that file to the root
+      await copyPathsToRoot([file], rootDir);
+    } else {
+      // If the file is a RootFile object, copy the file to the root and rewrite it
+      const substitute = file.substitutions ?? [];
+      await loopAndRewriteFiles({
+        name,
+        paths: [file.path],
+        substitute,
+        fromCustomPath: rootDir,
+        toRoot: true
+      });
+    }
+    // If the file name starts with 'unique.' it requires some processing
+    if (fileName.startsWith('unique.')) {
+      // Delete the copy in the export directory
+      fs.unlinkSync(path.join(workingDir, fileDir, fileName));
+      // Rename the copy to remove the 'unique.' prefix
+      const newFileName = fileName.replace('unique.', '');
+      printMessage(`Found unique file`, 'processing');
+      fs.renameSync(
+        path.join(rootDir, fileDir, fileName),
+        path.join(rootDir, fileDir, newFileName)
+      );
+      printMessage(`Renamed unique file to: ${newFileName}`, 'success');
+      // Add the unique file to the `ignored` array in the builda config
+      const existingBuildaConfig = packageJson.builda || {};
+      const buildaConfig = {
+        ...existingBuildaConfig,
+        ignored: [
+          ...(existingBuildaConfig.ignored || []),
+          path.join(fileDir, newFileName)
+        ]
+      };
+
+      newPackageJson.builda = buildaConfig;
+    }
+  });
+
+  // Create any extraFolders in the application root
+  module?.generatorOptions?.extraFolders?.forEach(async (folder) => {
+    fs.mkdirSync(path.join(rootDir, folder), { recursive: true });
+    // add a .gitkeep file to the folder
+    fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
+  });
 
   // Update the scripts entry to use 'builda execute'
   const scripts = packageJson.scripts as Record<string, string>;
@@ -164,10 +170,7 @@ export async function generateFromPrefab(
   });
 
   // Create a new package.json file in the root directory with updated details
-  const newPackageJson = {
-    ...packageJson,
-    scripts: buildaScripts
-  };
+  newPackageJson.scripts = buildaScripts;
 
   fs.writeFileSync(
     path.join(rootDir, 'package.json'),
@@ -231,7 +234,7 @@ export async function generateFromPrefab(
     const blueprints = Object.keys(module.blueprints);
     for (const blueprint of blueprints) {
       const bp = module.blueprints[blueprint];
-      printMessage(`installing ${blueprint}`, 'processing');
+      printMessage(`Installing blueprint: "${blueprint}"`, 'processing');
       const blueprintDest = path.join(
         rootDir,
         buildaDir,

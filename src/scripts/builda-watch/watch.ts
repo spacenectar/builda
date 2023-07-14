@@ -5,16 +5,15 @@
 import chokidar from 'chokidar';
 import { printMessage, throwError } from 'helpers';
 
-import { buildaBuild } from 'scripts/builda-build';
+import { syncWithExport } from './helpers/sync-with-export';
 
 import ignoredFiles from 'data/ignore-file.json';
 
 import type { ConfigFile } from 'types/config-file';
 
-const ignored = ignoredFiles.ignore;
-
 export default (config: ConfigFile) => {
   const { prefab } = config;
+  const ignored = [...ignoredFiles.ignore, ...(config.ignored || [])];
 
   if (!prefab) {
     throwError(
@@ -31,23 +30,38 @@ export default (config: ConfigFile) => {
   watcher
     .on('change', (pathString) => {
       console.log(`File ${pathString} has been changed`);
-      buildaBuild({ config, onlyPath: pathString });
+      syncWithExport({
+        type: 'update',
+        pathString
+      });
     })
     .on('add', (pathString) => {
       console.log(`File ${pathString} has been added`);
-      buildaBuild({ config, onlyPath: pathString });
+      syncWithExport({
+        type: 'copy',
+        pathString
+      });
     })
     .on('addDir', (pathString) => {
       console.log(`Directory ${pathString} has been added`);
-      buildaBuild({ config, onlyPath: pathString });
+      syncWithExport({
+        type: 'copy',
+        pathString
+      });
     })
     .on('unlinkDir', (pathString) => {
       console.log(`Directory ${pathString} has been deleted`);
-      buildaBuild({ config, onlyPath: pathString });
+      syncWithExport({
+        type: 'delete',
+        pathString
+      });
     })
     .on('unlink', (pathString) => {
       console.log(`File ${pathString} has been deleted`);
-      buildaBuild({ config, onlyPath: pathString });
+      syncWithExport({
+        type: 'delete',
+        pathString
+      });
     })
     .on('ready', () => {
       printMessage('Watching for changes...', 'primary');

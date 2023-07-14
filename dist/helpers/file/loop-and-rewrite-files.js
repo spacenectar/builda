@@ -54,14 +54,23 @@ const loopAndRewriteFiles = async ({ name, paths, substitute, fromRoot = false, 
                 const rootPath = node_path_1.default.resolve(rootDir, directoryPathWithoutFile);
                 (0, create_dir_1.default)(directoryPath);
                 if (node_fs_1.default.existsSync(filePath)) {
+                    const preservedSubs = substitute.filter((substitution) => {
+                        // If the substitution is specifically set not to be preserved
+                        // then do not make the substitution in the export directory
+                        if (!substitution.preserve) {
+                            return false;
+                        }
+                        return true;
+                    });
                     // Copy the file to the export directory and rewrite it
                     (0, write_file_1.default)({
                         file: filePath,
                         outputDir: directoryPath,
-                        substitute,
+                        substitute: preservedSubs,
                         name
                     });
                     if (toRoot) {
+                        console.log(`Rewriting ${filePath} in ${rootPath}`);
                         // Copy the file to the root directory and rewrite it
                         (0, write_file_1.default)({
                             file: filePath,

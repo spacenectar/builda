@@ -7,11 +7,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chokidar_1 = __importDefault(require("chokidar"));
 const helpers_1 = require("../../helpers");
-const builda_build_1 = require("../../scripts/builda-build");
+const sync_with_export_1 = require("./helpers/sync-with-export");
 const ignore_file_json_1 = __importDefault(require("../../data/ignore-file.json"));
-const ignored = ignore_file_json_1.default.ignore;
 exports.default = (config) => {
     const { prefab } = config;
+    const ignored = [...ignore_file_json_1.default.ignore, ...(config.ignored || [])];
     if (!prefab) {
         (0, helpers_1.throwError)('No prefab found in config file. Watch cannot be run without a prefab');
     }
@@ -23,23 +23,38 @@ exports.default = (config) => {
     watcher
         .on('change', (pathString) => {
         console.log(`File ${pathString} has been changed`);
-        (0, builda_build_1.buildaBuild)({ config, onlyPath: pathString });
+        (0, sync_with_export_1.syncWithExport)({
+            type: 'update',
+            pathString
+        });
     })
         .on('add', (pathString) => {
         console.log(`File ${pathString} has been added`);
-        (0, builda_build_1.buildaBuild)({ config, onlyPath: pathString });
+        (0, sync_with_export_1.syncWithExport)({
+            type: 'copy',
+            pathString
+        });
     })
         .on('addDir', (pathString) => {
         console.log(`Directory ${pathString} has been added`);
-        (0, builda_build_1.buildaBuild)({ config, onlyPath: pathString });
+        (0, sync_with_export_1.syncWithExport)({
+            type: 'copy',
+            pathString
+        });
     })
         .on('unlinkDir', (pathString) => {
         console.log(`Directory ${pathString} has been deleted`);
-        (0, builda_build_1.buildaBuild)({ config, onlyPath: pathString });
+        (0, sync_with_export_1.syncWithExport)({
+            type: 'delete',
+            pathString
+        });
     })
         .on('unlink', (pathString) => {
         console.log(`File ${pathString} has been deleted`);
-        (0, builda_build_1.buildaBuild)({ config, onlyPath: pathString });
+        (0, sync_with_export_1.syncWithExport)({
+            type: 'delete',
+            pathString
+        });
     })
         .on('ready', () => {
         (0, helpers_1.printMessage)('Watching for changes...', 'primary');
