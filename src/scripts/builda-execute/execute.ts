@@ -77,8 +77,8 @@ export default async ({ command, args }: TExecute) => {
         const value = argValues[index];
         let keyString = '';
 
-        // If the key is '_' or '$0', we don't need to add it to the string
-        if (key === '_' || key === '$0') {
+        // If the key is '_', 'command' or '$0', we don't need to add it to the string
+        if (key === '_' || key === 'command' || key === '$0') {
           return acc;
         }
 
@@ -92,11 +92,11 @@ export default async ({ command, args }: TExecute) => {
 
         // If the value is a boolean, we don't need to add the value to the string
         if (value && typeof value === 'boolean') {
-          return `${acc} ${keyString}`;
+          return ` ${acc} ${keyString}`;
         }
-        return `${acc} ${keyString}="${value}"`;
+        return ` ${acc} ${keyString}="${value}"`;
       }, '');
-      prefixedCommand = `${prefixedCommand} ${argsString}`;
+      prefixedCommand = `${prefixedCommand}${argsString}`;
     }
 
     process.stdout.write(
