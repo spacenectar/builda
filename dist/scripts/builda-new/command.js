@@ -26,16 +26,10 @@ exports.default = () => {
                 default: '',
                 describe: 'A string matcher for the blueprint script. e.g: "%MY_STRING%:\'new string\'"',
                 type: 'string'
-            })
-                .option('configPath', {
-                aliases: ['c', 'config'],
-                default: '',
-                describe: 'The path to a config file',
-                type: 'string'
             });
         },
         handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
+            const config = await (0, helpers_1.getConfig)();
             if (config) {
                 return (0, new_1.default)({
                     config,

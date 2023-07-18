@@ -1,4 +1,3 @@
-import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 
@@ -9,9 +8,10 @@ import {
   addLocalModule,
   addRemoteModule,
   createDir,
+  getConfig,
+  updateConfig,
   convertRegistryPathToUrl,
-  printMessage,
-  changeCase
+  printMessage
 } from 'helpers';
 
 // Import data
@@ -19,22 +19,15 @@ import globals from 'data/globals';
 
 // Import types
 import ModuleRegistry from 'types/module-registry';
-import { ConfigFile } from 'types/config-file';
 
 export type AddModulesResponse = {
   module: ModuleRegistry;
-  config: ConfigFile;
 };
 
 export default async ({
-  config,
   modulePath,
   fromScript
 }: {
-  /**
-   * The project config
-   */
-  config: ConfigFile;
   /**
    * The path to the module to add
    */
@@ -45,6 +38,7 @@ export default async ({
   fromScript?: boolean;
 }) => {
   let module = {} as ModuleRegistry;
+  const config = getConfig();
   const outputPath = process.cwd();
   // Check the module directory exists and create it if it doesn't
   const moduleDirPath = path.join(outputPath, globals.buildaDir, 'modules');
@@ -58,8 +52,7 @@ export default async ({
   for (const currentModule of moduleList) {
     if (detectPathType(currentModule) === 'remote') {
       const registry = convertRegistryPathToUrl({
-        registryPath: currentModule,
-        config
+        registryPath: currentModule
       }).url;
       if (!registry) {
         throwError('No registry found');
@@ -104,20 +97,9 @@ export default async ({
           );
         }
 
-        // Write the config file
-        fs.writeFile(
-          globals.configFileName,
-          JSON.stringify(config, null, 2),
-          (err) => {
-            if (err) {
-              throwError(err.message);
-            }
-            printMessage(
-              `${changeCase(type, 'pascal')}: '${name}@${version}' added`,
-              'success'
-            );
-          }
-        );
+        // Update the config file
+        updateConfig(config);
+        printMessage(`Added ${name} to your project`, 'success');
       } else {
         throwError('Something went wrong');
       }

@@ -12,7 +12,6 @@ exports.default = async (updateVersion) => {
     const registry = await (0, helpers_1.getRegistry)();
     const { name, type, version } = registry;
     const REGISTRYFILE = 'registry.json';
-    const READMEFILE = 'README.md';
     const FILESFOLDER = 'module';
     const ignoreFiles = [];
     // Check for an .npmignore file in the root directory if it exists add the files to the ignoreFiles array
@@ -28,7 +27,9 @@ exports.default = async (updateVersion) => {
         ignoreFiles.push(...gitignoreFiles);
     }
     if (!registry) {
-        (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`);
+        (0, helpers_1.throwError)(`No ${REGISTRYFILE} file found. See ${(0, helpers_1.printSiteLink)({
+            link: 'docs/packaging'
+        })} for more information.`);
     }
     if (!name) {
         (0, helpers_1.throwError)(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
@@ -47,24 +48,26 @@ exports.default = async (updateVersion) => {
     if (!isCorrectlyPrefixed) {
         (0, helpers_1.throwError)(`The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`);
     }
-    const validateReadme = (0, check_path_exists_1.checkPathExists)(READMEFILE);
-    if (validateReadme.error) {
-        (0, helpers_1.throwError)(validateReadme.message);
-    }
     (0, helpers_1.printMessage)('All checks passed.', 'success');
     const newVersion = (updateVersion === null || updateVersion === void 0 ? void 0 : updateVersion.replace('v', '')) || version;
     const newRegistry = Object.assign(Object.assign({}, registry), { version: newVersion });
     const newRegistryString = JSON.stringify(newRegistry, null, 2);
     node_fs_1.default.writeFileSync(REGISTRYFILE, newRegistryString);
     // Package the files folder into a tarball
-    (0, helpers_1.printMessage)(`Packaging ${name}...`, 'processing');
-    // If there is already a tarball, delete it
-    if (node_fs_1.default.existsSync('module.tgz')) {
-        node_fs_1.default.unlinkSync('module.tgz');
+    // If there is already a tarball confirm if the user wants to overwrite it
+    if (node_fs_1.default.existsSync(`${FILESFOLDER}.tgz`)) {
+        (0, helpers_1.printMessage)('A module package already exists. Do you want to overwrite it?', 'warning');
+        const overwrite = await (0, helpers_1.confirm)('Overwrite?');
+        if (!overwrite) {
+            (0, helpers_1.printMessage)('Package process aborted', 'error');
+            return;
+        }
+        node_fs_1.default.unlinkSync(`${FILESFOLDER}.tgz`);
     }
+    (0, helpers_1.printMessage)(`Packaging ${name}...`, 'processing');
     // Create the tarball
     await tar_1.default.create({
-        file: `module.tgz`,
+        file: `${FILESFOLDER}.tgz`,
         gzip: true,
         cwd: FILESFOLDER,
         filter: (path) => !ignoreFiles.includes(path)

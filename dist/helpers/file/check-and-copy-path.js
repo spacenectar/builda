@@ -3,23 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkAndCopyPath = void 0;
+exports.copyPath = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-const checkAndCopyPath = (sourcePath, destinationPath, fileName) => {
-    const name = fileName || '';
-    // If it's a directory, copy the directory to the destination
-    if (fs_1.default.lstatSync(sourcePath).isDirectory()) {
-        return fs_1.default.cpSync(sourcePath, path_1.default.join(destinationPath, name), {
-            dereference: true,
-            recursive: true,
-            force: true
-        });
-    }
-    // If it's a file, copy it to the destination
-    if (fs_1.default.lstatSync(sourcePath).isFile()) {
-        return fs_1.default.copyFileSync(sourcePath, path_1.default.join(destinationPath, name));
-    }
+const copyPath = (sourcePath, destinationPath, fileName) => {
+    const name = fileName !== null && fileName !== void 0 ? fileName : '';
+    return fs_1.default.cpSync(sourcePath, path_1.default.join(destinationPath, name), {
+        dereference: true,
+        recursive: true,
+        force: true
+    });
 };
-exports.checkAndCopyPath = checkAndCopyPath;
-exports.default = exports.checkAndCopyPath;
+exports.copyPath = copyPath;
+exports.default = exports.copyPath;

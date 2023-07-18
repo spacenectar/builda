@@ -17,8 +17,7 @@ type TGetSubstitutions = {
 export const getSubstitutions = ({
   name,
   registry,
-  script,
-  sub
+  script
 }: TGetSubstitutions): TSubstitution[] => {
   const substitutions = [] as TSubstitution[];
 

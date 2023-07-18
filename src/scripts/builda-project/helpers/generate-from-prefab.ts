@@ -1,13 +1,14 @@
 import axios from 'axios';
-import execa from 'execa';
+
 import fs from 'node:fs';
 import path from 'node:path';
-import process from 'node:process';
+
 import {
   addLocalModule,
   addRemoteModule,
   convertRegistryPathToUrl,
   copyDir,
+  copyPathsToRoot,
   createDir,
   detectPathType,
   loopAndRewriteFiles,
@@ -17,8 +18,6 @@ import {
   changeCase
 } from 'helpers';
 import { ModuleRegistry } from 'types/module-registry';
-import { TFlatObject } from 'types/flat-object';
-import glob from 'glob';
 
 export async function generateFromPrefab(
   prefabPath: string,
@@ -28,14 +27,9 @@ export async function generateFromPrefab(
   prefabDir: string,
   workingDir: string,
   name: string,
-  packageManagerType: string,
   buildaDir: string,
-  configFileName: string,
-  appName: string | undefined,
   websiteUrl: string,
-  buildaReadmeFileName: string,
-  autoInstall: boolean | undefined,
-  answers: TFlatObject
+  buildaReadmeFileName: string
 ): Promise<ModuleRegistry> {
   if (detectPathType(prefabPath) === 'remote') {
     const registry = convertRegistryPathToUrl({
@@ -55,7 +49,7 @@ export async function generateFromPrefab(
 
   const prefabName = module.name;
   const version = module.version;
-  const substitutions = module?.generatorOptions?.substitutions || [];
+  const substitutions = module?.generatorOptions?.substitutions ?? [];
 
   printMessage(`Installed ${prefabName}@${version}`, 'success');
 
@@ -68,47 +62,74 @@ export async function generateFromPrefab(
 
   printMessage('Copying required files to application...', 'copying');
 
-  const substitute = [
-    ...substitutions,
-    {
-      replace: '%APP_NAME%',
-      with: changeCase(name, 'kebabCase')
-    },
-    {
-      replace: '%APP_ROOT%',
-      with: './'
-    },
-    {
-      replace: '%PACKAGE_MANAGER%',
-      with: packageManagerType
-    }
-  ];
-
   // Copy all required files
-  await loopAndRewriteFiles({ name, paths: defaultRequiredFiles, substitute });
+  await loopAndRewriteFiles({
+    name,
+    paths: defaultRequiredFiles,
+    substitute: [
+      ...substitutions,
+      {
+        replace: '%APP_NAME%',
+        with: changeCase(name, 'kebabCase')
+      }
+    ]
+  });
   const buildaPath = path.join(workingDir, buildaDir);
-  const buildaConfigPath = path.resolve(buildaPath, configFileName);
 
-  // Copy all rootFiles into the application root
+  // Create a new package.json file in the root directory
+  const packageJsonFile = fs.readFileSync(
+    path.resolve(workingDir, 'package.json'),
+    {
+      encoding: 'utf8'
+    }
+  );
+  const packageJson = JSON.parse(packageJsonFile);
+
+  const newPackageJson = {
+    ...packageJson
+  };
+
   module?.generatorOptions?.rootFiles?.forEach(async (file) => {
-    const filePath = path.join(prefabDir, file);
-    if (file.includes('*')) {
-      const globFiles = glob
-        .sync(filePath)
-        .map((f) => path.relative(prefabDir, f));
-      globFiles.forEach(async (globFile) => {
-        // Get the file name
-        const fileName = path.basename(globFile);
-        // Remove the file name from the path
-        const fileDir = path.dirname(globFile);
-        // Create the directory tree
-        fs.mkdirSync(path.join(rootDir, fileDir), { recursive: true });
-        // Copy the file
-        fs.copyFileSync(
-          path.join(prefabDir, fileDir, fileName),
-          path.join(rootDir, fileDir, fileName)
-        );
+    const filePath = typeof file === 'string' ? file : file.path;
+    const fileDir = path.dirname(filePath);
+    const fileName = path.basename(filePath);
+    if (typeof file === 'string') {
+      // If the file is just a string, copy that file to the root
+      await copyPathsToRoot([file], rootDir);
+    } else {
+      // If the file is a RootFile object, copy the file to the root and rewrite it
+      const substitute = file.substitutions ?? [];
+      await loopAndRewriteFiles({
+        name,
+        paths: [file.path],
+        substitute,
+        fromCustomPath: rootDir,
+        toRoot: true
       });
+    }
+    // If the file name starts with 'unique.' it requires some processing
+    if (fileName.startsWith('unique.')) {
+      // Delete the copy in the export directory
+      fs.unlinkSync(path.join(workingDir, fileDir, fileName));
+      // Rename the copy to remove the 'unique.' prefix
+      const newFileName = fileName.replace('unique.', '');
+      printMessage(`Found unique file`, 'processing');
+      fs.renameSync(
+        path.join(rootDir, fileDir, fileName),
+        path.join(rootDir, fileDir, newFileName)
+      );
+      printMessage(`Renamed unique file to: ${newFileName}`, 'success');
+      // Add the unique file to the `ignored` array in the builda config
+      const existingBuildaConfig = packageJson.builda || {};
+      const buildaConfig = {
+        ...existingBuildaConfig,
+        ignored: [
+          ...(existingBuildaConfig.ignored || []),
+          path.join(fileDir, newFileName)
+        ]
+      };
+
+      newPackageJson.builda = buildaConfig;
     }
   });
 
@@ -119,20 +140,7 @@ export async function generateFromPrefab(
     fs.writeFileSync(path.join(rootDir, folder, '.gitkeep'), '');
   });
 
-  // Copy config.json from working builda directory to root directory
-  if (fs.existsSync(buildaConfigPath)) {
-    fs.copyFileSync(buildaConfigPath, path.join(rootDir, configFileName));
-  }
-
-  // Create a new package.json file in the root directory with updated scripts
-  const packageJsonFile = fs.readFileSync(
-    path.resolve(workingDir, 'package.json'),
-    {
-      encoding: 'utf8'
-    }
-  );
-  const packageJson = JSON.parse(packageJsonFile);
-
+  // Update the scripts entry to use 'builda execute'
   const scripts = packageJson.scripts as Record<string, string>;
   const buildaScripts = {} as Record<string, string>;
 
@@ -162,10 +170,7 @@ export async function generateFromPrefab(
   });
 
   // Create a new package.json file in the root directory with updated details
-  const newPackageJson = {
-    ...packageJson,
-    scripts: buildaScripts
-  };
+  newPackageJson.scripts = buildaScripts;
 
   fs.writeFileSync(
     path.join(rootDir, 'package.json'),
@@ -229,7 +234,7 @@ export async function generateFromPrefab(
     const blueprints = Object.keys(module.blueprints);
     for (const blueprint of blueprints) {
       const bp = module.blueprints[blueprint];
-      printMessage(`installing ${blueprint}`, 'processing');
+      printMessage(`Installing blueprint: "${blueprint}"`, 'processing');
       const blueprintDest = path.join(
         rootDir,
         buildaDir,
@@ -278,41 +283,5 @@ export async function generateFromPrefab(
     await Promise.all(blueprintPromises);
   }
   printMessage('All files copied to application.', 'success');
-
-  if (autoInstall || answers.autoInstall) {
-    printMessage('Installing dependencies...', 'config');
-
-    // Run package manager install
-    if (fs.existsSync(path.resolve(workingDir, 'package.json'))) {
-      printMessage(`Running ${packageManagerType} install`, 'processing');
-      try {
-        const childProcess = execa(packageManagerType, ['install'], {
-          cwd: rootDir,
-          all: true,
-          stdio: 'inherit'
-        });
-        childProcess?.all?.pipe(process.stdout);
-        await childProcess;
-        printMessage('All dependencies installed.', 'success');
-      } catch (error) {
-        printMessage(
-          `Failed to run. Please try running '${packageManagerType} install' manually.`,
-          'error'
-        );
-        //TODO : Add this documentation
-        printMessage(
-          `For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`,
-          'primary'
-        );
-      }
-    } else {
-      printMessage('No package.json found. Skipping install.', 'notice');
-    }
-  } else {
-    printMessage(
-      `Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`,
-      'notice'
-    );
-  }
   return module;
 }

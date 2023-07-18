@@ -3,17 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const helpers_1 = require("../../helpers");
-const update_1 = __importDefault(require("./update"));
+const eject_1 = __importDefault(require("./eject"));
 exports.default = () => {
     return {
-        command: 'update <moduleName>',
-        desc: 'update a module',
-        aliases: ['u'],
+        command: 'eject <pathString>',
+        desc: 'Eject a file or directory from builda to make it editable',
         builder: (yargs) => {
             return yargs
-                .positional('moduleName', {
-                describe: 'The name of the module',
+                .positional('pathString', {
+                describe: 'The path to the file or directory to eject',
                 type: 'string',
                 demandOption: true
             })
@@ -25,14 +23,7 @@ exports.default = () => {
             });
         },
         handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
-            if (config) {
-                return (0, update_1.default)({
-                    config,
-                    module: argv.moduleName
-                });
-            }
-            (0, helpers_1.throwError)('No config file found');
+            return (0, eject_1.default)({ pathString: argv.pathString });
         }
     };
 };

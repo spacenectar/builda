@@ -3,7 +3,13 @@
 import fs from 'node:fs';
 import tar from 'tar';
 
-import { getRegistry, printMessage, throwError } from 'helpers';
+import {
+  getRegistry,
+  printMessage,
+  printSiteLink,
+  throwError,
+  confirm
+} from 'helpers';
 import { checkPathExists } from './helpers/check-path-exists';
 
 export default async (updateVersion?: string) => {
@@ -11,7 +17,6 @@ export default async (updateVersion?: string) => {
   const { name, type, version } = registry;
 
   const REGISTRYFILE = 'registry.json';
-  const READMEFILE = 'README.md';
   const FILESFOLDER = 'module';
 
   const ignoreFiles = [] as string[];
@@ -31,7 +36,9 @@ export default async (updateVersion?: string) => {
 
   if (!registry) {
     throwError(
-      `No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`
+      `No ${REGISTRYFILE} file found. See ${printSiteLink({
+        link: 'docs/packaging'
+      })} for more information.`
     );
   }
 
@@ -61,12 +68,6 @@ export default async (updateVersion?: string) => {
     );
   }
 
-  const validateReadme = checkPathExists(READMEFILE);
-
-  if (validateReadme.error) {
-    throwError(validateReadme.message);
-  }
-
   printMessage('All checks passed.', 'success');
 
   const newVersion = updateVersion?.replace('v', '') || version;
@@ -81,16 +82,25 @@ export default async (updateVersion?: string) => {
   fs.writeFileSync(REGISTRYFILE, newRegistryString);
 
   // Package the files folder into a tarball
-  printMessage(`Packaging ${name}...`, 'processing');
-  // If there is already a tarball, delete it
-  if (fs.existsSync('module.tgz')) {
-    fs.unlinkSync('module.tgz');
+  // If there is already a tarball confirm if the user wants to overwrite it
+  if (fs.existsSync(`${FILESFOLDER}.tgz`)) {
+    printMessage(
+      'A module package already exists. Do you want to overwrite it?',
+      'warning'
+    );
+    const overwrite = await confirm('Overwrite?');
+    if (!overwrite) {
+      printMessage('Package process aborted', 'error');
+      return;
+    }
+    fs.unlinkSync(`${FILESFOLDER}.tgz`);
   }
 
+  printMessage(`Packaging ${name}...`, 'processing');
   // Create the tarball
   await tar.create(
     {
-      file: `module.tgz`,
+      file: `${FILESFOLDER}.tgz`,
       gzip: true,
       cwd: FILESFOLDER,
       filter: (path) => !ignoreFiles.includes(path)

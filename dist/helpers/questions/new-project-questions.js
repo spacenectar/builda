@@ -18,25 +18,6 @@ exports.default = async (hasPrefab) => {
             required: true,
             message: `What do you want to call your project? This will also be the folder name we will create for your app. (If you don't know, just press enter to use ${chalk_1.default.bold.magenta(suggestedName)})`,
             default: suggestedName
-        },
-        {
-            type: 'input',
-            name: 'appRoot',
-            message: () => {
-                (0, helpers_1.showHelp)("The app root is the directory where your app files are stored.\n\nThis is usually your the root directory of your app but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory.");
-                return 'What is the root directory of your app?';
-            },
-            default: './'
-        },
-        {
-            type: 'list',
-            name: 'packageManager',
-            message: () => {
-                (0, helpers_1.showHelp)('Builda works with both npm and yarn. If you are not sure, just press enter to use npm.');
-                return 'Which package manager do you want to use?';
-            },
-            choices: ['npm', 'yarn'],
-            default: 'npm'
         }
     ]);
 };

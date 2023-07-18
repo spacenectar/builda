@@ -8,11 +8,11 @@ import globals from 'data/globals';
 
 import { command as projectCommand } from 'scripts/builda-project';
 import { command as executeCommand } from 'scripts/builda-execute';
+import { command as ejectCommand } from 'scripts/builda-eject';
 import { command as installCommand } from 'scripts/builda-install';
 import { command as addCommand } from 'scripts/builda-add';
 import { command as packageCommand } from 'scripts/builda-package';
 import { command as publishCommand } from 'scripts/builda-publish';
-import { command as updateCommand } from 'scripts/builda-update';
 import { command as watchCommand } from 'scripts/builda-watch';
 import { command as indexerCommand } from 'scripts/builda-indexer';
 import { command as newCommand } from 'scripts/builda-new';
@@ -34,12 +34,12 @@ export const builda = async () => {
     .command({ ...initCommand() })
     .command({ ...buildCommand() })
     .command({ ...addCommand() })
+    .command({ ...ejectCommand() })
     .command({ ...installCommand() })
     .command({ ...newCommand() })
     .command({ ...executeCommand() })
     .command({ ...packageCommand() })
     .command({ ...publishCommand() })
-    .command({ ...updateCommand() })
     .command({ ...watchCommand() })
     .command({ ...indexerCommand() })
     .epilogue(
@@ -54,3 +54,6 @@ if (require.main === module) {
 }
 
 export default builda;
+export { buildaQuestion } from './scripts/builda-question';
+export { buildaSubstitute } from './scripts/builda-substitute';
+export { changeCase, printMessage, throwError } from './helpers';

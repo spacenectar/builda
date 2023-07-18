@@ -3,19 +3,17 @@
 // Watch for changes in the specified directories and run the 'build' script when changes are detected
 
 import chokidar from 'chokidar';
-
 import { printMessage, throwError } from 'helpers';
 
-import { buildaBuild } from 'scripts/builda-build';
+import { syncWithExport } from './helpers/sync-with-export';
 
 import ignoredFiles from 'data/ignore-file.json';
 
 import type { ConfigFile } from 'types/config-file';
 
-const ignored = ignoredFiles.ignore;
-
 export default (config: ConfigFile) => {
   const { prefab } = config;
+  const ignored = [...ignoredFiles.ignore, ...(config.ignored || [])];
 
   if (!prefab) {
     throwError(
@@ -23,18 +21,50 @@ export default (config: ConfigFile) => {
     );
   }
 
-  const watcher = chokidar.watch(config.rootDir, {
+  const watcher = chokidar.watch('.', {
     persistent: true,
+    ignoreInitial: true,
     ignored
   });
 
-  watcher.on('ready', () => {
-    printMessage('Watching for changes...', 'primary');
-    printMessage('Press Ctrl+C to stop watching', 'secondary');
-  });
-
-  watcher.on('change', (pathString) => {
-    console.log(`File ${pathString} has been changed`);
-    buildaBuild({ config, prod: false, onlyPath: pathString });
-  });
+  watcher
+    .on('change', (pathString) => {
+      console.log(`File ${pathString} has been changed`);
+      syncWithExport({
+        type: 'update',
+        pathString
+      });
+    })
+    .on('add', (pathString) => {
+      console.log(`File ${pathString} has been added`);
+      syncWithExport({
+        type: 'copy',
+        pathString
+      });
+    })
+    .on('addDir', (pathString) => {
+      console.log(`Directory ${pathString} has been added`);
+      syncWithExport({
+        type: 'copy',
+        pathString
+      });
+    })
+    .on('unlinkDir', (pathString) => {
+      console.log(`Directory ${pathString} has been deleted`);
+      syncWithExport({
+        type: 'delete',
+        pathString
+      });
+    })
+    .on('unlink', (pathString) => {
+      console.log(`File ${pathString} has been deleted`);
+      syncWithExport({
+        type: 'delete',
+        pathString
+      });
+    })
+    .on('ready', () => {
+      printMessage('Watching for changes...', 'primary');
+      printMessage('Press Ctrl+C to stop watching', 'secondary');
+    });
 };

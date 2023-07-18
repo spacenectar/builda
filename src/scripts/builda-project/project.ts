@@ -21,11 +21,8 @@ import { TFlatObject } from 'types/flat-object';
 
 export type TGenerateProject = {
   appName?: string;
-  appRoot?: string;
   prefab?: string;
-  packageManager?: string;
   cliPrefabPath?: string;
-  autoInstall?: boolean;
   smokeTest?: boolean;
 };
 
@@ -33,23 +30,10 @@ export type TGenerateProject = {
  * Generate a new project from a prefab
  * @param { TGenerateProject }
  */
-export default async ({
-  appName,
-  appRoot,
-  prefab,
-  packageManager,
-  autoInstall,
-  smokeTest
-}: TGenerateProject) => {
-  const { buildaDir, websiteUrl, configFileName, buildaReadmeFileName } =
-    globals;
+export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
+  const { buildaDir, websiteUrl, buildaReadmeFileName } = globals;
 
-  const defaultRequiredFiles = [
-    buildaDir,
-    `${buildaDir}/${configFileName}`,
-    'package.json',
-    'README.md'
-  ];
+  const defaultRequiredFiles = [buildaDir, 'package.json', 'README.md'];
 
   let answers = {} as TFlatObject;
   if (!prefab) {
@@ -68,7 +52,7 @@ export default async ({
     } else {
       showHelp(
         'You can set up a project from scratch by answering a few questions about your project.\r\n\n' +
-          `If you are unsure about any of these, you can always change them later by editing the ${configFileName} file.`
+          `If you are unsure about any of these, you can always change them later by editing the 'builda' section of your package.json file.`
       );
     }
 
@@ -88,11 +72,9 @@ export default async ({
   answers = { ...answers, ...newProjectAnswers };
   const name = (appName || answers.appName) as string;
   const prefabPath = (prefab || answers.prefab) as string;
-  const packageManagerType =
-    packageManager || (answers.packageManager as string) || 'yarn';
-  const rootDir = appRoot || (answers.appRoot as string) || './';
 
   const kebabAppName = changeCase(name, 'kebabCase');
+  const rootDir = path.join(process.cwd(), kebabAppName);
 
   await createDir(kebabAppName);
 
@@ -124,22 +106,10 @@ export default async ({
       prefabDir,
       workingDir,
       name,
-      packageManagerType,
       buildaDir,
-      configFileName,
-      appName,
       websiteUrl,
-      buildaReadmeFileName,
-      autoInstall,
-      answers
+      buildaReadmeFileName
     );
-  } else {
-    const config = {
-      name,
-      rootDir,
-      packageManager: packageManagerType
-    };
-    fs.writeFileSync(configFileName, JSON.stringify(config, null, 2));
   }
 
   printMessage(`Your application, "${name}" has been initialised!`, 'success');

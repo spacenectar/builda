@@ -5,13 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateFromPrefab = void 0;
 const axios_1 = __importDefault(require("axios"));
-const execa_1 = __importDefault(require("execa"));
 const node_fs_1 = __importDefault(require("node:fs"));
 const node_path_1 = __importDefault(require("node:path"));
-const node_process_1 = __importDefault(require("node:process"));
 const helpers_1 = require("../../../helpers");
-const glob_1 = __importDefault(require("glob"));
-async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, packageManagerType, buildaDir, configFileName, appName, websiteUrl, buildaReadmeFileName, autoInstall, answers) {
+async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFiles, prefabDir, workingDir, name, buildaDir, websiteUrl, buildaReadmeFileName) {
     var _a, _b, _c, _d, _e, _f;
     if ((0, helpers_1.detectPathType)(prefabPath) === 'remote') {
         const registry = (0, helpers_1.convertRegistryPathToUrl)({
@@ -30,66 +27,77 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
     }
     const prefabName = module.name;
     const version = module.version;
-    const substitutions = ((_a = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _a === void 0 ? void 0 : _a.substitutions) || [];
+    const substitutions = (_b = (_a = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _a === void 0 ? void 0 : _a.substitutions) !== null && _b !== void 0 ? _b : [];
     (0, helpers_1.printMessage)(`Installed ${prefabName}@${version}`, 'success');
     (0, helpers_1.printMessage)('Creating export path...', 'processing');
     // Copy the prefab files to the export directory
     (0, helpers_1.copyDir)(prefabDir, workingDir);
     (0, helpers_1.printMessage)('Export path created', 'success');
     (0, helpers_1.printMessage)('Copying required files to application...', 'copying');
-    const substitute = [
-        ...substitutions,
-        {
-            replace: '%APP_NAME%',
-            with: (0, helpers_1.changeCase)(name, 'kebabCase')
-        },
-        {
-            replace: '%APP_ROOT%',
-            with: './'
-        },
-        {
-            replace: '%PACKAGE_MANAGER%',
-            with: packageManagerType
-        }
-    ];
     // Copy all required files
-    await (0, helpers_1.loopAndRewriteFiles)({ name, paths: defaultRequiredFiles, substitute });
+    await (0, helpers_1.loopAndRewriteFiles)({
+        name,
+        paths: defaultRequiredFiles,
+        substitute: [
+            ...substitutions,
+            {
+                replace: '%APP_NAME%',
+                with: (0, helpers_1.changeCase)(name, 'kebabCase')
+            }
+        ]
+    });
     const buildaPath = node_path_1.default.join(workingDir, buildaDir);
-    const buildaConfigPath = node_path_1.default.resolve(buildaPath, configFileName);
-    // Copy all rootFiles into the application root
-    (_c = (_b = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _b === void 0 ? void 0 : _b.rootFiles) === null || _c === void 0 ? void 0 : _c.forEach(async (file) => {
-        const filePath = node_path_1.default.join(prefabDir, file);
-        if (file.includes('*')) {
-            const globFiles = glob_1.default
-                .sync(filePath)
-                .map((f) => node_path_1.default.relative(prefabDir, f));
-            globFiles.forEach(async (globFile) => {
-                // Get the file name
-                const fileName = node_path_1.default.basename(globFile);
-                // Remove the file name from the path
-                const fileDir = node_path_1.default.dirname(globFile);
-                // Create the directory tree
-                node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, fileDir), { recursive: true });
-                // Copy the file
-                node_fs_1.default.copyFileSync(node_path_1.default.join(prefabDir, fileDir, fileName), node_path_1.default.join(rootDir, fileDir, fileName));
-            });
-        }
-    });
-    // Create any extraFolders in the application root
-    (_e = (_d = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _d === void 0 ? void 0 : _d.extraFolders) === null || _e === void 0 ? void 0 : _e.forEach(async (folder) => {
-        node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, folder), { recursive: true });
-        // add a .gitkeep file to the folder
-        node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
-    });
-    // Copy config.json from working builda directory to root directory
-    if (node_fs_1.default.existsSync(buildaConfigPath)) {
-        node_fs_1.default.copyFileSync(buildaConfigPath, node_path_1.default.join(rootDir, configFileName));
-    }
-    // Create a new package.json file in the root directory with updated scripts
+    // Create a new package.json file in the root directory
     const packageJsonFile = node_fs_1.default.readFileSync(node_path_1.default.resolve(workingDir, 'package.json'), {
         encoding: 'utf8'
     });
     const packageJson = JSON.parse(packageJsonFile);
+    const newPackageJson = Object.assign({}, packageJson);
+    (_d = (_c = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _c === void 0 ? void 0 : _c.rootFiles) === null || _d === void 0 ? void 0 : _d.forEach(async (file) => {
+        var _a;
+        const filePath = typeof file === 'string' ? file : file.path;
+        const fileDir = node_path_1.default.dirname(filePath);
+        const fileName = node_path_1.default.basename(filePath);
+        if (typeof file === 'string') {
+            // If the file is just a string, copy that file to the root
+            await (0, helpers_1.copyPathsToRoot)([file], rootDir);
+        }
+        else {
+            // If the file is a RootFile object, copy the file to the root and rewrite it
+            const substitute = (_a = file.substitutions) !== null && _a !== void 0 ? _a : [];
+            await (0, helpers_1.loopAndRewriteFiles)({
+                name,
+                paths: [file.path],
+                substitute,
+                fromCustomPath: rootDir,
+                toRoot: true
+            });
+        }
+        // If the file name starts with 'unique.' it requires some processing
+        if (fileName.startsWith('unique.')) {
+            // Delete the copy in the export directory
+            node_fs_1.default.unlinkSync(node_path_1.default.join(workingDir, fileDir, fileName));
+            // Rename the copy to remove the 'unique.' prefix
+            const newFileName = fileName.replace('unique.', '');
+            (0, helpers_1.printMessage)(`Found unique file`, 'processing');
+            node_fs_1.default.renameSync(node_path_1.default.join(rootDir, fileDir, fileName), node_path_1.default.join(rootDir, fileDir, newFileName));
+            (0, helpers_1.printMessage)(`Renamed unique file to: ${newFileName}`, 'success');
+            // Add the unique file to the `ignored` array in the builda config
+            const existingBuildaConfig = packageJson.builda || {};
+            const buildaConfig = Object.assign(Object.assign({}, existingBuildaConfig), { ignored: [
+                    ...(existingBuildaConfig.ignored || []),
+                    node_path_1.default.join(fileDir, newFileName)
+                ] });
+            newPackageJson.builda = buildaConfig;
+        }
+    });
+    // Create any extraFolders in the application root
+    (_f = (_e = module === null || module === void 0 ? void 0 : module.generatorOptions) === null || _e === void 0 ? void 0 : _e.extraFolders) === null || _f === void 0 ? void 0 : _f.forEach(async (folder) => {
+        node_fs_1.default.mkdirSync(node_path_1.default.join(rootDir, folder), { recursive: true });
+        // add a .gitkeep file to the folder
+        node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, folder, '.gitkeep'), '');
+    });
+    // Update the scripts entry to use 'builda execute'
     const scripts = packageJson.scripts;
     const buildaScripts = {};
     Object.entries(scripts).forEach(([key, value]) => {
@@ -116,7 +124,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         }
     });
     // Create a new package.json file in the root directory with updated details
-    const newPackageJson = Object.assign(Object.assign({}, packageJson), { scripts: buildaScripts });
+    newPackageJson.scripts = buildaScripts;
     node_fs_1.default.writeFileSync(node_path_1.default.join(rootDir, 'package.json'), JSON.stringify(newPackageJson, null, 2));
     // Add the default prefab readme to the root directory
     const prefabReadmeUrl = `${websiteUrl}/assets/prefab-getting-started.md`;
@@ -168,7 +176,7 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         const blueprints = Object.keys(module.blueprints);
         for (const blueprint of blueprints) {
             const bp = module.blueprints[blueprint];
-            (0, helpers_1.printMessage)(`installing ${blueprint}`, 'processing');
+            (0, helpers_1.printMessage)(`Installing blueprint: "${blueprint}"`, 'processing');
             const blueprintDest = node_path_1.default.join(rootDir, buildaDir, 'modules', 'blueprints');
             (0, helpers_1.createDir)(blueprintDest);
             if (bp.location === 'prefab') {
@@ -202,34 +210,6 @@ async function generateFromPrefab(prefabPath, module, rootDir, defaultRequiredFi
         await Promise.all(blueprintPromises);
     }
     (0, helpers_1.printMessage)('All files copied to application.', 'success');
-    if (autoInstall || answers.autoInstall) {
-        (0, helpers_1.printMessage)('Installing dependencies...', 'config');
-        // Run package manager install
-        if (node_fs_1.default.existsSync(node_path_1.default.resolve(workingDir, 'package.json'))) {
-            (0, helpers_1.printMessage)(`Running ${packageManagerType} install`, 'processing');
-            try {
-                const childProcess = (0, execa_1.default)(packageManagerType, ['install'], {
-                    cwd: rootDir,
-                    all: true,
-                    stdio: 'inherit'
-                });
-                (_f = childProcess === null || childProcess === void 0 ? void 0 : childProcess.all) === null || _f === void 0 ? void 0 : _f.pipe(node_process_1.default.stdout);
-                await childProcess;
-                (0, helpers_1.printMessage)('All dependencies installed.', 'success');
-            }
-            catch (error) {
-                (0, helpers_1.printMessage)(`Failed to run. Please try running '${packageManagerType} install' manually.`, 'error');
-                //TODO : Add this documentation
-                (0, helpers_1.printMessage)(`For more information about how to use your application, visit: ${websiteUrl}/docs/getting-started`, 'primary');
-            }
-        }
-        else {
-            (0, helpers_1.printMessage)('No package.json found. Skipping install.', 'notice');
-        }
-    }
-    else {
-        (0, helpers_1.printMessage)(`Dependencies have not been installed. To install dependencies, run: '${packageManagerType} install'`, 'notice');
-    }
     return module;
 }
 exports.generateFromPrefab = generateFromPrefab;

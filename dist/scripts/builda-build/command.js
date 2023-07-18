@@ -11,32 +11,18 @@ exports.default = () => {
         desc: 'Build your project',
         aliases: ['-b', '--build'],
         builder: (yargs) => {
-            return yargs
-                .option('prod', {
-                aliases: ['p', 'production'],
-                default: false,
-                describe: 'Build for production. This will minify the output and remove any debug code',
-                type: 'boolean'
-            })
-                .option('onlyPath', {
-                describe: 'If you want to build from a specific path',
-                type: 'string',
-                default: ''
-            })
-                .option('configPath', {
+            return yargs.option('configPath', {
                 aliases: ['c', 'config'],
                 default: '',
                 describe: 'The path to a config file',
                 type: 'string'
             });
         },
-        handler: async (argv) => {
-            const config = await (0, helpers_1.getConfigFile)(argv.configPath);
+        handler: async () => {
+            const config = await (0, helpers_1.getConfig)();
             if (config) {
                 return (0, build_1.default)({
-                    config,
-                    onlyPath: argv.onlyPath,
-                    prod: argv.prod
+                    config
                 });
             }
             (0, helpers_1.throwError)('No config file found');

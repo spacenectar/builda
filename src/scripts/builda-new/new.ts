@@ -1,4 +1,7 @@
 import fs from 'node:fs';
+import path from 'path';
+import generateCommands from './helpers/generate-commands';
+import inquirer from 'inquirer';
 
 // import helpers
 import {
@@ -6,13 +9,16 @@ import {
   getModule,
   writeFile,
   getSubstitutions,
-  changeCase
+  changeCase,
+  throwError
 } from 'helpers';
 
+import globals from 'data/globals';
+
 // Import types
-import { ConfigFile } from 'types/config-file';
-import path from 'path';
-import generateCommands from './helpers/generate-commands';
+import type { ConfigFile } from 'types/config-file';
+import type { BlueprintScriptContent } from 'types/blueprint-script-config';
+import { buildaBuild } from 'scripts/builda-build';
 
 type TNew = {
   config: ConfigFile;
@@ -21,68 +27,110 @@ type TNew = {
   subString?: string;
 };
 
-export default ({ config, name, scriptName, subString }: TNew) => {
-  const commands = generateCommands(config);
-  const script = commands?.[scriptName];
+const buildFromBlueprint = async (
+  name: string,
+  outputDir: string,
+  config: ConfigFile,
+  script: BlueprintScriptContent,
+  subString?: string
+) => {
+  const { buildaDir } = globals;
+  const outputDirectory = `${outputDir}/${changeCase(name, 'kebabCase')}`;
+  const outputInExport = path.join(buildaDir, 'export', outputDirectory);
 
-  if (!!script.use) {
-    printMessage(`Building new ${scriptName}: '${name}'...`, 'notice');
-    const outputDirectory = `${script.outputDir}/${changeCase(
-      name,
-      'kebabCase'
-    )}`;
+  if (fs.existsSync(outputDirectory)) {
+    throwError(`A ${script.use} already exists with the name ${name}`);
+  }
 
-    // Create the directory tree if it doesn't exist
-    fs.mkdirSync(outputDirectory, { recursive: true });
-
-    const { path: pathstring, registry } = getModule(
-      'blueprint',
-      config,
-      script
+  if (fs.existsSync(outputInExport)) {
+    throwError(
+      `An existing ${script.use} with the name ${name} was found in the prefab. Continuing will overwrite this version.\r\nIf you want to edit the prefab version, you need to eject it with 'builda eject ${name}'`
     );
+  }
 
-    const splitSubString = subString?.split(':') || [];
-    const sub =
-      splitSubString.length === 2
-        ? { replace: splitSubString[0], with: splitSubString[1] }
-        : undefined;
+  // Create the directory tree if it doesn't exist
+  fs.mkdirSync(outputDirectory, { recursive: true });
 
-    const substitute = script
-      ? getSubstitutions({
-          registry,
-          name,
-          script,
-          sub
-        })
-      : [];
+  const { path: pathstring, registry } = getModule('blueprint', config, script);
 
-    const fullPath = path.resolve(pathstring, 'files');
-    fs.readdirSync(fullPath).forEach((file: string) => {
-      const srcPath = `${fullPath}/${file}`;
-      const outputPath = `${outputDirectory}`;
+  const splitSubString = subString?.split(':') || [];
+  const sub =
+    splitSubString.length === 2
+      ? { replace: splitSubString[0], with: splitSubString[1] }
+      : undefined;
 
-      writeFile({
-        file: srcPath,
-        outputDir: outputPath,
-        substitute,
-        name
-      });
+  const substitute = script
+    ? getSubstitutions({
+        registry,
+        name,
+        script,
+        sub
+      })
+    : [];
+
+  const fullPath = path.resolve(pathstring, 'files');
+  fs.readdirSync(fullPath).forEach((file: string) => {
+    const srcPath = `${fullPath}/${file}`;
+    const outputDir = `${outputDirectory}`;
+    writeFile({
+      file: srcPath,
+      rename: srcPath.replace('temp_name', name),
+      outputDir: outputDir,
+      substitute,
+      name
     });
+  });
 
-    const componentRegistry = {
-      name,
-      version: '1.0.0',
-      author: '',
-      blueprint: {
-        name: registry.name,
-        version: registry.version
-      }
-    };
+  // copy the folder into the export directory
+  buildaBuild({
+    config
+  });
 
-    // Add a component registry file to the output directory
-    return fs.writeFileSync(
-      `${outputDirectory}/registry.json`,
-      JSON.stringify(componentRegistry, null, 2)
-    );
+  return printMessage('Done!', 'success');
+};
+
+export default async ({ config, name, scriptName, subString }: TNew) => {
+  const commands = generateCommands(config);
+  const script = commands?.[scriptName] as BlueprintScriptContent;
+  if (script.use) {
+    if (!name || name === '') {
+      throwError(`You need to provide a name for your new ${scriptName}`);
+    }
+
+    printMessage(`Building new ${scriptName}: '${name}'...`, 'notice');
+
+    if (script.variants) {
+      const answers = await inquirer.prompt([
+        {
+          type: 'list',
+          name: 'variantChoice',
+          message: 'What type of component do you wish to build?',
+          choices: script.variants.map((variant) => {
+            return {
+              name: variant.name,
+              value: variant.outputDir
+            };
+          })
+        }
+      ]);
+
+      await buildFromBlueprint(
+        name,
+        answers.variantChoice,
+        config,
+        script,
+        subString
+      );
+    } else {
+      await buildFromBlueprint(
+        name,
+        script.outputDir,
+        config,
+        script,
+        subString
+      );
+    }
+  } else {
+    throwError('No valid scripts found');
   }
 };

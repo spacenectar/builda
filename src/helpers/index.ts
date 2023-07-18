@@ -4,17 +4,18 @@ export { default as printMessage } from './console/print-message';
 export { default as printSiteLink } from './console/print-site-link';
 export { default as showHelp } from './console/show-help';
 export { default as throwError } from './console/throw-error';
+export { default as confirm } from './console/confirm';
 
 // File helpers
-export { default as checkAndCopyPath } from './file/check-and-copy-path';
+export { default as copyPath } from './file/check-and-copy-path';
 export { default as copyDir } from './file/copy-dir';
-export { default as createConfigFile } from './file/create-config-file';
+export { default as updateConfig } from './file/update-config';
 export { default as createDir } from './file/create-dir';
-export { default as getConfigFile } from './file/get-config-file';
+export { default as getConfig } from './file/get-config';
 export { default as loopAndRewriteFiles } from './file/loop-and-rewrite-files';
-export { default as replaceRootDir } from './file/replace-root-dir';
 export { default as writeFile } from './file/write-file';
 export { default as writeLogFile } from './file/write-log-file';
+export { default as copyPathsToRoot } from './file/copy-paths-to-root';
 
 // Module helpers
 export { default as addLocalModule } from './module/add-local-module';
@@ -37,7 +38,6 @@ export { default as changeCase } from './string/change-case';
 export { default as convertNumbersToWords } from './string/convert-numbers-to-words';
 export { default as convertSymbolsToWords } from './string/convert-symbols-to-words';
 export { default as detectPathType } from './string/detect-path-type';
-export { default as getPathFromRoot } from './string/get-path-from-root';
 export { default as getSiteLink } from './string/get-site-link';
 export { default as normaliseCase } from './string/normalise-case';
 export { default as pluralise } from './string/pluralise';

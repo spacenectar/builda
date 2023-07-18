@@ -1,6 +1,6 @@
 {
   "name": "builda",
-  "version": "5.0.0-9",
+  "version": "5.0.0-18",
   "bin": {
     "builda": "dist/index.js"
   },
@@ -32,13 +32,12 @@
     "build": "rm -rf ./dist && node ./generate-globals.js && tsc --build",
     "test": "jest",
     "copyfiles": "cp -r ./src/data ./dist",
-    "lint:md": "markdownlint-cli2-fix src/*.md README.md",
     "lint:json": "eslint **/*.json --fix",
     "prettier-check": "prettier --check .",
     "prettier-write": "prettier --write .",
     "update-module-schema": "ts-json-schema-generator --path ./src/types/module-registry.d.ts --out ./src/data/module-registry-schema.json",
     "postbuild": "tsc-alias && yarn copyfiles",
-    "preflight": "yarn build && yarn lint:md && yarn lint:json && yarn prettier-write && yarn test"
+    "preflight": "yarn build && yarn lint:json && yarn prettier-write && yarn test"
   },
   "repository": {
     "type": "git",
@@ -69,6 +68,8 @@
     "yargs": "^17.4.1"
   },
   "devDependencies": {
+    "@types/concat-stream": "^2.0.0",
+    "@types/cross-spawn": "^6.0.2",
     "@types/glob": "^8.0.0",
     "@types/inquirer": "^8.2.1",
     "@types/jest": "^28.1.4",
@@ -79,20 +80,24 @@
     "@types/yargs": "^17.0.10",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "concat-stream": "^2.0.0",
     "concurrently": "^7.4.0",
-    "eslint": "^8.13.0",
+    "cross-spawn": "^7.0.3",
+    "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-output": "^3.0.1",
     "eslint-plugin-json": "^3.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "jest": "^28.1.2",
-    "markdownlint-cli2": "^0.5.1",
+    "jest": "^29.6.1",
     "mock-stdin": "^1.0.0",
-    "ts-jest": "^28.0.5",
+    "ts-jest": "^29.1.1",
     "ts-json-schema-generator": "^1.2.0",
     "tsc-alias": "^1.7.0",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"
+  },
+  "resolutions": {
+    "semver": "^7.5.4"
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -104,8 +109,7 @@
       "yarn lint:json"
     ],
     "*.md": [
-      "prettier --write",
-      "yarn lint:md"
+      "prettier --write"
     ]
   }
 }

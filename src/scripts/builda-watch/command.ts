@@ -1,4 +1,4 @@
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 import yargs from 'yargs';
 
 import buildaWatch from './watch';
@@ -20,10 +20,14 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
-      if (config) {
+    handler: async () => {
+      const config = await getConfig();
+      if (config?.prefab) {
         return buildaWatch(config);
+      } else if (config?.prefab === undefined) {
+        throwError(
+          'No prefab found in config file. Watch can only be run within a prefab'
+        );
       }
       throwError('No config file found');
     }

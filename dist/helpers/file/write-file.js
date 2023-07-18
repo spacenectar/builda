@@ -8,14 +8,36 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const string_1 = require("../../helpers/string");
 const prettier_1 = __importDefault(require("prettier"));
+const prettierAllowedFileTypes = [
+    'css',
+    'html',
+    'js',
+    'jsx',
+    'json',
+    'less',
+    'md',
+    'mdx',
+    'scss',
+    'sass',
+    'ts',
+    'tsx',
+    'yaml',
+    'yml',
+    'graphql'
+];
 const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
-    const fileName = file === null || file === void 0 ? void 0 : file.split('/').pop();
+    let fileName = file;
+    if (rename) {
+        fileName = rename;
+    }
+    fileName = fileName === null || fileName === void 0 ? void 0 : fileName.split('/').pop();
     // get the file contents
     const fileContent = file ? fs_1.default.readFileSync(path_1.default.resolve(file), 'utf8') : '';
     // replace the each placeholder with the correctly formatted name
-    let newContent = content || fileContent;
+    let newContent = content !== null && content !== void 0 ? content : fileContent;
     if (name) {
         newContent = fileContent
+            .replace(/prefab-name-replace-string/g, (0, string_1.changeCase)(name, 'kebabCase'))
             .replace(/%KEBAB_CASE%/g, (0, string_1.changeCase)(name, 'kebabCase'))
             .replace(/%CAMEL_CASE%/g, (0, string_1.changeCase)(name, 'camelCase'))
             .replace(/%SNAKE_CASE%/g, (0, string_1.changeCase)(name, 'snakeCase'))
@@ -25,21 +47,25 @@ const writeFile = ({ file, rename, content, outputDir, substitute, name }) => {
     // Replace custom substitutions
     if (substitute && substitute.length > 0) {
         substitute.forEach((sub) => {
-            const needle = `${sub.replace.toUpperCase()}`;
+            const needle = `${sub.replace}`;
             const regex = new RegExp(needle, 'g');
             newContent = newContent.replace(regex, sub.with);
         });
     }
-    newContent = file
-        ? prettier_1.default.format(newContent, {
-            filepath: path_1.default.resolve(file)
-        })
-        : newContent;
+    // Run prettier on the file if it's a supported file type
+    const fileType = fileName === null || fileName === void 0 ? void 0 : fileName.split('.').pop();
+    if (fileType && prettierAllowedFileTypes.includes(fileType)) {
+        newContent = file
+            ? prettier_1.default.format(newContent, {
+                filepath: path_1.default.resolve(file)
+            })
+            : newContent;
+    }
     // write the new file contents to the output directory
     if (newContent) {
-        return fs_1.default.writeFileSync(`${outputDir}/${rename || fileName}`, newContent);
+        return fs_1.default.writeFileSync(`${outputDir}/${fileName}`, newContent);
     }
-    throw new Error(`Could not write file ${rename || fileName}`);
+    throw new Error(`Could not write file ${fileName}`);
 };
 exports.writeFile = writeFile;
 exports.default = exports.writeFile;

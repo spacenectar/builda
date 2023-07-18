@@ -1,10 +1,9 @@
-import { getConfigFile, throwError } from 'helpers';
+import { getConfig, throwError } from 'helpers';
 import yargs from 'yargs';
 
 import buildaNew from './new';
 
 type Args = {
-  configPath: string;
   name: string;
   scriptName: string;
   subString: string;
@@ -32,16 +31,10 @@ export default () => {
           describe:
             'A string matcher for the blueprint script. e.g: "%MY_STRING%:\'new string\'"',
           type: 'string'
-        })
-        .option('configPath', {
-          aliases: ['c', 'config'],
-          default: '',
-          describe: 'The path to a config file',
-          type: 'string'
         });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+      const config = await getConfig();
       if (config) {
         return buildaNew({
           config,

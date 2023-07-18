@@ -4,12 +4,11 @@
     "node_modules",
     ".builda",
     ".git",
-    ".DS_Store",
     ".github",
     ".vscode",
-    "builda",
     "npm-debug.log",
     "yarn-error.log",
-    "yarn-debug.log"
+    "yarn-debug.log",
+    "package.json"
   ]
 }

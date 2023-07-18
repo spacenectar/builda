@@ -2,7 +2,7 @@ import buildaNew from '../new';
 import fs from 'fs';
 
 import path from 'path';
-import config from 'mocks/builda.json';
+import config from 'mocks/package.json';
 import registry from 'mocks/.builda/modules/blueprints/component/registry.json';
 
 const FILE_FOLDER = './experiments';
@@ -20,7 +20,7 @@ jest.mock('helpers/module/get-module', () => {
 describe('buildFromBlueprint', () => {
   beforeAll(async () => {
     buildaNew({
-      config,
+      config: config.builda,
       name: 'TestComponent',
       scriptName: 'atom'
     });

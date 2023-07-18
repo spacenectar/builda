@@ -1,4 +1,4 @@
-import { getConfigFile } from 'helpers';
+import { getConfig } from 'helpers';
 import yargs from 'yargs';
 
 import buildaInit from './init';
@@ -20,7 +20,7 @@ export default () => {
       });
     },
     handler: async (argv: Args) => {
-      const config = await getConfigFile(argv.configPath);
+      const config = await getConfig();
       return buildaInit({ config: config || undefined });
     }
   };

@@ -7,6 +7,7 @@ import { simpleGit } from 'simple-git';
 import { getRegistry, printMessage, throwError } from 'helpers';
 import { publishToTradeStore as PTS } from './helpers/publish-to-trade-store';
 import { checkPathExists } from './helpers/check-path-exists';
+import { buildaPackage } from '../builda-package';
 
 export default async (updateVersion?: string) => {
   const registry = await getRegistry();
@@ -42,9 +43,10 @@ export default async (updateVersion?: string) => {
   }
 
   if (!fs.existsSync(MODULEPACKAGE)) {
-    throwError(
-      `No ${MODULEPACKAGE} file found. Please run 'builda package' before publishing.\r`
-    );
+    // If the module package does not exist, run the builda-package script
+    printMessage('No module package found. Building package...', 'processing');
+    await buildaPackage(updateVersion);
+    printMessage('Package built', 'success');
   }
 
   const isCorrectlyPrefixed = name.startsWith(`${type}-`);

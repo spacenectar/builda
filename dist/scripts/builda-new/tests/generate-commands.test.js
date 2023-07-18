@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const generate_commands_1 = __importDefault(require("../../../scripts/builda-new/helpers/generate-commands"));
-const builda_json_1 = __importDefault(require("../../../mocks/builda.json"));
+const package_json_1 = __importDefault(require("../../../mocks/package.json"));
 describe('generateCommands', () => {
     let commands = {};
     beforeEach(async () => {
-        commands = (0, generate_commands_1.default)(builda_json_1.default);
+        commands = (0, generate_commands_1.default)(package_json_1.default.builda);
     });
     test('config file is parsed and commands extracted', () => {
         expect(commands).toEqual({

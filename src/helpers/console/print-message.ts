@@ -7,7 +7,7 @@ const dots = {
   frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 };
 
-const std = process.stdout;
+const stdOut = process.stdout;
 const stderr = process.stderr;
 
 type Types =
@@ -26,11 +26,16 @@ type Types =
   | 'run'
   | 'processing'
   | 'primary'
-  | 'secondary';
+  | 'secondary'
+  | 'confirm';
 
 let timer: NodeJS.Timeout | undefined = undefined;
 
-const printMessage = (message: string, type: Types, returnstring?: boolean) => {
+export const printMessage = (
+  message: string,
+  type: Types,
+  returnstring?: boolean
+) => {
   let newMessage = null;
   if (type && type === 'error') {
     if (timer !== undefined) {
@@ -116,9 +121,9 @@ const printMessage = (message: string, type: Types, returnstring?: boolean) => {
         index = 0;
         now = spinnerFrames[index];
       }
-      rdl.clearLine(std, 0);
-      rdl.cursorTo(std, 0);
-      std.write(now);
+      rdl.clearLine(stdOut, 0);
+      rdl.cursorTo(stdOut, 0);
+      stdOut.write(now);
       index = index >= spinnerFrames.length ? 0 : index + 1;
     }, spinnerTimeInterval);
     newMessage = chalk.blue(`${message}`);
@@ -128,7 +133,7 @@ const printMessage = (message: string, type: Types, returnstring?: boolean) => {
     newMessage = message;
   }
 
-  const returnType = type === 'error' ? stderr : std;
+  const returnType = type === 'error' ? stderr : stdOut;
 
   return returnstring ? newMessage : returnType.write(`${newMessage}\n`);
 };

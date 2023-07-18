@@ -6,6 +6,24 @@ import prettier from 'prettier';
 // Import types
 import TSubstitution from 'types/substitution';
 
+const prettierAllowedFileTypes = [
+  'css',
+  'html',
+  'js',
+  'jsx',
+  'json',
+  'less',
+  'md',
+  'mdx',
+  'scss',
+  'sass',
+  'ts',
+  'tsx',
+  'yaml',
+  'yml',
+  'graphql'
+];
+
 interface IWriteFileOptions {
   file?: string;
   rename?: string;
@@ -23,16 +41,23 @@ export const writeFile = ({
   substitute,
   name
 }: IWriteFileOptions) => {
-  const fileName = file?.split('/').pop();
+  let fileName = file;
+
+  if (rename) {
+    fileName = rename;
+  }
+
+  fileName = fileName?.split('/').pop();
 
   // get the file contents
   const fileContent = file ? fs.readFileSync(path.resolve(file), 'utf8') : '';
 
   // replace the each placeholder with the correctly formatted name
-  let newContent = content || fileContent;
+  let newContent = content ?? fileContent;
 
   if (name) {
     newContent = fileContent
+      .replace(/prefab-name-replace-string/g, changeCase(name, 'kebabCase'))
       .replace(/%KEBAB_CASE%/g, changeCase(name, 'kebabCase'))
       .replace(/%CAMEL_CASE%/g, changeCase(name, 'camelCase'))
       .replace(/%SNAKE_CASE%/g, changeCase(name, 'snakeCase'))
@@ -43,23 +68,27 @@ export const writeFile = ({
   // Replace custom substitutions
   if (substitute && substitute.length > 0) {
     substitute.forEach((sub: TSubstitution) => {
-      const needle = `${sub.replace.toUpperCase()}`;
+      const needle = `${sub.replace}`;
       const regex = new RegExp(needle, 'g');
       newContent = newContent.replace(regex, sub.with);
     });
   }
 
-  newContent = file
-    ? prettier.format(newContent, {
-        filepath: path.resolve(file)
-      })
-    : newContent;
+  // Run prettier on the file if it's a supported file type
+  const fileType = fileName?.split('.').pop();
+  if (fileType && prettierAllowedFileTypes.includes(fileType)) {
+    newContent = file
+      ? prettier.format(newContent, {
+          filepath: path.resolve(file)
+        })
+      : newContent;
+  }
 
   // write the new file contents to the output directory
   if (newContent) {
-    return fs.writeFileSync(`${outputDir}/${rename || fileName}`, newContent);
+    return fs.writeFileSync(`${outputDir}/${fileName}`, newContent);
   }
-  throw new Error(`Could not write file ${rename || fileName}`);
+  throw new Error(`Could not write file ${fileName}`);
 };
 
 export default writeFile;
