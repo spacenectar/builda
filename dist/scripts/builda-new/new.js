@@ -49,9 +49,11 @@ const buildFromBlueprint = async (name, outputDir, config, script, subString) =>
         });
     });
     // copy the folder into the export directory
-    (0, builda_build_1.buildaBuild)({
-        config
-    });
+    if (config.prefab) {
+        (0, builda_build_1.buildaBuild)({
+            config
+        });
+    }
     return (0, helpers_1.printMessage)('Done!', 'success');
 };
 exports.default = async ({ config, name, scriptName, subString }) => {
@@ -67,7 +69,7 @@ exports.default = async ({ config, name, scriptName, subString }) => {
                 {
                     type: 'list',
                     name: 'variantChoice',
-                    message: 'What type of component do you wish to build?',
+                    message: `What type of ${scriptName} do you wish to build?`,
                     choices: script.variants.map((variant) => {
                         return {
                             name: variant.name,

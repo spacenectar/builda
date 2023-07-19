@@ -82,9 +82,11 @@ const buildFromBlueprint = async (
   });
 
   // copy the folder into the export directory
-  buildaBuild({
-    config
-  });
+  if (config.prefab) {
+    buildaBuild({
+      config
+    });
+  }
 
   return printMessage('Done!', 'success');
 };
@@ -104,7 +106,7 @@ export default async ({ config, name, scriptName, subString }: TNew) => {
         {
           type: 'list',
           name: 'variantChoice',
-          message: 'What type of component do you wish to build?',
+          message: `What type of ${scriptName} do you wish to build?`,
           choices: script.variants.map((variant) => {
             return {
               name: variant.name,

@@ -12,7 +12,7 @@ exports.default = () => {
         builder: (yargs) => {
             return yargs
                 .positional('scriptName', {
-                describe: 'The scaffold script to run',
+                describe: 'The blueprint script to run',
                 type: 'string',
                 default: ''
             })
