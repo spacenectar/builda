@@ -36,7 +36,7 @@ const buildFromBlueprint = async (name, outputDir, config, script, subString) =>
             sub
         })
         : [];
-    const fullPath = path_1.default.resolve(pathstring, 'files');
+    const fullPath = path_1.default.resolve(pathstring, 'module');
     node_fs_1.default.readdirSync(fullPath).forEach((file) => {
         const srcPath = `${fullPath}/${file}`;
         const outputDir = `${outputDirectory}`;

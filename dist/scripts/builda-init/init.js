@@ -28,20 +28,9 @@ exports.default = async ({ config }) => {
     /**
      * Config file exists, ask the user if they want to overwrite it or abort the process
      */
-    if (config) {
+    if (config && Object.keys(config).length !== 0) {
         if (config.prefab) {
-            (0, helpers_1.showHelp)('This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.', 'error');
-            const { installInstead } = await inquirer_1.default.prompt([
-                {
-                    type: 'confirm',
-                    name: 'installInstead',
-                    message: 'Run install instead?',
-                    default: false
-                }
-            ]);
-            if (installInstead) {
-                return console.log('Running install instead...');
-            }
+            (0, helpers_1.showHelp)('This project was generated from a prefab and cannot be reinitialised. Maybe you meant to run "builda install" instead?', 'error');
             process.exit(1);
         }
         (0, helpers_1.showHelp)('It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n' +
@@ -123,6 +112,7 @@ exports.default = async ({ config }) => {
         answers = Object.assign(Object.assign({}, answers), blueprintAnswers);
         const blueprints = answers.blueprintUrls ||
             answers.blueprintList.join('');
+        (0, helpers_1.updateConfig)({});
         (0, builda_add_1.buildaAdd)({ modulePath: blueprints });
     }
     if (initType === 'prefab') {

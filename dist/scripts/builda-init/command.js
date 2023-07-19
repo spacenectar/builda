@@ -18,7 +18,7 @@ exports.default = () => {
             });
         },
         handler: async (argv) => {
-            const config = await (0, helpers_1.getConfig)();
+            const config = await (0, helpers_1.getConfig)(true);
             return (0, init_1.default)({ config: config || undefined });
         }
     };

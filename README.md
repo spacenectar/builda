@@ -8,7 +8,9 @@
 [![Patreon](https://img.shields.io/badge/Patreon-Support-brightgreen?style=for-the-badge&logo=patreon)](https://www.patreon.com/builda?style=for-the-badge)
 
 > **NOTE:** This readme file is a mess as it is a work in progress.
-> Please bear with me, I will clean it up soon.
+> Please bear with me, I will clean it up and add more information soon.
+> Also, the example blueprints and prefabs listed below are not yet available
+> but will be soon.
 
 ## What's this
 
@@ -24,15 +26,7 @@ You can also build entire projects using super-powered blueprints known as 'pref
 
 ## Screenshots
 
-### Initialising builda
-
-![Initialisation](https://raw.githubusercontent.com/spacenectar/builda-app/master/example/init.gif)
-
-### Generate an atom component
-
-![Generating an atom component](https://raw.githubusercontent.com/spacenectar/builda-app/master/example/generate-atom.gif)
-
-The component produced in this animation is available to view here: [Component Example](https://github.com/spacenectar/builda-app/tree/master/example/test-component)
+Coming soon...
 
 ## Setup
 
@@ -63,7 +57,7 @@ npm i --dev builda
 ![Yarn](https://img.shields.io/badge/yarn-install_locally-yellow?style=for-the-badge&logo=yarn)
 
 ```shell
-yarn add -d builda
+yarn add -D builda
 ```
 
 Then you can initialise builda by typing `builda --init` this will create a `.builda`
@@ -71,13 +65,10 @@ directory in your project root. (see [Configuration](#configuration) below)
 
 ### Configuration
 
-> **Note:** If you want to use a prefab, yo do not need to run `builda --init`
+> **Note:** If you want to use a prefab, you do not need to run `builda --init`
 > (see [Prefabs](#prefabs) below)
 
-You can specify some defaults by updating the `config.json` file in your `.builda`
-directory.
-
-You can create this directory and file manually or by running `builda --init`
+You can specify some defaults by updating the `builda` object in your `package.json` file.
 
 [This section is incomplete and will be updated soon](#configuration)
 
@@ -85,22 +76,22 @@ You can create this directory and file manually or by running `builda --init`
 
 Builda has two different types of modules, 'blueprints' and 'prefabs'.
 
-You can install blueprints by running `builda install <blueprint-path>`
+You can install blueprints by running `builda add <blueprint-path>`
 
 Installing prefabs is a little different. Instead of installing a prefab,
 you initialise a project using a prefab.
 
-The command to do that is `builda --prefab <prefab-path>`
+The command to do that is `builda project <prefab-path>`
 
 ### Prefixes
 
 You can put the full path to the module as a url if you wish or you can use
-a prefixed path:
+a prefixed path (known in Builda as a 'resolver')
 
 e.g. The following command will install the 'arctic-fox' blueprint:
 
 ```shell
-builda install builda:arctic-fox
+builda add builda:arctic-fox
 ```
 
 The `builda:` prefix tells builda to look at the module registry on the builda
@@ -126,6 +117,11 @@ BitBucket user 'builda-modules':
 builda install bitbucket:builda-modules/arctic-fox
 ```
 
+> NOTE: github and bitbucket prefixes require a release tag of 'latest' to exist
+> in order to install the module.
+
+#### Custom prefixes
+
 You can also specify custom prefixes by adding them to the `config.json` file under
 `resolve`:
 
@@ -140,66 +136,102 @@ You can also specify custom prefixes by adding them to the `config.json` file un
 Then you could install 'custom-blueprint' from the spacenectar website by running:
 
 ```shell
-builda install sn:custom-blueprint
+builda add sn:custom-blueprint
 ```
 
 ## Usage
 
 ### Useful commands
 
-#### `builda --init`
+#### `builda init`
 
 Initialises builda in your project. This will create a `.builda` directory in your
 project root and a `config.json` file inside that.
 (see [Configuration](#configuration) below)
 
-#### `builda --prefab <prefab-path>`
+#### `builda project <prefab-path>`
 
 Initialises a new project using a prefab. (see [Prefabs](#prefabs) below)
 
-#### `builda --exec <command>`
+#### `builda new <thing>`
 
-Executes a command in the context of the current project.
-(see [Commands](#commands) below)
+Creates a new thing from a bluebrint (see [Blueprints](#blueprints) below)
 
-#### `builda --index`
+<!-- #### `builda --index`
 
 Generates an index file any directories specified in 'indexes' in the config
-file. (see [Indexing](#indexing) below)
+file. (see [Indexing](#indexing) below) -->
 
 #### `builda --help`
 
 Displays the help menu.
 
-### Generating files from blueprints
+### Blueprints
 
-When you run `builda --init`, you will generate a list of commands which can be
-used to generate files.
+Blueprints can be used to generate files and folders in your project.
 
-For example, if you generated a `component` blueprint-type, you could run:
+Once you have added a blueprint you then need to edit your `builda` entry in your
+`package.json` file to tell builda where to put the output of the blueprint.
 
-```shell
-builda component my-example-component
+Once you have installed a blueprint, you will see a `blueprints` entry in your
+builda config. After that entry, you can add a `scripts` entry which will contain
+a list of scripts that you can run to generate files and folders.
+
+For example, if you installed the `arctic-fox` blueprint, you would see the
+following in your `package.json` file:
+
+```json
+{
+  "builda": {
+    "blueprints": {
+      "arctic-fox": {
+        "version": "1.0.0",
+        "location": "builda:arctic-fox"
+      }
+    }
+  }
+}
 ```
 
-This will generate a component called `my-example-component` in the directory
-specified in the `.builda.json` file under the `component` command.
+You can add a `scripts` entry below this like so:
 
-If you generated an `atom` blueprint-type, you could run:
-
-```shell
-builda atom my-example-atom
+```json
+{
+  "builda": {
+    "blueprints": {
+      "arctic-fox": {
+        "version": "1.0.0",
+        "location": "builda:arctic-fox"
+      }
+    },
+    "scripts": {
+      "component": {
+        "use": "arctic-fox",
+        "outputDir": "src/components"
+      }
+    }
+  }
+}
 ```
 
-This will generate an atom called `my-example-atom` in the directory specified
-in the `.builda.json` file under the `atom` command.
+This tells builda that any time you want to generate a new `component` it should
+use the `arctic-fox` blueprint and put the output in the `src/components` directory.
+
+```shell
+builda new component --name my-example-component
+```
+
+This will generate a component called `my-example-component` in the `src/components`
+directory using the `arctic-fox` blueprint.
 
 This is a powerful feature as not only does it allow you to specify the directory
 to generate files in, it also allows you to specify the blueprint to generate from,
-so if you had some components which needed to be typescript and others that
-needed to be javascript, you can specify a different blueprint for each.
+so you can specify a different blueprint for each type of thing you want to generate.
 
-## Indexing
+e.g. You could have a `component` script which uses the `arctic-fox` blueprint and
+a `page` script which uses the `arctic-wolf` blueprint.
+
+<!-- ## Indexing
 
 Builda can generate an index file for any directories you specify in the config
 file. This is useful if you want to import files from a directory without having
@@ -240,7 +272,7 @@ specify an extension, the default is `.ts`.
     "extension": ".ts"
   }
 }
-```
+``` -->
 
 ## Prefabs
 
@@ -267,7 +299,7 @@ to focus on individual features.
 
 ### Ok but what if I want parts of the project to be different?
 
-No problem! You can just copy the files you want to update from the prebabs folder
+No problem! You can just `eject` the files you want to update from the prebabs folder
 into the root of your project. Provided that the paths match up, the files in the
 root will take precedence over the files in the prefab. This of course means that
 these files will no longer receive updates when the prefab is updated and you
@@ -280,14 +312,14 @@ will need to manually update the files in the root if you want them to be update
 ### Using prefabs
 
 A prefab is an entire project. So rather than installing a prefab as you do with
-a blueprint. You would initialise builda with the `--prefab` flag and then
+a blueprint. You would initialise builda with the `project` command and then
 specify the prefab you want to use.
 
 ```shell
-builda --prefab builda:prefab-the-burrows
+builda project builda:jackanory
 ```
 
-This will build out your new project using the `the-burrows` prefab.
+This will build out your new project using the `jackanory` prefab.
 
 > **COMING SOON:** Prefab partials are on the roadmap. This will allow you to
 > add prefabs to existing projects and have only parts of the project connected
@@ -295,22 +327,6 @@ This will build out your new project using the `the-burrows` prefab.
 > package to your project (e.g. storybook) and wanted to keep that preconfiguration
 > in sync with the rest of your projects but still leave the rest of your project
 > as a standalone project.
-
-## Commands
-
-Builda can also be used to run commands in the context of your project. This is
-useful if you want to run a command that is not a blueprint or prefab.
-
-Most commonly, you would not need to run this command directly as this is generally
-handled by the prefab developer. But if you want to run a command that is not
-included in the prefab, you can do this by running:
-
-```shell
-builda exec <command>
-```
-
-This will find the matching script in the `.builda/export/pacakge.json` file and
-run it in the context of your project.
 
 ## Migrating from Buildcom
 
@@ -326,7 +342,7 @@ release, you may find that you are better off staying with buildcom for now.
 
 - Add support for generating multiple components at once
 
-- Add a larger selection of default blueprints
+- Add a selection of default blueprints
 
 - Create a website for builda with full documentation
 
@@ -339,11 +355,6 @@ release, you may find that you are better off staying with buildcom for now.
 
 - Add prefab partials to allow smaller parts of your project to be prefabs but not
   the whole project.
-
-- Version control of all blueprints and prefabs
-
-- Add a command line only mode which will work without needing to initialise
-  builda or even install it locally
 
 - Even more stuff!
 
@@ -394,7 +405,7 @@ A prefab requires the following files and directories:
   register the prefab with builda and to specify the name of the prefab.
 - README.md - This is the readme file for the prefab. It is used to provide
   information about the prefab and how to use it.
-- A 'files' directory - This is the directory where all of the files for the
+- A 'modules' directory - This is the directory where all of the files for the
   prefab are stored.
 
 You can add other files and directories to the prefab if you want, but these

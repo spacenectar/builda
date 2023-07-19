@@ -39,26 +39,12 @@ export default async ({ config }: TInit) => {
   /**
    * Config file exists, ask the user if they want to overwrite it or abort the process
    */
-  if (config) {
+  if (config && Object.keys(config).length !== 0) {
     if (config.prefab) {
       showHelp(
-        'This project was generated from a prefab and cannot be reinitialised. If you meant to run "builda install" instead, press Y to continue, or the "N" or "enter" key to exit.',
+        'This project was generated from a prefab and cannot be reinitialised. Maybe you meant to run "builda install" instead?',
         'error'
       );
-
-      const { installInstead } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'installInstead',
-          message: 'Run install instead?',
-          default: false
-        }
-      ]);
-
-      if (installInstead) {
-        return console.log('Running install instead...');
-      }
-
       process.exit(1);
     }
     showHelp(
@@ -160,6 +146,8 @@ export default async ({ config }: TInit) => {
     const blueprints =
       answers.blueprintUrls ||
       (answers.blueprintList as Array<string>).join('');
+
+    updateConfig({});
 
     buildaAdd({ modulePath: blueprints as string });
   }

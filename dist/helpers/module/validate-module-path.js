@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const ajv_1 = __importDefault(require("ajv"));
-const helpers_1 = require("../../helpers");
 const convert_registry_path_to_url_1 = __importDefault(require("./convert-registry-path-to-url"));
 const module_registry_schema_json_1 = __importDefault(require("../../data/module-registry-schema.json"));
 const ajv = new ajv_1.default();
@@ -26,7 +25,6 @@ exports.default = async (url, resolved) => {
     const registry = registryUrl.includes('registry.json')
         ? registryUrl
         : `${registryUrl}/registry.json`;
-    (0, helpers_1.writeLogFile)(`Fetching registry from ${registry}`);
     return axios_1.default
         .get(registry)
         .then((response) => {

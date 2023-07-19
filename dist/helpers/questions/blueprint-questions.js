@@ -67,8 +67,9 @@ exports.default = async (answers) => {
                     value: 'url'
                 },
                 {
-                    name: 'I want to choose from a list',
-                    value: 'list'
+                    name: 'I want to choose from a list (coming soon)',
+                    value: 'list',
+                    disabled: 'This option is not available yet'
                 }
             ]
         },

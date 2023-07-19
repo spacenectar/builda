@@ -20,7 +20,7 @@ export default () => {
       });
     },
     handler: async (argv: Args) => {
-      const config = await getConfig();
+      const config = await getConfig(true);
       return buildaInit({ config: config || undefined });
     }
   };

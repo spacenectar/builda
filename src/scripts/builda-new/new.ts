@@ -68,7 +68,7 @@ const buildFromBlueprint = async (
       })
     : [];
 
-  const fullPath = path.resolve(pathstring, 'files');
+  const fullPath = path.resolve(pathstring, 'module');
   fs.readdirSync(fullPath).forEach((file: string) => {
     const srcPath = `${fullPath}/${file}`;
     const outputDir = `${outputDirectory}`;

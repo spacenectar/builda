@@ -4,14 +4,16 @@ import path from 'path';
 
 import { ConfigFile } from 'types/config-file';
 
-const getConfig = (): ConfigFile => {
+const getConfig = (allowFailure?: boolean): ConfigFile => {
   if (fs.existsSync(path.resolve(process.cwd(), 'package.json'))) {
     const configFile = JSON.parse(
       fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf8')
     );
     const config = configFile.builda;
-    if (!config) {
+    if (!config && !allowFailure) {
       throwError('No "builda" entry found in package.json');
+    } else if (!config && allowFailure) {
+      return {};
     }
     return config;
   }
