@@ -9,8 +9,6 @@ import { syncWithExport } from './helpers/sync-with-export';
 
 import ignoredFiles from 'data/ignore-file.json';
 
-import type { ConfigFile } from 'types/config-file';
-
 export default (config: ConfigFile) => {
   const { prefab } = config;
   const ignored = [...ignoredFiles.ignore, ...(config.ignored || [])];

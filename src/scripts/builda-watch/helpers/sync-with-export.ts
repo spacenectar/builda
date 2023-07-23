@@ -1,8 +1,14 @@
 import globals from 'data/globals';
-import { copyPath, getRegistry, loopAndRewriteFiles } from 'helpers';
+import {
+  copyPath,
+  getRegistry,
+  loopAndRewriteFiles,
+  printMessage,
+  throwError
+} from 'helpers';
 import path from 'node:path';
 import fs from 'node:fs';
-import { RootFile } from 'types/module-registry';
+import { syncPackageJson } from './sync-package-json';
 
 type SyncType = 'copy' | 'update' | 'rename' | 'delete';
 
@@ -22,6 +28,9 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const cleanRoot = root.replace(/\.\//, '');
 
   if (type === 'copy') {
+    if (pathString === 'package.json') {
+      return;
+    }
     // Copy the prefab files to the export directory
     return copyPath(`${cleanRoot}/${pathString}`, exportRoot, pathString);
   }
@@ -29,6 +38,11 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   if (type === 'update') {
     // Delete the original file in the export directory
     // and create a new copy of the file from the root
+
+    if (pathString === 'package.json') {
+      // If the file is the package.json file, we need to do some different processing
+      return syncPackageJson();
+    }
 
     // Check the registry to see if the file has any substitutions
     const fileWithSubstitutions = registry.generatorOptions?.rootFiles?.find(
@@ -69,6 +83,10 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   }
 
   if (type === 'delete') {
+    if (pathString === 'package.json') {
+      // If the file is the package.json file, throw an error
+      throwError('package.json deleted. This will break your project');
+    }
     // Delete the file in the export directory
     fs.rmSync(path.join(exportRoot, pathString), {
       recursive: true,
