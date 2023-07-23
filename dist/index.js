@@ -942,10 +942,8 @@ var confirm_default = confirm;
 
 // src/helpers/file/check-and-copy-path.ts
 var import_fs = __toESM(require("fs"));
-var import_path = __toESM(require("path"));
-var copyPath = (sourcePath, destinationPath, fileName) => {
-  const name = fileName != null ? fileName : "";
-  return import_fs.default.cpSync(sourcePath, import_path.default.join(destinationPath, name), {
+var copyPath = (sourcePath, destinationPath) => {
+  return import_fs.default.cpSync(sourcePath, destinationPath, {
     dereference: true,
     recursive: true,
     force: true
@@ -977,18 +975,18 @@ var copy_dir_default = copyDir;
 
 // src/helpers/file/update-config.ts
 var import_fs2 = __toESM(require("fs"));
-var import_path2 = __toESM(require("path"));
+var import_path = __toESM(require("path"));
 var updateConfig = (update) => {
-  if (import_fs2.default.existsSync(import_path2.default.resolve(process.cwd(), "package.json"))) {
+  if (import_fs2.default.existsSync(import_path.default.resolve(process.cwd(), "package.json"))) {
     const configFile = JSON.parse(
-      import_fs2.default.readFileSync(import_path2.default.resolve(process.cwd(), "package.json"), "utf8")
+      import_fs2.default.readFileSync(import_path.default.resolve(process.cwd(), "package.json"), "utf8")
     );
     const config = configFile;
     const newConfig = __spreadProps(__spreadValues({}, config), {
       builda: update === null ? void 0 : __spreadValues({}, update)
     });
     import_fs2.default.writeFileSync(
-      import_path2.default.resolve(process.cwd(), "package.json"),
+      import_path.default.resolve(process.cwd(), "package.json"),
       JSON.stringify(newConfig, null, 2)
     );
   } else {
@@ -1013,11 +1011,11 @@ var create_dir_default = createDir;
 
 // src/helpers/file/get-config.ts
 var import_fs4 = __toESM(require("fs"));
-var import_path3 = __toESM(require("path"));
+var import_path2 = __toESM(require("path"));
 var getConfig = (allowFailure) => {
-  if (import_fs4.default.existsSync(import_path3.default.resolve(process.cwd(), "package.json"))) {
+  if (import_fs4.default.existsSync(import_path2.default.resolve(process.cwd(), "package.json"))) {
     const configFile = JSON.parse(
-      import_fs4.default.readFileSync(import_path3.default.resolve(process.cwd(), "package.json"), "utf8")
+      import_fs4.default.readFileSync(import_path2.default.resolve(process.cwd(), "package.json"), "utf8")
     );
     const config = configFile.builda;
     if (!config && !allowFailure) {
@@ -1038,7 +1036,7 @@ var import_glob = __toESM(require("glob"));
 
 // src/helpers/file/write-file.ts
 var import_fs5 = __toESM(require("fs"));
-var import_path4 = __toESM(require("path"));
+var import_path3 = __toESM(require("path"));
 var import_prettier = __toESM(require("prettier"));
 var prettierAllowedFileTypes = [
   "css",
@@ -1070,7 +1068,7 @@ var writeFile = ({
     fileName = rename;
   }
   fileName = fileName == null ? void 0 : fileName.split("/").pop();
-  const fileContent = file ? import_fs5.default.readFileSync(import_path4.default.resolve(file), "utf8") : "";
+  const fileContent = file ? import_fs5.default.readFileSync(import_path3.default.resolve(file), "utf8") : "";
   let newContent = content != null ? content : fileContent;
   if (name) {
     newContent = fileContent.replace(/prefab-name-replace-string/g, change_case_default(name, "kebabCase")).replace(/%KEBAB_CASE%/g, change_case_default(name, "kebabCase")).replace(/%CAMEL_CASE%/g, change_case_default(name, "camelCase")).replace(/%SNAKE_CASE%/g, change_case_default(name, "snakeCase")).replace(/%PASCAL_CASE%/g, change_case_default(name, "pascalCase")).replace(/%SENTENCE_CASE%/g, change_case_default(name, "sentenceCase"));
@@ -1085,7 +1083,7 @@ var writeFile = ({
   const fileType = fileName == null ? void 0 : fileName.split(".").pop();
   if (fileType && prettierAllowedFileTypes.includes(fileType)) {
     newContent = file ? import_prettier.default.format(newContent, {
-      filepath: import_path4.default.resolve(file)
+      filepath: import_path3.default.resolve(file)
     }) : newContent;
   }
   if (newContent) {
@@ -1138,18 +1136,21 @@ var loopAndRewriteFiles = async ({
     } else {
       promises.push(
         new Promise((resolve) => {
-          const directoryPathWithoutFile = import_node_path2.default.dirname(file);
+          const directoryPathWithoutFile = import_node_path2.default.basename(import_node_path2.default.dirname(file));
           const fileName = import_node_path2.default.basename(file);
           const directoryPath = import_node_path2.default.join(workingDir, directoryPathWithoutFile);
           const rootDir = fromCustomPath ? fromCustomPath : import_node_path2.default.join(process.cwd(), "..", "..");
-          const rootPath = import_node_path2.default.resolve(rootDir, directoryPathWithoutFile);
+          const rootPath = import_node_path2.default.join(rootDir, directoryPathWithoutFile);
           create_dir_default(directoryPath);
           if (import_node_fs2.default.existsSync(filePath)) {
-            const preservedSubs = substitute.filter((substitution) => {
+            const preservedSubs = substitute.map((substitution) => {
               if (!substitution.preserve) {
-                return false;
+                return __spreadProps(__spreadValues({}, substitution), {
+                  replace: substitution.with,
+                  with: substitution.replace
+                });
               }
-              return true;
+              return substitution;
             });
             write_file_default({
               file: filePath,
@@ -2933,7 +2934,7 @@ var package_default = async (updateVersion) => {
       file: `${FILESFOLDER}.tgz`,
       gzip: true,
       cwd: FILESFOLDER,
-      filter: (path24) => !ignoreFiles2.includes(path24)
+      filter: (path23) => !ignoreFiles2.includes(path23)
     },
     import_node_fs16.default.readdirSync(FILESFOLDER)
   );
@@ -3158,12 +3159,11 @@ var syncWithExport = async ({ type, pathString }) => {
   const root = process.cwd();
   const exportRoot = import_node_path14.default.resolve(root, globals_default.buildaDir, "export");
   const registry = await get_registry_default(exportRoot);
-  const cleanRoot = root.replace(/\.\//, "");
   if (type === "copy") {
     if (pathString === "package.json") {
       return;
     }
-    return check_and_copy_path_default(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+    return check_and_copy_path_default(`${root}/${pathString}`, import_node_path14.default.join(exportRoot, pathString));
   }
   if (type === "update") {
     if (pathString === "package.json") {
@@ -3192,14 +3192,17 @@ var syncWithExport = async ({ type, pathString }) => {
         substitute: fileWithSubstitutions.substitutions
       });
     } else {
-      return check_and_copy_path_default(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+      return check_and_copy_path_default(
+        `${root}/${pathString}`,
+        import_node_path14.default.join(root, globals_default.buildaDir, "export", pathString)
+      );
     }
   }
   if (type === "delete") {
     if (pathString === "package.json") {
       throw_error_default("package.json deleted. This will break your project");
     }
-    import_node_fs20.default.rmSync(import_node_path14.default.join(exportRoot, pathString), {
+    return import_node_fs20.default.rmSync(import_node_path14.default.join(exportRoot, pathString), {
       recursive: true,
       force: true
     });
@@ -3286,16 +3289,16 @@ var command_default8 = () => {
 
 // src/scripts/builda-indexer/indexer.ts
 var import_node_fs22 = __toESM(require("fs"));
-var import_path6 = __toESM(require("path"));
+var import_path5 = __toESM(require("path"));
 
 // src/scripts/builda-indexer/helpers/generate-lines.ts
 var import_node_fs21 = __toESM(require("fs"));
-var import_path5 = __toESM(require("path"));
+var import_path4 = __toESM(require("path"));
 var generateLines = ({
   directory,
   parent
 }) => {
-  const dir = import_node_fs21.default.readdirSync(import_path5.default.resolve(directory));
+  const dir = import_node_fs21.default.readdirSync(import_path4.default.resolve(directory));
   if (dir.length !== 0) {
     return dir.map((file) => {
       const pathString = parent ? `${parent}/${file}` : file;
@@ -3305,7 +3308,7 @@ var generateLines = ({
           "pascalCase"
         )} } from './${pathString}';`;
       }
-      const fileNoExt = import_path5.default.parse(file).name;
+      const fileNoExt = import_path4.default.parse(file).name;
       const varName = change_case_default(fileNoExt, "camelCase");
       return `export { default as ${varName} } from './${fileNoExt}';`;
     }).filter((item) => item).toString().replace(/,/g, "\n");
@@ -3337,9 +3340,9 @@ var indexer_default = (config) => {
       let lines = "";
       if (directory.includes("*")) {
         checkedDir = directory.replace("/*", "");
-        subdirs = import_node_fs22.default.readdirSync(import_path6.default.resolve(checkedDir));
+        subdirs = import_node_fs22.default.readdirSync(import_path5.default.resolve(checkedDir));
         subdirs.forEach((dir) => {
-          const pathString = import_path6.default.resolve(`${checkedDir}/${dir}`);
+          const pathString = import_path5.default.resolve(`${checkedDir}/${dir}`);
           return lines += `${generateLines({
             directory: pathString,
             parent: dir
@@ -3354,7 +3357,7 @@ var indexer_default = (config) => {
 ${lines}`;
       if (lines) {
         import_node_fs22.default.writeFileSync(
-          import_path6.default.resolve(checkedDir, `index.${ext}`),
+          import_path5.default.resolve(checkedDir, `index.${ext}`),
           fileContents
         );
       }
@@ -3389,7 +3392,7 @@ var command_default9 = () => {
 
 // src/scripts/builda-new/new.ts
 var import_node_fs24 = __toESM(require("fs"));
-var import_path7 = __toESM(require("path"));
+var import_path6 = __toESM(require("path"));
 
 // src/scripts/builda-new/helpers/generate-commands.ts
 var generateCommands = (config) => {
@@ -3487,7 +3490,7 @@ var command_default10 = () => {
 var buildFromBlueprint = async (name, outputDir, config, script, subString) => {
   const { buildaDir: buildaDir2 } = globals_default;
   const outputDirectory = `${outputDir}/${change_case_default(name, "kebabCase")}`;
-  const outputInExport = import_path7.default.join(buildaDir2, "export", outputDirectory);
+  const outputInExport = import_path6.default.join(buildaDir2, "export", outputDirectory);
   if (import_node_fs24.default.existsSync(outputDirectory)) {
     throw_error_default(`A ${script.use} already exists with the name ${name}`);
   }
@@ -3510,7 +3513,7 @@ If you want to edit the prefab version, you need to eject it with 'builda eject 
     script,
     sub
   }) : [];
-  const fullPath = import_path7.default.resolve(pathstring, "module");
+  const fullPath = import_path6.default.resolve(pathstring, "module");
   import_node_fs24.default.readdirSync(fullPath).forEach((file) => {
     const srcPath = `${fullPath}/${file}`;
     const outputDir2 = `${outputDirectory}`;

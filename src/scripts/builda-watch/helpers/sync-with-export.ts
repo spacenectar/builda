@@ -3,7 +3,6 @@ import {
   copyPath,
   getRegistry,
   loopAndRewriteFiles,
-  printMessage,
   throwError
 } from 'helpers';
 import path from 'node:path';
@@ -25,14 +24,12 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const exportRoot = path.resolve(root, globals.buildaDir, 'export');
   const registry = await getRegistry(exportRoot);
 
-  const cleanRoot = root.replace(/\.\//, '');
-
   if (type === 'copy') {
     if (pathString === 'package.json') {
       return;
     }
     // Copy the prefab files to the export directory
-    return copyPath(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+    return copyPath(`${root}/${pathString}`, path.join(exportRoot, pathString));
   }
 
   if (type === 'update') {
@@ -78,7 +75,10 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       });
     } else {
       // The file has no substitutions, so we can just copy it from the root
-      return copyPath(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+      return copyPath(
+        `${root}/${pathString}`,
+        path.join(root, globals.buildaDir, 'export', pathString)
+      );
     }
   }
 
@@ -88,7 +88,7 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       throwError('package.json deleted. This will break your project');
     }
     // Delete the file in the export directory
-    fs.rmSync(path.join(exportRoot, pathString), {
+    return fs.rmSync(path.join(exportRoot, pathString), {
       recursive: true,
       force: true
     });

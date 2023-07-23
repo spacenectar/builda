@@ -70,22 +70,26 @@ export const loopAndRewriteFiles = async ({
     } else {
       promises.push(
         new Promise((resolve) => {
-          const directoryPathWithoutFile = path.dirname(file);
+          const directoryPathWithoutFile = path.basename(path.dirname(file));
           const fileName = path.basename(file);
           const directoryPath = path.join(workingDir, directoryPathWithoutFile);
           const rootDir = fromCustomPath
             ? fromCustomPath
             : path.join(process.cwd(), '..', '..');
-          const rootPath = path.resolve(rootDir, directoryPathWithoutFile);
+          const rootPath = path.join(rootDir, directoryPathWithoutFile);
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
-            const preservedSubs = substitute.filter((substitution) => {
+            const preservedSubs = substitute.map((substitution) => {
               // If the substitution is specifically set not to be preserved
-              // then do not make the substitution in the export directory
+              // then perform the substitution in reverse
               if (!substitution.preserve) {
-                return false;
+                return {
+                  ...substitution,
+                  replace: substitution.with,
+                  with: substitution.replace
+                };
               }
-              return true;
+              return substitution;
             });
             // Copy the file to the export directory and rewrite it
             writeFile({
