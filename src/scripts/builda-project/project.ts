@@ -16,9 +16,6 @@ import {
 } from 'helpers';
 import { generateFromPrefab } from './helpers/generate-from-prefab';
 
-import ModuleRegistry from 'types/module-registry';
-import { TFlatObject } from 'types/flat-object';
-
 export type TGenerateProject = {
   appName?: string;
   prefab?: string;

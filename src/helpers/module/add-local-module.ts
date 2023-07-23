@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import tar from 'tar';
 import path from 'node:path';
 
-import ModuleRegistry from 'types/module-registry';
 import { createDir, getRegistry } from 'helpers';
 import globals from 'data/globals';
 import ignoreFile from 'data/ignore-file.json';

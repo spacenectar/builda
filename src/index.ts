@@ -17,6 +17,7 @@ import { command as watchCommand } from 'scripts/builda-watch';
 import { command as indexerCommand } from 'scripts/builda-indexer';
 import { command as newCommand } from 'scripts/builda-new';
 import { command as buildCommand } from 'scripts/builda-build';
+import { command as updateCommand } from 'scripts/builda-update';
 import { command as initCommand } from 'scripts/builda-init';
 
 const { websiteUrl } = globals;
@@ -41,6 +42,7 @@ export const builda = async () => {
     .command({ ...packageCommand() })
     .command({ ...publishCommand() })
     .command({ ...watchCommand() })
+    .command({ ...updateCommand() })
     .command({ ...indexerCommand() })
     .epilogue(
       `For more information, visit ${chalk.blue.underline(

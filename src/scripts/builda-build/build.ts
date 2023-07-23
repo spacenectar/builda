@@ -8,8 +8,6 @@ import { printMessage, throwError, copyPath, getRegistry } from 'helpers';
 import globals from 'data/globals';
 import ignoredFiles from 'data/ignore-file.json';
 
-import type { ConfigFile } from 'types/config-file';
-
 const ignored = ignoredFiles.ignore;
 
 type TBuild = {
@@ -27,7 +25,7 @@ export default async ({ config }: TBuild) => {
   const registry = await getRegistry(exportRoot);
 
   const uniqueAppFiles =
-    registry.generatorOptions?.rootFiles?.filter((file) => {
+    registry.generatorOptions?.rootFiles?.filter((file: RootFile | string) => {
       const pathString = typeof file === 'string' ? file : file.path;
 
       if (pathString.startsWith('unique.')) {
@@ -39,7 +37,7 @@ export default async ({ config }: TBuild) => {
 
   const ignoredFiles = [
     ...ignored,
-    ...uniqueAppFiles.map((file) =>
+    ...uniqueAppFiles.map((file: RootFile | string) =>
       typeof file === 'string' ? file : file.path
     )
   ];

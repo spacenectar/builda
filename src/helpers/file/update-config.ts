@@ -2,8 +2,6 @@ import fs from 'fs';
 import { throwError } from 'helpers/console';
 import path from 'path';
 
-import { ConfigFile } from 'types/config-file';
-
 /**
  * Replaces the existing 'builda' entry in the package.json file with an updated version
  * Pass null to remove the entry

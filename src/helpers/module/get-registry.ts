@@ -7,7 +7,6 @@ import {
   convertRegistryPathToUrl,
   validateModulePath
 } from 'helpers';
-import ModuleRegistry from 'types/module-registry';
 import axios from 'axios';
 
 export const getRegistry = async (

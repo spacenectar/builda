@@ -5,11 +5,6 @@ import process from 'node:process';
 // Import globals
 import globals from 'data/globals';
 
-// Import types
-
-import { ConfigFile } from 'types/config-file';
-import { BlueprintScriptContent } from 'types/blueprint-script-config';
-
 export const getModule = (
   type: string,
   config: ConfigFile,

@@ -123,7 +123,7 @@ export const printMessage = (
       }
       rdl.clearLine(stdOut, 0);
       rdl.cursorTo(stdOut, 0);
-      stdOut.write(now);
+      stdOut.write(now as string);
       index = index >= spinnerFrames.length ? 0 : index + 1;
     }, spinnerTimeInterval);
     newMessage = chalk.blue(`${message}`);

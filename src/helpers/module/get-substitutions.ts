@@ -1,9 +1,5 @@
 import { throwError } from 'helpers';
 
-import type { BlueprintScriptContent } from 'types/blueprint-script-config';
-import type TSubstitution from 'types/substitution';
-import ModuleRegistry from 'types/module-registry';
-
 type TGetSubstitutions = {
   name: string;
   registry: ModuleRegistry;

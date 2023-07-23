@@ -5,8 +5,6 @@ import chalk from 'chalk';
 
 import { printMessage, printSiteLink, showHelp, updateConfig } from 'helpers';
 
-import type { ConfigFile } from 'types/config-file';
-
 import globals from 'data/globals';
 
 import existingProjectQuestions from 'helpers/questions/existing-project-questions';
@@ -14,7 +12,6 @@ import blueprintQuestions from 'helpers/questions/blueprint-questions';
 
 import { buildaProject } from 'scripts/builda-project';
 
-import { TFlatObject } from 'types/flat-object';
 import { buildaAdd } from 'scripts/builda-add';
 
 type TInit = {

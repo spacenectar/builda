@@ -2,8 +2,6 @@ import fs from 'fs';
 import { throwError } from 'helpers/console';
 import path from 'path';
 
-import { ConfigFile } from 'types/config-file';
-
 const getConfig = (allowFailure?: boolean): ConfigFile => {
   if (fs.existsSync(path.resolve(process.cwd(), 'package.json'))) {
     const configFile = JSON.parse(

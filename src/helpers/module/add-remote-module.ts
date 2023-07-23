@@ -4,7 +4,6 @@ import axios from 'axios';
 import tar from 'tar';
 
 import globals from 'data/globals';
-import ModuleRegistry from 'types/module-registry';
 import getRegistry from './get-registry';
 import { createDir, throwError, printMessage } from 'helpers';
 

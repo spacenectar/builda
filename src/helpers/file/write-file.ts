@@ -3,9 +3,6 @@ import path from 'path';
 import { changeCase } from 'helpers/string';
 import prettier from 'prettier';
 
-// Import types
-import TSubstitution from 'types/substitution';
-
 const prettierAllowedFileTypes = [
   'css',
   'html',

@@ -5,7 +5,6 @@ import glob from 'glob';
 import globals from 'data/globals';
 
 import createDir from './create-dir';
-import TSubstitution from 'types/substitution';
 import writeFile from './write-file';
 
 type FunctionParams = {

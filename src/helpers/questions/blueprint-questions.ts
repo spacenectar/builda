@@ -8,8 +8,6 @@ import {
   showHelp
 } from 'helpers';
 
-import { TFlatObject } from 'types/flat-object';
-
 import suggestedBlueprints from 'data/suggested-blueprints.json';
 
 const validateBlueprint = async (input: string, answers: TFlatObject) => {

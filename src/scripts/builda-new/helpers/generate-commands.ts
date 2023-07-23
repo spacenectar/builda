@@ -1,5 +1,4 @@
 import { throwError } from 'helpers';
-import { ConfigFile } from 'types/config-file';
 
 export const generateCommands = (config: ConfigFile): ConfigFile['scripts'] => {
   if (config.scripts) {

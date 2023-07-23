@@ -1,7 +1,5 @@
 import { getRegistry, loopAndRewriteFiles } from 'helpers';
 
-import { TSubstitution } from 'types/substitution';
-
 /**
  * Substitute values found in all files in the rootFiles and applicationOnlyFiles arrays
  * (This is a post-processing step and exists to give prefab developers more control over the final output)

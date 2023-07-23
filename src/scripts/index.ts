@@ -10,5 +10,6 @@ export { buildaIndexer, command as indexerCommand } from './builda-indexer';
 export { buildaNew, command as newCommand } from './builda-new';
 export { buildaBuild, command as buildCommand } from './builda-build';
 export { buildaInit, command as initCommand } from './builda-init';
+export { buildaUpdate, command as updateCommand } from './builda-update';
 export { buildaQuestion } from './builda-question';
 export { buildaSubstitute } from './builda-substitute';

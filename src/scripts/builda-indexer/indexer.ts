@@ -3,7 +3,6 @@
 import { throwError } from 'helpers';
 import fs from 'node:fs';
 import path from 'path';
-import { ConfigFile } from 'types/config-file';
 import { printMessage, getSiteLink } from 'helpers';
 import { generateLines } from './helpers/generate-lines';
 

@@ -1,7 +1,6 @@
 import generateCommands from 'scripts/builda-new/helpers/generate-commands';
 
 import config from 'mocks/package.json';
-import { ConfigFile } from 'types/config-file';
 
 describe('generateCommands', () => {
   let commands = {} as ConfigFile['scripts'];
