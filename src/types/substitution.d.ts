@@ -1,5 +1,5 @@
 // see (https://builda.app/docs/build-a-module/substitutions) for more info
-export type TSubstitution = {
+type TSubstitution = {
   /**
    * The string(s) to be replaced
    * TODO: Add support for multiple strings to be replaced
@@ -29,5 +29,3 @@ export type TSubstitution = {
    */
   preserve?: boolean;
 };
-
-export default TSubstitution;
