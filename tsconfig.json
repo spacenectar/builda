@@ -8,18 +8,19 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": false,
+    "noEmit": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "module": "commonjs",
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
+    "noUncheckedIndexedAccess": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
-    "incremental": true
+    "baseUrl": "./src"
   },
   "include": [
+    "src/types/**/*",
     "src/**/*.ts",
     "src/**/*.tsx" ],
   "exclude": [
