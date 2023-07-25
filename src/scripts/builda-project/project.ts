@@ -8,6 +8,7 @@ import globals from 'data/globals';
 import {
   createDir,
   printMessage,
+  printLogo,
   throwError,
   changeCase,
   newProjectQuestions,
@@ -31,6 +32,8 @@ export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
   const { buildaDir, websiteUrl, buildaReadmeFileName } = globals;
 
   const defaultRequiredFiles = [buildaDir, 'package.json', 'README.md'];
+
+  printLogo();
 
   let answers = {} as TFlatObject;
   if (!prefab) {

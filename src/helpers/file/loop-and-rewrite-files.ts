@@ -76,7 +76,7 @@ export const loopAndRewriteFiles = async ({
           const rootDir = fromCustomPath
             ? fromCustomPath
             : path.join(process.cwd(), '..', '..');
-          const rootPath = path.join(rootDir, directoryPathWithoutFile);
+          const rootPath = path.join(rootDir, path.dirname(file));
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
             const subs = substitute.map((substitution) => {
