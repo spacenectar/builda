@@ -31,7 +31,7 @@ export type TGenerateProject = {
 export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
   const { buildaDir, websiteUrl, buildaReadmeFileName } = globals;
 
-  const defaultRequiredFiles = [buildaDir, 'package.json', 'README.md'];
+  const defaultRequiredFiles = ['README.md'];
 
   printLogo();
 

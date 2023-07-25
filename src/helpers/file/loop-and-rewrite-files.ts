@@ -70,13 +70,13 @@ export const loopAndRewriteFiles = async ({
     } else {
       promises.push(
         new Promise((resolve) => {
-          const directoryPathWithoutFile = path.basename(path.dirname(file));
+          const basePath = path.dirname(file);
           const fileName = path.basename(file);
-          const directoryPath = path.join(workingDir, directoryPathWithoutFile);
+          const directoryPath = path.join(workingDir, basePath);
           const rootDir = fromCustomPath
             ? fromCustomPath
             : path.join(process.cwd(), '..', '..');
-          const rootPath = path.join(rootDir, path.dirname(file));
+          const rootPath = path.join(rootDir, basePath);
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
             const subs = substitute.map((substitution) => {

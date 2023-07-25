@@ -21,7 +21,7 @@ interface SyncOptions {
 // Syncronises changes with the export folder
 export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const root = process.cwd();
-  const exportRoot = path.resolve(root, globals.buildaDir, 'export');
+  const exportRoot = path.join(root, globals.buildaDir, 'export');
   const registry = await getRegistry(exportRoot);
 
   if (type === 'copy') {
@@ -69,7 +69,7 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       // If the file is a root file, we need to loop through the substitutions
       await loopAndRewriteFiles({
         name: registry.name,
-        paths: [path.join(root, pathString)],
+        paths: [pathString],
         fromRoot: true,
         substitute: fileWithSubstitutions.substitutions
       });

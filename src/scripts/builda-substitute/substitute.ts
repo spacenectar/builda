@@ -20,8 +20,6 @@ export default async (substitutions: TSubstitution[]) => {
 
   const substitute = [...substitutions, ...(fileSubstitutions?.flat() ?? [])];
 
-  console.log({ paths, substitute });
-
   loopAndRewriteFiles({
     paths,
     substitute,
