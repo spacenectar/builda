@@ -79,10 +79,9 @@ export const loopAndRewriteFiles = async ({
           const rootPath = path.join(rootDir, directoryPathWithoutFile);
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
-            const preservedSubs = substitute.map((substitution) => {
-              // If the substitution is specifically set not to be preserved
-              // then perform the substitution in reverse
-              if (!substitution.preserve) {
+            const subs = substitute.map((substitution) => {
+              // If the substitution is set to be reversed, reverse it if possible
+              if (substitution.reverseInExport) {
                 return {
                   ...substitution,
                   replace: substitution.with,
@@ -95,11 +94,10 @@ export const loopAndRewriteFiles = async ({
             writeFile({
               file: filePath,
               outputDir: directoryPath,
-              substitute: preservedSubs,
+              substitute: subs,
               name
             });
             if (toRoot) {
-              console.log(`Rewriting ${filePath} in ${rootPath}`);
               // Copy the file to the root directory and rewrite it
               writeFile({
                 file: filePath,

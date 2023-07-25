@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { throwError, convertToBuildaScript } from 'helpers';
+import { throwError } from 'helpers';
 import globals from 'data/globals';
 
 export const syncPackageJson = async () => {

@@ -59,7 +59,10 @@ export default async ({ config }: TBuild) => {
 
     files.forEach((file) => {
       if (!ignoredFiles.includes(file)) {
-        copyPath(`${root}/${file}`, `${globals.buildaDir}/export`, file);
+        copyPath(
+          `${root}/${file}`,
+          path.join(`${globals.buildaDir}/export`, file)
+        );
       }
       promises.push(Promise.resolve(file));
     });

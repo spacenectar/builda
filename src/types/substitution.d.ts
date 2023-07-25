@@ -22,10 +22,9 @@ type TSubstitution = {
    */
   valid?: string[];
   /**
-   * Do you want the be preserved in the export?
-   * (Setting to false will reverse the substitution in the export)
+   * Do you want the substitution be undone in the export?
+   * Note: Not all substitutions can be undone, so use this with caution
    * @optional
-   * @default true
    */
-  preserve?: boolean;
+  reverseInExport?: boolean;
 };
