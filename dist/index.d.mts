@@ -7,7 +7,7 @@ import inquirer from 'inquirer';
 declare const _default$2: (questions: inquirer.QuestionCollection<any>) => Promise<any>;
 
 /**
- * Substitute values found in all files in the rootFiles and applicationOnlyFiles arrays
+ * Substitute values found in all files in the rootFiles array which have 'rewrite' set to true
  * (This is a post-processing step and exists to give prefab developers more control over the final output)
  */
 declare const _default$1: (substitutions: TSubstitution[]) => Promise<void>;
