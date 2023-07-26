@@ -6,6 +6,7 @@ import globals from 'data/globals';
 
 import createDir from './create-dir';
 import writeFile from './write-file';
+import { printMessage } from 'helpers/console';
 
 type FunctionParams = {
   // The name of the app being created (used for substitution)
@@ -35,9 +36,26 @@ export const loopAndRewriteFiles = async ({
   const prefabDir = path.join(buildaDir, 'modules', 'prefab');
   const workingDir = path.join(buildaDir, 'export');
 
+  // Get a list of files to ignore from the .gitignore file
+  const gitIgnorePath = path.join(prefabDir, '.gitignore');
+
+  const gitIgnoreFile = fs.readFileSync(gitIgnorePath, {
+    encoding: 'utf8'
+  });
+
+  const gitIgnore = gitIgnoreFile
+    .split('\n')
+    .filter((line) => line !== '' && !line.startsWith('#'));
+
   const promises = [];
   for (const file of paths) {
     const filePath = fromRoot ? file : path.join(prefabDir, file);
+
+    // Check if file is ignored
+    if (gitIgnore.includes(path.basename(file))) {
+      printMessage(`Ignoring file: ${file}`, 'warning');
+      continue;
+    }
 
     // Check if file is glob
     if (file.includes('*')) {

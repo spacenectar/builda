@@ -1105,9 +1105,18 @@ var loopAndRewriteFiles = async ({
   const { buildaDir: buildaDir2 } = globals_default;
   const prefabDir2 = import_node_path2.default.join(buildaDir2, "modules", "prefab");
   const workingDir = import_node_path2.default.join(buildaDir2, "export");
+  const gitIgnorePath = import_node_path2.default.join(prefabDir2, ".gitignore");
+  const gitIgnoreFile = import_node_fs2.default.readFileSync(gitIgnorePath, {
+    encoding: "utf8"
+  });
+  const gitIgnore = gitIgnoreFile.split("\n").filter((line) => line !== "" && !line.startsWith("#"));
   const promises = [];
   for (const file of paths) {
     const filePath = fromRoot ? file : import_node_path2.default.join(prefabDir2, file);
+    if (gitIgnore.includes(import_node_path2.default.basename(file))) {
+      print_message_default(`Ignoring file: ${file}`, "warning");
+      continue;
+    }
     if (file.includes("*")) {
       const globFiles = import_glob.default.sync(filePath).map((f) => import_node_path2.default.relative(prefabDir2, f));
       promises.push(
@@ -2882,7 +2891,7 @@ var package_default = async (updateVersion) => {
   }
   if (import_node_fs16.default.existsSync(`${FILESFOLDER}/.gitignore`)) {
     const gitignore = import_node_fs16.default.readFileSync(`${FILESFOLDER}/.gitignore`, "utf8");
-    const gitignoreFiles = gitignore.split("\n");
+    const gitignoreFiles = gitignore.split("\n").filter((line) => line !== "" && !line.startsWith("#"));
     ignoreFiles2.push(...gitignoreFiles);
   }
   if (!registry) {
