@@ -86,7 +86,8 @@ export async function generateFromPrefab(
   const packageJson = JSON.parse(packageJsonFile);
 
   const newPackageJson = {
-    ...packageJson
+    ...packageJson,
+    name: changeCase(name, 'kebabCase')
   };
 
   module?.generatorOptions?.rootFiles?.forEach(async (file) => {

@@ -2195,7 +2195,9 @@ async function generateFromPrefab(prefabPath, module2, rootDir, defaultRequiredF
     }
   );
   const packageJson = JSON.parse(packageJsonFile);
-  const newPackageJson = __spreadValues({}, packageJson);
+  const newPackageJson = __spreadProps(__spreadValues({}, packageJson), {
+    name: change_case_default(name, "kebabCase")
+  });
   (_d = (_c = module2 == null ? void 0 : module2.generatorOptions) == null ? void 0 : _c.rootFiles) == null ? void 0 : _d.forEach(async (file) => {
     var _a2;
     const filePath = typeof file === "string" ? file : file.path;
