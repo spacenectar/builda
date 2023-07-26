@@ -5,7 +5,7 @@
 import chokidar from 'chokidar';
 import { printMessage, throwError } from 'helpers';
 
-import { syncWithExport } from './helpers/sync-with-export';
+import { syncWithExport } from 'helpers';
 
 import ignoredFiles from 'data/ignore-file.json';
 

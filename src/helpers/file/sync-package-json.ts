@@ -57,3 +57,5 @@ export const syncPackageJson = async () => {
     throwError('No package.json found in project');
   }
 };
+
+export default syncPackageJson;

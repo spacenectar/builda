@@ -7,3 +7,5 @@ export { default as writeLogFile } from './write-log-file';
 export { default as getConfig } from './get-config';
 export { default as updateConfig } from './update-config';
 export { default as copyPathsToRoot } from './copy-paths-to-root';
+export { default as syncWithExport } from './sync-with-export';
+export { default as syncPackageJson } from './sync-package-json';
