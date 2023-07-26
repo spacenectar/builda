@@ -37,6 +37,7 @@ export { default as prefabQuestions } from './questions/prefab-questions';
 export { default as changeCase } from './string/change-case';
 export { default as convertNumbersToWords } from './string/convert-numbers-to-words';
 export { default as convertSymbolsToWords } from './string/convert-symbols-to-words';
+export { default as convertToBuildaScript } from './string/convert-to-builda-script';
 export { default as detectPathType } from './string/detect-path-type';
 export { default as getSiteLink } from './string/get-site-link';
 export { default as normaliseCase } from './string/normalise-case';

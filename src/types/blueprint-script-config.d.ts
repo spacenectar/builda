@@ -1,6 +1,4 @@
-import TSubstitution from './substitution';
-
-export type BlueprintScriptContent = {
+type BlueprintScriptContent = {
   use: string;
   outputDir: string;
   substitute?: TSubstitution[] | [];
@@ -10,8 +8,6 @@ export type BlueprintScriptContent = {
   }[];
 };
 
-export interface BlueprintScriptConfig<T> {
+interface BlueprintScriptConfig<T> {
   [key: string]: BlueprintScriptContent | T;
 }
-
-export default BlueprintScriptConfig;

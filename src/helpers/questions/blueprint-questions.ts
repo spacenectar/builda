@@ -8,8 +8,6 @@ import {
   showHelp
 } from 'helpers';
 
-import { TFlatObject } from 'types/flat-object';
-
 import suggestedBlueprints from 'data/suggested-blueprints.json';
 
 const validateBlueprint = async (input: string, answers: TFlatObject) => {
@@ -84,8 +82,9 @@ export default async (answers: TFlatObject) => {
           value: 'url'
         },
         {
-          name: 'I want to choose from a list',
-          value: 'list'
+          name: 'I want to choose from a list (coming soon)',
+          value: 'list',
+          disabled: 'This option is not available yet'
         }
       ]
     },

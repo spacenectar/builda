@@ -8,6 +8,7 @@ import globals from 'data/globals';
 import {
   createDir,
   printMessage,
+  printLogo,
   throwError,
   changeCase,
   newProjectQuestions,
@@ -15,9 +16,6 @@ import {
   showHelp
 } from 'helpers';
 import { generateFromPrefab } from './helpers/generate-from-prefab';
-
-import ModuleRegistry from 'types/module-registry';
-import { TFlatObject } from 'types/flat-object';
 
 export type TGenerateProject = {
   appName?: string;
@@ -33,7 +31,9 @@ export type TGenerateProject = {
 export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
   const { buildaDir, websiteUrl, buildaReadmeFileName } = globals;
 
-  const defaultRequiredFiles = [buildaDir, 'package.json', 'README.md'];
+  const defaultRequiredFiles = ['README.md'];
+
+  printLogo();
 
   let answers = {} as TFlatObject;
   if (!prefab) {

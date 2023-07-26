@@ -1,8 +1,4 @@
-import { BlueprintScriptContents } from './blueprint-script-config';
-import { ModuleConfig, ModuleConfigContents } from './module-config';
-import { GenIndexConfig } from './gen-index-config';
-
-export interface ConfigFile {
+interface ConfigFile {
   /**
    * The resolvers to use for resolving modules (See (https://builda.app/docs/resolvers) for more info)
    */

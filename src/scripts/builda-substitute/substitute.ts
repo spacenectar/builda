@@ -1,22 +1,28 @@
 import { getRegistry, loopAndRewriteFiles } from 'helpers';
 
-import { TSubstitution } from 'types/substitution';
-
 /**
- * Substitute values found in all files in the rootFiles and applicationOnlyFiles arrays
+ * Substitute values found in all files in the rootFiles array which have 'rewrite' set to true
  * (This is a post-processing step and exists to give prefab developers more control over the final output)
  */
 export default async (substitutions: TSubstitution[]) => {
   const registry = await getRegistry();
 
-  const paths =
-    registry?.generatorOptions?.rootFiles?.map((file) =>
-      typeof file === 'string' ? file : file.path
-    ) ?? [];
+  const filesToRewrite = registry?.generatorOptions?.rootFiles?.filter(
+    // Only return files which have 'rewrite' set to true (and are not a string)
+    (file: string | RootFile) => typeof file !== 'string' && file.rewrite
+  ) as RootFile[] | undefined;
+
+  const paths = filesToRewrite?.map((file) => file.path) ?? [];
+
+  const fileSubstitutions = filesToRewrite?.map(
+    (file) => file.substitutions ?? []
+  );
+
+  const substitute = [...substitutions, ...(fileSubstitutions?.flat() ?? [])];
 
   loopAndRewriteFiles({
     paths,
-    substitute: substitutions,
+    substitute,
     fromRoot: true,
     toRoot: true
   });

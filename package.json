@@ -1,10 +1,12 @@
 {
   "name": "builda",
-  "version": "5.0.0-18",
+  "version": "5.1.0",
   "bin": {
     "builda": "dist/index.js"
   },
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "description": "The everything generator",
   "keywords": [
     "node",
@@ -26,10 +28,10 @@
   ],
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "yarn build && concurrently --kill-others \"tsc -w\" \"tsc-alias -w\"",
+    "dev": "yarn build && concurrently --kill-others \"tsup src/index.ts --watch\" \"tsc-alias -w\"",
     "debug": "node dist/scripts/debug.js",
     "generate-blueprint": "node dist/scripts/generate-blueprint-registry.js",
-    "build": "rm -rf ./dist && node ./generate-globals.js && tsc --build",
+    "build": "rm -rf ./dist && node ./generate-globals.js && tsup src/index.ts --dts --minify --format cjs,esm --target node14 --outDir dist",
     "test": "jest",
     "copyfiles": "cp -r ./src/data ./dist",
     "lint:json": "eslint **/*.json --fix",
@@ -93,6 +95,7 @@
     "ts-jest": "^29.1.1",
     "ts-json-schema-generator": "^1.2.0",
     "tsc-alias": "^1.7.0",
+    "tsup": "^7.1.0",
     "typescript": "^4.6.3",
     "typescript-eslint": "^0.0.1-alpha.0"
   },

@@ -1,4 +1,4 @@
-export type ModuleConfigContents = {
+type ModuleConfigContents = {
   /**
    * The version of the module (not required for blueprints preinstalled inside a prefab)
    */
@@ -17,8 +17,6 @@ export type ModuleConfigContents = {
   outputDir?: string;
 };
 
-export type ModuleConfig = {
+type ModuleConfig = {
   [key: string]: ModuleConfigContents;
 };
-
-export default ModuleConfig;

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Ajv from 'ajv';
-import { writeLogFile } from 'helpers';
 
 import convertRegistryPathToUrl from './convert-registry-path-to-url';
 
@@ -32,8 +31,6 @@ export default async (
   const registry = registryUrl.includes('registry.json')
     ? registryUrl
     : `${registryUrl}/registry.json`;
-
-  writeLogFile(`Fetching registry from ${registry}`);
 
   return axios
     .get(registry)

@@ -5,7 +5,6 @@ import glob from 'glob';
 import globals from 'data/globals';
 
 import createDir from './create-dir';
-import TSubstitution from 'types/substitution';
 import writeFile from './write-file';
 
 type FunctionParams = {
@@ -71,32 +70,34 @@ export const loopAndRewriteFiles = async ({
     } else {
       promises.push(
         new Promise((resolve) => {
-          const directoryPathWithoutFile = path.dirname(file);
+          const basePath = path.dirname(file);
           const fileName = path.basename(file);
-          const directoryPath = path.join(workingDir, directoryPathWithoutFile);
+          const directoryPath = path.join(workingDir, basePath);
           const rootDir = fromCustomPath
             ? fromCustomPath
             : path.join(process.cwd(), '..', '..');
-          const rootPath = path.resolve(rootDir, directoryPathWithoutFile);
+          const rootPath = path.join(rootDir, basePath);
           createDir(directoryPath);
           if (fs.existsSync(filePath)) {
-            const preservedSubs = substitute.filter((substitution) => {
-              // If the substitution is specifically set not to be preserved
-              // then do not make the substitution in the export directory
-              if (!substitution.preserve) {
-                return false;
+            const subs = substitute.map((substitution) => {
+              // If the substitution is set to be reversed, reverse it if possible
+              if (substitution.reverseInExport) {
+                return {
+                  ...substitution,
+                  replace: substitution.with,
+                  with: substitution.replace
+                };
               }
-              return true;
+              return substitution;
             });
             // Copy the file to the export directory and rewrite it
             writeFile({
               file: filePath,
               outputDir: directoryPath,
-              substitute: preservedSubs,
+              substitute: subs,
               name
             });
             if (toRoot) {
-              console.log(`Rewriting ${filePath} in ${rootPath}`);
               // Copy the file to the root directory and rewrite it
               writeFile({
                 file: filePath,

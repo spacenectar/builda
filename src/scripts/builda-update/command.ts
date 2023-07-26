@@ -1,7 +1,6 @@
-import { getConfig } from 'helpers';
 import yargs from 'yargs';
 
-import buildaInit from './init';
+import buildaUpdate from './update';
 
 type Args = {
   configPath: string;
@@ -9,8 +8,8 @@ type Args = {
 
 export default () => {
   return {
-    command: 'init',
-    desc: 'Initialise builda',
+    command: 'update',
+    desc: 'Updates the applications prefab to the latest version',
     builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],
@@ -19,9 +18,8 @@ export default () => {
         type: 'string'
       });
     },
-    handler: async (argv: Args) => {
-      const config = await getConfig(true);
-      return buildaInit({ config: config || undefined });
+    handler: async () => {
+      return buildaUpdate();
     }
   };
 };

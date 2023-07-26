@@ -24,7 +24,8 @@ export const normalizeCase = (input: string) => {
   }
 
   if (caseType === 'camel') {
-    lowerCasedWords.unshift(words[0].toLowerCase());
+    const firstWord = words[0] || '';
+    lowerCasedWords.unshift(firstWord.toLowerCase());
     const str = lowerCasedWords.join(' ');
     return removeExtraSpaces(str);
   }

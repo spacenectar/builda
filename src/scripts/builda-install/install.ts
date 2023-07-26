@@ -1,8 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { ConfigFile } from 'types/config-file';
-
 // Import globals
 import globals from 'data/globals';
 
@@ -112,7 +110,10 @@ export default async () => {
   if (blueprints) {
     printMessage('Blueprints found', 'success');
 
-    const blueprintsArray = Object.entries(blueprints);
+    const blueprintsArray = Object.entries(blueprints) as [
+      string,
+      ModuleConfigContents
+    ][];
 
     for (const [blueprintName, blueprint] of blueprintsArray) {
       if (!blueprint.version && blueprint.location !== 'prefab') {

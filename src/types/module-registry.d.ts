@@ -1,7 +1,4 @@
-import TSubstitution from './substitution';
-import ModuleConfig from './module-config';
-
-export type RootFile = {
+type RootFile = {
   /**
    * The path to the root file (relative to the .builda/export directory)
    */
@@ -23,7 +20,7 @@ export type RootFile = {
 /**
  * See (https://builda.app/docs/build-a-module/registry) for more info
  */
-export interface ModuleRegistry {
+interface ModuleRegistry {
   /**
    * The name of the module
    */
@@ -133,5 +130,3 @@ export interface ModuleRegistry {
     postScripts?: string[];
   };
 }
-
-export default ModuleRegistry;

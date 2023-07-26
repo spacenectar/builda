@@ -1,4 +1,4 @@
-export type TFlatObject = {
+type TFlatObject = {
   [key: string]:
     | string
     | number

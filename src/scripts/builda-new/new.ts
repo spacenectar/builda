@@ -16,8 +16,6 @@ import {
 import globals from 'data/globals';
 
 // Import types
-import type { ConfigFile } from 'types/config-file';
-import type { BlueprintScriptContent } from 'types/blueprint-script-config';
 import { buildaBuild } from 'scripts/builda-build';
 
 type TNew = {
@@ -56,7 +54,10 @@ const buildFromBlueprint = async (
   const splitSubString = subString?.split(':') || [];
   const sub =
     splitSubString.length === 2
-      ? { replace: splitSubString[0], with: splitSubString[1] }
+      ? {
+          replace: splitSubString[0] as string,
+          with: splitSubString[1] as string
+        }
       : undefined;
 
   const substitute = script
@@ -68,7 +69,7 @@ const buildFromBlueprint = async (
       })
     : [];
 
-  const fullPath = path.resolve(pathstring, 'files');
+  const fullPath = path.resolve(pathstring, 'module');
   fs.readdirSync(fullPath).forEach((file: string) => {
     const srcPath = `${fullPath}/${file}`;
     const outputDir = `${outputDirectory}`;
@@ -82,9 +83,11 @@ const buildFromBlueprint = async (
   });
 
   // copy the folder into the export directory
-  buildaBuild({
-    config
-  });
+  if (config.prefab) {
+    buildaBuild({
+      config
+    });
+  }
 
   return printMessage('Done!', 'success');
 };
@@ -104,7 +107,7 @@ export default async ({ config, name, scriptName, subString }: TNew) => {
         {
           type: 'list',
           name: 'variantChoice',
-          message: 'What type of component do you wish to build?',
+          message: `What type of ${scriptName} do you wish to build?`,
           choices: script.variants.map((variant) => {
             return {
               name: variant.name,

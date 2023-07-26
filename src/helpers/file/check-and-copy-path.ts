@@ -1,14 +1,7 @@
 import fs from 'fs';
-import path from 'path';
 
-export const copyPath = (
-  sourcePath: string,
-  destinationPath: string,
-  fileName?: string
-) => {
-  const name = fileName ?? '';
-
-  return fs.cpSync(sourcePath, path.join(destinationPath, name), {
+export const copyPath = (sourcePath: string, destinationPath: string) => {
+  return fs.cpSync(sourcePath, destinationPath, {
     dereference: true,
     recursive: true,
     force: true

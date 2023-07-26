@@ -1,4 +1,3 @@
-import { ConfigFile } from 'types/config-file';
 import { getConfig } from 'helpers';
 import { convertRegistryPathToUrl } from '../convert-registry-path-to-url';
 

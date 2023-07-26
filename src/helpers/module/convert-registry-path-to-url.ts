@@ -1,5 +1,3 @@
-import { ConfigFile } from 'types/config-file';
-
 import resolversFile from 'data/resolvers.json';
 import useResolver from './use-resolver';
 
@@ -46,9 +44,13 @@ export const convertRegistryPathToUrl = ({
     /^([a-z]+:{1}[/]{0})([a-z0-9-/]+)((?:@{1}v?[0-9.]+)?(?:[\w\d-]*))?$/
   );
 
-  if (resolverMatcher) {
-    const resolver = resolverMatcher[1].replace(':', '');
-    const modulePath = resolverMatcher[2];
+  if (!resolverMatcher) {
+    error =
+      'Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url';
+    return { url: '', error };
+  } else {
+    const resolver = resolverMatcher[1]?.replace(':', '') || '';
+    const modulePath = resolverMatcher[2] || '';
     const version = resolverMatcher[3]
       ? resolverMatcher[3].replace('@', '')
       : 'latest';
@@ -73,10 +75,6 @@ export const convertRegistryPathToUrl = ({
 
     return { url, error };
   }
-
-  error =
-    'Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url';
-  return { url: '', error };
 };
 
 export default convertRegistryPathToUrl;

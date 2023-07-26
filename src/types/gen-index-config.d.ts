@@ -1,4 +1,4 @@
-export type GenIndexConfig = {
+type GenIndexConfig = {
   /**
    * The directories to generate indexes for
    * Add an * to the end to work with subdirectories

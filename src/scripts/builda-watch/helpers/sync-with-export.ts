@@ -1,8 +1,13 @@
 import globals from 'data/globals';
-import { copyPath, getRegistry, loopAndRewriteFiles } from 'helpers';
+import {
+  copyPath,
+  getRegistry,
+  loopAndRewriteFiles,
+  throwError
+} from 'helpers';
 import path from 'node:path';
 import fs from 'node:fs';
-import { RootFile } from 'types/module-registry';
+import { syncPackageJson } from './sync-package-json';
 
 type SyncType = 'copy' | 'update' | 'rename' | 'delete';
 
@@ -16,19 +21,25 @@ interface SyncOptions {
 // Syncronises changes with the export folder
 export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const root = process.cwd();
-  const exportRoot = path.resolve(root, globals.buildaDir, 'export');
+  const exportRoot = path.join(root, globals.buildaDir, 'export');
   const registry = await getRegistry(exportRoot);
 
-  const cleanRoot = root.replace(/\.\//, '');
-
   if (type === 'copy') {
+    if (pathString === 'package.json') {
+      return;
+    }
     // Copy the prefab files to the export directory
-    return copyPath(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+    return copyPath(`${root}/${pathString}`, path.join(exportRoot, pathString));
   }
 
   if (type === 'update') {
     // Delete the original file in the export directory
     // and create a new copy of the file from the root
+
+    if (pathString === 'package.json') {
+      // If the file is the package.json file, we need to do some different processing
+      return syncPackageJson();
+    }
 
     // Check the registry to see if the file has any substitutions
     const fileWithSubstitutions = registry.generatorOptions?.rootFiles?.find(
@@ -58,19 +69,26 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       // If the file is a root file, we need to loop through the substitutions
       await loopAndRewriteFiles({
         name: registry.name,
-        paths: [path.join(root, pathString)],
+        paths: [pathString],
         fromRoot: true,
         substitute: fileWithSubstitutions.substitutions
       });
     } else {
       // The file has no substitutions, so we can just copy it from the root
-      return copyPath(`${cleanRoot}/${pathString}`, exportRoot, pathString);
+      return copyPath(
+        `${root}/${pathString}`,
+        path.join(root, globals.buildaDir, 'export', pathString)
+      );
     }
   }
 
   if (type === 'delete') {
+    if (pathString === 'package.json') {
+      // If the file is the package.json file, throw an error
+      throwError('package.json deleted. This will break your project');
+    }
     // Delete the file in the export directory
-    fs.rmSync(path.join(exportRoot, pathString), {
+    return fs.rmSync(path.join(exportRoot, pathString), {
       recursive: true,
       force: true
     });

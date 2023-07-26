@@ -17,9 +17,6 @@ import {
 // Import data
 import globals from 'data/globals';
 
-// Import types
-import ModuleRegistry from 'types/module-registry';
-
 export type AddModulesResponse = {
   module: ModuleRegistry;
 };

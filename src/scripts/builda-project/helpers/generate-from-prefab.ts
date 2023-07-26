@@ -7,6 +7,7 @@ import {
   addLocalModule,
   addRemoteModule,
   convertRegistryPathToUrl,
+  convertToBuildaScript,
   copyDir,
   copyPathsToRoot,
   createDir,
@@ -17,7 +18,6 @@ import {
   writeFile,
   changeCase
 } from 'helpers';
-import { ModuleRegistry } from 'types/module-registry';
 
 export async function generateFromPrefab(
   prefabPath: string,
@@ -145,28 +145,7 @@ export async function generateFromPrefab(
   const buildaScripts = {} as Record<string, string>;
 
   Object.entries(scripts).forEach(([key, value]) => {
-    if (
-      value.startsWith('builda') ||
-      value.startsWith('run-s') ||
-      value.startsWith('run-p') ||
-      value.startsWith('npm-run-all') ||
-      value.startsWith('concurrently')
-    ) {
-      // We don't want to replace `builda`, `npm-run-all` or `concurrently` scripts, so we just copy them over
-      // TODO: Add docs to show that builda scripts should not be used in conjunction with other scripts
-      // add a suggestion to put the builda script in its own script and call that script from the other
-      // script using one of the supported methods
-      /**
-       * e.g.
-       * {
-       *   "watch": "builda --watch",
-       *   "dev": "run-p watch other-script"
-       * }
-       */
-      buildaScripts[key] = value;
-    } else {
-      buildaScripts[key] = `builda x ${key}`;
-    }
+    buildaScripts[key] = convertToBuildaScript(key, value);
   });
 
   // Create a new package.json file in the root directory with updated details
@@ -233,7 +212,7 @@ export async function generateFromPrefab(
     // Convert the blueprints to an array
     const blueprints = Object.keys(module.blueprints);
     for (const blueprint of blueprints) {
-      const bp = module.blueprints[blueprint];
+      const bp = module.blueprints[blueprint] as ModuleConfigContents;
       printMessage(`Installing blueprint: "${blueprint}"`, 'processing');
       const blueprintDest = path.join(
         rootDir,
