@@ -9,3 +9,4 @@ export { default as updateConfig } from './update-config';
 export { default as copyPathsToRoot } from './copy-paths-to-root';
 export { default as syncWithExport } from './sync-with-export';
 export { default as syncPackageJson } from './sync-package-json';
+export { default as getIgnoreList } from './get-ignore-list';

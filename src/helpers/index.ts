@@ -12,6 +12,7 @@ export { default as copyDir } from './file/copy-dir';
 export { default as updateConfig } from './file/update-config';
 export { default as createDir } from './file/create-dir';
 export { default as getConfig } from './file/get-config';
+export { default as getIgnoreList } from './file/get-ignore-list';
 export { default as loopAndRewriteFiles } from './file/loop-and-rewrite-files';
 export { default as writeFile } from './file/write-file';
 export { default as writeLogFile } from './file/write-log-file';
