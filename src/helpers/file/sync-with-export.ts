@@ -1,6 +1,7 @@
 import globals from 'data/globals';
 import {
   copyPath,
+  getIgnoreList,
   getRegistry,
   loopAndRewriteFiles,
   throwError
@@ -23,6 +24,7 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const root = process.cwd();
   const exportRoot = path.join(root, globals.buildaDir, 'export');
   const registry = await getRegistry(exportRoot);
+  const ignore = getIgnoreList(path.join(root, globals.buildaDir));
 
   if (type === 'copy') {
     if (pathString === 'package.json') {
@@ -70,6 +72,7 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       await loopAndRewriteFiles({
         name: registry.name,
         paths: [pathString],
+        ignore,
         fromRoot: true,
         substitute: fileWithSubstitutions.substitutions
       });

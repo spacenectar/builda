@@ -4,15 +4,15 @@ import glob from 'glob';
 
 import globals from 'data/globals';
 
-import { createDir, writeFile, getIgnoreList } from '.';
-
-import { printMessage } from 'helpers/console';
+import { createDir, writeFile, checkIfIgnored } from 'helpers';
 
 type FunctionParams = {
   // The name of the app being created (used for substitution)
   name?: string;
   // An array of file paths to be rewritten
   paths: string[];
+  // Use ignore list to ignore files
+  ignore?: string[];
   // An array of substitutions to be made
   substitute: TSubstitution[];
   // Run from the root directory instead of the prefab directory
@@ -26,6 +26,7 @@ type FunctionParams = {
 export const loopAndRewriteFiles = async ({
   name,
   paths,
+  ignore,
   substitute,
   fromRoot = false,
   fromCustomPath,
@@ -37,14 +38,11 @@ export const loopAndRewriteFiles = async ({
   const workingDir = path.join(buildaDir, 'export');
 
   // Get a list of files to ignore from the .gitignore file in the prefab
-  const ignoreList = getIgnoreList();
   const promises = [];
   for (const file of paths) {
     const filePath = fromRoot ? file : path.join(prefabDir, file);
-
-    // Check if file is ignored
-    if (ignoreList.includes(path.basename(file))) {
-      printMessage(`Ignoring file: ${file}`, 'warning');
+    // Check if the file is in the ignore list
+    if (ignore && checkIfIgnored(buildaDir, filePath)) {
       continue;
     }
 
@@ -57,6 +55,7 @@ export const loopAndRewriteFiles = async ({
         await loopAndRewriteFiles({
           name,
           paths: globFiles,
+          ignore,
           substitute,
           fromRoot,
           fromCustomPath,
@@ -70,6 +69,7 @@ export const loopAndRewriteFiles = async ({
         await loopAndRewriteFiles({
           name,
           paths: newFiles,
+          ignore,
           substitute,
           fromRoot,
           fromCustomPath,
@@ -86,7 +86,12 @@ export const loopAndRewriteFiles = async ({
             ? fromCustomPath
             : path.join(process.cwd(), '..', '..');
           const rootPath = path.join(rootDir, basePath);
+          if (checkIfIgnored(buildaDir, filePath)) {
+            return;
+          }
+
           createDir(directoryPath);
+
           if (fs.existsSync(filePath)) {
             const subs = substitute.map((substitution) => {
               // If the substitution is set to be reversed, reverse it if possible
@@ -107,6 +112,7 @@ export const loopAndRewriteFiles = async ({
               name
             });
             if (toRoot) {
+              createDir(rootPath);
               // Copy the file to the root directory and rewrite it
               writeFile({
                 file: filePath,

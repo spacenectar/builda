@@ -31,8 +31,6 @@ export type TGenerateProject = {
 export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
   const { buildaDir, websiteUrl, buildaReadmeFileName } = globals;
 
-  const defaultRequiredFiles = ['README.md'];
-
   printLogo();
 
   let answers = {} as TFlatObject;
@@ -102,7 +100,6 @@ export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
       prefabPath,
       module,
       rootDir,
-      defaultRequiredFiles,
       prefabDir,
       workingDir,
       name,

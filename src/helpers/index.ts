@@ -19,6 +19,7 @@ export { default as writeLogFile } from './file/write-log-file';
 export { default as copyPathsToRoot } from './file/copy-paths-to-root';
 export { default as syncWithExport } from './file/sync-with-export';
 export { default as syncPackageJson } from './file/sync-package-json';
+export { default as checkIfIgnored } from './file/check-if-ignored';
 
 // Module helpers
 export { default as addLocalModule } from './module/add-local-module';
