@@ -7,11 +7,9 @@ import { printMessage, throwError } from 'helpers';
 
 import { syncWithExport } from 'helpers';
 
-import ignoredFiles from 'data/ignore-file.json';
-
 export default (config: ConfigFile) => {
   const { prefab } = config;
-  const ignored = [...ignoredFiles.ignore, ...(config.ignored || [])];
+  const ignored = [...(config.ignored || [])];
 
   if (!prefab) {
     throwError(
