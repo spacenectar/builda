@@ -23,7 +23,11 @@ export default async (updateVersion?: string) => {
   // Check for an .npmignore file in the root directory if it exists add the files to the ignoreFiles array
   if (fs.existsSync('.npmignore')) {
     const npmIgnore = fs.readFileSync('.npmignore', 'utf8');
-    const npmIgnoreFiles = npmIgnore.split('\n');
+    const npmIgnoreFiles = npmIgnore
+      .split('\n')
+      .filter(
+        (line) => line !== '' && !line.startsWith('#') && !line.startsWith('!')
+      );
     ignoreFiles.push(...npmIgnoreFiles);
   }
 
@@ -32,8 +36,15 @@ export default async (updateVersion?: string) => {
     const gitignore = fs.readFileSync(`${FILESFOLDER}/.gitignore`, 'utf8');
     const gitignoreFiles = gitignore
       .split('\n')
-      .filter((line) => line !== '' && !line.startsWith('#'));
+      .filter(
+        (line) => line !== '' && !line.startsWith('#') && !line.startsWith('!')
+      );
     ignoreFiles.push(...gitignoreFiles);
+  }
+
+  // If a .builda file is in the ignoreFiles array remove it
+  if (ignoreFiles.includes('.builda')) {
+    ignoreFiles.splice(ignoreFiles.indexOf('.builda'), 1);
   }
 
   if (!registry) {
