@@ -5,13 +5,11 @@
 import chokidar from 'chokidar';
 import { printMessage, throwError } from 'helpers';
 
-import { syncWithExport } from './helpers/sync-with-export';
-
-import ignoredFiles from 'data/ignore-file.json';
+import { syncWithExport } from 'helpers';
 
 export default (config: ConfigFile) => {
   const { prefab } = config;
-  const ignored = [...ignoredFiles.ignore, ...(config.ignored || [])];
+  const ignored = [...(config.ignored || [])];
 
   if (!prefab) {
     throwError(

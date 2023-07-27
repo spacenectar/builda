@@ -30,7 +30,9 @@ export default async (updateVersion?: string) => {
   // Check for a .gitignore file inside the files folder if it exists add the files to the ignoreFiles array
   if (fs.existsSync(`${FILESFOLDER}/.gitignore`)) {
     const gitignore = fs.readFileSync(`${FILESFOLDER}/.gitignore`, 'utf8');
-    const gitignoreFiles = gitignore.split('\n');
+    const gitignoreFiles = gitignore
+      .split('\n')
+      .filter((line) => line !== '' && !line.startsWith('#'));
     ignoreFiles.push(...gitignoreFiles);
   }
 

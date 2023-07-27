@@ -2,11 +2,8 @@ import fs from 'node:fs';
 import tar from 'tar';
 import path from 'node:path';
 
-import { createDir, getRegistry } from 'helpers';
+import { createDir, getRegistry, throwError } from 'helpers';
 import globals from 'data/globals';
-import ignoreFile from 'data/ignore-file.json';
-// Ignore these files
-const ignoreFiles = ignoreFile.ignore;
 
 const getFiles = async (
   modulePath: string,
@@ -28,19 +25,7 @@ const getFiles = async (
     // Remove the tarball
     fs.unlinkSync(`${outputPath}/${location}.tgz`);
   } else {
-    // get the directory contents
-    const files = fs.readdirSync(path.join(modulePath, location));
-    // filter out the ignore files
-    const filteredFiles = files.filter(
-      (file: string) => !ignoreFiles.includes(file)
-    );
-    // write the files to the output directory
-    filteredFiles.forEach(async (file: string) => {
-      const srcPath = `${modulePath}/${file}`;
-      await createDir(outputPath).then(() => {
-        fs.copyFileSync(srcPath, `${outputPath}/${file}`);
-      });
-    });
+    throwError('No tarball found. Please run `builda package` first');
   }
 };
 

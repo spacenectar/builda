@@ -10,13 +10,11 @@ import {
   writeFile,
   getSubstitutions,
   changeCase,
-  throwError
+  throwError,
+  syncWithExport
 } from 'helpers';
 
 import globals from 'data/globals';
-
-// Import types
-import { buildaBuild } from 'scripts/builda-build';
 
 type TNew = {
   config: ConfigFile;
@@ -76,7 +74,7 @@ const buildFromBlueprint = async (
     writeFile({
       file: srcPath,
       rename: srcPath.replace('temp_name', name),
-      outputDir: outputDir,
+      outputDir,
       substitute,
       name
     });
@@ -84,8 +82,9 @@ const buildFromBlueprint = async (
 
   // copy the folder into the export directory
   if (config.prefab) {
-    buildaBuild({
-      config
+    syncWithExport({
+      type: 'copy',
+      pathString: outputDirectory
     });
   }
 

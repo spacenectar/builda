@@ -12,6 +12,7 @@ import {
   copyPathsToRoot,
   createDir,
   detectPathType,
+  getIgnoreList,
   loopAndRewriteFiles,
   printMessage,
   throwError,
@@ -23,7 +24,6 @@ export async function generateFromPrefab(
   prefabPath: string,
   module: ModuleRegistry,
   rootDir: string,
-  defaultRequiredFiles: string[],
   prefabDir: string,
   workingDir: string,
   name: string,
@@ -49,7 +49,8 @@ export async function generateFromPrefab(
 
   const prefabName = module.name;
   const version = module.version;
-  const substitutions = module?.generatorOptions?.substitutions ?? [];
+
+  const ignore = getIgnoreList(buildaDir);
 
   printMessage(`Installed ${prefabName}@${version}`, 'success');
 
@@ -62,18 +63,6 @@ export async function generateFromPrefab(
 
   printMessage('Copying required files to application...', 'copying');
 
-  // Copy all required files
-  await loopAndRewriteFiles({
-    name,
-    paths: defaultRequiredFiles,
-    substitute: [
-      ...substitutions,
-      {
-        replace: '%APP_NAME%',
-        with: changeCase(name, 'kebabCase')
-      }
-    ]
-  });
   const buildaPath = path.join(workingDir, buildaDir);
 
   // Create a new package.json file in the root directory
@@ -86,7 +75,8 @@ export async function generateFromPrefab(
   const packageJson = JSON.parse(packageJsonFile);
 
   const newPackageJson = {
-    ...packageJson
+    ...packageJson,
+    name: changeCase(name, 'kebabCase')
   };
 
   module?.generatorOptions?.rootFiles?.forEach(async (file) => {
@@ -102,6 +92,7 @@ export async function generateFromPrefab(
       await loopAndRewriteFiles({
         name,
         paths: [file.path],
+        ignore,
         substitute,
         fromCustomPath: rootDir,
         toRoot: true

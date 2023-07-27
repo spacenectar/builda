@@ -3,12 +3,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 // Run a build
-import { printMessage, throwError, copyPath, getRegistry } from 'helpers';
+import { printMessage, throwError, copyPath, checkIfIgnored } from 'helpers';
 
 import globals from 'data/globals';
-import ignoredFiles from 'data/ignore-file.json';
-
-const ignored = ignoredFiles.ignore;
 
 type TBuild = {
   /**
@@ -21,26 +18,8 @@ export default async ({ config }: TBuild) => {
   const { prefab } = config;
   const root = process.cwd();
   const workingDir = path.join(root, globals.buildaDir);
-  const exportRoot = path.join(workingDir, 'export');
-  const registry = await getRegistry(exportRoot);
 
-  const uniqueAppFiles =
-    registry.generatorOptions?.rootFiles?.filter((file: RootFile | string) => {
-      const pathString = typeof file === 'string' ? file : file.path;
-
-      if (pathString.startsWith('unique.')) {
-        return true;
-      }
-
-      return false;
-    }) ?? [];
-
-  const ignoredFiles = [
-    ...ignored,
-    ...uniqueAppFiles.map((file: RootFile | string) =>
-      typeof file === 'string' ? file : file.path
-    )
-  ];
+  const prefabDir = path.join(workingDir, 'modules', 'prefab');
 
   if (!prefab) {
     throwError(
@@ -58,7 +37,7 @@ export default async ({ config }: TBuild) => {
     }
 
     files.forEach((file) => {
-      if (!ignoredFiles.includes(file)) {
+      if (!checkIfIgnored(prefabDir, file)) {
         copyPath(
           `${root}/${file}`,
           path.join(`${globals.buildaDir}/export`, file)
