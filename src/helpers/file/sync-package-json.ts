@@ -41,12 +41,16 @@ export const syncPackageJson = async () => {
       dependencies: {
         ...packageJsonFile.dependencies
       },
-      devDependencies: {
-        ...packageJsonFile.devDependencies
-      },
-      peerDependencies: {
-        ...packageJsonFile.peerDependencies
-      }
+      devDependencies: packageJsonFile.devDependencies
+        ? {
+            ...packageJsonFile.devDependencies
+          }
+        : undefined,
+      peerDependencies: packageJsonFile.peerDependencies
+        ? {
+            ...packageJsonFile.peerDependencies
+          }
+        : undefined
     };
 
     fs.writeFileSync(

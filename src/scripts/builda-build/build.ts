@@ -21,7 +21,7 @@ type TBuild = {
 };
 
 export default async ({ config }: TBuild) => {
-  const { prefab } = config;
+  const { prefab, ejected } = config;
   const root = process.cwd();
 
   if (!prefab) {
@@ -50,6 +50,14 @@ export default async ({ config }: TBuild) => {
 
     // regenerate the export directory
     generateExport({ buildaDir, prefabDir });
+
+    // Delete any files in the export folder that have been ejected
+    ejected?.forEach((ejectedPath) => {
+      syncWithExport({
+        type: 'delete',
+        pathString: ejectedPath
+      });
+    });
 
     const fileList = (await recurseDirectories({
       paths: files,

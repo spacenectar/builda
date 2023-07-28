@@ -1291,8 +1291,8 @@ var syncPackageJson = async () => {
     const newPackageJson = __spreadProps(__spreadValues({}, packageJsonFile), {
       scripts,
       dependencies: __spreadValues({}, packageJsonFile.dependencies),
-      devDependencies: __spreadValues({}, packageJsonFile.devDependencies),
-      peerDependencies: __spreadValues({}, packageJsonFile.peerDependencies)
+      devDependencies: packageJsonFile.devDependencies ? __spreadValues({}, packageJsonFile.devDependencies) : void 0,
+      peerDependencies: packageJsonFile.peerDependencies ? __spreadValues({}, packageJsonFile.peerDependencies) : void 0
     });
     import_node_fs5.default.writeFileSync(
       import_node_path5.default.resolve(process.cwd(), globals_default.buildaDir, "export", "package.json"),
@@ -3608,7 +3608,7 @@ var command_default10 = () => {
 var import_node_fs27 = __toESM(require("fs"));
 var import_node_path18 = __toESM(require("path"));
 var build_default = async ({ config }) => {
-  const { prefab } = config;
+  const { prefab, ejected } = config;
   const root = process.cwd();
   if (!prefab) {
     throw_error_default(
@@ -3631,6 +3631,12 @@ var build_default = async ({ config }) => {
       throw_error_default(err.message);
     }
     generate_export_default({ buildaDir: buildaDir2, prefabDir });
+    ejected == null ? void 0 : ejected.forEach((ejectedPath) => {
+      sync_with_export_default({
+        type: "delete",
+        pathString: ejectedPath
+      });
+    });
     const fileList = await recurse_directories_default({
       paths: files,
       source: root
