@@ -1,7 +1,93 @@
 #! /usr/bin/env node
-"use strict";var go=Object.create;var Te=Object.defineProperty;var ho=Object.getOwnPropertyDescriptor;var yo=Object.getOwnPropertyNames;var bo=Object.getPrototypeOf,wo=Object.prototype.hasOwnProperty;var xo=(e,t)=>{for(var r in t)Te(e,r,{get:t[r],enumerable:!0})},tr=(e,t,r,o)=>{if(t&&typeof t=="object"||typeof t=="function")for(let i of yo(t))!wo.call(e,i)&&i!==r&&Te(e,i,{get:()=>t[i],enumerable:!(o=ho(t,i))||o.enumerable});return e};var l=(e,t,r)=>(r=e!=null?go(bo(e)):{},tr(t||!e||!e.__esModule?Te(r,"default",{value:e,enumerable:!0}):r,e)),vo=e=>tr(Te({},"__esModule",{value:!0}),e);var bi={};xo(bi,{builda:()=>er,buildaQuestion:()=>Vt,buildaSubstitute:()=>Xt,changeCase:()=>v,default:()=>yi,printMessage:()=>u,throwError:()=>c});module.exports=vo(bi);var uo=l(require("yargs")),fo=l(require("chalk"));var g={version:"5.2.2",buildaDir:".builda",websiteUrl:"https://www.builda.app",buildaReadmeFileName:"getting-started.md",repository:{type:"git",url:"git+https://github.com/spacenectar/builda"}};var Gr=l(require("execa")),Yr=l(require("inquirer")),yt=l(require("fs")),bt=l(require("path")),We=l(require("process"));var Pe=l(require("chalk"));var Y=()=>console.log(Pe.default.magenta(`
-  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 ${Pe.default.white(`v${g.version}
-`)}
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  builda: () => builda,
+  buildaQuestion: () => question_default,
+  buildaSubstitute: () => substitute_default,
+  changeCase: () => change_case_default,
+  default: () => src_default,
+  printMessage: () => print_message_default,
+  throwError: () => throw_error_default
+});
+module.exports = __toCommonJS(src_exports);
+var import_yargs = __toESM(require("yargs"));
+var import_chalk12 = __toESM(require("chalk"));
+
+// src/data/globals.ts
+var globals_default = {
+  "version": "5.2.2",
+  "buildaDir": ".builda",
+  "websiteUrl": "https://www.builda.app",
+  "buildaReadmeFileName": "getting-started.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spacenectar/builda"
+  }
+};
+
+// src/scripts/builda-project/project.ts
+var import_execa = __toESM(require("execa"));
+var import_inquirer6 = __toESM(require("inquirer"));
+var import_node_fs16 = __toESM(require("fs"));
+var import_node_path14 = __toESM(require("path"));
+var import_node_process4 = __toESM(require("process"));
+
+// src/helpers/console/print-logo.ts
+var import_chalk = __toESM(require("chalk"));
+var print_logo_default = () => {
+  return console.log(
+    import_chalk.default.magenta(`
+  \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 ${import_chalk.default.white(
+      `v${globals_default.version}
+`
+    )}
   \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2584  \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588 \u2588\u2588\u2588      \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2584   \u2584\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588
   \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588 \u2588\u2588\u2588      \u2588\u2588\u2588   \u2580\u2588\u2588\u2588 \u2588\u2588\u2588\u2580   \u2588\u2588\u2588
   \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588 \u2588\u2588\u2588      \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588    \u2588\u2588\u2588
@@ -11,75 +97,3813 @@
   \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588 \u2588\u2588\u2588      \u2588\u2588\u2588   \u2584\u2588\u2588\u2588 \u2588\u2588\u2588    \u2588\u2588\u2588
   \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2580   \u2580\u2588\u2588\u2588\u2588\u2588\u2588\u2580  \u2588\u2588\u2588 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2580  \u2588\u2588\u2588    \u2588\u2588\u2588 \u2588\u2588\u2588\u2588\u2588\u2588
 
-  ${Pe.default.white.bold("The Everything Generator")} \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588
-`));var k=l(require("chalk")),Ue=l(require("process")),qe=l(require("readline")),ko={interval:80,frames:["\u280B","\u2819","\u2839","\u2838","\u283C","\u2834","\u2826","\u2827","\u2807","\u280F"]},je=Ue.default.stdout,$o=Ue.default.stderr,O,So=(e,t,r)=>{let o=null;if(t&&t==="error"&&(O!==void 0&&clearInterval(O),o=k.default.red(`\u{1F6A8} ${e}`)),t&&t==="danger"&&(o=k.default.red(`${e}`)),t&&t==="warning"&&(o=k.default.yellow(`\u{1F514} ${e}`)),t&&t==="config"&&(o=k.default.blue(`\u{1F527} ${e}`)),t&&t==="downloading"&&(o=k.default.blue(`\u{1F30D} ${e}`)),t&&t==="copying"&&(o=k.default.blue(`\u{1F4C2} ${e}`)),t&&t==="installing"&&(o=k.default.blue(`\u{1F4E6} ${e}`)),t&&t==="notice"&&(o=k.default.blue(`\u{1F4DD} ${e}`)),t&&t==="info"&&(o=k.default.bgHex("#6699CC").white.bold(" i ")+" "+k.default.reset.blue(e)),t&&t==="success"&&(O!==void 0&&clearInterval(O),o=k.default.green(`\u2705 ${e}`)),t&&t==="watch"&&(o=k.default.magenta(`\u{1F440} ${e}`)),t&&t==="build"&&(o=k.default.magenta(`\u{1F3D7} ${e}`)),t&&t==="run"&&(o=k.default.magenta(`\u{1F3C3} ${e}`)),t&&t==="primary"&&(o=k.default.magenta(`${e}`)),t&&t==="secondary"&&(o=k.default.white(`${e}`)),t&&t==="processing"){let s=ko,n=s.frames,a=s.interval,p=0;O!==void 0&&clearInterval(O),O=setInterval(()=>{let m=n[p];m==null&&(p=0,m=n[p]),qe.default.clearLine(je,0),qe.default.cursorTo(je,0),je.write(m),p=p>=n.length?0:p+1},a),o=k.default.blue(`${e}`)}return t||(o=e),r?o:(t==="error"?$o:je).write(`${o}
-`)},u=So;var lr=l(require("chalk"));var Ge=["adorable","adventurous","aggressive","agreeable","alert","alive","amused","angry","annoyed","annoying","anxious","arrogant","ashamed","attractive","average","awful","bad","beautiful","better","bewildered","black","bloody","blue","blue-eyed","blushing","bored","brainy","brave","breakable","bright","busy","calm","careful","cautious","charming","cheerful","clean","clear","clever","cloudy","clumsy","colorful","combative","comfortable","concerned","condemned","confused","cooperative","courageous","crazy","creepy","crowded","cruel","curious","cute","dangerous","dark","dead","defeated","defiant","delightful","depressed","determined","different","difficult","disgusted","distinct","disturbed","dizzy","doubtful","drab","dull","eager","easy","elated","elegant","embarrassed","enchanting","encouraging","energetic","enthusiastic","envious","evil","excited","expensive","exuberant","fair","faithful","famous","fancy","fantastic","fierce","filthy","fine","foolish","fragile","frail","frantic","friendly","frightened","funny","gentle","gifted","glamorous","gleaming","glorious","good","gorgeous","graceful","grieving","grotesque","grumpy","handsome","happy","healthy","helpful","helpless","hilarious","homeless","homely","horrible","hungry","hurt","ill","important","impossible","inexpensive","innocent","inquisitive","itchy","jealous","jittery","jolly","joyous","kind","lazy","light","lively","lonely","long","lovely","lucky","magnificent","misty","modern","motionless","muddy","mushy","mysterious","nasty","naughty","nervous","nice","nutty","obedient","obnoxious","odd","old-fashioned","open","outrageous","outstanding","panicky","perfect","plain","pleasant","poised","poor","powerful","precious","prickly","proud","putrid","puzzled","quaint","real","relieved","repulsive","rich","scary","selfish","shiny","shy","silly","sleepy","smiling","smoggy","sore","sparkling","splendid","spotless","stormy","strange","stupid","successful","super","talented","tame","tasty","tender","tense","terrible","thankful","thoughtful","thoughtless","tired","tough","troubled","ugliest","ugly","uninterested","unsightly","unusual","upset","uptight","vast","victorious","vivacious","wandering","weary","wicked","wide-eyed","wild","witty","worried","worrisome","wrong","zany","zealous"],Ye=["Actor","Gold","Painting","Advertisement","Grass","Parrot","Afternoon","Greece","Pencil","Airport","Guitar","Piano","Ambulance","Hair","Pillow","Animal","Hamburger","Pizza","Answer","Helicopter","Planet","Apple","Helmet","Plastic","Army","Holiday","Portugal","Australia","Honey","Potato","Balloon","Horse","Queen","Banana","Hospital","Quill","Battery","House","Rain","Beach","Hydrogen","Rainbow","Beard","Ice","Raincoat","Bed","Insect","Refrigerator","Belgium","Insurance","Restaurant","Boy","Iron","River","Branch","Island","Rocket","Breakfast","Jackal","Room","Brother","Jelly","Rose","Camera","Jewellery","Russia","Candle","Jordan","Sandwich","Car","Juice","School","Caravan","Kangaroo","Scooter","Carpet","King","Shampoo","Cartoon","Kitchen","Shoe","China","Kite","Soccer","Church","Knife","Spoon","Crayon","Lamp","Stone","Crowd","Lawyer","Sugar","Daughter","Leather","Sweden","Death","Library","Teacher","Denmark","Lighter","Telephone","Diamond","Lion","Television","Dinner","Lizard","Tent","Disease","Lock","Thailand","Doctor","London","Tomato","Dog","Lunch","Toothbrush","Dream","Machine","Traffic","Dress","Magazine","Train","Easter","Magician","Truck","Egg","Manchester","Uganda","Eggplant","Market","Umbrella","Egypt","Match","Van","Elephant","Microphone","Vase","Energy","Monkey","Vegetable","Engine","Morning","Vulture","England","Motorcycle","Wall","Evening","Nail","Whale","Eye","Napkin","Window","Family","Needle","Wire","Finland","Nest","Xylophone","Fish","Nigeria","Yacht","Flag","Night","Yak","Flower","Notebook","Zebra","Football","Ocean","Zoo","Forest","Oil","Garden","Fountain","Orange","Gas","France","Oxygen","Girl","Furniture","Oyster","Glass","Garage","Ghost"];var To=()=>{let e=Ge[Math.floor(Math.random()*Ge.length)],t=Ye[Math.floor(Math.random()*Ye.length)];return`${e.toLowerCase()}-${t.toLowerCase()}`},Ce=To;var or={root:{root:"/"},tradeStore:{root:"trade-store",prefabs:"prefabs",blueprints:"blueprints"},docs:{root:"docs",gettingStarted:"getting-started",prefabs:"prefabs",config:"config-file",blueprints:"blueprints",telemetry:"telemetry",init:"initialise-a-project",resolvers:"resolvers",indexes:"indexes"}};var A=(e,t)=>{let{websiteUrl:r}=g,o=e.split("/"),i=or,s=o[0]||"./",n=o.map(a=>{var p;return a===s?a:(p=i[s])==null?void 0:p[a]});return`${r}/${n.join("/")}${t?`#${t}`:""}`};var jo=e=>e.startsWith("/")||e.startsWith("./")||e.startsWith("..")||e.startsWith("~")?"local":"remote",I=jo;var ir=e=>{let t=/^(?:[a-zA-Z:]+_[a-zA-Z:]+)+$/,r=/^(?:[A-Z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/,o=/^(?:[a-z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/,i=/^(?:[a-zA-Z:]+ [a-zA-Z:]+)+$/,s=/^(?:[a-zA-Z:]+-[a-zA-Z:]+)+$/;return t.test(e)?"snake":r.test(e)?"pascal":o.test(e)?"camel":i.test(e)?"sentence":s.test(e)?"kebab":"unknown"};var ie=e=>e.replace(/\s{2,}/g," ").trim(),sr=e=>{let t=ir(e),r=e.split(/(?=[A-Z:])/).filter(i=>i!==":"),o=r.slice(1).map(i=>i.toLowerCase());if(t==="snake"){let i=e.replace(/_/g," ").toLowerCase().replace(/:/g," ");return ie(i)}if(t==="pascal"){let i=e.split(/(?=[A-Z])/).map(s=>s.toLowerCase()).join(" ").replace(/:/g," ");return ie(i)}if(t==="camel"){let i=r[0]||"";o.unshift(i.toLowerCase());let s=o.join(" ");return ie(s)}if(t==="kebab"){let i=e.replace(/-/g," ").replace(/:/g," ").toLowerCase();return ie(i)}return t==="sentence"?ie(e.replace(/:/g,"")):e};var Ae=["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"],Co=["Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"],nr=["","","Twenty","Thirty","Fourty","Fifty","Sixty","Seventy","Eighty","Ninety"],Ee=e=>{let t=/\d+/g,r=e.match(t);if(r){let o=r.map(i=>{let s=parseInt(i,10);if(s<10)return":"+Ae[s];if(s<20)return":"+Co[s-10];if(s<100)return":"+nr[Math.floor(s/10)]+Ae[s%10];if(s<1e3){let n=s%100===0,a=":"+Ae[Math.floor(s/100)]+":Hundred";return n||(a+=":And:"+nr[Math.floor(s%100/10)]+":"+Ae[s%10]),a}if(s<1e6)return Ee(Math.floor(s/1e3).toString())+":Thousand"+Ee((s%1e3).toString());throw new Error("Numbers larger than 1 million are not supported")}).join(":");return e.replace(t,o)}return e};var ar=e=>e.replace(/&/g,":And").replace(/@/g,":At").replace(/#/g,":Hash").replace(/\$/g,":Dollar").replace(/£/g,":Pound").replace(/%/g,":Percent").replace(/\+/g,":Plus").replace(/\*/g,":Asterisk");var Ao=(e,t)=>t.startsWith("builda")||t.startsWith("run-s")||t.startsWith("run-p")||t.startsWith("npm-run-all")||t.startsWith("concurrently")?t:`builda x ${e}`,Fe=Ao;var Eo=(e,t)=>{let o=ar(e),i=Ee(o),n=sr(i).split(" ");switch(t){case"snakeCase":return n.join("_").toLowerCase();case"kebabCase":return n.join("-").toLowerCase();case"pascalCase":return n.map(a=>a.charAt(0).toUpperCase()+a.slice(1)).join("");case"camelCase":return n.map((a,p)=>p===0?a.charAt(0).toLowerCase()+a.slice(1):a.charAt(0).toUpperCase()+a.slice(1)).join("");case"sentenceCase":default:return n.map((a,p)=>p===0?a.charAt(0).toUpperCase()+a.slice(1):a.charAt(0).toLowerCase()+a.slice(1)).join(" ")}},v=Eo;var C=({link:e,anchor:t,endText:r})=>(r=r||"for more information.",`
+  ${import_chalk.default.white.bold(
+      "The Everything Generator"
+    )} \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588
+`)
+  );
+};
 
-See `+lr.default.blue.underline(A(e,t))+" "+r);var W=l(require("chalk"));var cr=l(require("inquirer")),w=(e,t)=>{console.clear(),Y();let r=new cr.default.ui.BottomBar,o=process.stdout.columns;t=t||"info";let i="bgBlue",s="i";t==="error"&&(i="bgRed",s="\u2716"),t==="success"&&(i="bgGreen",s="\u2714"),t==="warning"&&(i="bgYellow",s="\u26A0"),t==="builda"&&(i="bgMagenta",s="B\u0333");let n="  "+W.default.bold.white[i](`  ${s}  `),a="  "+W.default[i](" ".repeat(5))+" "+W.default[i](" ".repeat(o-10))+`
-`,p=a+n+" "+W.default.bold.white[i](`  ${t.toUpperCase()}${" ".repeat(o-t.length-12)}
-`)+a,m=W.default.white("\u2500".repeat(o)),f=e.replace(/\n/g,`
-  `).replace(new RegExp(`(.{${o-20}})(\\s|$)`,"g"),`$1
-  `);r.log.write(`
-${p}\r
-  ${W.default.white(f)}\r
+// src/helpers/console/print-message.ts
+var import_chalk2 = __toESM(require("chalk"));
+var import_process = __toESM(require("process"));
+var import_readline = __toESM(require("readline"));
+var dots = {
+  interval: 80,
+  frames: ["\u280B", "\u2819", "\u2839", "\u2838", "\u283C", "\u2834", "\u2826", "\u2827", "\u2807", "\u280F"]
+};
+var stdOut = import_process.default.stdout;
+var stderr = import_process.default.stderr;
+var timer = void 0;
+var printMessage = (message2, type, returnstring) => {
+  let newMessage = null;
+  if (type && type === "error") {
+    if (timer !== void 0) {
+      clearInterval(timer);
+    }
+    newMessage = import_chalk2.default.red(`\u{1F6A8} ${message2}`);
+  }
+  if (type && type === "danger") {
+    newMessage = import_chalk2.default.red(`${message2}`);
+  }
+  if (type && type === "warning") {
+    newMessage = import_chalk2.default.yellow(`\u{1F514} ${message2}`);
+  }
+  if (type && type === "config") {
+    newMessage = import_chalk2.default.blue(`\u{1F527} ${message2}`);
+  }
+  if (type && type === "downloading") {
+    newMessage = import_chalk2.default.blue(`\u{1F30D} ${message2}`);
+  }
+  if (type && type === "copying") {
+    newMessage = import_chalk2.default.blue(`\u{1F4C2} ${message2}`);
+  }
+  if (type && type === "installing") {
+    newMessage = import_chalk2.default.blue(`\u{1F4E6} ${message2}`);
+  }
+  if (type && type === "notice") {
+    newMessage = import_chalk2.default.blue(`\u{1F4DD} ${message2}`);
+  }
+  if (type && type === "info") {
+    newMessage = import_chalk2.default.bgHex("#6699CC").white.bold(" i ") + " " + import_chalk2.default.reset.blue(message2);
+  }
+  if (type && type === "success") {
+    if (timer !== void 0) {
+      clearInterval(timer);
+    }
+    newMessage = import_chalk2.default.green(`\u2705 ${message2}`);
+  }
+  if (type && type === "watch") {
+    newMessage = import_chalk2.default.magenta(`\u{1F440} ${message2}`);
+  }
+  if (type && type === "build") {
+    newMessage = import_chalk2.default.magenta(`\u{1F3D7} ${message2}`);
+  }
+  if (type && type === "run") {
+    newMessage = import_chalk2.default.magenta(`\u{1F3C3} ${message2}`);
+  }
+  if (type && type === "primary") {
+    newMessage = import_chalk2.default.magenta(`${message2}`);
+  }
+  if (type && type === "secondary") {
+    newMessage = import_chalk2.default.white(`${message2}`);
+  }
+  if (type && type === "processing") {
+    const spin = dots;
+    const spinnerFrames = spin.frames;
+    const spinnerTimeInterval = spin.interval;
+    let index = 0;
+    if (timer !== void 0) {
+      clearInterval(timer);
+    }
+    timer = setInterval(() => {
+      let now = spinnerFrames[index];
+      if (now == void 0) {
+        index = 0;
+        now = spinnerFrames[index];
+      }
+      import_readline.default.clearLine(stdOut, 0);
+      import_readline.default.cursorTo(stdOut, 0);
+      stdOut.write(now);
+      index = index >= spinnerFrames.length ? 0 : index + 1;
+    }, spinnerTimeInterval);
+    newMessage = import_chalk2.default.blue(`${message2}`);
+  }
+  if (!type) {
+    newMessage = message2;
+  }
+  const returnType = type === "error" ? stderr : stdOut;
+  return returnstring ? newMessage : returnType.write(`${newMessage}
+`);
+};
+var print_message_default = printMessage;
 
-${m}\r
+// src/helpers/console/print-site-link.ts
+var import_chalk3 = __toESM(require("chalk"));
 
-`)};var c=e=>{let t=u(e,"danger",!0);throw new Error(t)};var pr=l(require("chalk")),_e=l(require("process")),ur=l(require("readline")),Mo=e=>new Promise(t=>{let r=ur.default.createInterface({input:_e.default.stdin,output:_e.default.stdout});r.question(pr.default.blue(`\u{1F914} ${e} [y/N] `),o=>{o=o.toLowerCase(),r.close(),t(o==="y")})}),_=Mo;var dr=l(require("fs")),Do=(e,t)=>dr.default.cpSync(e,t,{dereference:!0,recursive:!0,force:!0}),Ne=Do;var H=l(require("fs")),He=l(require("path")),fr=(e,t)=>{H.default.existsSync(t)||H.default.mkdirSync(t,{recursive:!0}),H.default.readdirSync(e).forEach(r=>{let o=He.default.resolve(e,r),i=He.default.join(t,r);H.default.lstatSync(o).isDirectory()?fr(o,i):H.default.cpSync(o,i,{recursive:!0,dereference:!0})})},se=fr;var Re=l(require("fs"));var Ie=l(require("path")),Lo=e=>{if(Re.default.existsSync(Ie.default.resolve(process.cwd(),"package.json"))){let o={...JSON.parse(Re.default.readFileSync(Ie.default.resolve(process.cwd(),"package.json"),"utf8")),builda:e===null?void 0:{...e}};Re.default.writeFileSync(Ie.default.resolve(process.cwd(),"package.json"),JSON.stringify(o,null,2))}else c("No package.json found in project")},L=Lo;var Ze=l(require("fs")),Oo=async e=>{try{return Ze.default.existsSync(e)||Ze.default.mkdirSync(e,{recursive:!0}),!0}catch{return!1}},j=Oo;var Qe=l(require("fs"));var Ke=l(require("path")),Wo=e=>{if(Qe.default.existsSync(Ke.default.resolve(process.cwd(),"package.json"))){let r=JSON.parse(Qe.default.readFileSync(Ke.default.resolve(process.cwd(),"package.json"),"utf8")).builda;if(!r&&!e)c('No "builda" entry found in package.json');else if(!r&&e)return{};return r}return c("No package.json found in project")},S=Wo;var ne=l(require("fs"));var B=l(require("path")),Bo=(e,t)=>{let r=[],i=ne.default.readFileSync(e,"utf8").split(`
-`);for(let s of i)if(s!==""&&s.startsWith("@extends")){let n=s.split(" ")[1];if(ne.default.existsSync(B.default.resolve(t,n))){let p=ne.default.readFileSync(B.default.resolve(t,n),"utf8").split(`
-`);for(let m of p)if(m!==""&&!m.startsWith("#"))if(n!=null&&n.includes("/")){let d=n.split("/").pop(),f=n.replace(d,"");r.push(B.default.join(f,m))}else r.push(m)}else c(`File ${n} does not exist. Please check your .buildaignore file.`)}else if(s!==""&&s.startsWith("@"))c(`Invalid line in .buildaignore file: ${s}. Only @extends is allowed to start with @.`);else{if(s!==""&&s.startsWith("!"))continue;s!==""&&!s.startsWith("#")&&r.push(s)}return[...new Set(r)]},zo=(e,t)=>{let r=[];for(let o of t){let i=B.default.join(e,o);o.includes("*")||(o.includes("/")?r.push(i):r.push(`**/${o}`))}return r},Jo=(e,t)=>{let r=t?"module":B.default.join(e,"modules","prefab"),o=B.default.resolve(r,".buildaignore");if(ne.default.existsSync(o)){let i=Bo(o,r);return zo(r,i)}return[]},Ve=Jo;var z=l(require("path")),Me=l(require("fs")),mr=l(require("glob"));var Xe=async({log:e,name:t,paths:r,substitute:o,source:i,destination:s})=>{let{buildaDir:n}=g,a=z.default.join(n,"modules","prefab"),p={log:e,name:t,paths:r,substitute:o,source:i,destination:s},m=[];for(let d of r){let f=z.default.join(i,d);if(!Z(n,f))if(d.includes("*")){let y=mr.default.sync(f).map(h=>z.default.relative(a,h));m.push(await Xe({...p,paths:y}))}else if(Me.default.lstatSync(f).isDirectory()){let h=Me.default.readdirSync(f).map(x=>z.default.join(d,x));m.push(await Xe({...p,paths:h}))}else m.push(new Promise(y=>{let h=z.default.dirname(d),x=z.default.join(s,h);if(!Z(n,f)){if(j(x),Me.default.existsSync(f)){let b=o.map($=>$.reverseInExport&&(x.includes("export")||x.includes("prefab"))?{...$,replace:$.with,with:$.replace}:$);J({file:f,outputDir:x,substitute:b,name:t})}y(f)}}))}await Promise.all(m)},M=Xe;var et=l(require("fs")),tt=l(require("path"));var gr=l(require("prettier")),qo=["css","html","js","jsx","json","less","md","mdx","scss","sass","ts","tsx","yaml","yml","graphql"],Uo=({file:e,rename:t,content:r,outputDir:o,substitute:i,name:s})=>{let n=e;t&&(n=t),n=n==null?void 0:n.split("/").pop();let a=e?et.default.readFileSync(tt.default.resolve(e),"utf8"):"",p=r??a;s&&(p=a.replace(/prefab-name-replace-string/g,v(s,"kebabCase")).replace(/%KEBAB_CASE%/g,v(s,"kebabCase")).replace(/%CAMEL_CASE%/g,v(s,"camelCase")).replace(/%SNAKE_CASE%/g,v(s,"snakeCase")).replace(/%PASCAL_CASE%/g,v(s,"pascalCase")).replace(/%SENTENCE_CASE%/g,v(s,"sentenceCase"))),i&&i.length>0&&i.forEach(d=>{let f=`${d.replace}`,y=new RegExp(f,"g");p=p.replace(y,d.with)});let m=n==null?void 0:n.split(".").pop();if(m&&qo.includes(m)&&(p=e?gr.default.format(p,{filepath:tt.default.resolve(e)}):p),p)return et.default.writeFileSync(`${o}/${n}`,p);throw new Error(`Could not write file ${n}`)},J=Uo;var Go=l(require("fs")),Yo=l(require("path")),_o=l(require("process"));var rt=l(require("fs")),De=l(require("path"));var{buildaDir:Ho}=g,ae=async(e,t,r)=>{let o=De.default.join(t,Ho,"modules","prefab");e.forEach(async i=>{let s=De.default.join(o,i);rt.default.cpSync(s,De.default.join(t,i),{recursive:!0}),r&&rt.default.rmSync(s,{recursive:!0,force:!0})})};var pe=l(require("path")),hr=l(require("fs"));var le=l(require("path")),ce=l(require("fs"));var ot=async()=>{if(ce.default.existsSync(le.default.resolve(process.cwd(),"package.json"))){let e=JSON.parse(ce.default.readFileSync(le.default.resolve(process.cwd(),"package.json"),"utf8")),r=JSON.parse(ce.default.readFileSync(le.default.resolve(process.cwd(),g.buildaDir,"modules","prefab","package.json"),"utf8")).scripts,o=e.scripts,i=Object.keys(o).filter(a=>!Object.keys(r).includes(a)),s={...r};i.forEach(a=>{s[a]=o[a]});let n={...e,scripts:s,dependencies:{...e.dependencies},devDependencies:{...e.devDependencies},peerDependencies:{...e.peerDependencies}};ce.default.writeFileSync(le.default.resolve(process.cwd(),g.buildaDir,"export","package.json"),JSON.stringify(n,null,2))}else c("No package.json found in project")},it=ot;var Zo=async({type:e,pathString:t})=>{var s,n;let r=process.cwd(),o=pe.default.join(r,g.buildaDir,"export"),i=await P(o);if(e==="copy")return t==="package.json"?void 0:Ne(`${r}/${t}`,pe.default.join(o,t));if(e==="update"){if(t==="package.json")return ot();let a=(n=(s=i.generatorOptions)==null?void 0:s.rootFiles)==null?void 0:n.find(p=>typeof p=="string"||!p.substitutions||p.substitutions.length===0?!1:p.path===t);if(a)await M({log:!0,name:i.name,paths:[t],substitute:a.substitutions,source:r,destination:o});else return Ne(`${r}/${t}`,pe.default.join(o,t))}if(e==="delete")return t==="package.json"&&c("package.json deleted. This will break your project"),hr.default.rmSync(pe.default.join(o,t),{recursive:!0,force:!0})},E=Zo;var Qo=(e,t)=>{let r=Ve(e);for(let o of r)if(o.startsWith("**/")){let i=o.replace("**/",""),s=t.split("/").pop();if(i===s)return!0}else if(o===t)return!0;return!1},Z=Qo;var Q=l(require("fs")),st=l(require("path"));async function Ko({buildaDir:e,prefabDir:t}){Q.default.existsSync(t)||c("No prefab found, cannot export");let r=st.default.join(e,"export");u("Creating export path...","processing"),Q.default.existsSync(r)&&Q.default.rmSync(r,{recursive:!0}),se(t,r),u("Export path created","success");let o=st.default.join(r,".builda");Q.default.existsSync(o)&&Q.default.rmSync(o,{recursive:!0}),u("Initial export created","success")}var q=Ko;var yr=l(require("fs")),Le=l(require("path"));async function Vo({prefabPath:e,rootDir:t,prefabDir:r,name:o,buildaDir:i}){var p,m;let s;if(I(e)==="remote"){let d=R({registryPath:e}).url;d||c("No registry found"),s=await V(d,t)}else s=await K(e,t);s!=null&&s.name||c("No prefab found");let n=s.name,a=s.version;if(u(`Installed ${n}@${a}`,"success"),(m=(p=s==null?void 0:s.generatorOptions)==null?void 0:p.rootFiles)==null||m.forEach(async d=>{if(typeof d!="string"){let f=d.substitutions??[];await M({name:o,paths:[d.path],substitute:f,source:r,destination:r})}}),s.blueprints){u("Installing prefab blueprints...","installing");let d=[],f=Object.keys(s.blueprints);for(let y of f){let h=s.blueprints[y];u(`Installing blueprint: "${y}"`,"processing");let x=Le.default.join(t,i,"modules","blueprints");if(j(x),h.location==="prefab"){let b=Le.default.join(r,i,"modules","blueprints",y);yr.default.existsSync(b)&&se(b,Le.default.join(x,y))}else{let b=I(h.location);d.push(new Promise($=>{if(b==="local"&&K(h.location,t),b==="remote"){let F=R({registryPath:h.location}).url;F||c("No registry found"),V(F,t)}$(y)}))}u(`${y} installed`,"success")}await Promise.all(d)}return u("Prefab has been set up.","success"),s}var ue=Vo;var de=l(require("path")),nt=l(require("fs")),br=l(require("glob"));var at=async({log:e,paths:t,source:r})=>{let{buildaDir:o}=g,i=de.default.join(o,"modules","prefab"),s={log:e,paths:t,source:r},n=[];for(let a of t){let p=de.default.join(r,a);if(!Z(o,p))if(a.includes("*")){let m=br.default.sync(p).map(d=>de.default.relative(i,d));n.push(await at({...s,paths:m}))}else if(nt.default.lstatSync(p).isDirectory()){let d=nt.default.readdirSync(p).map(f=>de.default.join(a,f));n.push(await at({...s,paths:d}))}else n.push(new Promise(m=>{m(p)}))}return Promise.all(n.flat())},lt=at;var fe=l(require("fs")),wr=l(require("tar")),xr=l(require("path"));var Xo=async(e,t,r)=>{fe.default.existsSync(`${e}/${r}.tgz`)?(fe.default.copyFileSync(`${e}/${r}.tgz`,`${t}/${r}.tgz`),await wr.default.extract({file:`${t}/${r}.tgz`,cwd:t}),fe.default.unlinkSync(`${t}/${r}.tgz`)):c("No tarball found. Please run `builda package` first")},ei=async(e,t)=>{let r=xr.default.join(t||"./",g.buildaDir),o=await P(e),i=o.type==="blueprint"?`${r}/modules/blueprints/${o.name}`:`${r}/modules/prefab`;return await j(i),await Xo(e,i,"module"),fe.default.writeFileSync(`${i}/registry.json`,JSON.stringify(o)),o},K=ei;var me=l(require("fs")),Sr=l(require("path")),Tr=l(require("axios")),Pr=l(require("tar"));var vr=l(require("fs")),kr=l(require("process"));var $r=l(require("axios")),ti=async e=>{let t="registry.json";if(e=e||kr.default.cwd(),I(e)==="local")return JSON.parse(vr.default.readFileSync(`${e}/${t}`,"utf8"));let o=R({registryPath:e});o.error&&c(o.error);let i=o.url;i.includes("%FILE_NAME%")?i=i.replace("%FILE_NAME%",t):i=`${i}/${t}`;let s=await U(i,!0);return s.status||c(s.message),$r.default.get(i,{responseType:"json"}).then(n=>n.data).catch(n=>{c(n.message)})},P=ti;var ri=async(e,t)=>{let r=Sr.default.join(t||"./",g.buildaDir),o=await P(e),i=o.type==="blueprint"?`${r}/modules/blueprints/${o.name}`:`${r}/modules/prefab`;return await j(i),u(`Downloading ${o.name}...`,"downloading"),await Tr.default.get(`${e}/module.tgz`,{responseType:"arraybuffer",headers:{"Content-Type":"application/gzip"}}).then(s=>me.default.writeFileSync(`${i}/module.tgz`,s.data,{encoding:"binary"})).then(async()=>{if(me.default.existsSync(`${i}/module.tgz`)){u("Extracting module files...","config");try{await Pr.default.extract({file:`${i}/module.tgz`,cwd:i}),me.default.unlinkSync(`${i}/module.tgz`)}catch(s){c(s)}}}).catch(s=>{c(`There was an error downloading the tarball. Please check the URL and try again.
+// src/data/words.json
+var adjectives = [
+  "adorable",
+  "adventurous",
+  "aggressive",
+  "agreeable",
+  "alert",
+  "alive",
+  "amused",
+  "angry",
+  "annoyed",
+  "annoying",
+  "anxious",
+  "arrogant",
+  "ashamed",
+  "attractive",
+  "average",
+  "awful",
+  "bad",
+  "beautiful",
+  "better",
+  "bewildered",
+  "black",
+  "bloody",
+  "blue",
+  "blue-eyed",
+  "blushing",
+  "bored",
+  "brainy",
+  "brave",
+  "breakable",
+  "bright",
+  "busy",
+  "calm",
+  "careful",
+  "cautious",
+  "charming",
+  "cheerful",
+  "clean",
+  "clear",
+  "clever",
+  "cloudy",
+  "clumsy",
+  "colorful",
+  "combative",
+  "comfortable",
+  "concerned",
+  "condemned",
+  "confused",
+  "cooperative",
+  "courageous",
+  "crazy",
+  "creepy",
+  "crowded",
+  "cruel",
+  "curious",
+  "cute",
+  "dangerous",
+  "dark",
+  "dead",
+  "defeated",
+  "defiant",
+  "delightful",
+  "depressed",
+  "determined",
+  "different",
+  "difficult",
+  "disgusted",
+  "distinct",
+  "disturbed",
+  "dizzy",
+  "doubtful",
+  "drab",
+  "dull",
+  "eager",
+  "easy",
+  "elated",
+  "elegant",
+  "embarrassed",
+  "enchanting",
+  "encouraging",
+  "energetic",
+  "enthusiastic",
+  "envious",
+  "evil",
+  "excited",
+  "expensive",
+  "exuberant",
+  "fair",
+  "faithful",
+  "famous",
+  "fancy",
+  "fantastic",
+  "fierce",
+  "filthy",
+  "fine",
+  "foolish",
+  "fragile",
+  "frail",
+  "frantic",
+  "friendly",
+  "frightened",
+  "funny",
+  "gentle",
+  "gifted",
+  "glamorous",
+  "gleaming",
+  "glorious",
+  "good",
+  "gorgeous",
+  "graceful",
+  "grieving",
+  "grotesque",
+  "grumpy",
+  "handsome",
+  "happy",
+  "healthy",
+  "helpful",
+  "helpless",
+  "hilarious",
+  "homeless",
+  "homely",
+  "horrible",
+  "hungry",
+  "hurt",
+  "ill",
+  "important",
+  "impossible",
+  "inexpensive",
+  "innocent",
+  "inquisitive",
+  "itchy",
+  "jealous",
+  "jittery",
+  "jolly",
+  "joyous",
+  "kind",
+  "lazy",
+  "light",
+  "lively",
+  "lonely",
+  "long",
+  "lovely",
+  "lucky",
+  "magnificent",
+  "misty",
+  "modern",
+  "motionless",
+  "muddy",
+  "mushy",
+  "mysterious",
+  "nasty",
+  "naughty",
+  "nervous",
+  "nice",
+  "nutty",
+  "obedient",
+  "obnoxious",
+  "odd",
+  "old-fashioned",
+  "open",
+  "outrageous",
+  "outstanding",
+  "panicky",
+  "perfect",
+  "plain",
+  "pleasant",
+  "poised",
+  "poor",
+  "powerful",
+  "precious",
+  "prickly",
+  "proud",
+  "putrid",
+  "puzzled",
+  "quaint",
+  "real",
+  "relieved",
+  "repulsive",
+  "rich",
+  "scary",
+  "selfish",
+  "shiny",
+  "shy",
+  "silly",
+  "sleepy",
+  "smiling",
+  "smoggy",
+  "sore",
+  "sparkling",
+  "splendid",
+  "spotless",
+  "stormy",
+  "strange",
+  "stupid",
+  "successful",
+  "super",
+  "talented",
+  "tame",
+  "tasty",
+  "tender",
+  "tense",
+  "terrible",
+  "thankful",
+  "thoughtful",
+  "thoughtless",
+  "tired",
+  "tough",
+  "troubled",
+  "ugliest",
+  "ugly",
+  "uninterested",
+  "unsightly",
+  "unusual",
+  "upset",
+  "uptight",
+  "vast",
+  "victorious",
+  "vivacious",
+  "wandering",
+  "weary",
+  "wicked",
+  "wide-eyed",
+  "wild",
+  "witty",
+  "worried",
+  "worrisome",
+  "wrong",
+  "zany",
+  "zealous"
+];
+var nouns = [
+  "Actor",
+  "Gold",
+  "Painting",
+  "Advertisement",
+  "Grass",
+  "Parrot",
+  "Afternoon",
+  "Greece",
+  "Pencil",
+  "Airport",
+  "Guitar",
+  "Piano",
+  "Ambulance",
+  "Hair",
+  "Pillow",
+  "Animal",
+  "Hamburger",
+  "Pizza",
+  "Answer",
+  "Helicopter",
+  "Planet",
+  "Apple",
+  "Helmet",
+  "Plastic",
+  "Army",
+  "Holiday",
+  "Portugal",
+  "Australia",
+  "Honey",
+  "Potato",
+  "Balloon",
+  "Horse",
+  "Queen",
+  "Banana",
+  "Hospital",
+  "Quill",
+  "Battery",
+  "House",
+  "Rain",
+  "Beach",
+  "Hydrogen",
+  "Rainbow",
+  "Beard",
+  "Ice",
+  "Raincoat",
+  "Bed",
+  "Insect",
+  "Refrigerator",
+  "Belgium",
+  "Insurance",
+  "Restaurant",
+  "Boy",
+  "Iron",
+  "River",
+  "Branch",
+  "Island",
+  "Rocket",
+  "Breakfast",
+  "Jackal",
+  "Room",
+  "Brother",
+  "Jelly",
+  "Rose",
+  "Camera",
+  "Jewellery",
+  "Russia",
+  "Candle",
+  "Jordan",
+  "Sandwich",
+  "Car",
+  "Juice",
+  "School",
+  "Caravan",
+  "Kangaroo",
+  "Scooter",
+  "Carpet",
+  "King",
+  "Shampoo",
+  "Cartoon",
+  "Kitchen",
+  "Shoe",
+  "China",
+  "Kite",
+  "Soccer",
+  "Church",
+  "Knife",
+  "Spoon",
+  "Crayon",
+  "Lamp",
+  "Stone",
+  "Crowd",
+  "Lawyer",
+  "Sugar",
+  "Daughter",
+  "Leather",
+  "Sweden",
+  "Death",
+  "Library",
+  "Teacher",
+  "Denmark",
+  "Lighter",
+  "Telephone",
+  "Diamond",
+  "Lion",
+  "Television",
+  "Dinner",
+  "Lizard",
+  "Tent",
+  "Disease",
+  "Lock",
+  "Thailand",
+  "Doctor",
+  "London",
+  "Tomato",
+  "Dog",
+  "Lunch",
+  "Toothbrush",
+  "Dream",
+  "Machine",
+  "Traffic",
+  "Dress",
+  "Magazine",
+  "Train",
+  "Easter",
+  "Magician",
+  "Truck",
+  "Egg",
+  "Manchester",
+  "Uganda",
+  "Eggplant",
+  "Market",
+  "Umbrella",
+  "Egypt",
+  "Match",
+  "Van",
+  "Elephant",
+  "Microphone",
+  "Vase",
+  "Energy",
+  "Monkey",
+  "Vegetable",
+  "Engine",
+  "Morning",
+  "Vulture",
+  "England",
+  "Motorcycle",
+  "Wall",
+  "Evening",
+  "Nail",
+  "Whale",
+  "Eye",
+  "Napkin",
+  "Window",
+  "Family",
+  "Needle",
+  "Wire",
+  "Finland",
+  "Nest",
+  "Xylophone",
+  "Fish",
+  "Nigeria",
+  "Yacht",
+  "Flag",
+  "Night",
+  "Yak",
+  "Flower",
+  "Notebook",
+  "Zebra",
+  "Football",
+  "Ocean",
+  "Zoo",
+  "Forest",
+  "Oil",
+  "Garden",
+  "Fountain",
+  "Orange",
+  "Gas",
+  "France",
+  "Oxygen",
+  "Girl",
+  "Furniture",
+  "Oyster",
+  "Glass",
+  "Garage",
+  "Ghost"
+];
 
-${s}`)}).finally(()=>{u("Copying the registry file...","copying"),me.default.writeFileSync(`${i}/registry.json`,JSON.stringify(o,null,2))}),u("Done.","success"),o},V=ri;var jr={builda:"https://builda.app/modules/%REPO_NAME%",github:"https://raw.githubusercontent.com/%REPO_NAME%",bitbucket:"https://bitbucket.org/%REPO_NAME%/raw"};var ii=({resolver:e,modulePath:t,version:r,resolvers:o})=>{let i=o[e];if(!i)return"";let s=i;return s.includes("%REPO_NAME%")?s=s.replace("%REPO_NAME%",t):s=s.replace(`${e}`,""),s.includes("%VERSION%")?s=s.replace("%VERSION%",r):s=`${s}/${r||"latest"}`,s.endsWith("/")&&(s=s.slice(0,-1)),ct(s)},Cr=ii;var si=({registryPath:e,config:t})=>{var n;let r=e,o="",i=jr;if(r.startsWith("http")||r.startsWith("https")){let a=r;return r.includes("github.com")&&(a=r.replace("github.com","raw.githubusercontent.com").replace("/blob","").replace("/tree","")),r.includes("bitbucket.org")&&(a=r.replace("src","raw")),a.endsWith("/")&&(a=a.slice(0,-1)),{url:a,error:o}}let s=r.match(/^([a-z]+:{1}[/]{0})([a-z0-9-/]+)((?:@{1}v?[0-9.]+)?(?:[\w\d-]*))?$/);if(s){let a=((n=s[1])==null?void 0:n.replace(":",""))||"",p=s[2]||"",m=s[3]?s[3].replace("@",""):"latest";t!=null&&t.resolvers&&(i={...i,...t.resolvers});let d=Cr({resolver:a,modulePath:p,version:m,resolvers:i});return d||(o=`Could not find a resolver for ${r}`),{url:d,error:o}}else return o='Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url',{url:"",error:o}},R=si;var Ar=l(require("fs")),Er=l(require("path")),Fr=l(require("process"));var ni=(e,t,r)=>{if(t){let o=`${e}s`,i=Er.default.resolve(Fr.default.cwd(),`${g.buildaDir}/modules/${o}/${r.use}`),s=JSON.parse(Ar.default.readFileSync(`${i}/registry.json`,"utf8"));return{path:i,registry:s}}throw new Error("Could not find config file")},pt=ni;var ai=({name:e,registry:t,script:r})=>{var s,n;let o=[],i=r!=null&&r.substitute&&((s=r.substitute)==null?void 0:s.length)>0?r==null?void 0:r.substitute:(n=t==null?void 0:t.generatorOptions)==null?void 0:n.substitutions;return i&&i.length&&i.forEach(a=>{var y;let p=a.with==="script"?e:a.with,m=(a==null?void 0:a.replace)||a.replace,f=(a==null?void 0:a.with)||p||"";!p&&!m&&a.required&&c(`"--${a.replace}" missing in arguments. This is required.
-`),f&&!m&&o.push({replace:m.toUpperCase(),with:f}),m&&(f===""&&c(`"--${a.replace}" requires a value`),a.valid&&f!==""&&!((y=a.valid)!=null&&y.includes(f))&&c(`
-"${f}" is not a valid ${a.replace}. Please use one of the following: 
- - ${a.valid.join(`
- - `)}
-`),o.push({replace:a.replace.toUpperCase(),with:f}))}),o},ut=ai;var Rr=l(require("axios")),Ir=l(require("ajv"));var Nr={$schema:"http://json-schema.org/draft-07/schema#",definitions:{ModuleConfig:{additionalProperties:{$ref:"#/definitions/ModuleConfigContents"},type:"object"},ModuleConfigContents:{additionalProperties:!1,properties:{location:{description:"The location of the module. This can be a local path, a remote url, a resolver or 'prefab' (if preinstalled inside a prefab)",type:"string"},outputDir:{description:"If the module should have a custom output directory, specify it here (relative to the app_root)",type:"string"},resolve:{anyOf:[{type:"string"},{additionalProperties:!1,properties:{type:{type:"string"},url:{type:"string"}},required:["url","type"],type:"object"}],description:"The custom resolver to use for the module"},version:{description:"The version of the module (not required for blueprints preinstalled inside a prefab)",type:"string"}},required:["location"],type:"object"},ModuleRegistry:{additionalProperties:!1,description:"See (https://builda.app/docs/build-a-module/registry) for more info",properties:{author:{additionalProperties:!1,description:"The module author's details",properties:{buildaUser:{description:"The builda username of the author. This is optional but is required if you want to publish your module to the builda trade store (see (https://builda.app/docs/trade-store))",type:"string"},email:{description:"The author's email",type:"string"},name:{description:"The author's name",type:"string"},website:{description:"The author's website",type:"string"}},required:["name"],type:"object"},blueprints:{$ref:"#/definitions/ModuleConfig",description:"If the module is a prefab and requires blueprints or has it's own blueprints, you should add them here if the module is a blueprint, this field is ignored",examples:["github:cool-developer/blueprint-cool-module@3.0.0","internal:blueprint-name"]},funding:{description:"Is this module looking for funding? If so, you can add a list of funding links here.",items:{type:"string"},type:"array"},generatorOptions:{additionalProperties:!1,description:"A set of options which will be passed to the module generator when the module has been installed",properties:{extraFolders:{description:"Extra folders which should be created in the module root when the module is installed (Will create any folders which don't already exist in the tree)",items:{type:"string"},type:"array"},substitutions:{additionalProperties:!1,description:"A set of substitutions which should be made in the module files when the module is installed",type:"array",items:{$ref:"#/definitions/TSubstitution"}},postScripts:{description:"Any post install scripts which should be run after the module has been installed and all files have been copied across and substitutions made (script paths are relative to the module root and should be in the form of a node cli script)",items:{type:"string"},type:"array"},rootFiles:{description:"Any files which should be copied to the module root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) e.g. .env files",items:{type:"string"},type:"array"}},type:"object"},keywords:{description:"The module keywords (optional but recommended if you want to publish your module to the builda trade store)",items:{type:"string"},type:"array"},name:{description:"The name of the module",type:"string"},prerelease:{default:!1,description:"If this is a prerelease, set this to true",type:"boolean"},publishToTradeStore:{default:!1,description:"Do you want to publish this module to the builda trade store? (see (https://builda.app/docs/trade-store))",type:"boolean"},type:{description:"The module type",enum:["blueprint","prefab"],type:"string"},url:{description:"The url of the module (generally a git repository) You can also use resolver aliases here. See (https://builda.app/docs/resolvers)",type:"string"},version:{description:"The module version number (in semver format)",pattern:"^\\d+\\.\\d+\\.\\d+$",type:"string"}},required:["name","type","version","url"],type:"object"},RootFile:{additionalProperties:!1,properties:{path:{description:"The path to the root file (relative to the .builda/export directory)",type:"string"},rewrite:{default:!1,description:"Should the file contents be rewritten with the default substitutions? https://builda.app/docs/build-a-module/substitutions",type:"boolean"},substitutions:{description:"Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",items:{$ref:"#/definitions/TSubstitution"},type:"array"}},required:["path","substitutions"],type:"object"},TSubstitution:{additionalProperties:!1,properties:{replace:{description:"The string to be replaced",pattern:"^%[A-Z_]+%$",type:"string"},required:{default:!1,description:"Is this substitution required? (i.e. if it is not found, should the build fail?)",type:"boolean"},valid:{description:"Do you want to provide a list of valid options for this substitution? (i.e. if it is not found, should the build fail?)",items:{type:"string"},type:"array"},with:{description:"The string to replace with",type:"string"}},required:["replace","with"],type:"object"}}};var ci=new Ir.default,U=async(e,t)=>{let r=e;if(!t){let i=R({registryPath:e});if(i.error)return{status:!1,message:i.error};r=i.url}let o=r.includes("registry.json")?r:`${r}/registry.json`;return Rr.default.get(o).then(i=>{var a;if(!i.data)return{status:!1,message:"Something went wrong while fetching the registry. No data was returned and no error was provided."};let s=ci.compile(Nr);return s(i.data)?{status:!0,message:"Registry fetched successfully"}:((a=s.errors)==null||a.forEach(p=>{console.log(`Registry validation error: ${p.message}`)}),{status:!1,message:"The registry file is not valid. Please check the documentation for the correct format."})}).catch(i=>i.code==="ENOTFOUND"||i.code==="ERR_BAD_REQUEST"?{status:!1,message:"The url must point to a folder that contains a registry.json file"}:i.code==="ECONNREFUSED"?{status:!1,message:`The server at ${o} is not responding are you sure it is correct?`}:{status:!1,message:i.message})};var Lr=l(require("inquirer")),Oe=l(require("chalk"));var Mr=[{name:"Test Blueprint",value:"github:builda-modules/blueprint-test"},{name:"Fake blueprint",value:""},{name:"Another fake blueprint",value:""},{name:"Yet another fake blueprint",value:""}];var Dr=async(e,t)=>{let r=await U(e);if(r.status){if(t.prefabRegistry){let i=t.prefabRegistry.blueprints;return i&&i[e]?{status:!1,message:"A blueprint with that name already exists"}:{status:!0,message:""}}return{status:!0,message:""}}return{status:!1,message:r.message||"Could not validate the blueprint"}},dt=async e=>(w(`These questions are all about adding blueprints to your project.\r
+// src/helpers/string/random-word-generator.ts
+var randomNameGenerator = () => {
+  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const noun = nouns[Math.floor(Math.random() * nouns.length)];
+  return `${adjective.toLowerCase()}-${noun.toLowerCase()}`;
+};
+var random_word_generator_default = randomNameGenerator;
 
-If you're not sure what a blueprint is`+C({link:"docs/blueprints"})),Lr.default.prompt([{type:"confirm",name:"addBlueprints",message:()=>{let t=[],r=e.prefabRegistry,o=r==null?void 0:r.blueprints;return e.prefab&&o&&(t=Object.keys(o),w(`You are generating this project from the ${Oe.default.blue(r.name)} prefab.
+// src/data/website-paths.json
+var website_paths_default = {
+  root: {
+    root: "/"
+  },
+  tradeStore: {
+    root: "trade-store",
+    prefabs: "prefabs",
+    blueprints: "blueprints"
+  },
+  docs: {
+    root: "docs",
+    gettingStarted: "getting-started",
+    prefabs: "prefabs",
+    config: "config-file",
+    blueprints: "blueprints",
+    telemetry: "telemetry",
+    init: "initialise-a-project",
+    resolvers: "resolvers",
+    indexes: "indexes"
+  }
+};
+
+// src/helpers/string/get-site-link.ts
+var get_site_link_default = (slug, anchor) => {
+  const { websiteUrl: websiteUrl3 } = globals_default;
+  const pathParts = slug.split("/");
+  const paths = website_paths_default;
+  const rootPath = pathParts[0] || "./";
+  const outputPaths = pathParts.map((pathPart) => {
+    var _a;
+    if (pathPart === rootPath) {
+      return pathPart;
+    }
+    return (_a = paths[rootPath]) == null ? void 0 : _a[pathPart];
+  });
+  return `${websiteUrl3}/${outputPaths.join("/")}${anchor ? `#${anchor}` : ""}`;
+};
+
+// src/helpers/string/detect-path-type.ts
+var detectPathType = (pathString) => {
+  if (pathString.startsWith("/") || pathString.startsWith("./") || pathString.startsWith("..") || pathString.startsWith("~")) {
+    return "local";
+  }
+  return "remote";
+};
+var detect_path_type_default = detectPathType;
+
+// src/helpers/string/detect-case.ts
+var detectCase = (input) => {
+  const snakeCaseRegex = /^(?:[a-zA-Z:]+_[a-zA-Z:]+)+$/;
+  const pascalCaseRegex = /^(?:[A-Z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/;
+  const camelCaseRegex = /^(?:[a-z]{1}[a-zA-Z:]+[A-Z]{1}[a-zA-Z:]+)+$/;
+  const sentenceCaseRegex = /^(?:[a-zA-Z:]+ [a-zA-Z:]+)+$/;
+  const kebabCaseRegex = /^(?:[a-zA-Z:]+-[a-zA-Z:]+)+$/;
+  if (snakeCaseRegex.test(input)) {
+    return "snake";
+  }
+  if (pascalCaseRegex.test(input)) {
+    return "pascal";
+  }
+  if (camelCaseRegex.test(input)) {
+    return "camel";
+  }
+  if (sentenceCaseRegex.test(input)) {
+    return "sentence";
+  }
+  if (kebabCaseRegex.test(input)) {
+    return "kebab";
+  }
+  return "unknown";
+};
+
+// src/helpers/string/normalise-case.ts
+var removeExtraSpaces = (input) => {
+  return input.replace(/\s{2,}/g, " ").trim();
+};
+var normalizeCase = (input) => {
+  const caseType = detectCase(input);
+  const words = input.split(/(?=[A-Z:])/).filter((word) => word !== ":");
+  const lowerCasedWords = words.slice(1).map((word) => word.toLowerCase());
+  if (caseType === "snake") {
+    const str = input.replace(/_/g, " ").toLowerCase().replace(/:/g, " ");
+    return removeExtraSpaces(str);
+  }
+  if (caseType === "pascal") {
+    const str = input.split(/(?=[A-Z])/).map((word) => word.toLowerCase()).join(" ").replace(/:/g, " ");
+    return removeExtraSpaces(str);
+  }
+  if (caseType === "camel") {
+    const firstWord = words[0] || "";
+    lowerCasedWords.unshift(firstWord.toLowerCase());
+    const str = lowerCasedWords.join(" ");
+    return removeExtraSpaces(str);
+  }
+  if (caseType === "kebab") {
+    const str = input.replace(/-/g, " ").replace(/:/g, " ").toLowerCase();
+    return removeExtraSpaces(str);
+  }
+  if (caseType === "sentence") {
+    return removeExtraSpaces(input.replace(/:/g, ""));
+  }
+  return input;
+};
+
+// src/helpers/string/convert-numbers-to-words.ts
+var ONES = [
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine"
+];
+var TEENS = [
+  "Ten",
+  "Eleven",
+  "Twelve",
+  "Thirteen",
+  "Fourteen",
+  "Fifteen",
+  "Sixteen",
+  "Seventeen",
+  "Eighteen",
+  "Nineteen"
+];
+var TENS = [
+  "",
+  "",
+  "Twenty",
+  "Thirty",
+  "Fourty",
+  "Fifty",
+  "Sixty",
+  "Seventy",
+  "Eighty",
+  "Ninety"
+];
+var convertNumbersToWords = (input) => {
+  const findNumbers = /\d+/g;
+  const numbers = input.match(findNumbers);
+  if (numbers) {
+    const numberString = numbers.map((number) => {
+      const numberIndex = parseInt(number, 10);
+      if (numberIndex < 10) {
+        return ":" + ONES[numberIndex];
+      }
+      if (numberIndex < 20) {
+        return ":" + TEENS[numberIndex - 10];
+      }
+      if (numberIndex < 100) {
+        return ":" + TENS[Math.floor(numberIndex / 10)] + ONES[numberIndex % 10];
+      }
+      if (numberIndex < 1e3) {
+        const isWholeHundred = numberIndex % 100 === 0;
+        let numberString2 = ":" + ONES[Math.floor(numberIndex / 100)] + ":Hundred";
+        if (!isWholeHundred) {
+          numberString2 += ":And:" + TENS[Math.floor(numberIndex % 100 / 10)] + ":" + ONES[numberIndex % 10];
+        }
+        return numberString2;
+      }
+      if (numberIndex < 1e6) {
+        return convertNumbersToWords(Math.floor(numberIndex / 1e3).toString()) + ":Thousand" + convertNumbersToWords((numberIndex % 1e3).toString());
+      }
+      throw new Error("Numbers larger than 1 million are not supported");
+    }).join(":");
+    return input.replace(findNumbers, numberString);
+  }
+  return input;
+};
+
+// src/helpers/string/convert-symbols-to-words.ts
+var convertSymbolsToWords = (input) => {
+  return input.replace(/&/g, ":And").replace(/@/g, ":At").replace(/#/g, ":Hash").replace(/\$/g, ":Dollar").replace(/£/g, ":Pound").replace(/%/g, ":Percent").replace(/\+/g, ":Plus").replace(/\*/g, ":Asterisk");
+};
+
+// src/helpers/string/convert-to-builda-script.ts
+var convertToBuildaScript = (key, value) => {
+  if (value.startsWith("builda") || value.startsWith("run-s") || value.startsWith("run-p") || value.startsWith("npm-run-all") || value.startsWith("concurrently")) {
+    return value;
+  }
+  return `builda x ${key}`;
+};
+var convert_to_builda_script_default = convertToBuildaScript;
+
+// src/helpers/string/change-case.ts
+var changeCase = (input, type) => {
+  const str = input;
+  const firstPass = convertSymbolsToWords(str);
+  const secondPass = convertNumbersToWords(firstPass);
+  const normalisedStr = normalizeCase(secondPass);
+  const wordArray = normalisedStr.split(" ");
+  switch (type) {
+    case "snakeCase":
+      return wordArray.join("_").toLowerCase();
+    case "kebabCase":
+      return wordArray.join("-").toLowerCase();
+    case "pascalCase":
+      return wordArray.map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }).join("");
+    case "camelCase":
+      return wordArray.map((word, index) => {
+        if (index === 0) {
+          return word.charAt(0).toLowerCase() + word.slice(1);
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }).join("");
+    case "sentenceCase":
+    default:
+      return wordArray.map((word, index) => {
+        if (index === 0) {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+        return word.charAt(0).toLowerCase() + word.slice(1);
+      }).join(" ");
+  }
+};
+var change_case_default = changeCase;
+
+// src/helpers/console/print-site-link.ts
+var print_site_link_default = ({ link, anchor, endText }) => {
+  endText = endText || "for more information.";
+  return "\n\nSee " + import_chalk3.default.blue.underline(get_site_link_default(link, anchor)) + " " + endText;
+};
+
+// src/helpers/console/show-help.ts
+var import_chalk4 = __toESM(require("chalk"));
+var import_inquirer = __toESM(require("inquirer"));
+var show_help_default = (message2, type) => {
+  console.clear();
+  print_logo_default();
+  const ui = new import_inquirer.default.ui.BottomBar();
+  const consoleWidth = process.stdout.columns;
+  type = type || "info";
+  let colour = "bgBlue";
+  let icon = "i";
+  if (type === "error") {
+    colour = "bgRed";
+    icon = "\u2716";
+  }
+  if (type === "success") {
+    colour = "bgGreen";
+    icon = "\u2714";
+  }
+  if (type === "warning") {
+    colour = "bgYellow";
+    icon = "\u26A0";
+  }
+  if (type === "builda") {
+    colour = "bgMagenta";
+    icon = "B\u0333";
+  }
+  const iconTag = "  " + import_chalk4.default.bold.white[colour](`  ${icon}  `);
+  const paddingLine = "  " + // @ts-ignore-implicit-any - chalk typings are wrong
+  import_chalk4.default[colour](" ".repeat(5)) + " " + // @ts-ignore-implicit-any - chalk typings are wrong
+  import_chalk4.default[colour](" ".repeat(consoleWidth - 10)) + "\n";
+  const tag = paddingLine + iconTag + " " + // @ts-ignore-implicit-any - chalk typings are wrong
+  import_chalk4.default.bold.white[colour](
+    `  ${type.toUpperCase()}${" ".repeat(consoleWidth - type.length - 12)}
+`
+  ) + paddingLine;
+  const line = import_chalk4.default.white("\u2500".repeat(consoleWidth));
+  const paddedMessage = message2.replace(/\n/g, "\n  ");
+  const wrappedMessage = paddedMessage.replace(
+    new RegExp(`(.{${consoleWidth - 20}})(\\s|$)`, "g"),
+    "$1\n  "
+  );
+  ui.log.write(
+    `
+${tag}\r
+  ${import_chalk4.default.white(wrappedMessage)}\r
+
+${line}\r
+
+`
+  );
+};
+
+// src/helpers/console/throw-error.ts
+var throw_error_default = (message2) => {
+  const newMessage = print_message_default(message2, "danger", true);
+  throw new Error(newMessage);
+};
+
+// src/helpers/console/confirm.ts
+var import_chalk5 = __toESM(require("chalk"));
+var import_process2 = __toESM(require("process"));
+var import_readline2 = __toESM(require("readline"));
+var confirm = (message2) => {
+  return new Promise((resolve) => {
+    const rl = import_readline2.default.createInterface({
+      input: import_process2.default.stdin,
+      output: import_process2.default.stdout
+    });
+    rl.question(import_chalk5.default.blue(`\u{1F914} ${message2} [y/N] `), (answer) => {
+      answer = answer.toLowerCase();
+      rl.close();
+      if (answer === "y") {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
+  });
+};
+var confirm_default = confirm;
+
+// src/helpers/file/check-and-copy-path.ts
+var import_fs = __toESM(require("fs"));
+var copyPath = (sourcePath, destinationPath) => {
+  return import_fs.default.cpSync(sourcePath, destinationPath, {
+    dereference: true,
+    recursive: true,
+    force: true
+  });
+};
+var check_and_copy_path_default = copyPath;
+
+// src/helpers/file/copy-dir.ts
+var import_node_fs = __toESM(require("fs"));
+var import_node_path = __toESM(require("path"));
+var copyDir = (source, destination) => {
+  if (!import_node_fs.default.existsSync(destination)) {
+    import_node_fs.default.mkdirSync(destination, { recursive: true });
+  }
+  import_node_fs.default.readdirSync(source).forEach((file) => {
+    const srcPath = import_node_path.default.resolve(source, file);
+    const destPath = import_node_path.default.join(destination, file);
+    if (import_node_fs.default.lstatSync(srcPath).isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      import_node_fs.default.cpSync(srcPath, destPath, {
+        recursive: true,
+        dereference: true
+      });
+    }
+  });
+};
+var copy_dir_default = copyDir;
+
+// src/helpers/file/update-config.ts
+var import_fs2 = __toESM(require("fs"));
+var import_path = __toESM(require("path"));
+var updateConfig = (update) => {
+  if (import_fs2.default.existsSync(import_path.default.resolve(process.cwd(), "package.json"))) {
+    const configFile = JSON.parse(
+      import_fs2.default.readFileSync(import_path.default.resolve(process.cwd(), "package.json"), "utf8")
+    );
+    const config = configFile;
+    const newConfig = __spreadProps(__spreadValues({}, config), {
+      builda: update === null ? void 0 : __spreadValues({}, update)
+    });
+    import_fs2.default.writeFileSync(
+      import_path.default.resolve(process.cwd(), "package.json"),
+      JSON.stringify(newConfig, null, 2)
+    );
+  } else {
+    throw_error_default("No package.json found in project");
+  }
+};
+var update_config_default = updateConfig;
+
+// src/helpers/file/create-dir.ts
+var import_fs3 = __toESM(require("fs"));
+var createDir = async (dirPath) => {
+  try {
+    if (!import_fs3.default.existsSync(dirPath)) {
+      import_fs3.default.mkdirSync(dirPath, { recursive: true });
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+var create_dir_default = createDir;
+
+// src/helpers/file/get-config.ts
+var import_fs4 = __toESM(require("fs"));
+var import_path2 = __toESM(require("path"));
+var getConfig = (allowFailure) => {
+  if (import_fs4.default.existsSync(import_path2.default.resolve(process.cwd(), "package.json"))) {
+    const configFile = JSON.parse(
+      import_fs4.default.readFileSync(import_path2.default.resolve(process.cwd(), "package.json"), "utf8")
+    );
+    const config = configFile.builda;
+    if (!config && !allowFailure) {
+      throw_error_default('No "builda" entry found in package.json');
+    } else if (!config && allowFailure) {
+      return {};
+    }
+    return config;
+  }
+  return throw_error_default("No package.json found in project");
+};
+var get_config_default = getConfig;
+
+// src/helpers/file/get-ignore-list.ts
+var import_fs5 = __toESM(require("fs"));
+var import_path3 = __toESM(require("path"));
+var getInitialList = (ignoreFilePath, prefabDir) => {
+  const ignoreList = [];
+  const ignoreFile = import_fs5.default.readFileSync(ignoreFilePath, "utf8");
+  const lines = ignoreFile.split("\n");
+  for (const line of lines) {
+    if (line !== "" && line.startsWith("@extends")) {
+      const extendsFile = line.split(" ")[1];
+      if (import_fs5.default.existsSync(import_path3.default.resolve(prefabDir, extendsFile))) {
+        const extendsIgnoreFile = import_fs5.default.readFileSync(
+          import_path3.default.resolve(prefabDir, extendsFile),
+          "utf8"
+        );
+        const extendsLines = extendsIgnoreFile.split("\n");
+        for (const extendsLine of extendsLines) {
+          if (extendsLine !== "" && !extendsLine.startsWith("#")) {
+            if (extendsFile == null ? void 0 : extendsFile.includes("/")) {
+              const fileName = extendsFile.split("/").pop();
+              const directoryPath = extendsFile.replace(fileName, "");
+              ignoreList.push(import_path3.default.join(directoryPath, extendsLine));
+            } else {
+              ignoreList.push(extendsLine);
+            }
+          }
+        }
+      } else {
+        throw_error_default(
+          `File ${extendsFile} does not exist. Please check your .buildaignore file.`
+        );
+      }
+    } else if (line !== "" && line.startsWith("@")) {
+      throw_error_default(
+        `Invalid line in .buildaignore file: ${line}. Only @extends is allowed to start with @.`
+      );
+    } else if (line !== "" && line.startsWith("!")) {
+      continue;
+    } else if (line !== "" && !line.startsWith("#")) {
+      ignoreList.push(line);
+    }
+  }
+  return [...new Set(ignoreList)];
+};
+var extendIgnoreList = (prefabDir, ignoreList) => {
+  const extendedIgnoreList = [];
+  for (const ignoreItem of ignoreList) {
+    const ignoreItemPath = import_path3.default.join(prefabDir, ignoreItem);
+    if (ignoreItem.includes("*")) {
+      continue;
+    } else if (ignoreItem.includes("/")) {
+      extendedIgnoreList.push(ignoreItemPath);
+    } else {
+      extendedIgnoreList.push(`**/${ignoreItem}`);
+    }
+  }
+  return extendedIgnoreList;
+};
+var getIgnoreList = (workingDir, fromModule) => {
+  const prefabDir = fromModule ? "module" : import_path3.default.join(workingDir, "modules", "prefab");
+  const ignoreFile = import_path3.default.resolve(prefabDir, ".buildaignore");
+  if (import_fs5.default.existsSync(ignoreFile)) {
+    const initialList = getInitialList(ignoreFile, prefabDir);
+    return extendIgnoreList(prefabDir, initialList);
+  }
+  return [];
+};
+var get_ignore_list_default = getIgnoreList;
+
+// src/helpers/file/loop-and-rewrite-files.ts
+var import_node_path2 = __toESM(require("path"));
+var import_node_fs2 = __toESM(require("fs"));
+var import_glob = __toESM(require("glob"));
+var loopAndRewriteFiles = async ({
+  log,
+  name,
+  paths,
+  substitute,
+  source,
+  destination
+}) => {
+  const { buildaDir: buildaDir2 } = globals_default;
+  const prefabDir = import_node_path2.default.join(buildaDir2, "modules", "prefab");
+  const propsList = {
+    log,
+    name,
+    paths,
+    substitute,
+    source,
+    destination
+  };
+  const promises = [];
+  for (const file of paths) {
+    const filePath = import_node_path2.default.join(source, file);
+    if (check_if_ignored_default(buildaDir2, filePath)) {
+      continue;
+    }
+    if (file.includes("*")) {
+      const globFiles = import_glob.default.sync(filePath).map((f) => import_node_path2.default.relative(prefabDir, f));
+      promises.push(
+        await loopAndRewriteFiles(__spreadProps(__spreadValues({}, propsList), {
+          paths: globFiles
+        }))
+      );
+    } else if (import_node_fs2.default.lstatSync(filePath).isDirectory()) {
+      const files = import_node_fs2.default.readdirSync(filePath);
+      const newFiles = files.map((f) => import_node_path2.default.join(file, f));
+      promises.push(
+        await loopAndRewriteFiles(__spreadProps(__spreadValues({}, propsList), {
+          paths: newFiles
+        }))
+      );
+    } else {
+      promises.push(
+        new Promise((resolve) => {
+          const basePath = import_node_path2.default.dirname(file);
+          const directoryPath = import_node_path2.default.join(destination, basePath);
+          if (check_if_ignored_default(buildaDir2, filePath)) {
+            return;
+          }
+          create_dir_default(directoryPath);
+          if (import_node_fs2.default.existsSync(filePath)) {
+            const subs = substitute.map((substitution) => {
+              if (substitution.reverseInExport && (directoryPath.includes("export") || directoryPath.includes("prefab"))) {
+                return __spreadProps(__spreadValues({}, substitution), {
+                  replace: substitution.with,
+                  with: substitution.replace
+                });
+              }
+              return substitution;
+            });
+            write_file_default({
+              file: filePath,
+              outputDir: directoryPath,
+              substitute: subs,
+              name
+            });
+          }
+          resolve(filePath);
+        })
+      );
+    }
+  }
+  await Promise.all(promises);
+};
+var loop_and_rewrite_files_default = loopAndRewriteFiles;
+
+// src/helpers/file/write-file.ts
+var import_fs6 = __toESM(require("fs"));
+var import_path4 = __toESM(require("path"));
+var import_prettier = __toESM(require("prettier"));
+var prettierAllowedFileTypes = [
+  "css",
+  "html",
+  "js",
+  "jsx",
+  "json",
+  "less",
+  "md",
+  "mdx",
+  "scss",
+  "sass",
+  "ts",
+  "tsx",
+  "yaml",
+  "yml",
+  "graphql"
+];
+var writeFile = ({
+  file,
+  rename,
+  content,
+  outputDir,
+  substitute,
+  name
+}) => {
+  let fileName = file;
+  if (rename) {
+    fileName = rename;
+  }
+  fileName = fileName == null ? void 0 : fileName.split("/").pop();
+  const fileContent = file ? import_fs6.default.readFileSync(import_path4.default.resolve(file), "utf8") : "";
+  let newContent = content != null ? content : fileContent;
+  if (name) {
+    newContent = fileContent.replace(/prefab-name-replace-string/g, change_case_default(name, "kebabCase")).replace(/%KEBAB_CASE%/g, change_case_default(name, "kebabCase")).replace(/%CAMEL_CASE%/g, change_case_default(name, "camelCase")).replace(/%SNAKE_CASE%/g, change_case_default(name, "snakeCase")).replace(/%PASCAL_CASE%/g, change_case_default(name, "pascalCase")).replace(/%SENTENCE_CASE%/g, change_case_default(name, "sentenceCase"));
+  }
+  if (substitute && substitute.length > 0) {
+    substitute.forEach((sub) => {
+      const needle = `${sub.replace}`;
+      const regex = new RegExp(needle, "g");
+      newContent = newContent.replace(regex, sub.with);
+    });
+  }
+  const fileType = fileName == null ? void 0 : fileName.split(".").pop();
+  if (fileType && prettierAllowedFileTypes.includes(fileType)) {
+    newContent = file ? import_prettier.default.format(newContent, {
+      filepath: import_path4.default.resolve(file)
+    }) : newContent;
+  }
+  if (newContent) {
+    return import_fs6.default.writeFileSync(`${outputDir}/${fileName}`, newContent);
+  }
+  throw new Error(`Could not write file ${fileName}`);
+};
+var write_file_default = writeFile;
+
+// src/helpers/file/write-log-file.ts
+var import_node_fs3 = __toESM(require("fs"));
+var import_node_path3 = __toESM(require("path"));
+var import_node_process = __toESM(require("process"));
+
+// src/helpers/file/copy-paths-to-root.ts
+var import_node_fs4 = __toESM(require("fs"));
+var import_node_path4 = __toESM(require("path"));
+var { buildaDir } = globals_default;
+var copy_paths_to_root_default = async (paths, rootDir, deleteOriginal) => {
+  const prefabDir = import_node_path4.default.join(rootDir, buildaDir, "modules", "prefab");
+  paths.forEach(async (file) => {
+    const filePath = import_node_path4.default.join(prefabDir, file);
+    import_node_fs4.default.cpSync(filePath, import_node_path4.default.join(rootDir, file), { recursive: true });
+    if (deleteOriginal) {
+      import_node_fs4.default.rmSync(filePath, { recursive: true, force: true });
+    }
+  });
+};
+
+// src/helpers/file/sync-with-export.ts
+var import_node_path6 = __toESM(require("path"));
+var import_node_fs6 = __toESM(require("fs"));
+
+// src/helpers/file/sync-package-json.ts
+var import_node_path5 = __toESM(require("path"));
+var import_node_fs5 = __toESM(require("fs"));
+var syncPackageJson = async () => {
+  if (import_node_fs5.default.existsSync(import_node_path5.default.resolve(process.cwd(), "package.json"))) {
+    const packageJsonFile = JSON.parse(
+      import_node_fs5.default.readFileSync(import_node_path5.default.resolve(process.cwd(), "package.json"), "utf8")
+    );
+    const prefabPackageJsonFile = JSON.parse(
+      import_node_fs5.default.readFileSync(
+        import_node_path5.default.resolve(
+          process.cwd(),
+          globals_default.buildaDir,
+          "modules",
+          "prefab",
+          "package.json"
+        ),
+        "utf8"
+      )
+    );
+    const prefabScripts = prefabPackageJsonFile.scripts;
+    const updatedScripts = packageJsonFile.scripts;
+    const newScripts = Object.keys(updatedScripts).filter((script) => {
+      return !Object.keys(prefabScripts).includes(script);
+    });
+    const scripts = __spreadValues({}, prefabScripts);
+    newScripts.forEach((script) => {
+      scripts[script] = updatedScripts[script];
+    });
+    const newPackageJson = __spreadProps(__spreadValues({}, packageJsonFile), {
+      scripts,
+      dependencies: __spreadValues({}, packageJsonFile.dependencies),
+      devDependencies: __spreadValues({}, packageJsonFile.devDependencies),
+      peerDependencies: __spreadValues({}, packageJsonFile.peerDependencies)
+    });
+    import_node_fs5.default.writeFileSync(
+      import_node_path5.default.resolve(process.cwd(), globals_default.buildaDir, "export", "package.json"),
+      JSON.stringify(newPackageJson, null, 2)
+    );
+  } else {
+    throw_error_default("No package.json found in project");
+  }
+};
+var sync_package_json_default = syncPackageJson;
+
+// src/helpers/file/sync-with-export.ts
+var syncWithExport = async ({ type, pathString }) => {
+  var _a, _b;
+  const root = process.cwd();
+  const exportRoot = import_node_path6.default.join(root, globals_default.buildaDir, "export");
+  const registry = await get_registry_default(exportRoot);
+  if (type === "copy") {
+    if (pathString === "package.json") {
+      return;
+    }
+    return check_and_copy_path_default(`${root}/${pathString}`, import_node_path6.default.join(exportRoot, pathString));
+  }
+  if (type === "update") {
+    if (pathString === "package.json") {
+      return syncPackageJson();
+    }
+    const fileWithSubstitutions = (_b = (_a = registry.generatorOptions) == null ? void 0 : _a.rootFiles) == null ? void 0 : _b.find(
+      (rootFile) => {
+        if (typeof rootFile === "string") {
+          return false;
+        } else if (!rootFile.substitutions || rootFile.substitutions.length === 0) {
+          return false;
+        } else {
+          return rootFile.path === pathString;
+        }
+      }
+    );
+    if (fileWithSubstitutions) {
+      await loop_and_rewrite_files_default({
+        log: true,
+        name: registry.name,
+        paths: [pathString],
+        substitute: fileWithSubstitutions.substitutions,
+        source: root,
+        destination: exportRoot
+      });
+    } else {
+      return check_and_copy_path_default(
+        `${root}/${pathString}`,
+        import_node_path6.default.join(exportRoot, pathString)
+      );
+    }
+  }
+  if (type === "delete") {
+    if (pathString === "package.json") {
+      throw_error_default("package.json deleted. This will break your project");
+    }
+    return import_node_fs6.default.rmSync(import_node_path6.default.join(exportRoot, pathString), {
+      recursive: true,
+      force: true
+    });
+  }
+};
+var sync_with_export_default = syncWithExport;
+
+// src/helpers/file/check-if-ignored.ts
+var checkIfIgnored = (workingDir, filePath) => {
+  const ignoreList = get_ignore_list_default(workingDir);
+  for (const ignore of ignoreList) {
+    if (ignore.startsWith("**/")) {
+      const ignorePath = ignore.replace("**/", "");
+      const baseFileName = filePath.split("/").pop();
+      if (ignorePath === baseFileName) {
+        return true;
+      }
+    } else if (ignore === filePath) {
+      return true;
+    }
+  }
+  return false;
+};
+var check_if_ignored_default = checkIfIgnored;
+
+// src/helpers/file/generate-export.ts
+var import_node_fs7 = __toESM(require("fs"));
+var import_node_path7 = __toESM(require("path"));
+async function generateExport({
+  buildaDir: buildaDir2,
+  prefabDir
+}) {
+  if (!import_node_fs7.default.existsSync(prefabDir)) {
+    throw_error_default("No prefab found, cannot export");
+  }
+  const workingDir = import_node_path7.default.join(buildaDir2, "export");
+  print_message_default("Creating export path...", "processing");
+  if (import_node_fs7.default.existsSync(workingDir)) {
+    import_node_fs7.default.rmSync(workingDir, { recursive: true });
+  }
+  copy_dir_default(prefabDir, workingDir);
+  print_message_default("Export path created", "success");
+  const exportBuildaDir = import_node_path7.default.join(workingDir, ".builda");
+  if (import_node_fs7.default.existsSync(exportBuildaDir)) {
+    import_node_fs7.default.rmSync(exportBuildaDir, { recursive: true });
+  }
+  print_message_default("Initial export created", "success");
+}
+var generate_export_default = generateExport;
+
+// src/helpers/file/generate-from-prefab.ts
+var import_node_fs8 = __toESM(require("fs"));
+var import_node_path8 = __toESM(require("path"));
+async function generateFromPrefab({
+  prefabPath,
+  rootDir,
+  prefabDir,
+  name,
+  buildaDir: buildaDir2
+}) {
+  var _a, _b;
+  let module2;
+  if (detect_path_type_default(prefabPath) === "remote") {
+    const registry = convert_registry_path_to_url_default({
+      registryPath: prefabPath
+    }).url;
+    if (!registry) {
+      throw_error_default("No registry found");
+    }
+    module2 = await add_remote_module_default(registry, rootDir);
+  } else {
+    module2 = await add_local_module_default(prefabPath, rootDir);
+  }
+  if (!(module2 == null ? void 0 : module2.name)) {
+    throw_error_default("No prefab found");
+  }
+  const prefabName = module2.name;
+  const version = module2.version;
+  print_message_default(`Installed ${prefabName}@${version}`, "success");
+  (_b = (_a = module2 == null ? void 0 : module2.generatorOptions) == null ? void 0 : _a.rootFiles) == null ? void 0 : _b.forEach(async (file) => {
+    var _a2;
+    if (typeof file !== "string") {
+      const substitute = (_a2 = file.substitutions) != null ? _a2 : [];
+      await loop_and_rewrite_files_default({
+        name,
+        paths: [file.path],
+        substitute,
+        source: prefabDir,
+        destination: prefabDir
+      });
+    }
+  });
+  if (module2.blueprints) {
+    print_message_default("Installing prefab blueprints...", "installing");
+    const blueprintPromises = [];
+    const blueprints = Object.keys(module2.blueprints);
+    for (const blueprint of blueprints) {
+      const bp = module2.blueprints[blueprint];
+      print_message_default(`Installing blueprint: "${blueprint}"`, "processing");
+      const blueprintDest = import_node_path8.default.join(
+        rootDir,
+        buildaDir2,
+        "modules",
+        "blueprints"
+      );
+      create_dir_default(blueprintDest);
+      if (bp.location === "prefab") {
+        const blueprintSrc = import_node_path8.default.join(
+          prefabDir,
+          buildaDir2,
+          "modules",
+          "blueprints",
+          blueprint
+        );
+        if (import_node_fs8.default.existsSync(blueprintSrc)) {
+          copy_dir_default(blueprintSrc, import_node_path8.default.join(blueprintDest, blueprint));
+        }
+      } else {
+        const bluePrintType = detect_path_type_default(bp.location);
+        blueprintPromises.push(
+          new Promise((resolve) => {
+            if (bluePrintType === "local") {
+              add_local_module_default(bp.location, rootDir);
+            }
+            if (bluePrintType === "remote") {
+              const registry = convert_registry_path_to_url_default({
+                registryPath: bp.location
+              }).url;
+              if (!registry) {
+                throw_error_default("No registry found");
+              }
+              add_remote_module_default(registry, rootDir);
+            }
+            resolve(blueprint);
+          })
+        );
+      }
+      print_message_default(`${blueprint} installed`, "success");
+    }
+    await Promise.all(blueprintPromises);
+  }
+  print_message_default("Prefab has been set up.", "success");
+  return module2;
+}
+var generate_from_prefab_default = generateFromPrefab;
+
+// src/helpers/file/recurse-directories.ts
+var import_node_path9 = __toESM(require("path"));
+var import_node_fs9 = __toESM(require("fs"));
+var import_glob2 = __toESM(require("glob"));
+var recurseDirectories = async ({
+  log,
+  paths,
+  source
+}) => {
+  const { buildaDir: buildaDir2 } = globals_default;
+  const prefabDir = import_node_path9.default.join(buildaDir2, "modules", "prefab");
+  const propsList = {
+    log,
+    paths,
+    source
+  };
+  const promises = [];
+  for (const file of paths) {
+    const filePath = import_node_path9.default.join(source, file);
+    if (check_if_ignored_default(buildaDir2, filePath)) {
+      continue;
+    }
+    if (file.includes("*")) {
+      const globFiles = import_glob2.default.sync(filePath).map((f) => import_node_path9.default.relative(prefabDir, f));
+      promises.push(
+        await recurseDirectories(__spreadProps(__spreadValues({}, propsList), {
+          paths: globFiles
+        }))
+      );
+    } else if (import_node_fs9.default.lstatSync(filePath).isDirectory()) {
+      const files = import_node_fs9.default.readdirSync(filePath);
+      const newFiles = files.map((f) => import_node_path9.default.join(file, f));
+      promises.push(
+        await recurseDirectories(__spreadProps(__spreadValues({}, propsList), {
+          paths: newFiles
+        }))
+      );
+    } else {
+      promises.push(
+        new Promise((resolve) => {
+          resolve(filePath);
+        })
+      );
+    }
+  }
+  return Promise.all(promises.flat());
+};
+var recurse_directories_default = recurseDirectories;
+
+// src/helpers/module/add-local-module.ts
+var import_node_fs10 = __toESM(require("fs"));
+var import_tar = __toESM(require("tar"));
+var import_node_path10 = __toESM(require("path"));
+var getFiles = async (modulePath, outputPath, location) => {
+  const tarball = import_node_fs10.default.existsSync(`${modulePath}/${location}.tgz`);
+  if (tarball) {
+    import_node_fs10.default.copyFileSync(
+      `${modulePath}/${location}.tgz`,
+      `${outputPath}/${location}.tgz`
+    );
+    await import_tar.default.extract({
+      file: `${outputPath}/${location}.tgz`,
+      cwd: outputPath
+    });
+    import_node_fs10.default.unlinkSync(`${outputPath}/${location}.tgz`);
+  } else {
+    throw_error_default("No tarball found. Please run `builda package` first");
+  }
+};
+var addLocalModule = async (modulePath, output) => {
+  const buildaDir2 = import_node_path10.default.join(output || "./", globals_default.buildaDir);
+  const registry = await get_registry_default(modulePath);
+  const outputPath = registry.type === "blueprint" ? `${buildaDir2}/modules/blueprints/${registry.name}` : `${buildaDir2}/modules/prefab`;
+  await create_dir_default(outputPath);
+  await getFiles(modulePath, outputPath, "module");
+  import_node_fs10.default.writeFileSync(`${outputPath}/registry.json`, JSON.stringify(registry));
+  return registry;
+};
+var add_local_module_default = addLocalModule;
+
+// src/helpers/module/add-remote-module.ts
+var import_node_fs12 = __toESM(require("fs"));
+var import_node_path11 = __toESM(require("path"));
+var import_axios2 = __toESM(require("axios"));
+var import_tar2 = __toESM(require("tar"));
+
+// src/helpers/module/get-registry.ts
+var import_node_fs11 = __toESM(require("fs"));
+var import_node_process2 = __toESM(require("process"));
+var import_axios = __toESM(require("axios"));
+var getRegistry = async (registryPath) => {
+  const REGISTRYFILE = "registry.json";
+  registryPath = registryPath || import_node_process2.default.cwd();
+  const pathType = detect_path_type_default(registryPath);
+  if (pathType === "local") {
+    return JSON.parse(
+      import_node_fs11.default.readFileSync(`${registryPath}/${REGISTRYFILE}`, "utf8")
+    );
+  }
+  const resolved = convert_registry_path_to_url_default({ registryPath });
+  if (resolved.error) {
+    throw_error_default(resolved.error);
+  }
+  let url = resolved.url;
+  if (url.includes("%FILE_NAME%")) {
+    url = url.replace("%FILE_NAME%", REGISTRYFILE);
+  } else {
+    url = `${url}/${REGISTRYFILE}`;
+  }
+  const validModule = await validate_module_path_default(url, true);
+  if (!validModule.status) {
+    throw_error_default(validModule.message);
+  }
+  return import_axios.default.get(url, {
+    responseType: "json"
+  }).then((response) => {
+    return response.data;
+  }).catch((error) => {
+    throw_error_default(error.message);
+  });
+};
+var get_registry_default = getRegistry;
+
+// src/helpers/module/add-remote-module.ts
+var addRemoteModule = async (modulePath, output) => {
+  const buildaDir2 = import_node_path11.default.join(output || "./", globals_default.buildaDir);
+  const registry = await get_registry_default(modulePath);
+  const outputPath = registry.type === "blueprint" ? `${buildaDir2}/modules/blueprints/${registry.name}` : `${buildaDir2}/modules/prefab`;
+  await create_dir_default(outputPath);
+  print_message_default(`Downloading ${registry.name}...`, "downloading");
+  await import_axios2.default.get(`${modulePath}/module.tgz`, {
+    responseType: "arraybuffer",
+    headers: {
+      "Content-Type": "application/gzip"
+    }
+  }).then(
+    (res) => import_node_fs12.default.writeFileSync(`${outputPath}/module.tgz`, res.data, {
+      encoding: "binary"
+    })
+  ).then(async () => {
+    if (import_node_fs12.default.existsSync(`${outputPath}/module.tgz`)) {
+      print_message_default("Extracting module files...", "config");
+      try {
+        await import_tar2.default.extract({
+          file: `${outputPath}/module.tgz`,
+          cwd: outputPath
+        });
+        import_node_fs12.default.unlinkSync(`${outputPath}/module.tgz`);
+      } catch (err) {
+        throw_error_default(err);
+      }
+    }
+  }).catch((err) => {
+    throw_error_default(
+      `There was an error downloading the tarball. Please check the URL and try again.
+
+${err}`
+    );
+  }).finally(() => {
+    print_message_default("Copying the registry file...", "copying");
+    import_node_fs12.default.writeFileSync(
+      `${outputPath}/registry.json`,
+      JSON.stringify(registry, null, 2)
+    );
+  });
+  print_message_default("Done.", "success");
+  return registry;
+};
+var add_remote_module_default = addRemoteModule;
+
+// src/data/resolvers.json
+var resolvers_default = {
+  builda: "https://builda.app/modules/%REPO_NAME%",
+  github: "https://raw.githubusercontent.com/%REPO_NAME%",
+  bitbucket: "https://bitbucket.org/%REPO_NAME%/raw"
+};
+
+// src/helpers/module/use-resolver.ts
+var useResolver = ({
+  resolver,
+  modulePath,
+  version,
+  resolvers
+}) => {
+  const resolved = resolvers[resolver];
+  if (!resolved) {
+    return "";
+  }
+  let resolvedUrl = resolved;
+  if (resolvedUrl.includes("%REPO_NAME%")) {
+    resolvedUrl = resolvedUrl.replace("%REPO_NAME%", modulePath);
+  } else {
+    resolvedUrl = resolvedUrl.replace(`${resolver}`, "");
+  }
+  if (resolvedUrl.includes("%VERSION%")) {
+    resolvedUrl = resolvedUrl.replace("%VERSION%", version);
+  } else {
+    resolvedUrl = `${resolvedUrl}/${version || "latest"}`;
+  }
+  if (resolvedUrl.endsWith("/")) {
+    resolvedUrl = resolvedUrl.slice(0, -1);
+  }
+  return url_with_protocol_default(resolvedUrl);
+};
+var use_resolver_default = useResolver;
+
+// src/helpers/module/convert-registry-path-to-url.ts
+var convertRegistryPathToUrl = ({
+  registryPath,
+  config
+}) => {
+  var _a;
+  const newPath = registryPath;
+  let error = "";
+  let resolvers = resolvers_default;
+  if (newPath.startsWith("http") || newPath.startsWith("https")) {
+    let url = newPath;
+    if (newPath.includes("github.com")) {
+      url = newPath.replace("github.com", "raw.githubusercontent.com").replace("/blob", "").replace("/tree", "");
+    }
+    if (newPath.includes("bitbucket.org")) {
+      url = newPath.replace("src", "raw");
+    }
+    if (url.endsWith("/")) {
+      url = url.slice(0, -1);
+    }
+    return { url, error };
+  }
+  const resolverMatcher = newPath.match(
+    /^([a-z]+:{1}[/]{0})([a-z0-9-/]+)((?:@{1}v?[0-9.]+)?(?:[\w\d-]*))?$/
+  );
+  if (!resolverMatcher) {
+    error = 'Paths must start with a colon terminated lowercase string with no spaces or special characters (e.g. "builda:" or "([a-z]+:{1}[/]{0})" ) if using a resolver or "http(s)" if using a url';
+    return { url: "", error };
+  } else {
+    const resolver = ((_a = resolverMatcher[1]) == null ? void 0 : _a.replace(":", "")) || "";
+    const modulePath = resolverMatcher[2] || "";
+    const version = resolverMatcher[3] ? resolverMatcher[3].replace("@", "") : "latest";
+    if (config == null ? void 0 : config.resolvers) {
+      resolvers = __spreadValues(__spreadValues({}, resolvers), config.resolvers);
+    }
+    const url = use_resolver_default({
+      resolver,
+      modulePath,
+      version,
+      resolvers
+    });
+    if (!url) {
+      error = `Could not find a resolver for ${newPath}`;
+    }
+    return { url, error };
+  }
+};
+var convert_registry_path_to_url_default = convertRegistryPathToUrl;
+
+// src/helpers/module/get-module.ts
+var import_node_fs13 = __toESM(require("fs"));
+var import_node_path12 = __toESM(require("path"));
+var import_node_process3 = __toESM(require("process"));
+var getModule = (type, config, command) => {
+  if (config) {
+    const moduleType = `${type}s`;
+    const modulePath = import_node_path12.default.resolve(
+      import_node_process3.default.cwd(),
+      `${globals_default.buildaDir}/modules/${moduleType}/${command.use}`
+    );
+    const registry = JSON.parse(
+      import_node_fs13.default.readFileSync(`${modulePath}/registry.json`, "utf8")
+    );
+    return {
+      path: modulePath,
+      registry
+    };
+  }
+  throw new Error(`Could not find config file`);
+};
+var get_module_default = getModule;
+
+// src/helpers/module/get-substitutions.ts
+var getSubstitutions = ({
+  name,
+  registry,
+  script
+}) => {
+  var _a, _b;
+  const substitutions = [];
+  const substitute = (script == null ? void 0 : script.substitute) && ((_a = script.substitute) == null ? void 0 : _a.length) > 0 ? script == null ? void 0 : script.substitute : (_b = registry == null ? void 0 : registry.generatorOptions) == null ? void 0 : _b.substitutions;
+  if (substitute && substitute.length) {
+    substitute.forEach((sub) => {
+      var _a2;
+      const defaultString = sub.with === "script" ? name : sub.with;
+      const replaceString = (sub == null ? void 0 : sub.replace) || sub.replace;
+      const subtring = sub == null ? void 0 : sub.with;
+      const withString = subtring || defaultString || "";
+      if (!defaultString && !replaceString && sub.required) {
+        throw_error_default(
+          `"--${sub.replace}" missing in arguments. This is required.
+`
+        );
+      }
+      if (withString && !replaceString) {
+        substitutions.push({
+          replace: replaceString.toUpperCase(),
+          with: withString
+        });
+      }
+      if (replaceString) {
+        if (withString === "") {
+          throw_error_default(`"--${sub.replace}" requires a value`);
+        }
+        if (sub.valid && withString !== "" && !((_a2 = sub.valid) == null ? void 0 : _a2.includes(withString))) {
+          throw_error_default(
+            `
+"${withString}" is not a valid ${sub.replace}. Please use one of the following: 
+ - ${sub.valid.join(
+              `
+ - `
+            )}
+`
+          );
+        }
+        substitutions.push({
+          replace: sub.replace.toUpperCase(),
+          with: withString
+        });
+      }
+    });
+  }
+  return substitutions;
+};
+var get_substitutions_default = getSubstitutions;
+
+// src/helpers/module/validate-module-path.ts
+var import_axios3 = __toESM(require("axios"));
+var import_ajv = __toESM(require("ajv"));
+
+// src/data/module-registry-schema.json
+var module_registry_schema_default = {
+  $schema: "http://json-schema.org/draft-07/schema#",
+  definitions: {
+    ModuleConfig: {
+      additionalProperties: {
+        $ref: "#/definitions/ModuleConfigContents"
+      },
+      type: "object"
+    },
+    ModuleConfigContents: {
+      additionalProperties: false,
+      properties: {
+        location: {
+          description: "The location of the module. This can be a local path, a remote url, a resolver or 'prefab' (if preinstalled inside a prefab)",
+          type: "string"
+        },
+        outputDir: {
+          description: "If the module should have a custom output directory, specify it here (relative to the app_root)",
+          type: "string"
+        },
+        resolve: {
+          anyOf: [
+            {
+              type: "string"
+            },
+            {
+              additionalProperties: false,
+              properties: {
+                type: {
+                  type: "string"
+                },
+                url: {
+                  type: "string"
+                }
+              },
+              required: [
+                "url",
+                "type"
+              ],
+              type: "object"
+            }
+          ],
+          description: "The custom resolver to use for the module"
+        },
+        version: {
+          description: "The version of the module (not required for blueprints preinstalled inside a prefab)",
+          type: "string"
+        }
+      },
+      required: [
+        "location"
+      ],
+      type: "object"
+    },
+    ModuleRegistry: {
+      additionalProperties: false,
+      description: "See (https://builda.app/docs/build-a-module/registry) for more info",
+      properties: {
+        author: {
+          additionalProperties: false,
+          description: "The module author's details",
+          properties: {
+            buildaUser: {
+              description: "The builda username of the author. This is optional but is required if you want to publish your module to the builda trade store (see (https://builda.app/docs/trade-store))",
+              type: "string"
+            },
+            email: {
+              description: "The author's email",
+              type: "string"
+            },
+            name: {
+              description: "The author's name",
+              type: "string"
+            },
+            website: {
+              description: "The author's website",
+              type: "string"
+            }
+          },
+          required: [
+            "name"
+          ],
+          type: "object"
+        },
+        blueprints: {
+          $ref: "#/definitions/ModuleConfig",
+          description: "If the module is a prefab and requires blueprints or has it's own blueprints, you should add them here if the module is a blueprint, this field is ignored",
+          examples: [
+            "github:cool-developer/blueprint-cool-module@3.0.0",
+            "internal:blueprint-name"
+          ]
+        },
+        funding: {
+          description: "Is this module looking for funding? If so, you can add a list of funding links here.",
+          items: {
+            type: "string"
+          },
+          type: "array"
+        },
+        generatorOptions: {
+          additionalProperties: false,
+          description: "A set of options which will be passed to the module generator when the module has been installed",
+          properties: {
+            extraFolders: {
+              description: "Extra folders which should be created in the module root when the module is installed (Will create any folders which don't already exist in the tree)",
+              items: {
+                type: "string"
+              },
+              type: "array"
+            },
+            substitutions: {
+              additionalProperties: false,
+              description: "A set of substitutions which should be made in the module files when the module is installed",
+              type: "array",
+              items: {
+                $ref: "#/definitions/TSubstitution"
+              }
+            },
+            postScripts: {
+              description: "Any post install scripts which should be run after the module has been installed and all files have been copied across and substitutions made (script paths are relative to the module root and should be in the form of a node cli script)",
+              items: {
+                type: "string"
+              },
+              type: "array"
+            },
+            rootFiles: {
+              description: "Any files which should be copied to the module root when the module is installed in addition to the default files (see (https://builda.app/docs/build-a-module/prefabs#root-files)) e.g. .env files",
+              items: {
+                type: "string"
+              },
+              type: "array"
+            }
+          },
+          type: "object"
+        },
+        keywords: {
+          description: "The module keywords (optional but recommended if you want to publish your module to the builda trade store)",
+          items: {
+            type: "string"
+          },
+          type: "array"
+        },
+        name: {
+          description: "The name of the module",
+          type: "string"
+        },
+        prerelease: {
+          default: false,
+          description: "If this is a prerelease, set this to true",
+          type: "boolean"
+        },
+        publishToTradeStore: {
+          default: false,
+          description: "Do you want to publish this module to the builda trade store? (see (https://builda.app/docs/trade-store))",
+          type: "boolean"
+        },
+        type: {
+          description: "The module type",
+          enum: [
+            "blueprint",
+            "prefab"
+          ],
+          type: "string"
+        },
+        url: {
+          description: "The url of the module (generally a git repository) You can also use resolver aliases here. See (https://builda.app/docs/resolvers)",
+          type: "string"
+        },
+        version: {
+          description: "The module version number (in semver format)",
+          pattern: "^\\d+\\.\\d+\\.\\d+$",
+          type: "string"
+        }
+      },
+      required: [
+        "name",
+        "type",
+        "version",
+        "url"
+      ],
+      type: "object"
+    },
+    RootFile: {
+      additionalProperties: false,
+      properties: {
+        path: {
+          description: "The path to the root file (relative to the .builda/export directory)",
+          type: "string"
+        },
+        rewrite: {
+          default: false,
+          description: "Should the file contents be rewritten with the default substitutions? https://builda.app/docs/build-a-module/substitutions",
+          type: "boolean"
+        },
+        substitutions: {
+          description: "Are there any custom substitutions to be made? see (https://builda.app/docs/build-a-module/substitutions)",
+          items: {
+            $ref: "#/definitions/TSubstitution"
+          },
+          type: "array"
+        }
+      },
+      required: [
+        "path",
+        "substitutions"
+      ],
+      type: "object"
+    },
+    TSubstitution: {
+      additionalProperties: false,
+      properties: {
+        replace: {
+          description: "The string to be replaced",
+          pattern: "^%[A-Z_]+%$",
+          type: "string"
+        },
+        required: {
+          default: false,
+          description: "Is this substitution required? (i.e. if it is not found, should the build fail?)",
+          type: "boolean"
+        },
+        valid: {
+          description: "Do you want to provide a list of valid options for this substitution? (i.e. if it is not found, should the build fail?)",
+          items: {
+            type: "string"
+          },
+          type: "array"
+        },
+        with: {
+          description: "The string to replace with",
+          type: "string"
+        }
+      },
+      required: [
+        "replace",
+        "with"
+      ],
+      type: "object"
+    }
+  }
+};
+
+// src/helpers/module/validate-module-path.ts
+var ajv = new import_ajv.default();
+var validate_module_path_default = async (url, resolved) => {
+  let registryUrl = url;
+  if (!resolved) {
+    const rurl = convert_registry_path_to_url_default({
+      registryPath: url
+    });
+    if (rurl.error) {
+      return {
+        status: false,
+        message: rurl.error
+      };
+    }
+    registryUrl = rurl.url;
+  }
+  const registry = registryUrl.includes("registry.json") ? registryUrl : `${registryUrl}/registry.json`;
+  return import_axios3.default.get(registry).then((response) => {
+    var _a;
+    if (!response.data) {
+      return {
+        status: false,
+        message: "Something went wrong while fetching the registry. No data was returned and no error was provided."
+      };
+    }
+    const validate = ajv.compile(module_registry_schema_default);
+    const valid = validate(response.data);
+    if (valid) {
+      return {
+        status: true,
+        message: "Registry fetched successfully"
+      };
+    }
+    (_a = validate.errors) == null ? void 0 : _a.forEach((error) => {
+      console.log(`Registry validation error: ${error.message}`);
+    });
+    return {
+      status: false,
+      message: "The registry file is not valid. Please check the documentation for the correct format."
+    };
+  }).catch((error) => {
+    if (error.code === "ENOTFOUND" || error.code === "ERR_BAD_REQUEST") {
+      return {
+        status: false,
+        message: "The url must point to a folder that contains a registry.json file"
+      };
+    }
+    if (error.code === "ECONNREFUSED") {
+      return {
+        status: false,
+        message: `The server at ${registry} is not responding are you sure it is correct?`
+      };
+    }
+    return {
+      status: false,
+      message: error.message
+    };
+  });
+};
+
+// src/helpers/questions/blueprint-questions.ts
+var import_inquirer2 = __toESM(require("inquirer"));
+var import_chalk6 = __toESM(require("chalk"));
+
+// src/data/suggested-blueprints.json
+var suggested_blueprints_default = [
+  {
+    name: "Test Blueprint",
+    value: "github:builda-modules/blueprint-test"
+  },
+  {
+    name: "Fake blueprint",
+    value: ""
+  },
+  {
+    name: "Another fake blueprint",
+    value: ""
+  },
+  {
+    name: "Yet another fake blueprint",
+    value: ""
+  }
+];
+
+// src/helpers/questions/blueprint-questions.ts
+var validateBlueprint = async (input, answers) => {
+  const moduleValid = await validate_module_path_default(input);
+  if (moduleValid.status) {
+    if (answers.prefabRegistry) {
+      const registry = answers.prefabRegistry;
+      const blueprints = registry.blueprints;
+      if (blueprints && blueprints[input]) {
+        return {
+          status: false,
+          message: "A blueprint with that name already exists"
+        };
+      }
+      return {
+        status: true,
+        message: ""
+      };
+    }
+    return {
+      status: true,
+      message: ""
+    };
+  }
+  return {
+    status: false,
+    message: moduleValid.message || "Could not validate the blueprint"
+  };
+};
+var blueprint_questions_default = async (answers) => {
+  show_help_default(
+    "These questions are all about adding blueprints to your project.\r\n\nIf you're not sure what a blueprint is" + print_site_link_default({ link: "docs/blueprints" })
+  );
+  return import_inquirer2.default.prompt([
+    {
+      type: "confirm",
+      name: "addBlueprints",
+      message: () => {
+        let blueprintList = [];
+        const registry = answers.prefabRegistry;
+        const blueprints = registry == null ? void 0 : registry.blueprints;
+        if (answers.prefab && !!blueprints) {
+          blueprintList = Object.keys(blueprints);
+          show_help_default(
+            `You are generating this project from the ${import_chalk6.default.blue(
+              registry.name
+            )} prefab.
 
 It comes with the following blueprints:
 
-	`+t.map(i=>Oe.default.blue(i)).join(`
-	`)+`
+	` + blueprintList.map((blueprint) => import_chalk6.default.blue(blueprint)).join("\n	") + "\n\nEnsure that any additional blueprints you add are compatible with this prefab.",
+            "warning"
+          );
+        }
+        return `Do you want to add any${blueprintList.length ? "additional" : ""} blueprints to your project?`;
+      },
+      default: true
+    },
+    {
+      type: "list",
+      name: "blueprintChoice",
+      message: "Do you have url(s) for your blueprint(s) or do you want to choose from a list?",
+      choices: [
+        {
+          name: "I have url(s)",
+          value: "url"
+        },
+        {
+          name: "I want to choose from a list (coming soon)",
+          value: "list",
+          disabled: "This option is not available yet"
+        }
+      ]
+    },
+    {
+      type: "input",
+      name: "blueprintUrls",
+      message: "Enter the blueprint url(s) (if adding more than one, please separate them with a space):",
+      when: (answers2) => answers2.blueprintChoice === "url",
+      validate: async (input) => {
+        if (!input) {
+          return "You must enter at least one url";
+        }
+        const urls = input.split(" ");
+        for (const url of urls) {
+          const moduleValid = await validateBlueprint(url, answers);
+          if (!moduleValid.status) {
+            return `The module at ${url} returned an error: ${moduleValid.message}`;
+          }
+        }
+        return true;
+      }
+    },
+    {
+      type: "checkbox",
+      name: "blueprintList",
+      message: () => {
+        show_help_default(
+          "This list is not exhaustive. You can find more blueprints at " + import_chalk6.default.blue.underline(get_site_link_default("tradeStore/blueprints"))
+        );
+        return "Choose your blueprints:";
+      },
+      choices: suggested_blueprints_default,
+      when: (answers2) => answers2.blueprintChoice === "list",
+      validate: async (input) => {
+        if (!input.length) {
+          return "You must choose at least one blueprint";
+        }
+        for (const blueprint of input) {
+          const moduleValid = await validateBlueprint(blueprint, answers);
+          if (!moduleValid.status) {
+            return `The module at ${blueprint} returned an error: ${moduleValid.message}`;
+          }
+        }
+        return true;
+      }
+    }
+  ]);
+};
 
-Ensure that any additional blueprints you add are compatible with this prefab.`,"warning")),`Do you want to add any${t.length?"additional":""} blueprints to your project?`},default:!0},{type:"list",name:"blueprintChoice",message:"Do you have url(s) for your blueprint(s) or do you want to choose from a list?",choices:[{name:"I have url(s)",value:"url"},{name:"I want to choose from a list (coming soon)",value:"list",disabled:"This option is not available yet"}]},{type:"input",name:"blueprintUrls",message:"Enter the blueprint url(s) (if adding more than one, please separate them with a space):",when:t=>t.blueprintChoice==="url",validate:async t=>{if(!t)return"You must enter at least one url";let r=t.split(" ");for(let o of r){let i=await Dr(o,e);if(!i.status)return`The module at ${o} returned an error: ${i.message}`}return!0}},{type:"checkbox",name:"blueprintList",message:()=>(w("This list is not exhaustive. You can find more blueprints at "+Oe.default.blue.underline(A("tradeStore/blueprints"))),"Choose your blueprints:"),choices:Mr,when:t=>t.blueprintChoice==="list",validate:async t=>{if(!t.length)return"You must choose at least one blueprint";for(let r of t){let o=await Dr(r,e);if(!o.status)return`The module at ${r} returned an error: ${o.message}`}return!0}}]));var ge=l(require("fs")),Or=l(require("inquirer")),ft=l(require("chalk"));var mt=async()=>{let e=()=>{try{return JSON.parse(ge.default.readFileSync("package.json","utf8"))}catch{return""}};e()||(w("You must have a package.json file in the root of your project to add to an existing project.","error"),process.exit(1));let{name:t}=e(),o=(()=>!!(ge.default.existsSync("lerna.json")||e().workspaces))(),s=(()=>ge.default.existsSync("yarn.lock")?"yarn":ge.default.existsSync("package-lock.json")?"npm":"unknown")();return Or.default.prompt([{type:"input",name:"projectName",message:`We think your project is called ${ft.default.bold.magenta(t)}. Press enter if correct? If not, enter the correct name here.`,default:t},{type:"input",name:"appRoot",message:()=>(w(`The app root is the directory where your app files are stored.
+// src/helpers/questions/existing-project-questions.ts
+var import_node_fs14 = __toESM(require("fs"));
+var import_inquirer3 = __toESM(require("inquirer"));
+var import_chalk7 = __toESM(require("chalk"));
+var existing_project_questions_default = async () => {
+  const packageJson = () => {
+    try {
+      const packageJson2 = JSON.parse(import_node_fs14.default.readFileSync("package.json", "utf8"));
+      return packageJson2;
+    } catch (error) {
+      return "";
+    }
+  };
+  if (!packageJson()) {
+    show_help_default(
+      "You must have a package.json file in the root of your project to add to an existing project.",
+      "error"
+    );
+    process.exit(1);
+  }
+  const { name } = packageJson();
+  const checkForMonorepo = () => {
+    if (import_node_fs14.default.existsSync("lerna.json")) {
+      return true;
+    }
+    if (packageJson().workspaces) {
+      return true;
+    }
+    return false;
+  };
+  const isMonorepo = checkForMonorepo();
+  const determinePackageManager = () => {
+    if (import_node_fs14.default.existsSync("yarn.lock")) {
+      return "yarn";
+    }
+    if (import_node_fs14.default.existsSync("package-lock.json")) {
+      return "npm";
+    }
+    return "unknown";
+  };
+  const packageManager = determinePackageManager();
+  return import_inquirer3.default.prompt([
+    {
+      type: "input",
+      name: "projectName",
+      message: `We think your project is called ${import_chalk7.default.bold.magenta(
+        name
+      )}. Press enter if correct? If not, enter the correct name here.`,
+      default: name
+    },
+    {
+      type: "input",
+      name: "appRoot",
+      message: () => {
+        show_help_default(
+          "The app root is the directory where your app files are stored.\n\nThis is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.\n\nIf you're not sure, just press enter to use the current working directory."
+        );
+        return `We think your app root ${!isMonorepo ? "is ./" : "may be in a monorepo, please enter the package name. If it is not a monorepo, just press enter to use ./ or specify the directory your app is store in"}`;
+      },
+      default: "./"
+    },
+    {
+      type: "list",
+      name: "packageManager",
+      message: () => {
+        show_help_default(
+          "Builda works with both npm and yarn. If you are using a different package manager, unfortunately, Builda may not work for you."
+        );
+        return "We think you are using " + import_chalk7.default.bold.magenta(packageManager) + ". Press enter if correct? If not, select the correct package manager.";
+      },
+      choices: ["npm", "yarn"],
+      default: packageManager
+    }
+  ]);
+};
 
-This is usually your current working directory but if you are using a monorepo or if you'd like to store your app files in a different directory, you can specify it here it here.
+// src/helpers/questions/new-project-questions.ts
+var import_inquirer4 = __toESM(require("inquirer"));
+var import_chalk8 = __toESM(require("chalk"));
+var new_project_questions_default = async (hasPrefab) => {
+  const suggestedName = random_word_generator_default();
+  if (hasPrefab) {
+    show_help_default(
+      "Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.",
+      "success"
+    );
+  }
+  return import_inquirer4.default.prompt([
+    {
+      type: "input",
+      name: "appName",
+      required: true,
+      message: `What do you want to call your project? This will also be the folder name we will create for your app. (If you don't know, just press enter to use ${import_chalk8.default.bold.magenta(
+        suggestedName
+      )})`,
+      default: suggestedName
+    }
+  ]);
+};
 
-If you're not sure, just press enter to use the current working directory.`),`We think your app root ${o?"may be in a monorepo, please enter the package name. If it is not a monorepo, just press enter to use ./ or specify the directory your app is store in":"is ./"}`),default:"./"},{type:"list",name:"packageManager",message:()=>(w("Builda works with both npm and yarn. If you are using a different package manager, unfortunately, Builda may not work for you."),"We think you are using "+ft.default.bold.magenta(s)+". Press enter if correct? If not, select the correct package manager."),choices:["npm","yarn"],default:s}])};var Wr=l(require("inquirer")),Br=l(require("chalk"));var gt=async e=>{let t=Ce();return e&&w(`Great! That prefab is ready to install!
+// src/helpers/questions/prefab-questions.ts
+var import_inquirer5 = __toESM(require("inquirer"));
+var import_chalk9 = __toESM(require("chalk"));
 
-First things first though, we need a few more details, to get you set up.`,"success"),Wr.default.prompt([{type:"input",name:"appName",required:!0,message:`What do you want to call your project? This will also be the folder name we will create for your app. (If you don't know, just press enter to use ${Br.default.bold.magenta(t)})`,default:t}])};var Jr=l(require("inquirer")),he=l(require("chalk"));var zr=[{name:"Test Prefab",value:"github:builda-modules/prefab-test"},{name:"Fake prefab",value:""},{name:"Another fake prefab",value:""},{name:"Yet another fake prefab",value:""}];var ht=async()=>(w(`These questions are all about building a project from a prefab.
+// src/data/suggested-prefabs.json
+var suggested_prefabs_default = [
+  {
+    name: "Test Prefab",
+    value: "github:builda-modules/prefab-test"
+  },
+  {
+    name: "Fake prefab",
+    value: ""
+  },
+  {
+    name: "Another fake prefab",
+    value: ""
+  },
+  {
+    name: "Yet another fake prefab",
+    value: ""
+  }
+];
 
-If you're not sure what a prefab is, visit `+he.default.blue.underline(A("docs/prefabs"))+he.default.white(" for more information.")),Jr.default.prompt([{type:"list",name:"prefabChoice",message:"Do you have a prefab url or do you want to choose from a list?",choices:[{name:"I have a url",value:"url"},{name:"I want to choose from a list (coming soon)",value:"list",disabled:"This option is not available yet"}]},{type:"input",name:"prefabUrl",message:()=>(w("The url should point to the folder that the prefabs registry.json file is in. It can be a regular link or use a resolver."+C({link:"docs/resolvers"})),"Enter the prefab url:"),when:e=>e.prefabChoice==="url",validate:async e=>{if(!e)return"You must enter a url";let t=await U(e);return t.status!==!0&&he.default.red(t.message),t.status}},{type:"list",name:"prefabList",message:()=>(w("This list is not exhaustive. You can find more prefabs at "+he.default.blue.underline(A("tradeStore/prefabs"))),"Choose a prefab:"),choices:zr,when:e=>e.prefabChoice==="list"}]));var di=e=>e.startsWith("http")||e.startsWith("https")?e:`https://${e}`,ct=di;var qr=l(require("axios")),X=l(require("fs")),ee=l(require("path"));async function Ur({module:e,rootDir:t,prefabDir:r,name:o,buildaDir:i,websiteUrl:s,buildaReadmeFileName:n}){var b,$,F,N;let a=ee.default.join(t,i,"export");X.default.existsSync(a)||c("No export directory found"),($=(b=e==null?void 0:e.generatorOptions)==null?void 0:b.rootFiles)==null||$.forEach(async T=>{if(typeof T=="string")ae([T],t);else{let oe=T.substitutions??[];await M({log:!0,name:o,paths:[T.path],substitute:oe,source:r.replace(`${t}/`,""),destination:t})}}),(N=(F=e==null?void 0:e.generatorOptions)==null?void 0:F.extraFolders)==null||N.forEach(async T=>{X.default.mkdirSync(ee.default.join(t,T),{recursive:!0}),X.default.writeFileSync(ee.default.join(t,T,".gitkeep"),"")});let p=X.default.readFileSync(ee.default.resolve(r,"package.json"),{encoding:"utf8"}),m=JSON.parse(p),d={...m,name:v(o,"kebabCase")},f=m.scripts,y={};Object.entries(f).forEach(([T,oe])=>{y[T]=Fe(T,oe)}),d.scripts=y,X.default.writeFileSync(ee.default.join(t,"package.json"),JSON.stringify(d,null,2));let h=`${s}/assets/prefab-getting-started.md`,x=[{replace:"%PREFAB_NAME%",with:e.name},{replace:"%PREFAB_URL%",with:e.url},{replace:"%PREFAB_VERSION%",with:e.version}];return await qr.default.get(h,{headers:{"Content-Type":"text/plain"}}).then(T=>{T.status===200&&J({content:T.data,rename:n,outputDir:t,substitute:x})}).catch(T=>{console.log(T),u(`Could not download the getting started file. Visit ${s}/docs/getting-started#prefab for assistance`,"warning")}),u("All files copied to application.","success"),e}var ye=async({appName:e,prefab:t,smokeTest:r})=>{let{buildaDir:o,websiteUrl:i,buildaReadmeFileName:s}=g;Y();let n={};if(!t){let{usePrefab:h}=await Yr.default.prompt([{type:"confirm",name:"usePrefab",message:"Do you want to set the project up using a prefab?",default:!0}]);if(h){let x=await ht();n.prefab=x.prefabUrl||x.prefabList}else w(`You can set up a project from scratch by answering a few questions about your project.\r
+// src/helpers/questions/prefab-questions.ts
+var prefab_questions_default = async () => {
+  show_help_default(
+    "These questions are all about building a project from a prefab.\n\nIf you're not sure what a prefab is, visit " + import_chalk9.default.blue.underline(get_site_link_default("docs/prefabs")) + import_chalk9.default.white(" for more information.")
+  );
+  return import_inquirer5.default.prompt([
+    {
+      type: "list",
+      name: "prefabChoice",
+      message: "Do you have a prefab url or do you want to choose from a list?",
+      choices: [
+        {
+          name: "I have a url",
+          value: "url"
+        },
+        {
+          name: "I want to choose from a list (coming soon)",
+          value: "list",
+          disabled: "This option is not available yet"
+        }
+      ]
+    },
+    {
+      type: "input",
+      name: "prefabUrl",
+      message: () => {
+        show_help_default(
+          "The url should point to the folder that the prefabs registry.json file is in. It can be a regular link or use a resolver." + print_site_link_default({ link: "docs/resolvers" })
+        );
+        return "Enter the prefab url:";
+      },
+      when: (answers) => answers.prefabChoice === "url",
+      validate: async (input) => {
+        if (!input) {
+          return "You must enter a url";
+        }
+        const module2 = await validate_module_path_default(input);
+        if (module2.status !== true) {
+          import_chalk9.default.red(module2.message);
+        }
+        return module2.status;
+      }
+    },
+    {
+      type: "list",
+      name: "prefabList",
+      message: () => {
+        show_help_default(
+          "This list is not exhaustive. You can find more prefabs at " + import_chalk9.default.blue.underline(get_site_link_default("tradeStore/prefabs"))
+        );
+        return "Choose a prefab:";
+      },
+      choices: suggested_prefabs_default,
+      when: (answers) => answers.prefabChoice === "list"
+    }
+  ]);
+};
 
-If you are unsure about any of these, you can always change them later by editing the 'builda' section of your package.json file.`);n.prefab&&w(`Great! That prefab is ready to install!
+// src/helpers/string/url-with-protocol.ts
+var urlWithProtocol = (url) => {
+  if (url.startsWith("http") || url.startsWith("https")) {
+    return url;
+  }
+  return `https://${url}`;
+};
+var url_with_protocol_default = urlWithProtocol;
 
-First things first though, we need a few more details, to get you set up.`,"success")}let a={};(!t||!e)&&(a=await gt()),n={...n,...a};let p=e||n.appName,m=t||n.prefab,d=v(p,"kebabCase"),f=bt.default.join(We.default.cwd(),d);await j(d),We.default.chdir(d);let y=bt.default.join(f,o,"modules","prefab");if(yt.default.readdirSync(f).length!==0&&c(`The directory: '${d}' already exists. It is not recommended to install a prefab into an existing project.`),m){let h=await ue({prefabPath:m,rootDir:f,prefabDir:y,name:p,buildaDir:o});await q({buildaDir:o,prefabDir:y}),await Ur({module:h,rootDir:f,prefabDir:y,name:p,buildaDir:o,websiteUrl:i,buildaReadmeFileName:s})}u(`Your application, "${p}" has been initialised!`,"success"),r?(We.default.chdir("../"),yt.default.rm(p,{recursive:!0,force:!0},h=>{h&&console.log(h),u("This was a smoke test. No files were created.","primary")})):((0,Gr.default)("cd",[p]),u(`For more information about how to use your application, visit: ${i}/docs/getting-started`,"primary"))};var wt=()=>({command:"project [appName]",desc:"Generate a new app from a prefab",aliases:["app","--app","--project"],builder:e=>e.positional("appName",{describe:"The name of the app",type:"string",default:""}).option("prefab",{alias:"p",default:"",describe:"The prefab to use (url, local path, or preset name)",type:"string"}).option("smokeTest",{alias:"s",default:!1,describe:"Runs the command but deletes the output immediately",type:"boolean"}),handler:async e=>{let t={appName:e.appName,prefab:e.prefab,smokeTest:e.smokeTest};await ye({...t})}});var xt=l(require("chalk")),be=l(require("process")),G=l(require("path")),te=l(require("fs")),_r=l(require("execa"));var vt=async({command:e,args:t})=>{var m;let r=be.default.cwd(),o=G.default.join(be.default.cwd(),g.buildaDir,"export");r.split("/").pop()==="export"&&(o=r);let i=te.default.readFileSync(G.default.resolve(o,"package.json"),{encoding:"utf8"}),a=JSON.parse(i).scripts[e],p="";te.default.existsSync(G.default.resolve(r,"yarn.lock"))&&te.default.existsSync(G.default.resolve(r,"package-lock.json"))?c("Builda detected a yarn.lock file and a package-lock.json file. Please delete one of these files and try again"):te.default.existsSync(G.default.resolve(r,"yarn.lock"))?p="yarn":te.default.existsSync(G.default.resolve(r,"package-lock.json"))?p="npm":c("Builda could not detect a yarn.lock or package-lock.json file. Please run `yarn` or `npm install` and try again"),a||c(`No script found with the name '${e}'`),o||c(`No path found for script '${e}'`),e||c("No command found");try{let d=`${p} run ${e}`;if(t){let f=Object.keys(t),y=Object.values(t),h=f.reduce((x,b,$)=>{let F=y[$],N="";return b==="_"||b==="command"||b==="$0"?x:(b.length===1?N=`-${b}`:N=`--${b}`,F&&typeof F=="boolean"?` ${x} ${N}`:` ${x} ${N}="${F}"`)},"");d=`${d}${h}`}be.default.stdout.write(xt.default.magenta("Running with Builda: ")+xt.default.white.bold(`'${d}'`)+`
-`),(m=_r.default.command(d,{cwd:o,stdio:"inherit"}).stdout)==null||m.pipe(be.default.stdout)}catch(d){c(d.message)}};var kt=()=>({command:"execute <command>",desc:"Execute a command from within the export directory",aliases:["x","exec"],builder:e=>e.positional("command",{describe:"The name of the command",type:"string",demandOption:!0}),handler:async e=>vt({command:e.command,args:e})});var we=l(require("process")),$t=l(require("fs"));var St=async({pathString:e})=>{var i;let t=S();e||c("A path must be provided"),(i=t.ejected)!=null&&i.includes(e)&&c(`${e} has already been ejected.`);let r=e.replace(`${we.default.cwd()}/`,""),o=`${we.default.cwd()}/.builda/export/${r}`;try{$t.default.existsSync(o)||c(`No file found at ${o}.`),u(`Moving ${r} to application...`,"info"),ae([r],we.default.cwd()),u(`Deleting original from ${o}`,"info"),$t.default.rmSync(o,{recursive:!0,force:!0});let s=e.replace(`${we.default.cwd()}/`,""),n=t.ejected??[];n.push(s);let a={...t,ejected:n};L(a),u(`Ejected ${e}. You can now edit this file directly.`,"success")}catch(s){c(s.message)}};var Tt=()=>({command:"eject <pathString>",desc:"Eject a file or directory from builda to make it editable",builder:e=>e.positional("pathString",{describe:"The path to the file or directory to eject",type:"string",demandOption:!0}).option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async e=>St({pathString:e.pathString})});var Be=l(require("fs")),xe=l(require("path"));var re=async e=>{var y;let{buildaDir:t}=g,r=process.cwd(),o=xe.default.join(r,t),i,s;Be.default.existsSync(xe.default.resolve(process.cwd(),"package.json"))&&(i=JSON.parse(Be.default.readFileSync(xe.default.resolve(process.cwd(),"package.json"),"utf8")),s=i.builda,s||c('No "builda" entry found in package.json'));let n=i.name;Be.default.existsSync(t)&&!e&&(u("A .builda directory already exists. The directory will be deleted and rebuilt from the prefab.","warning"),await _("Do you wish to proceed?")||(u("Installation aborted","error"),process.exit(1))),e?u(`Updating ${n}`,"installing"):u(`Installing ${n}`,"installing");let a=`${(y=s.prefab)==null?void 0:y.location}`,p=xe.default.join(o,"modules","prefab");await ue({prefabPath:a,rootDir:r,prefabDir:p,name:n,buildaDir:t}),await q({buildaDir:t,prefabDir:p}),await it();let m=await P(p),d=m.name.replace("prefab-",""),f=m.version;e?u(`${d}, been updated to v${f}`,"success"):u(`${d}, v${f} has been installed`,"success")};var Pt=()=>({command:"install",desc:"Installs the applications prefab and builds the export directory",builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async()=>re()});var Hr=l(require("path")),Zr=l(require("process"));var ve=async({modulePath:e,fromScript:t})=>{var a;let r={},o=S(),i=Zr.default.cwd(),s=Hr.default.join(i,g.buildaDir,"modules"),n=e.includes(" ")?e.split(" "):[e];await j(s);for(let p of n){if(I(p)==="remote"){let m=R({registryPath:p}).url;m||c("No registry found"),r=await V(m)}else r=await K(p);if(!t)if(r!=null&&r.name){let m=r.type,d=r.name,f=r.version;m==="blueprint"&&(o!=null&&o.blueprints||(o.blueprints={}),(a=o==null?void 0:o.blueprints)!=null&&a[d]?c(`A blueprint called ${d} already exists. Perhaps you meant 'builda update ${d}?'`):o.blueprints[d]={version:f,location:p}),m==="prefab"&&c("You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda project' instead."),L(o),u(`Added ${d} to your project`,"success")}else c("Something went wrong")}};var{websiteUrl:fi}=g,jt=()=>({command:"add <blueprintPath>",desc:"Adds a new blueprint",builder:e=>e.positional("blueprintPath",{describe:`The path to the blueprint (can be a resolver - see http://${fi}/docs/resolvers)`,type:"string",demandOption:!0}).option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async e=>ve({modulePath:e.blueprintPath})});var D=l(require("fs")),Vr=l(require("tar"));var Qr=l(require("fs")),Kr=(e,t)=>Qr.default.existsSync(e)?{error:!1,message:""}:{error:!0,message:`Cannot find ${t&&"a folder called"} '${e}' in the current directory.`};var ke=async e=>{let t=await P(),{name:r,type:o,version:i}=t,s="registry.json",n="module",a=[];if(D.default.existsSync(".npmignore")){let x=D.default.readFileSync(".npmignore","utf8").split(`
-`).filter(b=>b!==""&&!b.startsWith("#")&&!b.startsWith("!"));a.push(...x)}if(D.default.existsSync(`${n}/.gitignore`)){let x=D.default.readFileSync(`${n}/.gitignore`,"utf8").split(`
-`).filter(b=>b!==""&&!b.startsWith("#")&&!b.startsWith("!"));a.push(...x)}a.includes(".builda")&&a.splice(a.indexOf(".builda"),1),t||c(`No ${s} file found. See ${C({link:"docs/packaging"})} for more information.`),r||c(`No name entry found in ${s}. Please add one.\r`),o||c(`No type entry found in ${s}. Please add one.\r`),!i&&!e&&c(`No version entry found in ${s}. Please add one.\r`);let p=Kr(n,!0);p.error&&c(p.message),r.startsWith(`${o}-`)||c(`The name entry in ${s} must be prefixed with ${o}-.\r`),u("All checks passed.","success");let d=(e==null?void 0:e.replace("v",""))||i,f={...t,version:d},y=JSON.stringify(f,null,2);if(D.default.writeFileSync(s,y),D.default.existsSync(`${n}.tgz`)){if(u("A module package already exists. Do you want to overwrite it?","warning"),!await _("Overwrite?")){u("Package process aborted","error");return}D.default.unlinkSync(`${n}.tgz`)}u(`Packaging ${r}...`,"processing"),await Vr.default.create({file:`${n}.tgz`,gzip:!0,cwd:n,filter:h=>!a.includes(h)},D.default.readdirSync(n)),u("Package created","success")};var Ct=()=>({command:"package",desc:"Package a module ready for publishing",aliases:["package","pack"],handler:async()=>ke()});var At=l(require("fs")),ro=require("simple-git");var Xr=async()=>!0;var eo=l(require("fs")),to=(e,t)=>eo.default.existsSync(e)?{error:!1,message:""}:{error:!0,message:`Cannot find ${t&&"a folder called"} '${e}' in the current directory.`};var Et=async e=>{let t=await P(),{name:r,type:o,version:i,publishToTradeStore:s}=t,n="registry.json",a="README.md",p="module.tgz";t||c(`No ${n} file found. Publish can only be ran in the context of a module`),r||c(`No name entry found in ${n}. Please add one.\r`),o||c(`No type entry found in ${n}. Please add one.\r`),!i&&!e&&c(`No version entry found in ${n}. Please add one.\r`),s||u(`No tradeStore entry found in ${n}.
-This module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`,"info"),At.default.existsSync(p)||(u("No module package found. Building package...","processing"),await ke(e),u("Package built","success")),r.startsWith(`${o}-`)||c(`The name entry in ${n} must be prefixed with ${o}-.\r`);let d=to(a);d.error&&c(d.message);let f=(0,ro.simpleGit)();f.checkIsRepo()||c("This is not a git repository. Please initialise git and try again.\r"),(await f.status()).isClean()||c("The git repository is not clean. Please commit all changes and try again.\r"),u("All checks passed.","success");let h=(e==null?void 0:e.replace("v",""))||i,x={...t,version:h},b=JSON.stringify(x,null,2);At.default.writeFileSync(n,b),u(`Adding ${p} to git...`,"processing"),await f.add(`${p}`),await f.commit(`Adds updated ${p}`),u("Added to git","success"),u("Tagging the latest commit...","processing");let $=await f.tags();($.all.includes(h)||$.all.includes(`v${h}`))&&c(`A tag with the version number v${h} already exists. Please update the version number in ${n} and try again.\r`),await f.addTag(`v${h}`);let N="tags";if(t.prerelease)u("Prerelease entry found in registry.json. Skipping latest tag...","info"),N="tag";else{let oe=(await f.listRemote(["--tags"])).includes("refs/tags/latest"),mo=(await f.tags()).all.includes("latest");(oe||mo)&&(await f.tag(["--delete","latest"]),await f.push(["origin","--delete","latest"])),await f.addTag("latest")}await f.pushTags("origin"),u(`${N} created.`,"success"),u("Pushing changes to git...","processing"),await f.push(),u("Changes pushed to git.","success"),s&&(u("Publishing to the Builda Trade Store...","processing"),Xr()),u("Module published.","success")};var Ft=()=>({command:"publish",desc:"publish a module",aliases:["pub","push"],builder:e=>e.option("version",{aliases:["v","ver"],default:"",describe:"update module version (semver)",type:"string"}),handler:async e=>Et(e.version)});var oo=l(require("chokidar"));var Nt=e=>{let{prefab:t}=e,r=[...e.ignored??[]];r.includes(g.buildaDir)||r.push(g.buildaDir),t||c("No prefab found in config file. Watch cannot be run without a prefab"),oo.default.watch(".",{persistent:!0,ignoreInitial:!0,ignored:r}).on("change",i=>{console.log(`File ${i} has been changed`),E({type:"update",pathString:i})}).on("add",i=>{console.log(`File ${i} has been added`),E({type:"copy",pathString:i})}).on("addDir",i=>{console.log(`Directory ${i} has been added`),E({type:"copy",pathString:i})}).on("unlinkDir",i=>{console.log(`Directory ${i} has been deleted`),E({type:"delete",pathString:i})}).on("unlink",i=>{console.log(`File ${i} has been deleted`),E({type:"delete",pathString:i})}).on("ready",()=>{u("Watching for changes...","primary"),u("Press Ctrl+C to stop watching","secondary")})};var Rt=()=>({command:"watch",desc:"Watches your app for changes and rebuilds",aliases:["w"],builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async()=>{let e=await S();if(e!=null&&e.prefab)return Nt(e);(e==null?void 0:e.prefab)===void 0&&c("No prefab found in config file. Watch can only be run within a prefab"),c("No config file found")}});var Dt=l(require("fs")),ze=l(require("path"));var io=l(require("fs")),It=l(require("path"));var Mt=({directory:e,parent:t})=>{let r=io.default.readdirSync(It.default.resolve(e));return r.length!==0?r.map(o=>{let i=t?`${t}/${o}`:o;if(!o.match(/\.[jt]sx$/))return`export { default as ${v(o,"pascalCase")} } from './${i}';`;let s=It.default.parse(o).name;return`export { default as ${v(s,"camelCase")} } from './${s}';`}).filter(o=>o).toString().replace(/,/g,`
-`):""};var mi=`/**
+// src/scripts/builda-project/helpers/create-initial-app.ts
+var import_axios4 = __toESM(require("axios"));
+var import_node_fs15 = __toESM(require("fs"));
+var import_node_path13 = __toESM(require("path"));
+async function createInitialApp({
+  module: module2,
+  rootDir,
+  prefabDir,
+  name,
+  buildaDir: buildaDir2,
+  websiteUrl: websiteUrl3,
+  buildaReadmeFileName
+}) {
+  var _a, _b, _c, _d;
+  const exportDir = import_node_path13.default.join(rootDir, buildaDir2, "export");
+  if (!import_node_fs15.default.existsSync(exportDir)) {
+    throw_error_default("No export directory found");
+  }
+  (_b = (_a = module2 == null ? void 0 : module2.generatorOptions) == null ? void 0 : _a.rootFiles) == null ? void 0 : _b.forEach(async (file) => {
+    var _a2;
+    if (typeof file === "string") {
+      copy_paths_to_root_default([file], rootDir);
+    } else {
+      const substitute = (_a2 = file.substitutions) != null ? _a2 : [];
+      await loop_and_rewrite_files_default({
+        log: true,
+        name,
+        paths: [file.path],
+        substitute,
+        source: prefabDir.replace(`${rootDir}/`, ""),
+        destination: rootDir
+      });
+    }
+  });
+  (_d = (_c = module2 == null ? void 0 : module2.generatorOptions) == null ? void 0 : _c.extraFolders) == null ? void 0 : _d.forEach(async (folder) => {
+    import_node_fs15.default.mkdirSync(import_node_path13.default.join(rootDir, folder), { recursive: true });
+    import_node_fs15.default.writeFileSync(import_node_path13.default.join(rootDir, folder, ".gitkeep"), "");
+  });
+  const packageJsonFile = import_node_fs15.default.readFileSync(
+    import_node_path13.default.resolve(prefabDir, "package.json"),
+    {
+      encoding: "utf8"
+    }
+  );
+  const packageJson = JSON.parse(packageJsonFile);
+  const newPackageJson = __spreadProps(__spreadValues({}, packageJson), {
+    name: change_case_default(name, "kebabCase")
+  });
+  const scripts = packageJson.scripts;
+  const buildaScripts = {};
+  Object.entries(scripts).forEach(([key, value]) => {
+    buildaScripts[key] = convert_to_builda_script_default(key, value);
+  });
+  newPackageJson.scripts = buildaScripts;
+  import_node_fs15.default.writeFileSync(
+    import_node_path13.default.join(rootDir, "package.json"),
+    JSON.stringify(newPackageJson, null, 2)
+  );
+  const prefabReadmeUrl = `${websiteUrl3}/assets/prefab-getting-started.md`;
+  const readmeSubs = [
+    {
+      replace: "%PREFAB_NAME%",
+      with: module2.name
+    },
+    {
+      replace: "%PREFAB_URL%",
+      with: module2.url
+    },
+    {
+      replace: "%PREFAB_VERSION%",
+      with: module2.version
+    }
+  ];
+  await import_axios4.default.get(prefabReadmeUrl, {
+    headers: {
+      "Content-Type": "text/plain"
+    }
+  }).then((res) => {
+    if (res.status === 200) {
+      write_file_default({
+        content: res.data,
+        rename: buildaReadmeFileName,
+        outputDir: rootDir,
+        substitute: readmeSubs
+      });
+    }
+  }).catch((err) => {
+    console.log(err);
+    print_message_default(
+      `Could not download the getting started file. Visit ${websiteUrl3}/docs/getting-started#prefab for assistance`,
+      "warning"
+    );
+  });
+  print_message_default("All files copied to application.", "success");
+  return module2;
+}
+
+// src/scripts/builda-project/project.ts
+var project_default = async ({ appName, prefab, smokeTest }) => {
+  const { buildaDir: buildaDir2, websiteUrl: websiteUrl3, buildaReadmeFileName } = globals_default;
+  print_logo_default();
+  let answers = {};
+  if (!prefab) {
+    const { usePrefab } = await import_inquirer6.default.prompt([
+      {
+        type: "confirm",
+        name: "usePrefab",
+        message: `Do you want to set the project up using a prefab?`,
+        default: true
+      }
+    ]);
+    if (usePrefab) {
+      const prefabAnswers = await prefab_questions_default();
+      answers.prefab = prefabAnswers.prefabUrl || prefabAnswers.prefabList;
+    } else {
+      show_help_default(
+        `You can set up a project from scratch by answering a few questions about your project.\r
+
+If you are unsure about any of these, you can always change them later by editing the 'builda' section of your package.json file.`
+      );
+    }
+    if (answers.prefab) {
+      show_help_default(
+        "Great! That prefab is ready to install!\n\nFirst things first though, we need a few more details, to get you set up.",
+        "success"
+      );
+    }
+  }
+  let newProjectAnswers = {};
+  if (!prefab || !appName) {
+    newProjectAnswers = await new_project_questions_default();
+  }
+  answers = __spreadValues(__spreadValues({}, answers), newProjectAnswers);
+  const name = appName || answers.appName;
+  const prefabPath = prefab || answers.prefab;
+  const kebabAppName = change_case_default(name, "kebabCase");
+  const rootDir = import_node_path14.default.join(import_node_process4.default.cwd(), kebabAppName);
+  await create_dir_default(kebabAppName);
+  import_node_process4.default.chdir(kebabAppName);
+  const prefabDir = import_node_path14.default.join(rootDir, buildaDir2, "modules", "prefab");
+  if (import_node_fs16.default.readdirSync(rootDir).length !== 0) {
+    throw_error_default(
+      `The directory: '${kebabAppName}' already exists. It is not recommended to install a prefab into an existing project.`
+    );
+  }
+  if (prefabPath) {
+    const module2 = await generate_from_prefab_default({
+      prefabPath,
+      rootDir,
+      prefabDir,
+      name,
+      buildaDir: buildaDir2
+    });
+    await generate_export_default({ buildaDir: buildaDir2, prefabDir });
+    await createInitialApp({
+      module: module2,
+      rootDir,
+      prefabDir,
+      name,
+      buildaDir: buildaDir2,
+      websiteUrl: websiteUrl3,
+      buildaReadmeFileName
+    });
+  }
+  print_message_default(`Your application, "${name}" has been initialised!`, "success");
+  if (smokeTest) {
+    import_node_process4.default.chdir("../");
+    import_node_fs16.default.rm(name, { recursive: true, force: true }, (err) => {
+      if (err) {
+        console.log(err);
+      }
+      print_message_default(`This was a smoke test. No files were created.`, "primary");
+    });
+  } else {
+    (0, import_execa.default)("cd", [name]);
+    print_message_default(
+      `For more information about how to use your application, visit: ${websiteUrl3}/docs/getting-started`,
+      "primary"
+    );
+  }
+};
+
+// src/scripts/builda-project/command.ts
+var command_default = () => {
+  return {
+    command: "project [appName]",
+    desc: "Generate a new app from a prefab",
+    aliases: ["app", "--app", "--project"],
+    builder: (yargs2) => {
+      return yargs2.positional("appName", {
+        describe: "The name of the app",
+        type: "string",
+        default: ""
+      }).option("prefab", {
+        alias: "p",
+        default: "",
+        describe: "The prefab to use (url, local path, or preset name)",
+        type: "string"
+      }).option("smokeTest", {
+        alias: "s",
+        default: false,
+        describe: "Runs the command but deletes the output immediately",
+        type: "boolean"
+      });
+    },
+    handler: async (argv) => {
+      const args = {
+        appName: argv.appName,
+        prefab: argv.prefab,
+        smokeTest: argv.smokeTest
+      };
+      await project_default(__spreadValues({}, args));
+    }
+  };
+};
+
+// src/scripts/builda-execute/execute.ts
+var import_chalk10 = __toESM(require("chalk"));
+var import_node_process5 = __toESM(require("process"));
+var import_node_path15 = __toESM(require("path"));
+var import_node_fs17 = __toESM(require("fs"));
+var import_execa2 = __toESM(require("execa"));
+var execute_default = async ({ command, args }) => {
+  var _a;
+  const cwd = import_node_process5.default.cwd();
+  let exportDir = import_node_path15.default.join(import_node_process5.default.cwd(), globals_default.buildaDir, "export");
+  if (cwd.split("/").pop() === "export") {
+    exportDir = cwd;
+  }
+  const packageJsonFile = import_node_fs17.default.readFileSync(
+    import_node_path15.default.resolve(exportDir, "package.json"),
+    {
+      encoding: "utf8"
+    }
+  );
+  const packageJson = JSON.parse(packageJsonFile);
+  const scripts = packageJson.scripts;
+  const script = scripts[command];
+  let packageManager = "";
+  if (import_node_fs17.default.existsSync(import_node_path15.default.resolve(cwd, "yarn.lock")) && import_node_fs17.default.existsSync(import_node_path15.default.resolve(cwd, "package-lock.json"))) {
+    throw_error_default(
+      "Builda detected a yarn.lock file and a package-lock.json file. Please delete one of these files and try again"
+    );
+  } else if (import_node_fs17.default.existsSync(import_node_path15.default.resolve(cwd, "yarn.lock"))) {
+    packageManager = "yarn";
+  } else if (import_node_fs17.default.existsSync(import_node_path15.default.resolve(cwd, "package-lock.json"))) {
+    packageManager = "npm";
+  } else {
+    throw_error_default(
+      "Builda could not detect a yarn.lock or package-lock.json file. Please run `yarn` or `npm install` and try again"
+    );
+  }
+  if (!script) {
+    throw_error_default(`No script found with the name '${command}'`);
+  }
+  if (!exportDir) {
+    throw_error_default(`No path found for script '${command}'`);
+  }
+  if (!command) {
+    throw_error_default("No command found");
+  }
+  try {
+    let prefixedCommand = `${packageManager} run ${command}`;
+    if (args) {
+      const argKeys = Object.keys(args);
+      const argValues = Object.values(args);
+      const argsString = argKeys.reduce((acc, key, index) => {
+        const value = argValues[index];
+        let keyString = "";
+        if (key === "_" || key === "command" || key === "$0") {
+          return acc;
+        }
+        if (key.length === 1) {
+          keyString = `-${key}`;
+        } else {
+          keyString = `--${key}`;
+        }
+        if (value && typeof value === "boolean") {
+          return ` ${acc} ${keyString}`;
+        }
+        return ` ${acc} ${keyString}="${value}"`;
+      }, "");
+      prefixedCommand = `${prefixedCommand}${argsString}`;
+    }
+    import_node_process5.default.stdout.write(
+      import_chalk10.default.magenta("Running with Builda: ") + import_chalk10.default.white.bold(`'${prefixedCommand}'`) + "\n"
+    );
+    (_a = import_execa2.default.command(prefixedCommand, {
+      cwd: exportDir,
+      stdio: "inherit"
+    }).stdout) == null ? void 0 : _a.pipe(import_node_process5.default.stdout);
+  } catch (error) {
+    throw_error_default(error.message);
+  }
+};
+
+// src/scripts/builda-execute/command.ts
+var command_default2 = () => {
+  return {
+    command: "execute <command>",
+    desc: "Execute a command from within the export directory",
+    aliases: ["x", "exec"],
+    builder: (yargs2) => {
+      return yargs2.positional("command", {
+        describe: "The name of the command",
+        type: "string",
+        demandOption: true
+      });
+    },
+    handler: async (argv) => {
+      return execute_default({ command: argv.command, args: argv });
+    }
+  };
+};
+
+// src/scripts/builda-eject/eject.ts
+var import_node_process6 = __toESM(require("process"));
+var import_node_fs18 = __toESM(require("fs"));
+var eject_default = async ({ pathString }) => {
+  var _a, _b;
+  const config = get_config_default();
+  if (!pathString) {
+    throw_error_default("A path must be provided");
+  }
+  if ((_a = config.ejected) == null ? void 0 : _a.includes(pathString)) {
+    throw_error_default(`${pathString} has already been ejected.`);
+  }
+  const trimmedPath = pathString.replace(`${import_node_process6.default.cwd()}/`, "");
+  const pathInExport = `${import_node_process6.default.cwd()}/.builda/export/${trimmedPath}`;
+  try {
+    if (!import_node_fs18.default.existsSync(pathInExport)) {
+      throw_error_default(`No file found at ${pathInExport}.`);
+    }
+    print_message_default(`Moving ${trimmedPath} to application...`, "info");
+    copy_paths_to_root_default([trimmedPath], import_node_process6.default.cwd());
+    print_message_default(`Deleting original from ${pathInExport}`, "info");
+    import_node_fs18.default.rmSync(pathInExport, { recursive: true, force: true });
+    const relativePath = pathString.replace(`${import_node_process6.default.cwd()}/`, "");
+    const ejected = (_b = config.ejected) != null ? _b : [];
+    ejected.push(relativePath);
+    const newConfig = __spreadProps(__spreadValues({}, config), {
+      ejected
+    });
+    update_config_default(newConfig);
+    print_message_default(
+      `Ejected ${pathString}. You can now edit this file directly.`,
+      "success"
+    );
+  } catch (error) {
+    throw_error_default(error.message);
+  }
+};
+
+// src/scripts/builda-eject/command.ts
+var command_default3 = () => {
+  return {
+    command: "eject <pathString>",
+    desc: "Eject a file or directory from builda to make it editable",
+    builder: (yargs2) => {
+      return yargs2.positional("pathString", {
+        describe: "The path to the file or directory to eject",
+        type: "string",
+        demandOption: true
+      }).option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      return eject_default({ pathString: argv.pathString });
+    }
+  };
+};
+
+// src/scripts/builda-install/install.ts
+var import_node_fs19 = __toESM(require("fs"));
+var import_node_path16 = __toESM(require("path"));
+var install_default = async (update) => {
+  var _a;
+  const { buildaDir: buildaDir2 } = globals_default;
+  const rootDir = process.cwd();
+  const buildaPath = import_node_path16.default.join(rootDir, buildaDir2);
+  let configFile;
+  let buildaConfig;
+  if (import_node_fs19.default.existsSync(import_node_path16.default.resolve(process.cwd(), "package.json"))) {
+    configFile = JSON.parse(
+      import_node_fs19.default.readFileSync(import_node_path16.default.resolve(process.cwd(), "package.json"), "utf8")
+    );
+    buildaConfig = configFile.builda;
+    if (!buildaConfig) {
+      throw_error_default('No "builda" entry found in package.json');
+    }
+  }
+  const appName = configFile.name;
+  if (import_node_fs19.default.existsSync(buildaDir2) && !update) {
+    print_message_default(
+      "A .builda directory already exists. The directory will be deleted and rebuilt from the prefab.",
+      "warning"
+    );
+    const userConfirm = await confirm_default("Do you wish to proceed?");
+    if (!userConfirm) {
+      print_message_default("Installation aborted", "error");
+      process.exit(1);
+    }
+  }
+  if (update) {
+    print_message_default(`Updating ${appName}`, "installing");
+  } else {
+    print_message_default(`Installing ${appName}`, "installing");
+  }
+  const prefabPath = `${(_a = buildaConfig.prefab) == null ? void 0 : _a.location}`;
+  const prefabDir = import_node_path16.default.join(buildaPath, "modules", "prefab");
+  await generate_from_prefab_default({
+    prefabPath,
+    rootDir,
+    prefabDir,
+    name: appName,
+    buildaDir: buildaDir2
+  });
+  await generate_export_default({ buildaDir: buildaDir2, prefabDir });
+  await sync_package_json_default();
+  const registry = await get_registry_default(prefabDir);
+  const prefabName = registry.name.replace("prefab-", "");
+  const prefabVersion = registry.version;
+  if (update) {
+    print_message_default(`${prefabName}, been updated to v${prefabVersion}`, "success");
+  } else {
+    print_message_default(
+      `${prefabName}, v${prefabVersion} has been installed`,
+      "success"
+    );
+  }
+};
+
+// src/scripts/builda-install/command.ts
+var command_default4 = () => {
+  return {
+    command: "install",
+    desc: "Installs the applications prefab and builds the export directory",
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async () => {
+      return install_default();
+    }
+  };
+};
+
+// src/scripts/builda-add/add.ts
+var import_node_path17 = __toESM(require("path"));
+var import_node_process7 = __toESM(require("process"));
+var add_default = async ({
+  modulePath,
+  fromScript
+}) => {
+  var _a;
+  let module2 = {};
+  const config = get_config_default();
+  const outputPath = import_node_process7.default.cwd();
+  const moduleDirPath = import_node_path17.default.join(outputPath, globals_default.buildaDir, "modules");
+  const moduleList = modulePath.includes(" ") ? modulePath.split(" ") : [modulePath];
+  await create_dir_default(moduleDirPath);
+  for (const currentModule of moduleList) {
+    if (detect_path_type_default(currentModule) === "remote") {
+      const registry = convert_registry_path_to_url_default({
+        registryPath: currentModule
+      }).url;
+      if (!registry) {
+        throw_error_default("No registry found");
+      }
+      module2 = await add_remote_module_default(registry);
+    } else {
+      module2 = await add_local_module_default(currentModule);
+    }
+    if (!fromScript) {
+      if (module2 == null ? void 0 : module2.name) {
+        const type = module2.type;
+        const name = module2.name;
+        const version = module2.version;
+        if (type === "blueprint") {
+          if (!(config == null ? void 0 : config.blueprints)) {
+            config.blueprints = {};
+          }
+          if ((_a = config == null ? void 0 : config.blueprints) == null ? void 0 : _a[name]) {
+            throw_error_default(
+              `A blueprint called ${name} already exists. Perhaps you meant 'builda update ${name}?'`
+            );
+          } else {
+            config.blueprints[name] = {
+              version,
+              location: currentModule
+            };
+          }
+        }
+        if (type === "prefab") {
+          throw_error_default(
+            `You cannot add a prefab as a module. A prefab is used to set up a new project. Try 'builda project' instead.`
+          );
+        }
+        update_config_default(config);
+        print_message_default(`Added ${name} to your project`, "success");
+      } else {
+        throw_error_default("Something went wrong");
+      }
+    }
+  }
+};
+
+// src/scripts/builda-add/command.ts
+var { websiteUrl } = globals_default;
+var command_default5 = () => {
+  return {
+    command: "add <blueprintPath>",
+    desc: "Adds a new blueprint",
+    builder: (yargs2) => {
+      return yargs2.positional("blueprintPath", {
+        describe: `The path to the blueprint (can be a resolver - see http://${websiteUrl}/docs/resolvers)`,
+        type: "string",
+        demandOption: true
+      }).option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      return add_default({ modulePath: argv.blueprintPath });
+    }
+  };
+};
+
+// src/scripts/builda-package/package.ts
+var import_node_fs21 = __toESM(require("fs"));
+var import_tar3 = __toESM(require("tar"));
+
+// src/scripts/builda-package/helpers/check-path-exists.ts
+var import_node_fs20 = __toESM(require("fs"));
+var checkPathExists = (pathString, isDir) => {
+  if (!import_node_fs20.default.existsSync(pathString)) {
+    return {
+      error: true,
+      message: `Cannot find ${isDir && "a folder called"} '${pathString}' in the current directory.`
+    };
+  }
+  return {
+    error: false,
+    message: ""
+  };
+};
+
+// src/scripts/builda-package/package.ts
+var package_default = async (updateVersion) => {
+  const registry = await get_registry_default();
+  const { name, type, version } = registry;
+  const REGISTRYFILE = "registry.json";
+  const FILESFOLDER = "module";
+  const ignoreFiles = [];
+  if (import_node_fs21.default.existsSync(".npmignore")) {
+    const npmIgnore = import_node_fs21.default.readFileSync(".npmignore", "utf8");
+    const npmIgnoreFiles = npmIgnore.split("\n").filter(
+      (line) => line !== "" && !line.startsWith("#") && !line.startsWith("!")
+    );
+    ignoreFiles.push(...npmIgnoreFiles);
+  }
+  if (import_node_fs21.default.existsSync(`${FILESFOLDER}/.gitignore`)) {
+    const gitignore = import_node_fs21.default.readFileSync(`${FILESFOLDER}/.gitignore`, "utf8");
+    const gitignoreFiles = gitignore.split("\n").filter(
+      (line) => line !== "" && !line.startsWith("#") && !line.startsWith("!")
+    );
+    ignoreFiles.push(...gitignoreFiles);
+  }
+  if (ignoreFiles.includes(".builda")) {
+    ignoreFiles.splice(ignoreFiles.indexOf(".builda"), 1);
+  }
+  if (!registry) {
+    throw_error_default(
+      `No ${REGISTRYFILE} file found. See ${print_site_link_default({
+        link: "docs/packaging"
+      })} for more information.`
+    );
+  }
+  if (!name) {
+    throw_error_default(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  if (!type) {
+    throw_error_default(`No type entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  if (!version && !updateVersion) {
+    throw_error_default(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  const validateFileFolder = checkPathExists(FILESFOLDER, true);
+  if (validateFileFolder.error) {
+    throw_error_default(validateFileFolder.message);
+  }
+  const isCorrectlyPrefixed = name.startsWith(`${type}-`);
+  if (!isCorrectlyPrefixed) {
+    throw_error_default(
+      `The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`
+    );
+  }
+  print_message_default("All checks passed.", "success");
+  const newVersion = (updateVersion == null ? void 0 : updateVersion.replace("v", "")) || version;
+  const newRegistry = __spreadProps(__spreadValues({}, registry), {
+    version: newVersion
+  });
+  const newRegistryString = JSON.stringify(newRegistry, null, 2);
+  import_node_fs21.default.writeFileSync(REGISTRYFILE, newRegistryString);
+  if (import_node_fs21.default.existsSync(`${FILESFOLDER}.tgz`)) {
+    print_message_default(
+      "A module package already exists. Do you want to overwrite it?",
+      "warning"
+    );
+    const overwrite = await confirm_default("Overwrite?");
+    if (!overwrite) {
+      print_message_default("Package process aborted", "error");
+      return;
+    }
+    import_node_fs21.default.unlinkSync(`${FILESFOLDER}.tgz`);
+  }
+  print_message_default(`Packaging ${name}...`, "processing");
+  await import_tar3.default.create(
+    {
+      file: `${FILESFOLDER}.tgz`,
+      gzip: true,
+      cwd: FILESFOLDER,
+      filter: (path27) => !ignoreFiles.includes(path27)
+    },
+    import_node_fs21.default.readdirSync(FILESFOLDER)
+  );
+  print_message_default("Package created", "success");
+};
+
+// src/scripts/builda-package/command.ts
+var command_default6 = () => {
+  return {
+    command: "package",
+    desc: "Package a module ready for publishing",
+    aliases: ["package", "pack"],
+    handler: async () => {
+      return package_default();
+    }
+  };
+};
+
+// src/scripts/builda-publish/publish.ts
+var import_node_fs23 = __toESM(require("fs"));
+var import_simple_git = require("simple-git");
+
+// src/scripts/builda-publish/helpers/publish-to-trade-store.ts
+var publishToTradeStore = async () => {
+  return true;
+};
+
+// src/scripts/builda-publish/helpers/check-path-exists.ts
+var import_node_fs22 = __toESM(require("fs"));
+var checkPathExists2 = (pathString, isDir) => {
+  if (!import_node_fs22.default.existsSync(pathString)) {
+    return {
+      error: true,
+      message: `Cannot find ${isDir && "a folder called"} '${pathString}' in the current directory.`
+    };
+  }
+  return {
+    error: false,
+    message: ""
+  };
+};
+
+// src/scripts/builda-publish/publish.ts
+var publish_default = async (updateVersion) => {
+  const registry = await get_registry_default();
+  const { name, type, version, publishToTradeStore: publishToTradeStore2 } = registry;
+  const REGISTRYFILE = "registry.json";
+  const READMEFILE = "README.md";
+  const MODULEPACKAGE = "module.tgz";
+  if (!registry) {
+    throw_error_default(
+      `No ${REGISTRYFILE} file found. Publish can only be ran in the context of a module`
+    );
+  }
+  if (!name) {
+    throw_error_default(`No name entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  if (!type) {
+    throw_error_default(`No type entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  if (!version && !updateVersion) {
+    throw_error_default(`No version entry found in ${REGISTRYFILE}. Please add one.\r`);
+  }
+  if (!publishToTradeStore2) {
+    print_message_default(
+      `No tradeStore entry found in ${REGISTRYFILE}.
+This module will not be published to the Builda Trade Store (https://builda.app/trade-store).\r`,
+      "info"
+    );
+  }
+  if (!import_node_fs23.default.existsSync(MODULEPACKAGE)) {
+    print_message_default("No module package found. Building package...", "processing");
+    await package_default(updateVersion);
+    print_message_default("Package built", "success");
+  }
+  const isCorrectlyPrefixed = name.startsWith(`${type}-`);
+  if (!isCorrectlyPrefixed) {
+    throw_error_default(
+      `The name entry in ${REGISTRYFILE} must be prefixed with ${type}-.\r`
+    );
+  }
+  const validateReadme = checkPathExists2(READMEFILE);
+  if (validateReadme.error) {
+    throw_error_default(validateReadme.message);
+  }
+  const git = (0, import_simple_git.simpleGit)();
+  if (!git.checkIsRepo()) {
+    throw_error_default(
+      `This is not a git repository. Please initialise git and try again.\r`
+    );
+  }
+  const status = await git.status();
+  if (!status.isClean()) {
+    throw_error_default(
+      `The git repository is not clean. Please commit all changes and try again.\r`
+    );
+  }
+  print_message_default("All checks passed.", "success");
+  const newVersion = (updateVersion == null ? void 0 : updateVersion.replace("v", "")) || version;
+  const newRegistry = __spreadProps(__spreadValues({}, registry), {
+    version: newVersion
+  });
+  const newRegistryString = JSON.stringify(newRegistry, null, 2);
+  import_node_fs23.default.writeFileSync(REGISTRYFILE, newRegistryString);
+  print_message_default(`Adding ${MODULEPACKAGE} to git...`, "processing");
+  await git.add(`${MODULEPACKAGE}`);
+  await git.commit(`Adds updated ${MODULEPACKAGE}`);
+  print_message_default("Added to git", "success");
+  print_message_default("Tagging the latest commit...", "processing");
+  const tagList = await git.tags();
+  const tagExists = tagList.all.includes(newVersion) || tagList.all.includes(`v${newVersion}`);
+  if (tagExists) {
+    throw_error_default(
+      `A tag with the version number v${newVersion} already exists. Please update the version number in ${REGISTRYFILE} and try again.\r`
+    );
+  }
+  await git.addTag(`v${newVersion}`);
+  let tagString = "tags";
+  if (registry.prerelease) {
+    print_message_default(
+      "Prerelease entry found in registry.json. Skipping latest tag...",
+      "info"
+    );
+    tagString = "tag";
+  } else {
+    const remoteTags = await git.listRemote(["--tags"]);
+    const remoteTagExists = remoteTags.includes("refs/tags/latest");
+    const localTags = await git.tags();
+    const localTagExists = localTags.all.includes("latest");
+    if (remoteTagExists || localTagExists) {
+      await git.tag(["--delete", "latest"]);
+      await git.push(["origin", "--delete", "latest"]);
+    }
+    await git.addTag("latest");
+  }
+  await git.pushTags("origin");
+  print_message_default(`${tagString} created.`, "success");
+  print_message_default("Pushing changes to git...", "processing");
+  await git.push();
+  print_message_default("Changes pushed to git.", "success");
+  if (publishToTradeStore2) {
+    print_message_default("Publishing to the Builda Trade Store...", "processing");
+    publishToTradeStore();
+  }
+  print_message_default("Module published.", "success");
+};
+
+// src/scripts/builda-publish/command.ts
+var command_default7 = () => {
+  return {
+    command: "publish",
+    desc: "publish a module",
+    aliases: ["pub", "push"],
+    builder: (yargs2) => {
+      return yargs2.option("version", {
+        aliases: ["v", "ver"],
+        default: "",
+        describe: "update module version (semver)",
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      return publish_default(argv.version);
+    }
+  };
+};
+
+// src/scripts/builda-watch/watch.ts
+var import_chokidar = __toESM(require("chokidar"));
+var watch_default = (config) => {
+  var _a;
+  const { prefab } = config;
+  const ignored = [...(_a = config.ignored) != null ? _a : []];
+  if (!ignored.includes(globals_default.buildaDir)) {
+    ignored.push(globals_default.buildaDir);
+  }
+  if (!prefab) {
+    throw_error_default(
+      "No prefab found in config file. Watch cannot be run without a prefab"
+    );
+  }
+  const watcher = import_chokidar.default.watch(".", {
+    persistent: true,
+    ignoreInitial: true,
+    ignored
+  });
+  watcher.on("change", (pathString) => {
+    console.log(`File ${pathString} has been changed`);
+    sync_with_export_default({
+      type: "update",
+      pathString
+    });
+  }).on("add", (pathString) => {
+    console.log(`File ${pathString} has been added`);
+    sync_with_export_default({
+      type: "copy",
+      pathString
+    });
+  }).on("addDir", (pathString) => {
+    console.log(`Directory ${pathString} has been added`);
+    sync_with_export_default({
+      type: "copy",
+      pathString
+    });
+  }).on("unlinkDir", (pathString) => {
+    console.log(`Directory ${pathString} has been deleted`);
+    sync_with_export_default({
+      type: "delete",
+      pathString
+    });
+  }).on("unlink", (pathString) => {
+    console.log(`File ${pathString} has been deleted`);
+    sync_with_export_default({
+      type: "delete",
+      pathString
+    });
+  }).on("ready", () => {
+    print_message_default("Watching for changes...", "primary");
+    print_message_default("Press Ctrl+C to stop watching", "secondary");
+  });
+};
+
+// src/scripts/builda-watch/command.ts
+var command_default8 = () => {
+  return {
+    command: "watch",
+    desc: "Watches your app for changes and rebuilds",
+    aliases: ["w"],
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async () => {
+      const config = await get_config_default();
+      if (config == null ? void 0 : config.prefab) {
+        return watch_default(config);
+      } else if ((config == null ? void 0 : config.prefab) === void 0) {
+        throw_error_default(
+          "No prefab found in config file. Watch can only be run within a prefab"
+        );
+      }
+      throw_error_default("No config file found");
+    }
+  };
+};
+
+// src/scripts/builda-indexer/indexer.ts
+var import_node_fs25 = __toESM(require("fs"));
+var import_path6 = __toESM(require("path"));
+
+// src/scripts/builda-indexer/helpers/generate-lines.ts
+var import_node_fs24 = __toESM(require("fs"));
+var import_path5 = __toESM(require("path"));
+var generateLines = ({
+  directory,
+  parent
+}) => {
+  const dir = import_node_fs24.default.readdirSync(import_path5.default.resolve(directory));
+  if (dir.length !== 0) {
+    return dir.map((file) => {
+      const pathString = parent ? `${parent}/${file}` : file;
+      if (!file.match(/\.[jt]sx$/)) {
+        return `export { default as ${change_case_default(
+          file,
+          "pascalCase"
+        )} } from './${pathString}';`;
+      }
+      const fileNoExt = import_path5.default.parse(file).name;
+      const varName = change_case_default(fileNoExt, "camelCase");
+      return `export { default as ${varName} } from './${fileNoExt}';`;
+    }).filter((item) => item).toString().replace(/,/g, "\n");
+  } else {
+    return "";
+  }
+};
+
+// src/scripts/builda-indexer/indexer.ts
+var message = `/**
  This file is autogenerated by Builda, please do not edit it.
  To generate an updated version, please run \`builda index\`
- **/`,Lt=e=>{let{indexes:t}=e;if(!t)c(`No indexes entry found in the config file. Index files cannot be generated. See ${A("docs/config","indexes")} for more information.`);else{let{directories:r,indexExt:o}=t,i=o||"ts";r.forEach(s=>{let n=s,a=[],p="";s.includes("*")?(n=s.replace("/*",""),a=Dt.default.readdirSync(ze.default.resolve(n)),a.forEach(d=>{let f=ze.default.resolve(`${n}/${d}`);return p+=`${Mt({directory:f,parent:d})}
-`})):p=Mt({directory:s});let m=`${mi}
+ **/`;
+var indexer_default = (config) => {
+  const { indexes } = config;
+  if (!indexes) {
+    throw_error_default(
+      `No indexes entry found in the config file. Index files cannot be generated. See ${get_site_link_default(
+        "docs/config",
+        "indexes"
+      )} for more information.`
+    );
+  } else {
+    const { directories, indexExt } = indexes;
+    const ext = indexExt || "ts";
+    directories.forEach((directory) => {
+      let checkedDir = directory;
+      let subdirs = [];
+      let lines = "";
+      if (directory.includes("*")) {
+        checkedDir = directory.replace("/*", "");
+        subdirs = import_node_fs25.default.readdirSync(import_path6.default.resolve(checkedDir));
+        subdirs.forEach((dir) => {
+          const pathString = import_path6.default.resolve(`${checkedDir}/${dir}`);
+          return lines += `${generateLines({
+            directory: pathString,
+            parent: dir
+          })}
+`;
+        });
+      } else {
+        lines = generateLines({ directory });
+      }
+      const fileContents = `${message}
 
-${p}`;p&&Dt.default.writeFileSync(ze.default.resolve(n,`index.${i}`),m)}),u("Generating indexes","config")}};var Ot=()=>({command:"indexer",desc:"Generate an index file for the specified directories",aliases:["index"],builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async e=>{let t=await S();if(t)return Lt(t);c("No config file found")}});var $e=l(require("fs")),Wt=l(require("path"));var gi=e=>{if(e.scripts){let t={};return Object.entries(e.scripts).forEach(o=>{let i=o[0];t[i]=o[1]}),t}else return c('No "scripts" entry found in config file')},so=gi;var ao=l(require("inquirer"));var no=async(e,t,r,o,i)=>{let{buildaDir:s}=g,n=`${t}/${v(e,"kebabCase")}`,a=Wt.default.join(s,"export",n);$e.default.existsSync(n)&&c(`A ${o.use} already exists with the name ${e}`),$e.default.existsSync(a)&&c(`An existing ${o.use} with the name ${e} was found in the prefab. Continuing will overwrite this version.\r
-If you want to edit the prefab version, you need to eject it with 'builda eject ${e}'`),$e.default.mkdirSync(n,{recursive:!0});let{path:p,registry:m}=pt("blueprint",r,o),d=(i==null?void 0:i.split(":"))||[],f=d.length===2?{replace:d[0],with:d[1]}:void 0,y=o?ut({registry:m,name:e,script:o,sub:f}):[],h=Wt.default.resolve(p,"module");return $e.default.readdirSync(h).forEach(x=>{let b=`${h}/${x}`,$=`${n}`;J({file:b,rename:b.replace("temp_name",e),outputDir:$,substitute:y,name:e})}),r.prefab&&E({type:"copy",pathString:n}),u("Done!","success")},Bt=async({config:e,name:t,scriptName:r,subString:o})=>{let i=so(e),s=i==null?void 0:i[r];if(s.use)if((!t||t==="")&&c(`You need to provide a name for your new ${r}`),u(`Building new ${r}: '${t}'...`,"notice"),s.variants){let n=await ao.default.prompt([{type:"list",name:"variantChoice",message:`What type of ${r} do you wish to build?`,choices:s.variants.map(a=>({name:a.name,value:a.outputDir}))}]);await no(t,n.variantChoice,e,s,o)}else await no(t,s.outputDir,e,s,o);else c("No valid scripts found")};var zt=()=>({command:"new <scriptName>",desc:"Create something new from a blueprint",builder:e=>e.positional("scriptName",{describe:"The blueprint script to run",type:"string",default:""}).positional("name",{describe:"The name of the new thing",type:"string",default:""}).option("subString",{aliases:["s","sub"],default:"",describe:`A string matcher for the blueprint script. e.g: "%MY_STRING%:'new string'"`,type:"string"}),handler:async e=>{let t=await S();if(t)return Bt({config:t,scriptName:e.scriptName,name:e.name});c("No config file found")}});var Je=l(require("fs")),Jt=l(require("path"));var qt=async({config:e})=>{let{prefab:t}=e,r=process.cwd();t||c("No prefab found in config file. Build cannot be run without a prefab");let o=Jt.default.join(r,g.buildaDir),i=Jt.default.join(r,g.buildaDir,"modules","prefab");Je.default.existsSync(o)||c("No .builda directory found. Try running `builda install` first"),Je.default.existsSync(i)||c("No prefab directory could be found in .builda/modules"),u("Building project...","processing"),Je.default.readdir(r,async(s,n)=>{s&&c(s.message),q({buildaDir:o,prefabDir:i}),(await lt({paths:n,source:r})).forEach(p=>{let d=p.replace(`${r}/`,"");E({type:"update",pathString:d})})})};var Ut=()=>({command:"build",desc:"Build your project",aliases:["-b","--build"],builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async()=>{let e=await S();if(e)return qt({config:e});c("No config file found")}});var Gt=l(require("fs")),lo=l(require("path"));var Yt=async()=>{let e=S(),{prefab:t}=e,{buildaDir:r}=g,o=lo.default.join(process.cwd(),r);if(Gt.default.existsSync(o))Gt.default.rmSync(o,{recursive:!0});else if(!t)c('No prefab found in config (perhaps you meant to run "builda init" or "builda project" instead?)');else return u("Prefab config found but no .builda directory found.","warning"),u('Running "builda install" instead',"info"),re();return re(!0)};var _t=()=>({command:"update",desc:"An alias for `builda install` which skips the existing folder check",builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async()=>Yt()});var Ht=l(require("fs")),co=l(require("events")),Zt=l(require("inquirer")),Se=l(require("chalk"));var Qt=async({config:e})=>{co.default.defaultMaxListeners=50;let{buildaDir:t}=g,r={projectName:"",appRoot:"",packageManager:""};if(e&&Object.keys(e).length!==0){e.prefab&&(w('This project was generated from a prefab and cannot be reinitialised. Maybe you meant to run "builda install" instead?',"error"),process.exit(1)),w(`It looks like builda has already been initialised in this project.
-You can overwrite the existing config if you want to start again.\r
+${lines}`;
+      if (lines) {
+        import_node_fs25.default.writeFileSync(
+          import_path6.default.resolve(checkedDir, `index.${ext}`),
+          fileContents
+        );
+      }
+    });
+    print_message_default("Generating indexes", "config");
+  }
+};
 
-`+Se.default.yellow("Be careful though")+", continuing will instantly delete any existing config and your"+t+" directory.","warning");let{overwrite:i}=await Zt.default.prompt([{type:"confirm",name:"overwrite",message:Se.default.red("Are you sure you want to reset the builda config?"),default:!1}]);i||(u("Process aborted at user request","notice"),process.exit(0)),L(null),Ht.default.existsSync(t)&&Ht.default.rmSync(t,{recursive:!0})}w("Welcome to "+Se.default.magenta("Builda")+" This is a guided setup process help you get your project up and running."+C({link:"docs/init",endText:`if you get stuck.
+// src/scripts/builda-indexer/command.ts
+var command_default9 = () => {
+  return {
+    command: "indexer",
+    desc: "Generate an index file for the specified directories",
+    aliases: ["index"],
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      const config = await get_config_default();
+      if (config) {
+        return indexer_default(config);
+      }
+      throw_error_default("No config file found");
+    }
+  };
+};
 
-`})+Se.default.white("You can exit the process at any time by pressing Ctrl+C."),"builda");let{initType:o}=await Zt.default.prompt([{type:"list",name:"initType",message:"What would you like to do?",choices:[{name:"I want to start a new project",value:"new"},{name:"I want to add builda to an existing project",value:"existing"},{name:"I want to create my own prefab",value:"prefab"},{name:"I want to create my own blueprint",value:"blueprint"}]}]);if(o==="new"&&(w(`A fresh start! Let's get you set up with a new project.\r
+// src/scripts/builda-new/new.ts
+var import_node_fs26 = __toESM(require("fs"));
+var import_path7 = __toESM(require("path"));
 
-You can choose to use a prefab to get started quickly, or you can set up a project from scratch.`),ye({})),o==="existing"){w(`You can add builda to an existing project by answering a few questions about your project.\r
+// src/scripts/builda-new/helpers/generate-commands.ts
+var generateCommands = (config) => {
+  if (config.scripts) {
+    const commands = {};
+    const scriptArray = Object.entries(config.scripts);
+    scriptArray.forEach((script) => {
+      const name = script[0];
+      commands[name] = script[1];
+    });
+    return commands;
+  } else {
+    return throw_error_default('No "scripts" entry found in config file');
+  }
+};
+var generate_commands_default = generateCommands;
 
-If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.`);let i=await mt();r={...r,...i};let s=await dt(r);r={...r,...s};let n=r.blueprintUrls||r.blueprintList.join("");L({}),ve({modulePath:n})}o==="prefab"&&(w(`You can create your own prefab by answering a few questions about your project.\r
+// src/scripts/builda-new/new.ts
+var import_inquirer7 = __toESM(require("inquirer"));
+var buildFromBlueprint = async (name, outputDir, config, script, subString) => {
+  const { buildaDir: buildaDir2 } = globals_default;
+  const outputDirectory = `${outputDir}/${change_case_default(name, "kebabCase")}`;
+  const outputInExport = import_path7.default.join(buildaDir2, "export", outputDirectory);
+  if (import_node_fs26.default.existsSync(outputDirectory)) {
+    throw_error_default(`A ${script.use} already exists with the name ${name}`);
+  }
+  if (import_node_fs26.default.existsSync(outputInExport)) {
+    throw_error_default(
+      `An existing ${script.use} with the name ${name} was found in the prefab. Continuing will overwrite this version.\r
+If you want to edit the prefab version, you need to eject it with 'builda eject ${name}'`
+    );
+  }
+  import_node_fs26.default.mkdirSync(outputDirectory, { recursive: true });
+  const { path: pathstring, registry } = get_module_default("blueprint", config, script);
+  const splitSubString = (subString == null ? void 0 : subString.split(":")) || [];
+  const sub = splitSubString.length === 2 ? {
+    replace: splitSubString[0],
+    with: splitSubString[1]
+  } : void 0;
+  const substitute = script ? get_substitutions_default({
+    registry,
+    name,
+    script,
+    sub
+  }) : [];
+  const fullPath = import_path7.default.resolve(pathstring, "module");
+  import_node_fs26.default.readdirSync(fullPath).forEach((file) => {
+    const srcPath = `${fullPath}/${file}`;
+    const outputDir2 = `${outputDirectory}`;
+    write_file_default({
+      file: srcPath,
+      rename: srcPath.replace("temp_name", name),
+      outputDir: outputDir2,
+      substitute,
+      name
+    });
+  });
+  if (config.prefab) {
+    sync_with_export_default({
+      type: "copy",
+      pathString: outputDirectory
+    });
+  }
+  return print_message_default("Done!", "success");
+};
+var new_default = async ({ config, name, scriptName, subString }) => {
+  const commands = generate_commands_default(config);
+  const script = commands == null ? void 0 : commands[scriptName];
+  if (script.use) {
+    if (!name || name === "") {
+      throw_error_default(`You need to provide a name for your new ${scriptName}`);
+    }
+    print_message_default(`Building new ${scriptName}: '${name}'...`, "notice");
+    if (script.variants) {
+      const answers = await import_inquirer7.default.prompt([
+        {
+          type: "list",
+          name: "variantChoice",
+          message: `What type of ${scriptName} do you wish to build?`,
+          choices: script.variants.map((variant) => {
+            return {
+              name: variant.name,
+              value: variant.outputDir
+            };
+          })
+        }
+      ]);
+      await buildFromBlueprint(
+        name,
+        answers.variantChoice,
+        config,
+        script,
+        subString
+      );
+    } else {
+      await buildFromBlueprint(
+        name,
+        script.outputDir,
+        config,
+        script,
+        subString
+      );
+    }
+  } else {
+    throw_error_default("No valid scripts found");
+  }
+};
 
-If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.`+C({link:"docs/build-a-module",anchor:"prefab"})),console.log("Coming soon..."),process.exit(0)),o==="blueprint"&&(w(`You can create your own blueprint by answering a few questions about your project.\r
+// src/scripts/builda-new/command.ts
+var command_default10 = () => {
+  return {
+    command: "new <scriptName>",
+    desc: "Create something new from a blueprint",
+    builder: (yargs2) => {
+      return yargs2.positional("scriptName", {
+        describe: "The blueprint script to run",
+        type: "string",
+        default: ""
+      }).positional("name", {
+        describe: "The name of the new thing",
+        type: "string",
+        default: ""
+      }).option("subString", {
+        aliases: ["s", "sub"],
+        default: "",
+        describe: `A string matcher for the blueprint script. e.g: "%MY_STRING%:'new string'"`,
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      const config = await get_config_default();
+      if (config) {
+        return new_default({
+          config,
+          scriptName: argv.scriptName,
+          name: argv.name
+        });
+      }
+      throw_error_default("No config file found");
+    }
+  };
+};
+
+// src/scripts/builda-build/build.ts
+var import_node_fs27 = __toESM(require("fs"));
+var import_node_path18 = __toESM(require("path"));
+var build_default = async ({ config }) => {
+  const { prefab } = config;
+  const root = process.cwd();
+  if (!prefab) {
+    throw_error_default(
+      "No prefab found in config file. Build cannot be run without a prefab"
+    );
+  }
+  const buildaDir2 = import_node_path18.default.join(root, globals_default.buildaDir);
+  const prefabDir = import_node_path18.default.join(root, globals_default.buildaDir, "modules", "prefab");
+  if (!import_node_fs27.default.existsSync(buildaDir2)) {
+    throw_error_default(
+      "No .builda directory found. Try running `builda install` first"
+    );
+  }
+  if (!import_node_fs27.default.existsSync(prefabDir)) {
+    throw_error_default("No prefab directory could be found in .builda/modules");
+  }
+  print_message_default("Building project...", "processing");
+  import_node_fs27.default.readdir(root, async (err, files) => {
+    if (err) {
+      throw_error_default(err.message);
+    }
+    generate_export_default({ buildaDir: buildaDir2, prefabDir });
+    const fileList = await recurse_directories_default({
+      paths: files,
+      source: root
+    });
+    fileList.forEach((file) => {
+      sync_with_export_default({
+        type: "update",
+        pathString: file.replace(`${root}/`, "")
+      });
+    });
+  });
+};
+
+// src/scripts/builda-build/command.ts
+var command_default11 = () => {
+  return {
+    command: "build",
+    desc: "Build your project",
+    aliases: ["-b", "--build"],
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async () => {
+      const config = await get_config_default();
+      if (config) {
+        return build_default({
+          config
+        });
+      }
+      throw_error_default("No config file found");
+    }
+  };
+};
+
+// src/scripts/builda-update/update.ts
+var import_node_fs28 = __toESM(require("fs"));
+var import_node_path19 = __toESM(require("path"));
+var update_default = async () => {
+  const config = get_config_default();
+  const { prefab } = config;
+  const { buildaDir: buildaDir2 } = globals_default;
+  const buildaDirPath = import_node_path19.default.join(process.cwd(), buildaDir2);
+  if (import_node_fs28.default.existsSync(buildaDirPath)) {
+    import_node_fs28.default.rmSync(buildaDirPath, { recursive: true });
+  } else {
+    if (!prefab) {
+      throw_error_default(
+        'No prefab found in config (perhaps you meant to run "builda init" or "builda project" instead?)'
+      );
+    } else {
+      print_message_default(
+        "Prefab config found but no .builda directory found.",
+        "warning"
+      );
+      print_message_default('Running "builda install" instead', "info");
+      return install_default();
+    }
+  }
+  return install_default(true);
+};
+
+// src/scripts/builda-update/command.ts
+var command_default12 = () => {
+  return {
+    command: "update",
+    desc: "An alias for `builda install` which skips the existing folder check",
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async () => {
+      return update_default();
+    }
+  };
+};
+
+// src/scripts/builda-init/init.ts
+var import_node_fs29 = __toESM(require("fs"));
+var import_node_events = __toESM(require("events"));
+var import_inquirer8 = __toESM(require("inquirer"));
+var import_chalk11 = __toESM(require("chalk"));
+var init_default = async ({ config }) => {
+  import_node_events.default.defaultMaxListeners = 50;
+  const { buildaDir: buildaDir2 } = globals_default;
+  let answers = {
+    projectName: "",
+    appRoot: "",
+    packageManager: ""
+  };
+  if (config && Object.keys(config).length !== 0) {
+    if (config.prefab) {
+      show_help_default(
+        'This project was generated from a prefab and cannot be reinitialised. Maybe you meant to run "builda install" instead?',
+        "error"
+      );
+      process.exit(1);
+    }
+    show_help_default(
+      "It looks like builda has already been initialised in this project.\nYou can overwrite the existing config if you want to start again.\r\n\n" + import_chalk11.default.yellow("Be careful though") + ", continuing will instantly delete any existing config and your" + buildaDir2 + " directory.",
+      "warning"
+    );
+    const { overwrite } = await import_inquirer8.default.prompt([
+      {
+        type: "confirm",
+        name: "overwrite",
+        message: import_chalk11.default.red(`Are you sure you want to reset the builda config?`),
+        default: false
+      }
+    ]);
+    if (!overwrite) {
+      print_message_default("Process aborted at user request", "notice");
+      process.exit(0);
+    }
+    update_config_default(null);
+    if (import_node_fs29.default.existsSync(buildaDir2)) {
+      import_node_fs29.default.rmSync(buildaDir2, { recursive: true });
+    }
+  }
+  show_help_default(
+    "Welcome to " + import_chalk11.default.magenta("Builda") + " This is a guided setup process help you get your project up and running." + print_site_link_default({
+      link: "docs/init",
+      endText: "if you get stuck.\n\n"
+    }) + import_chalk11.default.white("You can exit the process at any time by pressing Ctrl+C."),
+    "builda"
+  );
+  const { initType } = await import_inquirer8.default.prompt([
+    {
+      type: "list",
+      name: "initType",
+      message: "What would you like to do?",
+      choices: [
+        {
+          name: "I want to start a new project",
+          value: "new"
+        },
+        {
+          name: "I want to add builda to an existing project",
+          value: "existing"
+        },
+        {
+          name: "I want to create my own prefab",
+          value: "prefab"
+        },
+        {
+          name: "I want to create my own blueprint",
+          value: "blueprint"
+        }
+      ]
+    }
+  ]);
+  if (initType === "new") {
+    show_help_default(
+      "A fresh start! Let's get you set up with a new project.\r\n\nYou can choose to use a prefab to get started quickly, or you can set up a project from scratch."
+    );
+    project_default({});
+  }
+  if (initType === "existing") {
+    show_help_default(
+      `You can add builda to an existing project by answering a few questions about your project.\r
+
+If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.`
+    );
+    const existingProjectAnswers = await existing_project_questions_default();
+    answers = __spreadValues(__spreadValues({}, answers), existingProjectAnswers);
+    const blueprintAnswers = await blueprint_questions_default(answers);
+    answers = __spreadValues(__spreadValues({}, answers), blueprintAnswers);
+    const blueprints = answers.blueprintUrls || answers.blueprintList.join("");
+    update_config_default({});
+    add_default({ modulePath: blueprints });
+  }
+  if (initType === "prefab") {
+    show_help_default(
+      `You can create your own prefab by answering a few questions about your project.\r
+
+If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.` + print_site_link_default({ link: "docs/build-a-module", anchor: "prefab" })
+    );
+    console.log("Coming soon...");
+    process.exit(0);
+  }
+  if (initType === "blueprint") {
+    show_help_default(
+      `You can create your own blueprint by answering a few questions about your project.\r
 
 If you are unsure about any of these, you can always change them later by editing the 'builda' entry in package.json.\r
 
-`+C({link:"docs/build-a-module",anchor:"blueprint"})),console.log("Coming soon..."),process.exit(0))};var Kt=()=>({command:"init",desc:"Initialise builda",builder:e=>e.option("configPath",{aliases:["c","config"],default:"",describe:"The path to a config file",type:"string"}),handler:async e=>{let t=await S(!0);return Qt({config:t||void 0})}});var po=l(require("inquirer")),Vt=async e=>po.default.prompt(e);var Xt=async e=>{var n,a;let t=await P(),r=(a=(n=t==null?void 0:t.generatorOptions)==null?void 0:n.rootFiles)==null?void 0:a.filter(p=>typeof p!="string"&&p.rewrite),o=(r==null?void 0:r.map(p=>p.path))??[],i=r==null?void 0:r.map(p=>p.substitutions??[]),s=[...e,...(i==null?void 0:i.flat())??[]];M({paths:o,substitute:s,source:process.cwd(),destination:process.cwd()})};var{websiteUrl:hi}=g,er=async()=>uo.default.scriptName("builda").usage("$0 <cmd> [args]").help().demandCommand(1,'You need at least one command before moving on. Try "builda --help" for more information').command({...wt()}).command({...Kt()}).command({...Ut()}).command({...jt()}).command({...Tt()}).command({...Pt()}).command({...zt()}).command({...kt()}).command({...Ct()}).command({...Ft()}).command({...Rt()}).command({..._t()}).command({...Ot()}).epilogue(`For more information, visit ${fo.default.blue.underline(`${hi}/docs`)}`).argv;require.main===module&&er();var yi=er;0&&(module.exports={builda,buildaQuestion,buildaSubstitute,changeCase,printMessage,throwError});
+` + print_site_link_default({ link: "docs/build-a-module", anchor: "blueprint" })
+    );
+    console.log("Coming soon...");
+    process.exit(0);
+  }
+};
+
+// src/scripts/builda-init/command.ts
+var command_default13 = () => {
+  return {
+    command: "init",
+    desc: "Initialise builda",
+    builder: (yargs2) => {
+      return yargs2.option("configPath", {
+        aliases: ["c", "config"],
+        default: "",
+        describe: "The path to a config file",
+        type: "string"
+      });
+    },
+    handler: async (argv) => {
+      const config = await get_config_default(true);
+      return init_default({ config: config || void 0 });
+    }
+  };
+};
+
+// src/scripts/builda-question/question.ts
+var import_inquirer9 = __toESM(require("inquirer"));
+var question_default = async (questions) => {
+  return import_inquirer9.default.prompt(questions);
+};
+
+// src/scripts/builda-substitute/substitute.ts
+var substitute_default = async (substitutions) => {
+  var _a, _b, _c, _d;
+  const registry = await get_registry_default();
+  const filesToRewrite = (_b = (_a = registry == null ? void 0 : registry.generatorOptions) == null ? void 0 : _a.rootFiles) == null ? void 0 : _b.filter(
+    // Only return files which have 'rewrite' set to true (and are not a string)
+    (file) => typeof file !== "string" && file.rewrite
+  );
+  const paths = (_c = filesToRewrite == null ? void 0 : filesToRewrite.map((file) => file.path)) != null ? _c : [];
+  const fileSubstitutions = filesToRewrite == null ? void 0 : filesToRewrite.map(
+    (file) => {
+      var _a2;
+      return (_a2 = file.substitutions) != null ? _a2 : [];
+    }
+  );
+  const substitute = [...substitutions, ...(_d = fileSubstitutions == null ? void 0 : fileSubstitutions.flat()) != null ? _d : []];
+  loop_and_rewrite_files_default({
+    paths,
+    substitute,
+    source: process.cwd(),
+    destination: process.cwd()
+  });
+};
+
+// src/index.ts
+var { websiteUrl: websiteUrl2 } = globals_default;
+var builda = async () => {
+  return import_yargs.default.scriptName("builda").usage("$0 <cmd> [args]").help().demandCommand(
+    1,
+    'You need at least one command before moving on. Try "builda --help" for more information'
+  ).command(__spreadValues({}, command_default())).command(__spreadValues({}, command_default13())).command(__spreadValues({}, command_default11())).command(__spreadValues({}, command_default5())).command(__spreadValues({}, command_default3())).command(__spreadValues({}, command_default4())).command(__spreadValues({}, command_default10())).command(__spreadValues({}, command_default2())).command(__spreadValues({}, command_default6())).command(__spreadValues({}, command_default7())).command(__spreadValues({}, command_default8())).command(__spreadValues({}, command_default12())).command(__spreadValues({}, command_default9())).epilogue(
+    `For more information, visit ${import_chalk12.default.blue.underline(
+      `${websiteUrl2}/docs`
+    )}`
+  ).argv;
+};
+if (require.main === module) {
+  builda();
+}
+var src_default = builda;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  builda,
+  buildaQuestion,
+  buildaSubstitute,
+  changeCase,
+  printMessage,
+  throwError
+});

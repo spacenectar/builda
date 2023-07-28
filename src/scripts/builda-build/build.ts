@@ -51,18 +51,15 @@ export default async ({ config }: TBuild) => {
     // regenerate the export directory
     generateExport({ buildaDir, prefabDir });
 
-    const fileList = await recurseDirectories({
+    const fileList = (await recurseDirectories({
       paths: files,
       source: root
-    });
+    })) as string[];
 
     fileList.forEach((file) => {
-      const recastFile = file as string;
-      const pathString = recastFile.replace(`${root}/`, '');
-
       syncWithExport({
         type: 'update',
-        pathString
+        pathString: file.replace(`${root}/`, '')
       });
     });
   });

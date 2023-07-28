@@ -98,7 +98,8 @@ export const loopAndRewriteFiles = async ({
               }
               return substitution;
             });
-            // Copy the file to the export directory and rewrite it
+            // Copy the file to the output directory and rewrite it
+
             writeFile({
               file: filePath,
               outputDir: directoryPath,
