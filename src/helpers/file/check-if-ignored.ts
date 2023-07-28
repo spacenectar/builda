@@ -7,7 +7,8 @@ export const checkIfIgnored = (workingDir: string, filePath: string) => {
     if (ignore.startsWith('**/')) {
       const ignorePath = ignore.replace('**/', '');
       const baseFileName = filePath.split('/').pop() as string;
-      if (ignorePath.includes(baseFileName)) {
+
+      if (ignorePath === baseFileName) {
         return true;
       }
     } else if (ignore === filePath) {

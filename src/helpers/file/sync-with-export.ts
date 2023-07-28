@@ -1,7 +1,6 @@
 import globals from 'data/globals';
 import {
   copyPath,
-  getIgnoreList,
   getRegistry,
   loopAndRewriteFiles,
   throwError
@@ -24,7 +23,6 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
   const root = process.cwd();
   const exportRoot = path.join(root, globals.buildaDir, 'export');
   const registry = await getRegistry(exportRoot);
-  const ignore = getIgnoreList(path.join(root, globals.buildaDir));
 
   if (type === 'copy') {
     if (pathString === 'package.json') {
@@ -61,26 +59,21 @@ export const syncWithExport = async ({ type, pathString }: SyncOptions) => {
       }
     ) as RootFile;
 
-    // Delete the original file
-    fs.rmSync(path.join(exportRoot, pathString), {
-      recursive: true,
-      force: true
-    });
-
     if (fileWithSubstitutions) {
       // If the file is a root file, we need to loop through the substitutions
       await loopAndRewriteFiles({
+        log: true,
         name: registry.name,
         paths: [pathString],
-        ignore,
-        fromRoot: true,
-        substitute: fileWithSubstitutions.substitutions
+        substitute: fileWithSubstitutions.substitutions,
+        source: root,
+        destination: exportRoot
       });
     } else {
       // The file has no substitutions, so we can just copy it from the root
       return copyPath(
         `${root}/${pathString}`,
-        path.join(root, globals.buildaDir, 'export', pathString)
+        path.join(exportRoot, pathString)
       );
     }
   }

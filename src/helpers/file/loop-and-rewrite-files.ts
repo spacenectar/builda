@@ -7,6 +7,8 @@ import globals from 'data/globals';
 import { createDir, writeFile, checkIfIgnored } from 'helpers';
 
 type FunctionParams = {
+  // This is just here for debugging purposes
+  log?: boolean;
   // The name of the app being created (used for substitution)
   name?: string;
   // An array of file paths to be rewritten
@@ -15,34 +17,38 @@ type FunctionParams = {
   ignore?: string[];
   // An array of substitutions to be made
   substitute: TSubstitution[];
-  // Run from the root directory instead of the prefab directory
-  fromRoot?: boolean;
-  // Run from the a custom directory
-  fromCustomPath?: string;
-  // Copy to the root directory as well as the export directory
-  toRoot?: boolean;
+  // The source directory
+  source: string;
+  // The destination directory
+  destination: string;
 };
 
 export const loopAndRewriteFiles = async ({
+  log,
   name,
   paths,
-  ignore,
   substitute,
-  fromRoot = false,
-  fromCustomPath,
-  toRoot = false
+  source,
+  destination
 }: FunctionParams) => {
   const { buildaDir } = globals;
 
   const prefabDir = path.join(buildaDir, 'modules', 'prefab');
-  const workingDir = path.join(buildaDir, 'export');
+  const propsList = {
+    log,
+    name,
+    paths,
+    substitute,
+    source,
+    destination
+  };
 
   // Get a list of files to ignore from the .gitignore file in the prefab
   const promises = [];
   for (const file of paths) {
-    const filePath = fromRoot ? file : path.join(prefabDir, file);
+    const filePath = path.join(source, file);
     // Check if the file is in the ignore list
-    if (ignore && checkIfIgnored(buildaDir, filePath)) {
+    if (checkIfIgnored(buildaDir, filePath)) {
       continue;
     }
 
@@ -53,13 +59,8 @@ export const loopAndRewriteFiles = async ({
         .map((f) => path.relative(prefabDir, f));
       promises.push(
         await loopAndRewriteFiles({
-          name,
-          paths: globFiles,
-          ignore,
-          substitute,
-          fromRoot,
-          fromCustomPath,
-          toRoot
+          ...propsList,
+          paths: globFiles
         })
       );
     } else if (fs.lstatSync(filePath).isDirectory()) {
@@ -67,35 +68,28 @@ export const loopAndRewriteFiles = async ({
       const newFiles = files.map((f) => path.join(file, f));
       promises.push(
         await loopAndRewriteFiles({
-          name,
-          paths: newFiles,
-          ignore,
-          substitute,
-          fromRoot,
-          fromCustomPath,
-          toRoot
+          ...propsList,
+          paths: newFiles
         })
       );
     } else {
       promises.push(
         new Promise((resolve) => {
           const basePath = path.dirname(file);
-          const fileName = path.basename(file);
-          const directoryPath = path.join(workingDir, basePath);
-          const rootDir = fromCustomPath
-            ? fromCustomPath
-            : path.join(process.cwd(), '..', '..');
-          const rootPath = path.join(rootDir, basePath);
+          const directoryPath = path.join(destination, basePath);
           if (checkIfIgnored(buildaDir, filePath)) {
             return;
           }
 
           createDir(directoryPath);
-
           if (fs.existsSync(filePath)) {
             const subs = substitute.map((substitution) => {
-              // If the substitution is set to be reversed, reverse it if possible
-              if (substitution.reverseInExport) {
+              if (
+                substitution.reverseInExport &&
+                (directoryPath.includes('export') ||
+                  directoryPath.includes('prefab'))
+              ) {
+                // If the substitution is set to be reversed, reverse it if possible
                 return {
                   ...substitution,
                   replace: substitution.with,
@@ -111,17 +105,6 @@ export const loopAndRewriteFiles = async ({
               substitute: subs,
               name
             });
-            if (toRoot) {
-              createDir(rootPath);
-              // Copy the file to the root directory and rewrite it
-              writeFile({
-                file: filePath,
-                rename: fileName.replace('unique.', ''),
-                outputDir: rootPath,
-                substitute,
-                name
-              });
-            }
           }
           resolve(filePath);
         })
