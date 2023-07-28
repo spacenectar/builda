@@ -62,13 +62,13 @@ var import_chalk12 = __toESM(require("chalk"));
 
 // src/data/globals.ts
 var globals_default = {
-  "version": "5.2.2",
-  "buildaDir": ".builda",
-  "websiteUrl": "https://www.builda.app",
-  "buildaReadmeFileName": "getting-started.md",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/spacenectar/builda"
+  version: "5.2.3",
+  buildaDir: ".builda",
+  websiteUrl: "https://www.builda.app",
+  buildaReadmeFileName: "getting-started.md",
+  repository: {
+    type: "git",
+    url: "git+https://github.com/spacenectar/builda"
   }
 };
 
