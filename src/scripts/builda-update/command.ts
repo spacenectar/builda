@@ -9,7 +9,7 @@ type Args = {
 export default () => {
   return {
     command: 'update',
-    desc: 'Updates the applications prefab to the latest version',
+    desc: 'An alias for `builda install` which skips the existing folder check',
     builder: (yargs: yargs.Argv): yargs.Argv<Args> => {
       return yargs.option('configPath', {
         aliases: ['c', 'config'],

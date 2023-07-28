@@ -55,7 +55,7 @@ export const convertRegistryPathToUrl = ({
       ? resolverMatcher[3].replace('@', '')
       : 'latest';
 
-    if (config && config.resolvers) {
+    if (config?.resolvers) {
       resolvers = {
         ...resolvers,
         ...config.resolvers

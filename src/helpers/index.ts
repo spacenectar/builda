@@ -20,6 +20,9 @@ export { default as copyPathsToRoot } from './file/copy-paths-to-root';
 export { default as syncWithExport } from './file/sync-with-export';
 export { default as syncPackageJson } from './file/sync-package-json';
 export { default as checkIfIgnored } from './file/check-if-ignored';
+export { default as generateExport } from './file/generate-export';
+export { default as generateFromPrefab } from './file/generate-from-prefab';
+export { default as recurseDirectories } from './file/recurse-directories';
 
 // Module helpers
 export { default as addLocalModule } from './module/add-local-module';

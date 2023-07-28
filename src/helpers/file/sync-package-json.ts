@@ -36,7 +36,8 @@ export const syncPackageJson = async () => {
     });
 
     const newPackageJson = {
-      ...prefabPackageJsonFile,
+      ...packageJsonFile,
+      scripts,
       dependencies: {
         ...packageJsonFile.dependencies
       },
@@ -45,8 +46,7 @@ export const syncPackageJson = async () => {
       },
       peerDependencies: {
         ...packageJsonFile.peerDependencies
-      },
-      scripts
+      }
     };
 
     fs.writeFileSync(
