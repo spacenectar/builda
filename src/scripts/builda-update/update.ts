@@ -22,21 +22,22 @@ export default async () => {
 
   // Check the builda directory exists and delete it if it does
   if (fs.existsSync(buildaDirPath)) {
-    fs.rmdirSync(buildaDirPath, { recursive: true });
+    fs.rmSync(buildaDirPath, { recursive: true });
   } else {
     if (!prefab) {
       throwError(
-        'No prefab found in config (perhaps you meant to run "builda init" instead?)'
+        'No prefab found in config (perhaps you meant to run "builda init" or "builda project" instead?)'
       );
     } else {
       printMessage(
-        'Prefab config found but no builda directory found.',
+        'Prefab config found but no .builda directory found.',
         'warning'
       );
       printMessage('Running "builda install" instead', 'info');
+      return buildaInstall();
     }
   }
 
-  // Run the install script
-  await buildaInstall();
+  // Run the install script (passing true to indicate that this is an update)
+  return buildaInstall(true);
 };

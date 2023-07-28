@@ -11,11 +11,14 @@ import {
   printLogo,
   throwError,
   changeCase,
+  generateExport,
+  generateFromPrefab,
   newProjectQuestions,
   prefabQuestions,
   showHelp
 } from 'helpers';
-import { generateFromPrefab } from './helpers/generate-from-prefab';
+
+import { createInitialApp } from './helpers/create-initial-app';
 
 export type TGenerateProject = {
   appName?: string;
@@ -80,7 +83,6 @@ export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
   process.chdir(kebabAppName);
 
   // check if the root directory is empty
-  const workingDir = path.join(rootDir, buildaDir, 'export');
   const prefabDir = path.join(rootDir, buildaDir, 'modules', 'prefab');
 
   if (fs.readdirSync(rootDir).length !== 0) {
@@ -89,24 +91,31 @@ export default async ({ appName, prefab, smokeTest }: TGenerateProject) => {
     );
   }
 
-  await createDir(workingDir);
-
-  // The directory is empty, so we can continue
-  const module = {} as ModuleRegistry;
   // If the user isn't using a prefab, we can just create a config and then skip the rest of this file
 
   if (prefabPath) {
-    await generateFromPrefab(
+    // Get the files from the prefab and process them
+    const module = await generateFromPrefab({
       prefabPath,
+      rootDir,
+      prefabDir,
+      name,
+      buildaDir
+    });
+
+    // Create the export directory and populate it from the prefab
+    await generateExport({ buildaDir, prefabDir });
+
+    // Create the initial app
+    await createInitialApp({
       module,
       rootDir,
       prefabDir,
-      workingDir,
       name,
       buildaDir,
       websiteUrl,
       buildaReadmeFileName
-    );
+    });
   }
 
   printMessage(`Your application, "${name}" has been initialised!`, 'success');

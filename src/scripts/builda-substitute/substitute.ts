@@ -2,7 +2,7 @@ import { getRegistry, loopAndRewriteFiles } from 'helpers';
 
 /**
  * Substitute values found in all files in the rootFiles array which have 'rewrite' set to true
- * (This is a post-processing step and exists to give prefab developers more control over the final output)
+ * (This is a post-processing step and exists to give prefab developers more control over the final output)§
  */
 export default async (substitutions: TSubstitution[]) => {
   const registry = await getRegistry();
@@ -23,7 +23,7 @@ export default async (substitutions: TSubstitution[]) => {
   loopAndRewriteFiles({
     paths,
     substitute,
-    fromRoot: true,
-    toRoot: true
+    source: process.cwd(),
+    destination: process.cwd()
   });
 };
